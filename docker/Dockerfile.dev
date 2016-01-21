@@ -1,0 +1,38 @@
+# To build:
+# docker build -t sod-service -f docker/Dockerfile.dev .
+#
+# To run:
+# docker run -p 8080:8080 -it sod-service
+
+FROM doceng.docker.oraclecorp.com/doceng-base:0.0.7
+MAINTAINER cesareg.borjon@gmail.com
+
+#this will be the name of the micro-service
+ENV MODULE service
+ENV JAR_NAME sod_project.jar
+ENV MODULE_SOURCE ${USER_HOME}/${MODULE}
+
+# 8080 is the port the jetty server is currently set to listen
+ENV REGISTRATION_API_PORT 8080
+
+# use -P/-p at run time to expose this port from the Docker host
+EXPOSE $REGISTRATION_API_PORT
+
+# Maven needs JAVA_HOME set to a JDK home
+ENV JAVA_HOME /usr/java/jdk1.8.0_66
+
+RUN cd /tmp && \
+    wget "http://artifactory-slc.oraclecorp.com/artifactory/doceng-libs-release-local/oracle/jdk/8u66-b17/jdk-8u66-linux-x64.rpm" && \
+    yum localinstall -y /tmp/jdk-8u66-linux-x64.rpm && \
+    rm /tmp/jdk-8u66-linux-x64.rpm
+
+# add in the source files
+RUN mkdir -p ${MODULE_SOURCE}
+COPY project/target/${JAR_NAME} ${MODULE_SOURCE}
+
+# make doceng the owner of all the source files, so when mvn clean install package runs it can create the target/classes dir
+RUN chown -R ${BASE_USER}:${BASE_USER} ${MODULE_SOURCE}
+
+USER $BASE_USER
+
+ENTRYPOINT ["java", "-jar", "sod_project.jar"]

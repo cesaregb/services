@@ -28,13 +28,6 @@ public class ApplicationConfig extends ResourceConfig {
         register(LoggingFilter.class);
         register(CORSResponseFilter.class);
         register(AuthenticationFilter.class);
-        
-//        ApplicationContext rootCtx = ContextLoader.getCurrentWebApplicationContext();
-//        ApplicationConfig myConfiguration = rootCtx.getBean(ApplicationConfig.class);
-//
-//        if (myConfiguration.isProperty("")) {
-//            packages("com.mycompany.resources.whatever");
-//        }
     }
 	
 	/* Swagger configuratoin */

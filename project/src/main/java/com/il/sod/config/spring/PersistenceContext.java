@@ -1,5 +1,8 @@
 package com.il.sod.config.spring;
 
+import static com.il.sod.config.Constants.PROPERTY_NAME_DATABASE_DRIVER;
+import static com.il.sod.config.Constants.PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN;
+
 import java.util.Properties;
 
 import javax.annotation.Resource;
@@ -16,8 +19,6 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import static com.il.sod.config.Constants.*;
 
 @Configuration
 @EnableTransactionManagement
@@ -39,7 +40,6 @@ public class PersistenceContext {
 //    @Bean(destroyMethod = "close")
     @Bean
     DataSource dataSource() {
-System.out.println("---------------------------username: " + username);
     	DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(env.getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER));
 		dataSource.setUrl(dbUrl);

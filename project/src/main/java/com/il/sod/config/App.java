@@ -7,7 +7,6 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 
@@ -25,22 +24,13 @@ public class App {
 		context.setContextPath("/");
 		
 		// Setup Spring context
-		System.setProperty("spring.profiles.active", "dev");
-		System.setProperty(AbstractEnvironment.DEFAULT_PROFILES_PROPERTY_NAME, "dev");
-		System.setProperty(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME, "dev");
-		context.setInitParameter("spring.profiles.active", "dev");
-		
-//		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
-		
+		context.setInitParameter("spring.profiles.active", getProfile());
 		context.addEventListener(new ContextLoaderListener());
-//		context.setInitParameter("contextConfigLocation", "classpath*:**/applicationContext.xml");
-		context.setInitParameter("contextConfigLocation", "com.il.sod.config.SpringConfig");
+		context.setInitParameter("contextConfigLocation", "classpath*:**/applicationContext.xml");
 		context.addEventListener(new RequestContextListener());
 
 		server.setHandler(context);
 		ApplicationConfig ac = new ApplicationConfig();
-//		ctx.getEnvironment().setActiveProfiles("dev");
-//		ac.property("contextConfig", ctx);
 		
 		ServletHolder jerseyServlet = new ServletHolder(new ServletContainer(ac));
 		jerseyServlet.setInitOrder(1);
@@ -61,20 +51,6 @@ public class App {
 		}
 	}
 	
-	
-	
-	/**
-     * Set a default profile if it has not been set.
-     * Please use -Dspring.profiles.active=dev
-     */
-//	@Override
-//	public void onStartup(ServletContext servletContext) throws ServletException {
-//		super.onStartup(servletContext);
-//		servletContext.setInitParameter("spring.profiles.active", getProfile());
-//		//Set multiple active profile
-//		//servletContext.setInitParameter("spring.profiles.active", "dev, testdb");
-//	}
-//	
 	public static String getProfile(){
 		String profile = System.getProperty("spring.profiles.active");
         if (profile != null) {
