@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.il</groupId>
-	<artifactId>sod</artifactId>
+	<groupId>com.il.sod</groupId>
+	<artifactId>service</artifactId>
 	<version>1.0</version>
-	<name>SOD Jesey</name>
+	<name>Initial service</name>
 	<url>http://maven.apache.org</url>
     
 	<properties>
@@ -260,7 +260,7 @@
 					<mainClass>com.il.sod.config.App</mainClass>
 				</configuration>
 			</plugin>
-			<!-- <plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>1.7</version>
@@ -294,7 +294,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin> -->
+			</plugin>
 		</plugins>
 		
  		<resources>
@@ -305,7 +305,7 @@
 				<directory>src/main/webapp</directory>
 			</resource>
 		</resources>
-		<finalName>sod_jersey</finalName>
+		<finalName>sod_project-${version}</finalName>
 	</build>
 	
 	<profiles>
