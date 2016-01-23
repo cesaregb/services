@@ -29,20 +29,18 @@ public class App {
 		context.setInitParameter("contextConfigLocation", "classpath*:**/applicationContext.xml");
 		context.addEventListener(new RequestContextListener());
 
-		server.setHandler(context);
-		ApplicationConfig ac = new ApplicationConfig();
-		
-		ServletHolder jerseyServlet = new ServletHolder(new ServletContainer(ac));
+		server.setHandler(context);		
+		ServletHolder jerseyServlet = new ServletHolder(new ServletContainer(new ApplicationConfig()));
 		jerseyServlet.setInitOrder(1);
-		
-    
 		context.addServlet(jerseyServlet, PropertyHandler.getInstance().getValue(ApplicationConfig.PARAM_API_BASEPATH) + "/*"); // /api/*
+		
 		ApplicationConfig.initializeSwaggerConfiguration();
 		
 		ServletHolder staticServlet = context.addServlet(DefaultServlet.class, "/*");
+//		staticServlet.setInitParameter("resourceBase", "/");
 		staticServlet.setInitParameter("resourceBase", "src/main/webapp");
 		staticServlet.setInitParameter("pathInfoOnly", "true");
-
+	   
 		try {
 			server.start();
 			server.join();

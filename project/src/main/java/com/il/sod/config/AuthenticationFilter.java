@@ -38,10 +38,13 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 	@Override
 	public void filter(ContainerRequestContext requestContext)  {
 		Method method = resourceInfo.getResourceMethod();
+		
 		LOGGER.info("***** AuthenticationFilter");
-		System.out.println("method: " + method.getName() + " -- " + method.getClass().getName());
+		String myMethod = requestContext.getUriInfo().getPath();
+		System.out.println("method: " + method.getName() + " -- " + method.getClass().getName() + " -- " + myMethod);
 		// Access allowed for all
-		if (!method.isAnnotationPresent(PermitAll.class)) {
+		if (!method.isAnnotationPresent(PermitAll.class) 
+				&& !myMethod.toLowerCase().equals("swagger.json")) {
 			
 			// Access denied for all
 			if (method.isAnnotationPresent(DenyAll.class)) {

@@ -15,7 +15,8 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE DATABASE jpa_example
+CREATE DATABASE jpa_example;
+USE jpa_example;
 
 --
 -- Table structure for table `shops`
