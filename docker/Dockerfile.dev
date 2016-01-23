@@ -1,3 +1,4 @@
+# NOT WORKING!!!!
 # To build:
 # docker build -t sod-service -f docker/Dockerfile.dev .
 #

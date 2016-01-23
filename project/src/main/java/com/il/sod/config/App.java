@@ -34,10 +34,9 @@ public class App {
 		jerseyServlet.setInitOrder(1);
 		context.addServlet(jerseyServlet, PropertyHandler.getInstance().getValue(ApplicationConfig.PARAM_API_BASEPATH) + "/*"); // /api/*
 		
-		ApplicationConfig.initializeSwaggerConfiguration();
+//		ApplicationConfig.initializeSwaggerConfiguration();
 		
 		ServletHolder staticServlet = context.addServlet(DefaultServlet.class, "/*");
-//		staticServlet.setInitParameter("resourceBase", "/");
 		staticServlet.setInitParameter("resourceBase", "src/main/webapp");
 		staticServlet.setInitParameter("pathInfoOnly", "true");
 	   
@@ -50,13 +49,14 @@ public class App {
 	}
 	
 	public static String getProfile(){
-		String profile = System.getProperty("spring.profiles.active");
+		String profile = (System.getProperty("spring.profiles.active") != null)
+				? System.getProperty("spring.profiles.active") : System.getenv(Constants.ENV_APP_PROFILE);
         if (profile != null) {
         	LOGGER.info("Running with Spring profile(s) : {}", profile);
             return profile;
         }
         LOGGER.warn("No Spring profile configured, running with default configuration");
-        return Constants.SPRING_PROFILE_DEVELOPMENT;
+        return Constants.SPRING_PROFILE_LOCAL;
 	}
 }
 

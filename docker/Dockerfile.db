@@ -4,4 +4,4 @@
 # To run:
 # docker run -p 3306:3306 --env MYSQL_ROOT_PASSWORD=Welcome1 -it database:v1
 FROM mysql:5.7
-ADD ./setup.sql /docker-entrypoint-initdb.d/setup.sql
+ADD docker/setup.sql /docker-entrypoint-initdb.d/setup.sql

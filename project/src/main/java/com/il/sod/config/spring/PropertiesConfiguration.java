@@ -14,11 +14,25 @@ import static com.il.sod.config.Constants.*;
 public class PropertiesConfiguration {
 	
 	@Bean
-    @Profile(SPRING_PROFILE_DEVELOPMENT)
+    @Profile(SPRING_PROFILE_LOCAL)
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-      String propertiesFilename = "config/application-dev.properties";
+      String propertiesFilename = "config/application-local.properties";
       return getPropertiesByFile(propertiesFilename);
     }
+	
+	@Bean
+	@Profile(SPRING_PROFILE_DOCKER)
+	public static PropertySourcesPlaceholderConfigurer propertyDockerPlaceholderConfigurer() {
+		String propertiesFilename = "config/application-docker.properties";
+		return getPropertiesByFile(propertiesFilename);
+	}
+	
+	@Bean
+	@Profile(SPRING_PROFILE_DEVELOPMENT)
+	public static PropertySourcesPlaceholderConfigurer propertyDevPlaceholderConfigurer() {
+		String propertiesFilename = "config/application-dev.properties";
+		return getPropertiesByFile(propertiesFilename);
+	}
 
     @Bean
     @Profile(SPRING_PROFILE_PRODUCTION)
@@ -26,6 +40,7 @@ public class PropertiesConfiguration {
       String propertiesFilename = "config/application-prod.properties";
       return getPropertiesByFile(propertiesFilename);
     }
+    
     
     public static PropertySourcesPlaceholderConfigurer getPropertiesByFile(String file) {
     	PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
