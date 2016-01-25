@@ -67,6 +67,7 @@ public class Health extends AbstractService {
 		LOGGER.info("********************************");
 		LOGGER.info("Calling health method: ");
 		LOGGER.info("dbUrl: " + dbUrl + " == " + " dbDriver: " + dbDriver + " == " + System.getProperty("spring.profiles.active"));
+		LOGGER.info("myValue: " + env.getProperty("myValue"));
 //		LOGGER.info("env: " + env.getRequiredProperty("db.driver")  + " == " + env.getRequiredProperty("db.url"));
 		LOGGER.info("shopServiceDAO: " + shopServiceDAO.findById(6) );
 		LOGGER.info("********************************");

@@ -3,6 +3,7 @@ package com.il.sod.config.spring;
 import static com.il.sod.config.Constants.PROPERTY_NAME_DATABASE_DRIVER;
 import static com.il.sod.config.Constants.PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN;
 
+import java.util.Map;
 import java.util.Properties;
 
 import javax.annotation.Resource;
@@ -11,6 +12,7 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +23,8 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.il.sod.config.Constants;
 
 @Configuration
 @EnableTransactionManagement
@@ -40,20 +44,31 @@ public class PersistenceContext {
 	@Value("${db.password}")
 	private String password;
 
+	@Resource
+	@Qualifier("dataSourceInfo")
+	private Map<String, String> dataSourceInfo;
+	
 	// @Bean(destroyMethod = "close")
 	@Bean
 	DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		LOGGER.info("******** DB Info");
-		LOGGER.info("dbUrl: " + dbUrl);
-		LOGGER.info("username: " + username);
-		LOGGER.info("*************");
-		
-
 		dataSource.setDriverClassName(env.getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER));
-		dataSource.setUrl(dbUrl);
-		dataSource.setUsername(username);
-		dataSource.setPassword(password);
+		if (dataSourceInfo != null 
+				&& (dataSourceInfo.containsKey("valid") 
+						&& dataSourceInfo.get("valid") == "1")) {
+			dataSource.setUrl(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_URL));
+			dataSource.setUsername(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_USER));
+			dataSource.setPassword(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_PASSWORD));
+		}else{
+			dataSource.setUrl(dbUrl);
+			dataSource.setUsername(username);
+			dataSource.setPassword(password);
+		}
+		LOGGER.info("******** DB Info");
+		LOGGER.info("dbUrl: " + dataSource.getUrl());
+		LOGGER.info("username: " + dataSource.getUsername());
+		LOGGER.info("*************");
+
 		return dataSource;
 	}
 
