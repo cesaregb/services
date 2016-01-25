@@ -34,7 +34,7 @@ public class App {
 		jerseyServlet.setInitOrder(1);
 		context.addServlet(jerseyServlet, PropertyHandler.getInstance().getValue(ApplicationConfig.PARAM_API_BASEPATH) + "/*"); // /api/*
 		
-//		ApplicationConfig.initializeSwaggerConfiguration();
+		ApplicationConfig.initializeSwaggerConfiguration();
 		
 		ServletHolder staticServlet = context.addServlet(DefaultServlet.class, "/*");
 		staticServlet.setInitParameter("resourceBase", "src/main/webapp");

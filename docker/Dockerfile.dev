@@ -46,18 +46,14 @@ RUN cd /usr && tar --strip-components 1 -xzf /tmp/node-v0.12.3-linux-x64.tar.gz
 #User IL = Interactive labs
 ENV BASE_USER il
 ENV USER_HOME /home/$BASE_USER
-
 # Create our user
 RUN useradd $BASE_USER
-
 #make the base_user the owner of all its HOME files, including the .ssh and DOCENG_BASE_SRC dirs
 RUN chown -R $BASE_USER:$BASE_USER $USER_HOME
 
-
 #docker project file specific
 EXPOSE 8080
-#app specific information.
-#this will be the name of the micro-service
+#microservice name
 ENV MODULE services
 ENV MODULE_SOURCE ${USER_HOME}/${MODULE}
 # add in the source files
@@ -65,7 +61,6 @@ RUN mkdir -p ${MODULE_SOURCE}
 WORKDIR ${MODULE_SOURCE}
 
 RUN git clone --branch $GIT_BRANCH --depth 1 alm:/doceng_selfpublish/${MODULE}.git ${MODULE_SOURCE}
-
 
 # make doceng the owner of all the source files, so when mvn clean install package runs it can create the target/classes dir
 RUN chown -R ${BASE_USER}:${BASE_USER} ${MODULE_SOURCE}

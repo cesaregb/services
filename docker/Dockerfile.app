@@ -56,14 +56,12 @@ RUN chown -R $BASE_USER:$BASE_USER $USER_HOME
 
 #docker project file specific
 EXPOSE 8080
-#app specific information.
-#this will be the name of the micro-service
+#microservice name
 ENV MODULE services
 ENV MODULE_SOURCE ${USER_HOME}/${MODULE}
 # add in the source files
 RUN mkdir -p ${MODULE_SOURCE}
 COPY . ${MODULE_SOURCE}
-
 
 # make doceng the owner of all the source files, so when mvn clean install package runs it can create the target/classes dir
 RUN chown -R ${BASE_USER}:${BASE_USER} ${MODULE_SOURCE}
