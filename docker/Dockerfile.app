@@ -73,4 +73,4 @@ WORKDIR ${MODULE_SOURCE}/project
 RUN mvn clean install package
 
 #When this image is run as a container, start the jetty server. It will be listening on the ${REGISTRATION_API_PORT}
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=docker", "target/sod_project-1.0.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "target/sod_project-1.0.jar"]
