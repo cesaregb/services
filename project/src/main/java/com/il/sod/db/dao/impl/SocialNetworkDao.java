@@ -1,11 +1,20 @@
 package com.il.sod.db.dao.impl;
 
-import com.il.sod.db.model.entities.SocialNetwork;
-import com.il.sod.db.model.repositories.SocialNetworkRepository;
+import javax.annotation.Resource;
 
-//@Service
-public class SocialNetworkDao extends GenericDaoImpl<SocialNetwork, Integer>{
-//	@Resource
-	private SocialNetworkRepository repository;
+import org.springframework.stereotype.Service;
+
+import com.il.sod.db.model.entities.Shop;
+import com.il.sod.db.model.repositories.ShopRepository;
+
+@Service
+public class SocialNetworkDao extends GenericDaoImpl<Shop, Integer>{
+
+	@Resource
+	private ShopRepository sRepository;
 	
+	public SocialNetworkDao(){
+		System.out.println("instantiating the CORRET service!!!");
+		this.setRepository(sRepository);
+	}
 }

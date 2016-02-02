@@ -18,6 +18,10 @@ public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID>{
 	public void setRepository(JpaRepository<T, ID> repository) {
 		this.repository = repository;
 	}
+	
+//	public GenericDaoImpl(JpaRepository<T, ID> repository){
+//		this.repository = repository;
+//	}
 
 	@Override
 	@Transactional

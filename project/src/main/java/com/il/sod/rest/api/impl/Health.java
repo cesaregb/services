@@ -20,6 +20,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.il.sod.db.dao.IDAO;
+import com.il.sod.db.dao.ShopServiceDAO;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractService;
 import com.il.sod.rest.dto.SimpleResponseMessage;
@@ -48,7 +49,7 @@ public class Health extends AbstractService {
 	MyService myService;
 	
 	@Autowired
-	private IDAO shopServiceDAO;
+	private ShopServiceDAO shopServiceDAO;
 	
 	@Value("${db.url}")
 	private String dbUrl;

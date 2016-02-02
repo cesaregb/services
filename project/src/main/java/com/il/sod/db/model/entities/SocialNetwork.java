@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="SocialNetworks")
-@NamedQuery(name="SocialNetworks.findAll", query="SELECT s FROM SocialNetworks s")
+@NamedQuery(name="SocialNetwork.findAll", query="SELECT s FROM SocialNetwork s")
 public class SocialNetwork implements Serializable {
 	private static final long serialVersionUID = 1L;
 
