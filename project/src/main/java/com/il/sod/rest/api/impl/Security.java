@@ -9,9 +9,9 @@ import javax.ws.rs.core.SecurityContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.il.sod.dto.UserDto;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractService;
+import com.il.sod.rest.dto.UserDto;
 import com.il.sod.services.MyService;
 
 import io.swagger.annotations.Api;

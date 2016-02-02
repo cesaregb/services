@@ -28,7 +28,7 @@ import com.il.sod.config.Constants;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories("com.il.sod.model.repositories")
+@EnableJpaRepositories("com.il.sod.db.model.repositories")
 public class PersistenceContext {
 	final static Logger LOGGER = LoggerFactory.getLogger(PersistenceContext.class);
 

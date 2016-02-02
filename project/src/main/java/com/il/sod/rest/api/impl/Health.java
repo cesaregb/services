@@ -19,11 +19,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import com.il.sod.dao.ShopServiceDAO;
-import com.il.sod.dto.TestDto;
+import com.il.sod.db.dao.IDAO;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractService;
-import com.il.sod.rest.model.SimpleResponseMessage;
+import com.il.sod.rest.dto.SimpleResponseMessage;
+import com.il.sod.rest.dto.TestDto;
 import com.il.sod.services.MyService;
 
 import io.swagger.annotations.Api;
@@ -48,7 +48,7 @@ public class Health extends AbstractService {
 	MyService myService;
 	
 	@Autowired
-	private ShopServiceDAO shopServiceDAO;
+	private IDAO shopServiceDAO;
 	
 	@Value("${db.url}")
 	private String dbUrl;

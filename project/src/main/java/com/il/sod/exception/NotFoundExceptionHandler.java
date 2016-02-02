@@ -6,7 +6,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import com.il.sod.rest.model.SimpleResponseMessage;
+import com.il.sod.rest.dto.SimpleResponseMessage;
 
 @Provider
 public class NotFoundExceptionHandler implements ExceptionMapper<NotFoundException> {

@@ -1,19 +1,24 @@
 package com.il.sod.test.model.entities;
 
-import org.junit.Ignore;
+import javax.annotation.Resource;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.il.sod.dao.ShopServiceDAO;
+import com.il.sod.db.dao.ShopServiceDAO;
+import com.il.sod.db.model.entities.SocialNetwork;
+import com.il.sod.db.model.repositories.ShopRepository;
 import com.il.sod.services.MyService;
 import com.il.sod.test.config.SpringTestConfiguration;
 
-@Ignore
 public class ShopDaoImplTest extends SpringTestConfiguration{
  
 	@Autowired
 	MyService sampleService;
+	
+//	@Autowired
+//	private GenericDaoImpl<Shop, Integer> genericDaoImpl;
 	
 	@Autowired
 	private ShopServiceDAO shopServiceDAO;
@@ -23,8 +28,12 @@ public class ShopDaoImplTest extends SpringTestConfiguration{
  
     @Test
     public void testDI(){
+//    	genericDaoImpl.setRepository(repository);
     	System.out.println("===> dburl: " + dbUrl);
-    	System.out.println("===> " + shopServiceDAO.findById(6));
+    	SocialNetwork entity = new SocialNetwork();
+    	entity.setDomain("domain");
+    	entity.setName("name");
+		System.out.println("===> " + shopServiceDAO.findById(6));
     }
     
 }

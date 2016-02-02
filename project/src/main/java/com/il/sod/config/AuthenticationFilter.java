@@ -22,7 +22,7 @@ import org.glassfish.jersey.internal.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.il.sod.rest.model.SimpleResponseMessage;
+import com.il.sod.rest.dto.SimpleResponseMessage;
 
 //http://howtodoinjava.com/2015/08/19/jersey-rest-security/
 @Provider
@@ -97,7 +97,6 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 		boolean isAllowed = false;
 		if (username.equals("user") && password.equals("user")) {
 			String userRole = "ADMIN";
-
 			// Step 2. Verify user role
 			if (rolesSet.contains(userRole)) {
 				isAllowed = true;
