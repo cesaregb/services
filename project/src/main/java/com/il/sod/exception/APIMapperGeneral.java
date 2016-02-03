@@ -5,16 +5,16 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import com.il.sod.rest.dto.SimpleResponseMessage;
+import com.il.sod.rest.dto.GeneralResponseMessage;
 
 @Provider
 public class APIMapperGeneral implements ExceptionMapper<Exception> {
 	
 	@Override
 	public Response toResponse(Exception ex) {
-		SimpleResponseMessage ms = new SimpleResponseMessage();
+		GeneralResponseMessage ms = new GeneralResponseMessage();
 		ms.setMessage(ex.getMessage());
-		ms.setCode(SimpleResponseMessage.GENERIC_MESSAGE_ERROR);
+		ms.setCode(GeneralResponseMessage.GENERIC_MESSAGE_ERROR);
 		
 		return Response.
 				status(412).

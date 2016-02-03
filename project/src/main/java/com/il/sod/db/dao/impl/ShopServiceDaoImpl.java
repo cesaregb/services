@@ -15,7 +15,6 @@ import com.il.sod.db.dao.ShopServiceDAO;
 
 @Service
 public class ShopServiceDaoImpl implements ShopServiceDAO {
-
 	@Resource
 	private ShopRepository shopRepository;
 

@@ -10,6 +10,8 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.xml.ws.soap.AddressingFeature.Responses;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -41,6 +43,10 @@ public abstract class AbstractService{
 	}
 	
 	protected Response getEntityAsJSON(Object entity) throws SODAPIException {
+		return getEntityAsJSON(entity, Response.Status.ACCEPTED);
+	}
+	
+	protected Response getEntityAsJSON(Object entity, Status status) throws SODAPIException {
 		StringWriter writer = new StringWriter();
 		try {
 			mapper.writeValue(writer, entity);
@@ -51,7 +57,7 @@ public abstract class AbstractService{
 		} catch (IOException e) {
 			throw new SODAPIException(e);
 		}
-		return Response.ok(writer.toString()).build();
+		return Response.ok(writer.toString()).status(status).build();
 	}
 	
 	protected <DTO> DTO getEntityfromJSON(String json, Class<DTO> entityClass) throws SODAPIException {

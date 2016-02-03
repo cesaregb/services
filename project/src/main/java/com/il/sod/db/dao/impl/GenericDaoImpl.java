@@ -10,18 +10,21 @@ import org.springframework.transaction.annotation.Transactional;
 import com.il.sod.db.dao.IDAO;
 import com.il.sod.exception.SODAPIException;
 
-//@Service
+@Service
 public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID>{
 
 	private JpaRepository<T, ID> repository;
+
+	public GenericDaoImpl(){}
+
+	public GenericDaoImpl(JpaRepository<T, ID> repository){
+		this.repository = repository;
+	}
 	
 	public void setRepository(JpaRepository<T, ID> repository) {
 		this.repository = repository;
 	}
 	
-//	public GenericDaoImpl(JpaRepository<T, ID> repository){
-//		this.repository = repository;
-//	}
 
 	@Override
 	@Transactional

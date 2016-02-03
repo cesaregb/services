@@ -6,16 +6,16 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import com.il.sod.rest.dto.SimpleResponseMessage;
+import com.il.sod.rest.dto.GeneralResponseMessage;
 
 @Provider
 public class NotFoundExceptionHandler implements ExceptionMapper<NotFoundException> {
 
 	@Override
 	public Response toResponse(NotFoundException ex) {
-		SimpleResponseMessage ms = new SimpleResponseMessage();
+		GeneralResponseMessage ms = new GeneralResponseMessage();
 		ms.setMessage(ex.getMessage());
-		ms.setCode(SimpleResponseMessage.GENERIC_MESSAGE_ERROR);
+		ms.setCode(GeneralResponseMessage.GENERIC_MESSAGE_ERROR);
 		
 		return Response.
 				status(Response.Status.NOT_FOUND).

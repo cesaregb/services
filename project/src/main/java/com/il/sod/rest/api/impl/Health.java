@@ -23,7 +23,7 @@ import com.il.sod.db.dao.IDAO;
 import com.il.sod.db.dao.ShopServiceDAO;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractService;
-import com.il.sod.rest.dto.SimpleResponseMessage;
+import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.TestDto;
 import com.il.sod.services.MyService;
 
@@ -63,8 +63,8 @@ public class Health extends AbstractService {
 	@ApiResponses(value = { 
 		@ApiResponse(code=400, message="Invalid input supplied"),
 		@ApiResponse(code=404, message="Info not found", 
-				response=SimpleResponseMessage.class)})
-	public SimpleResponseMessage checkHealth() throws SODAPIException{
+				response=GeneralResponseMessage.class)})
+	public GeneralResponseMessage checkHealth() throws SODAPIException{
 		LOGGER.info("********************************");
 		LOGGER.info("Calling health method: ");
 		LOGGER.info("dbUrl: " + dbUrl + " == " + " dbDriver: " + dbDriver + " == " + System.getProperty("spring.profiles.active"));
@@ -73,7 +73,7 @@ public class Health extends AbstractService {
 		LOGGER.info("shopServiceDAO: " + shopServiceDAO.findById(6) );
 		LOGGER.info("********************************");
 		
-		SimpleResponseMessage obj = new SimpleResponseMessage(SimpleResponseMessage.TYPE_SUCCES);
+		GeneralResponseMessage obj = new GeneralResponseMessage(GeneralResponseMessage.TYPE_SUCCES);
 		obj.setMessage(myService.getMyValue("from the resource: " + dbUrl));
 		return obj;
 	}	
@@ -81,7 +81,7 @@ public class Health extends AbstractService {
 	@GET
 	@Path("/exception")
 	@ApiOperation(value = "Validate API + MODEL Healt")
-	public SimpleResponseMessage throwException() throws SODAPIException{	
+	public GeneralResponseMessage throwException() throws SODAPIException{	
 		LOGGER.info("Testing throwing exception!");
 		throw new SODAPIException(511, "Expected Exception!");
 	}
@@ -89,9 +89,9 @@ public class Health extends AbstractService {
 	@POST
 	@Path("/secureIS")
 	@ApiOperation(value = "Test")
-	public SimpleResponseMessage secureMethodIS(InputStream is) throws SODAPIException{	
+	public GeneralResponseMessage secureMethodIS(InputStream is) throws SODAPIException{	
 		TestDto srm = getAuthObject(is, TestDto.class);
-		SimpleResponseMessage obj = new SimpleResponseMessage(SimpleResponseMessage.TYPE_SUCCES);
+		GeneralResponseMessage obj = new GeneralResponseMessage(GeneralResponseMessage.TYPE_SUCCES);
 		obj.setMessage(srm.getVal());
 		return obj;
 	}	
@@ -100,8 +100,8 @@ public class Health extends AbstractService {
 	@GET
 	@Path("/admin_service")
 	@ApiOperation(value = "Test")
-	public SimpleResponseMessage secureMethod() throws SODAPIException{	
-		SimpleResponseMessage obj = new SimpleResponseMessage(SimpleResponseMessage.TYPE_SUCCES);
+	public GeneralResponseMessage secureMethod() throws SODAPIException{	
+		GeneralResponseMessage obj = new GeneralResponseMessage(GeneralResponseMessage.TYPE_SUCCES);
 		obj.setMessage("Ok you are an admin!");
 		return obj;
 	}	

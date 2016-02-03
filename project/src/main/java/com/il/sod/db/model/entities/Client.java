@@ -7,8 +7,8 @@ import java.util.List;
 
 /**
  * The persistent class for the Clients database table.
- * 
  */
+
 @Entity
 @Table(name="Clients")
 @NamedQuery(name="Client.findAll", query="SELECT c FROM Client c")

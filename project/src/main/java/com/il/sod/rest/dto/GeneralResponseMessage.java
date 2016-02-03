@@ -1,6 +1,6 @@
 package com.il.sod.rest.dto;
 
-public class SimpleResponseMessage {
+public class GeneralResponseMessage {
 	public static final String GENERIC_MESSAGE_SUCCES = "Success";
 	public static final String GENERIC_MESSAGE_ERROR = "Error";
 	public static final int TYPE_SUCCES = 0;
@@ -9,9 +9,9 @@ public class SimpleResponseMessage {
 	private String message; 
 	private int type;
 	
-	public SimpleResponseMessage(){}
+	public GeneralResponseMessage(){}
 	
-	public SimpleResponseMessage(int type){
+	public GeneralResponseMessage(int type){
 		if (type == TYPE_SUCCES){
 			this.message = GENERIC_MESSAGE_SUCCES;
 		}else if(type == TYPE_ERROR){
@@ -19,7 +19,7 @@ public class SimpleResponseMessage {
 		}
 	}
 	
-	public SimpleResponseMessage(int type, String code){
+	public GeneralResponseMessage(int type, String code){
 		this.code = code;
 		if (type == TYPE_SUCCES){
 			this.message = GENERIC_MESSAGE_SUCCES;
@@ -28,7 +28,7 @@ public class SimpleResponseMessage {
 		}
 	}
 	
-	public SimpleResponseMessage(int type, String code, String message){
+	public GeneralResponseMessage(int type, String code, String message){
 		this.code = code;
 		if (type == TYPE_SUCCES){
 			this.message = GENERIC_MESSAGE_SUCCES;

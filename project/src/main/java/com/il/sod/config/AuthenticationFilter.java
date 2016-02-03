@@ -22,7 +22,7 @@ import org.glassfish.jersey.internal.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.il.sod.rest.dto.SimpleResponseMessage;
+import com.il.sod.rest.dto.GeneralResponseMessage;
 
 //http://howtodoinjava.com/2015/08/19/jersey-rest-security/
 @Provider
@@ -106,9 +106,9 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 	}
 	
 	public static Response getAccessDeniedResponse() {
-		SimpleResponseMessage ms = new SimpleResponseMessage();
+		GeneralResponseMessage ms = new GeneralResponseMessage();
 		ms.setMessage("Access not granthed");
-		ms.setCode(SimpleResponseMessage.GENERIC_MESSAGE_ERROR);
+		ms.setCode(GeneralResponseMessage.GENERIC_MESSAGE_ERROR);
 		
 		return Response.
 				status(Response.Status.FORBIDDEN).
@@ -117,9 +117,9 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 				build();
 	}
 	public static Response getAccessUnauthorizedResponse() {
-		SimpleResponseMessage ms = new SimpleResponseMessage();
+		GeneralResponseMessage ms = new GeneralResponseMessage();
 		ms.setMessage("Access not granthed");
-		ms.setCode(SimpleResponseMessage.GENERIC_MESSAGE_ERROR);
+		ms.setCode(GeneralResponseMessage.GENERIC_MESSAGE_ERROR);
 		
 		return Response.
 				status(Response.Status.UNAUTHORIZED).
