@@ -1,11 +1,8 @@
 package com.il.sod.rest.api.impl;
 
-import java.io.InputStream;
-
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -19,15 +16,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import com.il.sod.db.dao.IDAO;
-import com.il.sod.db.dao.ShopServiceDAO;
+import com.il.sod.db.dao.SocialNetworkServiceDAO;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractService;
 import com.il.sod.rest.dto.GeneralResponseMessage;
-import com.il.sod.rest.dto.TestDto;
 import com.il.sod.services.MyService;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -35,7 +29,6 @@ import io.swagger.annotations.ApiResponses;
 @Component
 @Path("/health")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value="health")
 public class Health extends AbstractService {
 	final static Logger LOGGER = LoggerFactory.getLogger(AbstractService.class);
 	
@@ -49,7 +42,7 @@ public class Health extends AbstractService {
 	MyService myService;
 	
 	@Autowired
-	private ShopServiceDAO shopServiceDAO;
+	private SocialNetworkServiceDAO shopServiceDAO;
 	
 	@Value("${db.url}")
 	private String dbUrl;
@@ -85,16 +78,6 @@ public class Health extends AbstractService {
 		LOGGER.info("Testing throwing exception!");
 		throw new SODAPIException(511, "Expected Exception!");
 	}
-	
-	@POST
-	@Path("/secureIS")
-	@ApiOperation(value = "Test")
-	public GeneralResponseMessage secureMethodIS(InputStream is) throws SODAPIException{	
-		TestDto srm = getAuthObject(is, TestDto.class);
-		GeneralResponseMessage obj = new GeneralResponseMessage(GeneralResponseMessage.TYPE_SUCCES);
-		obj.setMessage(srm.getVal());
-		return obj;
-	}	
 	
 	@RolesAllowed("ADMIN")
 	@GET

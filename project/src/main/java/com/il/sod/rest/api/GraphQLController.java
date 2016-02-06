@@ -1,4 +1,4 @@
-package com.il.sod.rest.api.impl;
+package com.il.sod.rest.api;
 
 import java.io.InputStream;
 
@@ -18,7 +18,6 @@ import io.swagger.annotations.Api;
 
 @Component
 @Path("/graphql")
-@Api(value="graphql")
 public class GraphQLController {
 
     @PermitAll

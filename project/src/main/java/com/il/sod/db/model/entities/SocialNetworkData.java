@@ -1,13 +1,7 @@
 package com.il.sod.db.model.entities;
 
 import java.io.Serializable;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 
 
 /**
@@ -18,10 +12,10 @@ import javax.persistence.NamedQuery;
 @NamedQuery(name="SocialNetworkData.findAll", query="SELECT s FROM SocialNetworkData s")
 public class SocialNetworkData implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	private int idSocialNetworkData;
-	
+
 	@Lob
 	private String data;
 
@@ -31,6 +25,14 @@ public class SocialNetworkData implements Serializable {
 	private AccessKey accessKey;
 
 	public SocialNetworkData() {
+	}
+
+	public int getIdSocialNetworkData() {
+		return this.idSocialNetworkData;
+	}
+
+	public void setIdSocialNetworkData(int idSocialNetworkData) {
+		this.idSocialNetworkData = idSocialNetworkData;
 	}
 
 	public String getData() {
@@ -47,14 +49,6 @@ public class SocialNetworkData implements Serializable {
 
 	public void setAccessKey(AccessKey accessKey) {
 		this.accessKey = accessKey;
-	}
-
-	public int getIdSocialNetworkData() {
-		return idSocialNetworkData;
-	}
-
-	public void setIdSocialNetworkData(int idSocialNetworkData) {
-		this.idSocialNetworkData = idSocialNetworkData;
 	}
 
 }

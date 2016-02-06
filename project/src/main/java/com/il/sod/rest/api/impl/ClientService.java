@@ -1,9 +1,12 @@
 package com.il.sod.rest.api.impl;
 
 import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -25,15 +28,14 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @Component
+@RolesAllowed("ADMIN")
 @Path("/cleints")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value="clients", tags={"batch"})
+@Api(value="clients", tags={"clients"})
 public class ClientService extends AbstractService {
 	final static Logger LOGGER = LoggerFactory.getLogger(AbstractService.class);
 	
 	private IDAO<Client, Integer> genericDaoImpl;
-//	@Autowired
-//	ClientRepository clientRepository;
 	
 	@Autowired
 	public ClientService(ClientRepository clientRepository, IDAO<Client, Integer> genericDaoImpl){
@@ -41,25 +43,47 @@ public class ClientService extends AbstractService {
 		this.genericDaoImpl = genericDaoImpl;
 	}
 	
-	@RolesAllowed("ADMIN")
 	@POST
 	@ApiOperation(value = "Create Client", response=Client.class)
 	@ApiResponses(value = { 
 		@ApiResponse(code=400, message="Invalid input supplied"),
 		@ApiResponse(code=404, message="Info not found")})
 	public Response saveClient(Client entity) throws SODAPIException{
-		// validate client 
-//		genericDaoImpl.setRepository(clientRepository);
 		genericDaoImpl.create(entity);
-		return getEntityAsJSON(entity, Response.Status.CREATED);
+		return castEntityAsResponse(entity, Response.Status.CREATED);
+	}
+	
+	@PUT
+	@ApiOperation(value = "Update Client", response=Client.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code=400, message="Invalid input supplied"),
+			@ApiResponse(code=404, message="Info not found")})
+	public Response updateClient(Client entity) throws SODAPIException{
+		genericDaoImpl.update(entity);
+		return castEntityAsResponse(entity, Response.Status.CREATED);
+	}
+	
+	@DELETE
+	@ApiOperation(value = "Update Client", response=Client.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code=400, message="Invalid input supplied"),
+			@ApiResponse(code=404, message="Info not found")})
+	public Response deleteClient(Client entity) throws SODAPIException{
+		genericDaoImpl.delete(entity.getIdClient());
+		return castEntityAsResponse(entity, Response.Status.CREATED);
 	}	
 	
 	@GET
 	@ApiOperation(value = "Get Client list", response=Client.class, responseContainer = "List")
 	public Response getClientList() throws SODAPIException{	
-		return getEntityAsJSON(genericDaoImpl.findAll());
+		return castEntityAsResponse(genericDaoImpl.findAll());
 	}
 	
-	
+	@GET
+	@Path("/{clientId}")
+	@ApiOperation(value = "Get Client list", response=Client.class)
+	public Response getClient(@PathParam("clientId") String clientId) throws SODAPIException{	
+		return castEntityAsResponse(genericDaoImpl.findById(Integer.valueOf(clientId)));
+	}
 	
 }

@@ -7,8 +7,8 @@ import java.util.List;
 
 /**
  * The persistent class for the Clients database table.
+ * 
  */
-
 @Entity
 @Table(name="Clients")
 @NamedQuery(name="Client.findAll", query="SELECT c FROM Client c")
@@ -17,6 +17,8 @@ public class Client implements Serializable {
 
 	@Id
 	private int idClient;
+
+	private String email;
 
 	private String lasName;
 
@@ -27,8 +29,6 @@ public class Client implements Serializable {
 	private String phoneNumber;
 
 	private String twitter;
-
-	private String username;
 
 	//bi-directional many-to-one association to AccessKey
 	@OneToMany(mappedBy="client")
@@ -55,6 +55,14 @@ public class Client implements Serializable {
 
 	public void setIdClient(int idClient) {
 		this.idClient = idClient;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getLasName() {
@@ -95,14 +103,6 @@ public class Client implements Serializable {
 
 	public void setTwitter(String twitter) {
 		this.twitter = twitter;
-	}
-
-	public String getUsername() {
-		return this.username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 	public List<AccessKey> getAccessKeys() {

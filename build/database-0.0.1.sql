@@ -23,8 +23,8 @@ USE `sod_db` ;
 -- Table `sod_db`.`Clients`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`Clients` (
-  `idClient` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(100) NOT NULL,
+  `idClient` INT UNSIGNED NOT NULL,
+  `email` VARCHAR(100) NULL,
   `password` CHAR(128) NULL,
   `name` VARCHAR(250) NULL,
   `lasName` VARCHAR(250) NULL,
@@ -38,7 +38,7 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`SocialNetworks`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`SocialNetworks` (
-  `idSocialNetworks` INT NOT NULL AUTO_INCREMENT,
+  `idSocialNetworks` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `domain` VARCHAR(45) NULL,
   PRIMARY KEY (`idSocialNetworks`))
@@ -49,9 +49,9 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`AccessKey`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`AccessKey` (
-  `idAccessKey` INT NOT NULL AUTO_INCREMENT,
-  `idClient` INT NOT NULL,
-  `idSocialNetworks` INT NOT NULL,
+  `idAccessKey` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idClient` INT UNSIGNED NOT NULL,
+  `idSocialNetworks` INT UNSIGNED NOT NULL,
   `token` VARCHAR(100) NULL,
   `tokenSecre` VARCHAR(250) NULL,
   PRIMARY KEY (`idAccessKey`),
@@ -74,9 +74,11 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`SocialNetworkData`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`SocialNetworkData` (
+  `idSocialNetworkData` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `data` LONGTEXT NULL,
-  `idAccessKey` INT NOT NULL,
+  `idAccessKey` INT UNSIGNED NOT NULL,
   INDEX `fk_SocialNetworkData_AccessKey1_idx` (`idAccessKey` ASC),
+  PRIMARY KEY (`idSocialNetworkData`),
   CONSTRAINT `fk_SocialNetworkData_AccessKey1`
     FOREIGN KEY (`idAccessKey`)
     REFERENCES `sod_db`.`AccessKey` (`idAccessKey`)
@@ -89,8 +91,8 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`PhoneNumber`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`PhoneNumber` (
-  `idPhoneNumber` INT NOT NULL AUTO_INCREMENT,
-  `idClient` INT NOT NULL,
+  `idPhoneNumber` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idClient` INT UNSIGNED NOT NULL,
   `number` VARCHAR(45) NULL,
   PRIMARY KEY (`idPhoneNumber`),
   INDEX `fk_PhoneNumber_Clients1_idx` (`idClient` ASC),
@@ -106,8 +108,8 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`Address`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`Address` (
-  `idAddress` INT NOT NULL AUTO_INCREMENT,
-  `idClient` INT NOT NULL,
+  `idAddress` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idClient` INT UNSIGNED NOT NULL,
   `country` VARCHAR(45) NULL,
   `state` VARCHAR(45) NULL,
   `city` VARCHAR(45) NULL,
@@ -127,7 +129,7 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`TaskType`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`TaskType` (
-  `idTaskType` INT NOT NULL AUTO_INCREMENT,
+  `idTaskType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
   PRIMARY KEY (`idTaskType`))
@@ -138,7 +140,7 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`EmployeeType`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`EmployeeType` (
-  `idEmployeeType` INT NOT NULL AUTO_INCREMENT,
+  `idEmployeeType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
   PRIMARY KEY (`idEmployeeType`))
@@ -149,7 +151,7 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`AssetType`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`AssetType` (
-  `idAssetType` INT NOT NULL AUTO_INCREMENT,
+  `idAssetType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
   PRIMARY KEY (`idAssetType`))
@@ -160,7 +162,7 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`ProductType`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`ProductType` (
-  `idProductType` INT NOT NULL AUTO_INCREMENT,
+  `idProductType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
   PRIMARY KEY (`idProductType`))
@@ -171,8 +173,8 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`Task`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`Task` (
-  `idTask` INT NOT NULL AUTO_INCREMENT,
-  `idTaskType` INT NOT NULL,
+  `idTask` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idTaskType` INT UNSIGNED NOT NULL,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(45) NULL,
   PRIMARY KEY (`idTask`),
@@ -189,8 +191,8 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`Employee`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`Employee` (
-  `idEmployee` INT NOT NULL AUTO_INCREMENT,
-  `idEmployeeType` INT NOT NULL,
+  `idEmployee` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idEmployeeType` INT UNSIGNED NOT NULL,
   `status` INT NOT NULL DEFAULT 0,
   `name` VARCHAR(45) NULL,
   `lastname` VARCHAR(45) NULL,
@@ -210,8 +212,8 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`Asset`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`Asset` (
-  `idAsset` INT NOT NULL AUTO_INCREMENT,
-  `idAssetType` INT NOT NULL,
+  `idAsset` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idAssetType` INT UNSIGNED NOT NULL,
   `status` INT NOT NULL DEFAULT 0,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(250) NULL,
@@ -229,8 +231,8 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`Product`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`Product` (
-  `idProduct` INT NOT NULL AUTO_INCREMENT,
-  `idProductType` INT NOT NULL,
+  `idProduct` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idProductType` INT UNSIGNED NOT NULL,
   `status` INT NOT NULL DEFAULT 0,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(250) NULL,
@@ -249,7 +251,7 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`OrderTemplate`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTemplate` (
-  `idOrderTemplate` INT NOT NULL AUTO_INCREMENT,
+  `idOrderTemplate` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
   PRIMARY KEY (`idOrderTemplate`))
@@ -260,9 +262,9 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`OrderTemplateTasks`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTemplateTasks` (
-  `idOrderTemplateTasks` INT NOT NULL AUTO_INCREMENT,
-  `idOrderTemplate` INT NOT NULL,
-  `idTask` INT NOT NULL,
+  `idOrderTemplateTasks` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idOrderTemplate` INT UNSIGNED NOT NULL,
+  `idTask` INT UNSIGNED NOT NULL,
   `description` VARCHAR(45) NULL,
   `time` INT NULL,
   PRIMARY KEY (`idOrderTemplateTasks`),
@@ -285,9 +287,9 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`Order`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`Order` (
-  `idOrder` INT NOT NULL AUTO_INCREMENT,
-  `idClient` INT NOT NULL,
-  `idOrderTemplate` INT NOT NULL,
+  `idOrder` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idClient` INT UNSIGNED NOT NULL,
+  `idOrderTemplate` INT UNSIGNED NOT NULL,
   `idAddressPickup` INT NULL COMMENT 'Not froreing key ',
   `idAddressDeliver` INT NULL,
   `date` DATETIME NULL,
@@ -314,9 +316,9 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`OrderTask`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTask` (
-  `idOrderTask` INT NOT NULL AUTO_INCREMENT,
-  `idOrder` INT NOT NULL,
-  `idTask` INT NOT NULL,
+  `idOrderTask` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idOrder` INT UNSIGNED NOT NULL,
+  `idTask` INT UNSIGNED NOT NULL,
   `time` DATETIME NULL,
   `comments` VARCHAR(255) NULL,
   PRIMARY KEY (`idOrderTask`),
@@ -339,9 +341,9 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`AssetTaskOrder`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`AssetTaskOrder` (
-  `idAssetTaskOrder` INT NOT NULL AUTO_INCREMENT,
-  `idOrderTask` INT NOT NULL,
-  `Asset_idAsset` INT NOT NULL,
+  `idAssetTaskOrder` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idOrderTask` INT UNSIGNED NOT NULL,
+  `Asset_idAsset` INT UNSIGNED NOT NULL,
   `comments` VARCHAR(250) NULL,
   PRIMARY KEY (`idAssetTaskOrder`),
   INDEX `fk_AssetTaskOrder_Asset1_idx` (`Asset_idAsset` ASC),
@@ -363,9 +365,9 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`EmployeeTaskOrder`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`EmployeeTaskOrder` (
-  `idEmployeeTaskOrder` INT NOT NULL AUTO_INCREMENT,
-  `idOrderTask` INT NOT NULL,
-  `idEmployee` INT NOT NULL,
+  `idEmployeeTaskOrder` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idOrderTask` INT UNSIGNED NOT NULL,
+  `idEmployee` INT UNSIGNED NOT NULL,
   `comments` VARCHAR(250) NULL,
   PRIMARY KEY (`idEmployeeTaskOrder`),
   INDEX `fk_EmployeeTaskOrder_OrderTask1_idx` (`idOrderTask` ASC),
@@ -387,7 +389,7 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`ServiceType`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceType` (
-  `idServiceType` INT NOT NULL AUTO_INCREMENT,
+  `idServiceType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(250) NULL,
   `description` VARCHAR(250) NULL,
   `price` DOUBLE NULL,
@@ -400,8 +402,8 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`Specs`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`Specs` (
-  `idSpecs` INT NOT NULL,
-  `idProductType` INT NOT NULL,
+  `idSpecs` INT UNSIGNED NOT NULL,
+  `idProductType` INT UNSIGNED NOT NULL,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(45) NULL,
   PRIMARY KEY (`idSpecs`),
@@ -418,9 +420,9 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`ServiceTypeSpecs`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceTypeSpecs` (
-  `idServiceTypeSpecs` INT NOT NULL AUTO_INCREMENT,
-  `idServiceType` INT NOT NULL,
-  `idSpecs` INT NOT NULL,
+  `idServiceTypeSpecs` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idServiceType` INT UNSIGNED NOT NULL,
+  `idSpecs` INT UNSIGNED NOT NULL,
   `comments` VARCHAR(250) NULL,
   PRIMARY KEY (`idServiceTypeSpecs`),
   INDEX `fk_ServiceTypeSpecs_Specs1_idx` (`idSpecs` ASC),
@@ -442,9 +444,9 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`ServiceTypeTask`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceTypeTask` (
-  `idServiceTypeTask` INT NOT NULL AUTO_INCREMENT,
-  `idServiceType` INT NOT NULL,
-  `idTask` INT NOT NULL,
+  `idServiceTypeTask` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idServiceType` INT UNSIGNED NOT NULL,
+  `idTask` INT UNSIGNED NOT NULL,
   `comments` VARCHAR(250) NULL,
   PRIMARY KEY (`idServiceTypeTask`),
   INDEX `fk_ServiceTypeTask_Task1_idx` (`idTask` ASC),
@@ -466,8 +468,8 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`Service`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`Service` (
-  `idService` INT NOT NULL AUTO_INCREMENT,
-  `idServiceType` INT NOT NULL,
+  `idService` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idServiceType` INT UNSIGNED NOT NULL,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(250) NULL,
   `price` DOUBLE NULL,
@@ -486,9 +488,9 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`ServiceTask`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceTask` (
-  `idServiceTask` INT NOT NULL AUTO_INCREMENT,
-  `idService` INT NOT NULL,
-  `idTask` INT NOT NULL,
+  `idServiceTask` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idService` INT UNSIGNED NOT NULL,
+  `idTask` INT UNSIGNED NOT NULL,
   `comments` VARCHAR(250) NULL,
   PRIMARY KEY (`idServiceTask`),
   INDEX `fk_ServiceTask_Task1_idx` (`idTask` ASC),
@@ -510,9 +512,9 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`ServiceSpecs`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceSpecs` (
-  `idServiceTypeSpecs` INT NOT NULL AUTO_INCREMENT,
-  `idService` INT NOT NULL,
-  `idSpecs` INT NOT NULL,
+  `idServiceTypeSpecs` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idService` INT UNSIGNED NOT NULL,
+  `idSpecs` INT UNSIGNED NOT NULL,
   `comments` VARCHAR(250) NULL,
   PRIMARY KEY (`idServiceTypeSpecs`),
   INDEX `fk_ServiceSpecs_Specs1_idx` (`idSpecs` ASC),
@@ -534,9 +536,9 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`EmployeeTaskService`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`EmployeeTaskService` (
-  `idEmployeeTaskService` INT NOT NULL AUTO_INCREMENT,
-  `idEmployee` INT NOT NULL,
-  `idServiceTask` INT NOT NULL,
+  `idEmployeeTaskService` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idEmployee` INT UNSIGNED NOT NULL,
+  `idServiceTask` INT UNSIGNED NOT NULL,
   `comments` VARCHAR(250) NULL,
   PRIMARY KEY (`idEmployeeTaskService`),
   INDEX `fk_EmployeeTaskService_Employee1_idx` (`idEmployee` ASC),
@@ -558,9 +560,9 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`AssetTaskService`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`AssetTaskService` (
-  `idAssetTaskService` INT NOT NULL AUTO_INCREMENT,
-  `idAsset` INT NOT NULL,
-  `idServiceTask` INT NOT NULL,
+  `idAssetTaskService` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idAsset` INT UNSIGNED NOT NULL,
+  `idServiceTask` INT UNSIGNED NOT NULL,
   `comments` VARCHAR(250) NULL,
   PRIMARY KEY (`idAssetTaskService`),
   INDEX `fk_AssetTaskService_Asset1_idx` (`idAsset` ASC),

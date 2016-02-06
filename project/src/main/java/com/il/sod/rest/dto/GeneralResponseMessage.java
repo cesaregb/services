@@ -37,23 +37,25 @@ public class GeneralResponseMessage {
 		}
 	}
 	
-	
 	public String getCode() {
 		return code;
 	}
-	public void setCode(String code) {
+	public GeneralResponseMessage setCode(String code) {
 		this.code = code;
+		return this;
 	}
 	public String getMessage() {
 		return message;
 	}
-	public void setMessage(String message) {
+	public GeneralResponseMessage setMessage(String message) {
 		this.message = message;
+		return this;
 	}
 	public int getType() {
 		return type;
 	}
-	public void setType(int type) {
+	public GeneralResponseMessage setType(int type) {
 		this.type = type;
+		return this;
 	} 
 }

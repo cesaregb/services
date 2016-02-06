@@ -31,7 +31,7 @@ public class ClientDaoTest extends SpringTestConfiguration{
     
     public boolean create(){
     	Client entity = new Client();
-    	entity.setUsername("username");
+    	entity.setEmail("email");
     	entity.setName("name");
     	entity.setLasName("last name");
     	entity.setPhoneNumber("number");
