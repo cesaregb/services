@@ -2,6 +2,10 @@ package com.il.sod.rest.dto.db;
 
 import java.util.List;
 
+import com.il.sod.db.model.entities.AccessKey;
+import com.il.sod.db.model.entities.Address;
+import com.il.sod.db.model.entities.PhoneNumber;
+
 public class ClientDTO {
 	private int idClient;
 	private String email;
@@ -10,10 +14,12 @@ public class ClientDTO {
 	private String password;
 	private String phoneNumber;
 	private String twitter;
-	private List<AccessKeyDTO> accessKeys;
-	private List<AddressDTO> addresses;
-	private List<OrderDTO> orders;
-	private List<PhoneNumberDTO> phoneNumbers;
+	private List<Integer> orders;
+	private List<AccessKey> accessKeys;
+	private List<Address> addresses;
+	private List<PhoneNumber> phoneNumbers;
+	
+	
 	public int getIdClient() {
 		return idClient;
 	}
@@ -56,28 +62,28 @@ public class ClientDTO {
 	public void setTwitter(String twitter) {
 		this.twitter = twitter;
 	}
-	public List<AccessKeyDTO> getAccessKeys() {
-		return accessKeys;
-	}
-	public void setAccessKeys(List<AccessKeyDTO> accessKeys) {
-		this.accessKeys = accessKeys;
-	}
-	public List<AddressDTO> getAddresses() {
-		return addresses;
-	}
-	public void setAddresses(List<AddressDTO> addresses) {
-		this.addresses = addresses;
-	}
-	public List<OrderDTO> getOrders() {
+	public List<Integer> getOrders() {
 		return orders;
 	}
-	public void setOrders(List<OrderDTO> orders) {
+	public void setOrders(List<Integer> orders) {
 		this.orders = orders;
 	}
-	public List<PhoneNumberDTO> getPhoneNumbers() {
+	public List<AccessKey> getAccessKeys() {
+		return accessKeys;
+	}
+	public void setAccessKeys(List<AccessKey> accessKeys) {
+		this.accessKeys = accessKeys;
+	}
+	public List<Address> getAddresses() {
+		return addresses;
+	}
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
+	}
+	public List<PhoneNumber> getPhoneNumbers() {
 		return phoneNumbers;
 	}
-	public void setPhoneNumbers(List<PhoneNumberDTO> phoneNumbers) {
+	public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
 		this.phoneNumbers = phoneNumbers;
 	}
 

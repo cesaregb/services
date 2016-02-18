@@ -1,5 +1,7 @@
 package com.il.sod.rest.api.impl;
 
+import java.util.List;
+
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -11,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +23,10 @@ import com.il.sod.db.dao.IDAO;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.exception.SODAPIException;
+import com.il.sod.mapper.ClientMapper;
 import com.il.sod.rest.api.AbstractService;
+import com.il.sod.rest.dto.GeneralResponseMessage;
+import com.il.sod.rest.dto.db.ClientDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,30 +50,39 @@ public class ClientService extends AbstractService {
 	}
 	
 	@POST
-	@ApiOperation(value = "Create Client", response=Client.class)
-	@ApiResponses(value = { 
-		@ApiResponse(code=400, message="Invalid input supplied"),
-		@ApiResponse(code=404, message="Info not found")})
-	public Response saveClient(Client entity) throws SODAPIException{
-		genericDaoImpl.create(entity);
-		return castEntityAsResponse(entity, Response.Status.CREATED);
+	@ApiOperation(value = "Create Client", response=ClientDTO.class)
+	@ApiResponses(value = { @ApiResponse(code=400, message="4## errors: Invalid input supplied", response=GeneralResponseMessage.class), @ApiResponse(code=500, message="5## errors: Server error", response=GeneralResponseMessage.class)})
+	public Response saveClient(ClientDTO dto) throws SODAPIException{
+		try{
+			System.out.println("******************");
+			System.out.println("dto: " + castEntityAsString(dto));
+			LOGGER.debug("dto: " + castEntityAsString(dto));
+			ModelMapper modelMapper = new ModelMapper();
+			Client entity = modelMapper.map(dto, Client.class);
+			System.out.println("Entity: " + castEntityAsString(entity));
+			System.out.println("******************");
+			dto = ClientMapper.INSTANCE.getMapper().map(entity, ClientDTO.class);
+//			dto.setIdClient(entity.getIdClient());
+//			genericDaoImpl.create(entity);
+			return castEntityAsResponse(dto, Response.Status.CREATED);
+		}catch(Exception e){
+			System.out.println("*********Errorrrrrrrrrr!! ");
+			throw new SODAPIException(e);
+		}
+		
 	}
 	
 	@PUT
 	@ApiOperation(value = "Update Client", response=Client.class)
-	@ApiResponses(value = { 
-			@ApiResponse(code=400, message="Invalid input supplied"),
-			@ApiResponse(code=404, message="Info not found")})
+	@ApiResponses(value = { @ApiResponse(code=400, message="4## errors: Invalid input supplied", response=GeneralResponseMessage.class), @ApiResponse(code=500, message="5## errors: Server error", response=GeneralResponseMessage.class)})
 	public Response updateClient(Client entity) throws SODAPIException{
 		genericDaoImpl.update(entity);
 		return castEntityAsResponse(entity, Response.Status.CREATED);
 	}
 	
 	@DELETE
-	@ApiOperation(value = "Update Client", response=Client.class)
-	@ApiResponses(value = { 
-			@ApiResponse(code=400, message="Invalid input supplied"),
-			@ApiResponse(code=404, message="Info not found")})
+	@ApiOperation(value = "Delete Client", response=Client.class)
+	@ApiResponses(value = { @ApiResponse(code=400, message="4## errors: Invalid input supplied", response=GeneralResponseMessage.class), @ApiResponse(code=500, message="5## errors: Server error", response=GeneralResponseMessage.class)})
 	public Response deleteClient(Client entity) throws SODAPIException{
 		genericDaoImpl.delete(entity.getIdClient());
 		return castEntityAsResponse(entity, Response.Status.CREATED);
@@ -75,13 +90,17 @@ public class ClientService extends AbstractService {
 	
 	@GET
 	@ApiOperation(value = "Get Client list", response=Client.class, responseContainer = "List")
+	@ApiResponses(value = { @ApiResponse(code=400, message="4## errors: Invalid input supplied", response=GeneralResponseMessage.class), @ApiResponse(code=500, message="5## errors: Server error", response=GeneralResponseMessage.class)})
 	public Response getClientList() throws SODAPIException{	
-		return castEntityAsResponse(genericDaoImpl.findAll());
+		List<Client> r = genericDaoImpl.findAll();
+		System.out.println("======================");
+		return castEntityAsResponse(r);
 	}
 	
 	@GET
 	@Path("/{clientId}")
 	@ApiOperation(value = "Get Client list", response=Client.class)
+	@ApiResponses(value = { @ApiResponse(code=400, message="4## errors: Invalid input supplied", response=GeneralResponseMessage.class), @ApiResponse(code=500, message="5## errors: Server error", response=GeneralResponseMessage.class)})
 	public Response getClient(@PathParam("clientId") String clientId) throws SODAPIException{	
 		return castEntityAsResponse(genericDaoImpl.findById(Integer.valueOf(clientId)));
 	}

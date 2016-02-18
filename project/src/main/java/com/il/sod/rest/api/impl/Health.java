@@ -22,12 +22,14 @@ import com.il.sod.rest.api.AbstractService;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.services.MyService;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @Component
 @Path("/health")
+@Api(value="healt", tags={"healt"})
 @Produces(MediaType.APPLICATION_JSON)
 public class Health extends AbstractService {
 	final static Logger LOGGER = LoggerFactory.getLogger(AbstractService.class);
@@ -66,9 +68,7 @@ public class Health extends AbstractService {
 		LOGGER.info("shopServiceDAO: " + shopServiceDAO.findById(6) );
 		LOGGER.info("********************************");
 		
-		GeneralResponseMessage obj = new GeneralResponseMessage(GeneralResponseMessage.TYPE_SUCCES);
-		obj.setMessage(myService.getMyValue("from the resource: " + dbUrl));
-		return obj;
+		return GeneralResponseMessage.getInstance().setMessage("from the resource: " + dbUrl);
 	}	
 	
 	@GET
@@ -84,9 +84,6 @@ public class Health extends AbstractService {
 	@Path("/admin_service")
 	@ApiOperation(value = "Test")
 	public GeneralResponseMessage secureMethod() throws SODAPIException{	
-		GeneralResponseMessage obj = new GeneralResponseMessage(GeneralResponseMessage.TYPE_SUCCES);
-		obj.setMessage("Ok you are an admin!");
-		return obj;
+		return GeneralResponseMessage.getInstance().setMessage("ok your ar an admin!! good for you!!");
 	}	
-	
 }

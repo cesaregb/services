@@ -28,6 +28,7 @@ public class ApplicationConfig extends ResourceConfig {
         register(LoggingFilter.class);
         register(CORSResponseFilter.class);
         register(AuthenticationFilter.class);
+        register(CustomLoggingFilter.class);
     }
 	
 	/* Swagger configuratoin */

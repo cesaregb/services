@@ -15,6 +15,7 @@ public class TaskType implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idTaskType;
 
 	private String description;
@@ -22,7 +23,7 @@ public class TaskType implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to Task
-	@OneToMany(mappedBy="taskType")
+	@OneToMany(mappedBy="taskType", fetch=FetchType.EAGER)
 	private List<Task> tasks;
 
 	public TaskType() {

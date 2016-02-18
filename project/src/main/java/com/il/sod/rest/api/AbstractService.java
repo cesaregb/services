@@ -44,12 +44,20 @@ public abstract class AbstractService{
 		return Response.ok(writer.toString()).status(status).build();
 	}
 	
+	protected String castEntityAsString(Object entity) throws SODAPIException {
+		StringWriter writer = new StringWriter();
+		try {
+			mapper.writeValue(writer, entity);
+		} catch (Exception e) {
+			throw new SODAPIException(e);
+		}
+		return writer.toString();
+	}
+	
 	protected Response genericResponse(boolean flag, String message) throws SODAPIException {
 		StringWriter writer = new StringWriter();
 		try {
-			GeneralResponseMessage r = new GeneralResponseMessage();
-			r.setType((flag)?1:0 ).setMessage(message);
-			mapper.writeValue(writer, r);
+			mapper.writeValue(writer, GeneralResponseMessage.getInstance().setStatus(flag));
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

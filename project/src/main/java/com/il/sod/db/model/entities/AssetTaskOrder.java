@@ -14,6 +14,7 @@ public class AssetTaskOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idAssetTaskOrder;
 
 	private String comments;

@@ -15,6 +15,7 @@ public class AssetType implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idAssetType;
 
 	private String description;
@@ -22,7 +23,7 @@ public class AssetType implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to Asset
-	@OneToMany(mappedBy="assetType")
+	@OneToMany(mappedBy="assetType", fetch=FetchType.EAGER)
 	private List<Asset> assets;
 
 	public AssetType() {

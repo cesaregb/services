@@ -284,9 +284,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`Order`
+-- Table `sod_db`.`Orders`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sod_db`.`Order` (
+CREATE TABLE IF NOT EXISTS `sod_db`.`Orders` (
   `idOrder` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idClient` INT UNSIGNED NOT NULL,
   `idOrderTemplate` INT UNSIGNED NOT NULL,
@@ -331,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTask` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_OrderTask_Order1`
     FOREIGN KEY (`idOrder`)
-    REFERENCES `sod_db`.`Order` (`idOrder`)
+    REFERENCES `sod_db`.`Orders` (`idOrder`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

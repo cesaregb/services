@@ -16,6 +16,7 @@ public class SocialNetwork implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idSocialNetworks;
 
 	private String domain;
@@ -23,7 +24,7 @@ public class SocialNetwork implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to AccessKey
-	@OneToMany(mappedBy="socialNetwork")
+	@OneToMany(mappedBy="socialNetwork", fetch=FetchType.EAGER)
 	private List<AccessKey> accessKeys;
 
 	public SocialNetwork() {

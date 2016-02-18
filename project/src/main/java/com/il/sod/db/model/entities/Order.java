@@ -7,15 +7,17 @@ import java.util.List;
 
 
 /**
- * The persistent class for the Order database table.
+ * The persistent class for the Orders database table.
  * 
  */
 @Entity
+@Table(name="Orders")
 @NamedQuery(name="Order.findAll", query="SELECT o FROM Order o")
 public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idOrder;
 
 	private String comments;
@@ -31,6 +33,10 @@ public class Order implements Serializable {
 
 	private int status;
 
+	//bi-directional many-to-one association to OrderTask
+	@OneToMany(mappedBy="order", fetch=FetchType.EAGER)
+	private List<OrderTask> orderTasks;
+
 	//bi-directional many-to-one association to Client
 	@ManyToOne
 	@JoinColumn(name="idClient")
@@ -40,10 +46,6 @@ public class Order implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="idOrderTemplate")
 	private OrderTemplate orderTemplate;
-
-	//bi-directional many-to-one association to OrderTask
-	@OneToMany(mappedBy="order")
-	private List<OrderTask> orderTasks;
 
 	public Order() {
 	}
@@ -104,22 +106,6 @@ public class Order implements Serializable {
 		this.status = status;
 	}
 
-	public Client getClient() {
-		return this.client;
-	}
-
-	public void setClient(Client client) {
-		this.client = client;
-	}
-
-	public OrderTemplate getOrderTemplate() {
-		return this.orderTemplate;
-	}
-
-	public void setOrderTemplate(OrderTemplate orderTemplate) {
-		this.orderTemplate = orderTemplate;
-	}
-
 	public List<OrderTask> getOrderTasks() {
 		return this.orderTasks;
 	}
@@ -140,6 +126,22 @@ public class Order implements Serializable {
 		orderTask.setOrder(null);
 
 		return orderTask;
+	}
+
+	public Client getClient() {
+		return this.client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	public OrderTemplate getOrderTemplate() {
+		return this.orderTemplate;
+	}
+
+	public void setOrderTemplate(OrderTemplate orderTemplate) {
+		this.orderTemplate = orderTemplate;
 	}
 
 }

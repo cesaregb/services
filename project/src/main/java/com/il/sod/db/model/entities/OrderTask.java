@@ -16,6 +16,7 @@ public class OrderTask implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idOrderTask;
 
 	private String comments;
@@ -24,22 +25,22 @@ public class OrderTask implements Serializable {
 	private Date time;
 
 	//bi-directional many-to-one association to AssetTaskOrder
-	@OneToMany(mappedBy="orderTask")
+	@OneToMany(mappedBy="orderTask", fetch=FetchType.EAGER)
 	private List<AssetTaskOrder> assetTaskOrders;
 
 	//bi-directional many-to-one association to EmployeeTaskOrder
-	@OneToMany(mappedBy="orderTask")
+	@OneToMany(mappedBy="orderTask", fetch=FetchType.EAGER)
 	private List<EmployeeTaskOrder> employeeTaskOrders;
-
-	//bi-directional many-to-one association to Order
-	@ManyToOne
-	@JoinColumn(name="idOrder")
-	private Order order;
 
 	//bi-directional many-to-one association to Task
 	@ManyToOne
 	@JoinColumn(name="idTask")
 	private Task task;
+
+	//bi-directional many-to-one association to Order
+	@ManyToOne
+	@JoinColumn(name="idOrder")
+	private Order order;
 
 	public OrderTask() {
 	}
@@ -112,20 +113,20 @@ public class OrderTask implements Serializable {
 		return employeeTaskOrder;
 	}
 
-	public Order getOrder() {
-		return this.order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
-	}
-
 	public Task getTask() {
 		return this.task;
 	}
 
 	public void setTask(Task task) {
 		this.task = task;
+	}
+
+	public Order getOrder() {
+		return this.order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 }

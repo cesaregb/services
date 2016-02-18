@@ -15,6 +15,7 @@ public class ProductType implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idProductType;
 
 	private String description;
@@ -22,11 +23,11 @@ public class ProductType implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to Product
-	@OneToMany(mappedBy="productType")
+	@OneToMany(mappedBy="productType", fetch=FetchType.EAGER)
 	private List<Product> products;
 
 	//bi-directional many-to-one association to Spec
-	@OneToMany(mappedBy="productType")
+	@OneToMany(mappedBy="productType", fetch=FetchType.EAGER)
 	private List<Spec> specs;
 
 	public ProductType() {

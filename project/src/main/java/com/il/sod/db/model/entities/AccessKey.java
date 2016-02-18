@@ -15,6 +15,7 @@ public class AccessKey implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idAccessKey;
 
 	private String token;
@@ -32,7 +33,7 @@ public class AccessKey implements Serializable {
 	private SocialNetwork socialNetwork;
 
 	//bi-directional many-to-one association to SocialNetworkData
-	@OneToMany(mappedBy="accessKey")
+	@OneToMany(mappedBy="accessKey", fetch=FetchType.EAGER)
 	private List<SocialNetworkData> socialNetworkData;
 
 	public AccessKey() {

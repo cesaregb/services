@@ -14,7 +14,6 @@
 		<java.version>1.8</java.version>
 		<slf4j.version>1.7.13</slf4j.version>
 		<logback.version>1.0.1</logback.version>
-		<jackson.version>2.5.0</jackson.version>
 		<spring.data>1.9.2.RELEASE</spring.data>
 		<spring.version>4.2.4.RELEASE</spring.version>
 		<mysql.version>5.1.30</mysql.version>
@@ -152,7 +151,7 @@
 		   <groupId>mysql</groupId>
 		   <artifactId>mysql-connector-java</artifactId>
 		   <version>${mysql.version}</version>
-		   <scope>runtime</scope>
+		   <!-- <scope>runtime</scope> -->
 		</dependency>
 		<!-- General libraries  -->
 		<dependency>
@@ -221,6 +220,12 @@
 			<artifactId>mongodb-driver</artifactId>
 			<version>3.2.0</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>0.7.5</version>
+		</dependency>
     </dependencies>
     
     <build>
@@ -242,7 +247,7 @@
 				</configuration>
 			</plugin>
 			
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version>
@@ -280,10 +285,15 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin> -->
+
+			<!-- mvn clean compile exec:java -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+        		<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jetty.version}</version>
 			</plugin>
-			
-			
-			<!-- <plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.1</version>
@@ -297,38 +307,7 @@
 				<configuration>
 					<mainClass>com.il.sod.config.App</mainClass>
 				</configuration>
-			</plugin> -->
-			<!-- <plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.1.1</version>
-				<configuration>
-					<imageName>sod-service</imageName>
-					<imageTags>
-						<imageTag>${project.version}</imageTag>
-					</imageTags>
-					<baseImage>java:8-jre</baseImage>
-					<entryPoint>["java", "-jar", "/${project.build.finalName}-${version}.jar"]</entryPoint>
-					<exposes>
-						<expose>8080</expose>
-					</exposes>
-					<resources>
-						<resource>
-							<targetPath>/</targetPath>
-							<directory>${project.build.directory}</directory>
-							<include>${project.build.finalName}.jar</include>
-						</resource>
-					</resources>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>build</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin> -->
+			</plugin>
 			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>

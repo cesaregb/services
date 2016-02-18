@@ -37,27 +37,25 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 
 	@Override
 	public void filter(ContainerRequestContext requestContext)  {
+		String reqMethod = requestContext.getMethod();
 		Method method = resourceInfo.getResourceMethod();
 		
 		LOGGER.info("***** AuthenticationFilter");
 		String myMethod = requestContext.getUriInfo().getPath();
-		System.out.println("method: " + method.getName() + " -- " + method.getClass().getName() + " -- " + myMethod);
+		LOGGER.info("method: " + method.getName() + " -- " + myMethod + " -- " + reqMethod);
 		// Access allowed for all
-		if (!method.isAnnotationPresent(PermitAll.class) 
-				&& !myMethod.toLowerCase().equals("swagger.json")) {
-			
+		if (! method.isAnnotationPresent(PermitAll.class) 
+				&& ! myMethod.toLowerCase().equals("swagger.json") && !reqMethod.toUpperCase().equals("OPTIONS")) {
 			// Access denied for all
 			if (method.isAnnotationPresent(DenyAll.class)) {
 				requestContext.abortWith(getAccessUnauthorizedResponse());
 				return;
 			}
-
 			// Get request headers
 			final MultivaluedMap<String, String> headers = requestContext.getHeaders();
-
 			// Fetch authorization header
 			final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
-
+			
 			// If no authorization information present; block access
 			if (authorization == null || authorization.isEmpty()) {
 				requestContext.abortWith(getAccessDeniedResponse());
@@ -66,7 +64,7 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 
 			// Get encoded username and password
 			final String encodedUserPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
-
+			
 			// Decode username and password
 			String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));
 
@@ -76,8 +74,10 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 			final String password = tokenizer.nextToken();
 
 			// Verifying Username and password
+			System.out.println("***********************");
 			System.out.println("username: " + username);
 			System.out.println("password: " + password);
+			System.out.println("***********************");
 
 			// Verify user access
 			if (method.isAnnotationPresent(RolesAllowed.class)) {
@@ -106,26 +106,17 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 	}
 	
 	public static Response getAccessDeniedResponse() {
-		GeneralResponseMessage ms = new GeneralResponseMessage();
-		ms.setMessage("Access not granthed");
-		ms.setCode(GeneralResponseMessage.GENERIC_MESSAGE_ERROR);
-		
 		return Response.
-				status(Response.Status.FORBIDDEN).
-				entity(ms).
+				status(Response.Status.UNAUTHORIZED).
+				entity(GeneralResponseMessage.getInstance().error().setMessage("Access not granthed")).
 				type(MediaType.APPLICATION_JSON).
 				build();
 	}
 	public static Response getAccessUnauthorizedResponse() {
-		GeneralResponseMessage ms = new GeneralResponseMessage();
-		ms.setMessage("Access not granthed");
-		ms.setCode(GeneralResponseMessage.GENERIC_MESSAGE_ERROR);
-		
 		return Response.
 				status(Response.Status.UNAUTHORIZED).
-				entity("You cannot access this resource").
+				entity(GeneralResponseMessage.getInstance().error().setMessage("Access not granthed")).
 				type(MediaType.APPLICATION_JSON).
 				build();
 	}
-	
 }

@@ -16,6 +16,7 @@ public class Client implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idClient;
 
 	private String email;
@@ -31,20 +32,20 @@ public class Client implements Serializable {
 	private String twitter;
 
 	//bi-directional many-to-one association to AccessKey
-	@OneToMany(mappedBy="client")
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	private List<AccessKey> accessKeys;
 
 	//bi-directional many-to-one association to Address
-	@OneToMany(mappedBy="client")
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	private List<Address> addresses;
 
-	//bi-directional many-to-one association to Order
-	@OneToMany(mappedBy="client")
-	private List<Order> orders;
-
 	//bi-directional many-to-one association to PhoneNumber
-	@OneToMany(mappedBy="client")
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	private List<PhoneNumber> phoneNumbers;
+
+	//bi-directional many-to-one association to Order
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	private List<Order> orders;
 
 	public Client() {
 	}
@@ -149,28 +150,6 @@ public class Client implements Serializable {
 		return address;
 	}
 
-	public List<Order> getOrders() {
-		return this.orders;
-	}
-
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
-	}
-
-	public Order addOrder(Order order) {
-		getOrders().add(order);
-		order.setClient(this);
-
-		return order;
-	}
-
-	public Order removeOrder(Order order) {
-		getOrders().remove(order);
-		order.setClient(null);
-
-		return order;
-	}
-
 	public List<PhoneNumber> getPhoneNumbers() {
 		return this.phoneNumbers;
 	}
@@ -191,6 +170,28 @@ public class Client implements Serializable {
 		phoneNumber.setClient(null);
 
 		return phoneNumber;
+	}
+
+	public List<Order> getOrders() {
+		return this.orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+	public Order addOrder(Order order) {
+		getOrders().add(order);
+		order.setClient(this);
+
+		return order;
+	}
+
+	public Order removeOrder(Order order) {
+		getOrders().remove(order);
+		order.setClient(null);
+
+		return order;
 	}
 
 }

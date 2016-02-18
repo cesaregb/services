@@ -15,6 +15,7 @@ public class Task implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idTask;
 
 	private String description;
@@ -22,19 +23,19 @@ public class Task implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to OrderTask
-	@OneToMany(mappedBy="task")
+	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
 	private List<OrderTask> orderTasks;
 
 	//bi-directional many-to-one association to OrderTemplateTask
-	@OneToMany(mappedBy="task")
+	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
 	private List<OrderTemplateTask> orderTemplateTasks;
 
 	//bi-directional many-to-one association to ServiceTask
-	@OneToMany(mappedBy="task")
+	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
 	private List<ServiceTask> serviceTasks;
 
 	//bi-directional many-to-one association to ServiceTypeTask
-	@OneToMany(mappedBy="task")
+	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
 	private List<ServiceTypeTask> serviceTypeTasks;
 
 	//bi-directional many-to-one association to TaskType

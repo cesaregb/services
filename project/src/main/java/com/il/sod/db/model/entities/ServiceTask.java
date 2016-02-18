@@ -15,16 +15,17 @@ public class ServiceTask implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idServiceTask;
 
 	private String comments;
 
 	//bi-directional many-to-one association to AssetTaskService
-	@OneToMany(mappedBy="serviceTask")
+	@OneToMany(mappedBy="serviceTask", fetch=FetchType.EAGER)
 	private List<AssetTaskService> assetTaskServices;
 
 	//bi-directional many-to-one association to EmployeeTaskService
-	@OneToMany(mappedBy="serviceTask")
+	@OneToMany(mappedBy="serviceTask", fetch=FetchType.EAGER)
 	private List<EmployeeTaskService> employeeTaskServices;
 
 	//bi-directional many-to-one association to Service

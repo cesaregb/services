@@ -16,6 +16,7 @@ public class Spec implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idSpecs;
 
 	private String description;
@@ -23,11 +24,11 @@ public class Spec implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to ServiceSpec
-	@OneToMany(mappedBy="spec")
+	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER)
 	private List<ServiceSpec> serviceSpecs;
 
 	//bi-directional many-to-one association to ServiceTypeSpec
-	@OneToMany(mappedBy="spec")
+	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER)
 	private List<ServiceTypeSpec> serviceTypeSpecs;
 
 	//bi-directional many-to-one association to ProductType

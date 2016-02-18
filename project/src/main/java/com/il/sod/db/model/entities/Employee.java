@@ -15,6 +15,7 @@ public class Employee implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idEmployee;
 
 	private String lastname;
@@ -34,11 +35,11 @@ public class Employee implements Serializable {
 	private EmployeeType employeeType;
 
 	//bi-directional many-to-one association to EmployeeTaskOrder
-	@OneToMany(mappedBy="employee")
+	@OneToMany(mappedBy="employee", fetch=FetchType.EAGER)
 	private List<EmployeeTaskOrder> employeeTaskOrders;
 
 	//bi-directional many-to-one association to EmployeeTaskService
-	@OneToMany(mappedBy="employee")
+	@OneToMany(mappedBy="employee", fetch=FetchType.EAGER)
 	private List<EmployeeTaskService> employeeTaskServices;
 
 	public Employee() {

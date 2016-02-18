@@ -16,23 +16,23 @@ import com.mongodb.util.JSON;
 import graphql.GraphQL;
 import io.swagger.annotations.Api;
 
-@Component
-@Path("/graphql")
+//@Component
+//@Path("/graphql")
 public class GraphQLController {
 
-    @PermitAll
-	@POST
-    public Response executeOperation(InputStream body) {
-    	GraphQL graphql = new GraphQL(TodoSchema.schema);
-    	String requestBody = convertStreamToString(body);
-        return Response.ok(JSON.serialize( graphql.execute(requestBody).getData() ))
-        		.status(200).type(MediaType.APPLICATION_JSON).build();
-    }
-
-    
-    static String convertStreamToString(java.io.InputStream is) {
-        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
-    }
+//    @PermitAll
+//	@POST
+//    public Response executeOperation(InputStream body) {
+//    	GraphQL graphql = new GraphQL(TodoSchema.schema);
+//    	String requestBody = convertStreamToString(body);
+//        return Response.ok(JSON.serialize( graphql.execute(requestBody).getData() ))
+//        		.status(200).type(MediaType.APPLICATION_JSON).build();
+//    }
+//
+//    
+//    static String convertStreamToString(java.io.InputStream is) {
+//        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+//        return s.hasNext() ? s.next() : "";
+//    }
 
 }

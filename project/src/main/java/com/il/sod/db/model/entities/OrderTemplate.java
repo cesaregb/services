@@ -15,19 +15,20 @@ public class OrderTemplate implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idOrderTemplate;
 
 	private String description;
 
 	private String name;
 
-	//bi-directional many-to-one association to Order
-	@OneToMany(mappedBy="orderTemplate")
-	private List<Order> orders;
-
 	//bi-directional many-to-one association to OrderTemplateTask
-	@OneToMany(mappedBy="orderTemplate")
+	@OneToMany(mappedBy="orderTemplate", fetch=FetchType.EAGER)
 	private List<OrderTemplateTask> orderTemplateTasks;
+
+	//bi-directional many-to-one association to Order
+	@OneToMany(mappedBy="orderTemplate", fetch=FetchType.EAGER)
+	private List<Order> orders;
 
 	public OrderTemplate() {
 	}
@@ -56,28 +57,6 @@ public class OrderTemplate implements Serializable {
 		this.name = name;
 	}
 
-	public List<Order> getOrders() {
-		return this.orders;
-	}
-
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
-	}
-
-	public Order addOrder(Order order) {
-		getOrders().add(order);
-		order.setOrderTemplate(this);
-
-		return order;
-	}
-
-	public Order removeOrder(Order order) {
-		getOrders().remove(order);
-		order.setOrderTemplate(null);
-
-		return order;
-	}
-
 	public List<OrderTemplateTask> getOrderTemplateTasks() {
 		return this.orderTemplateTasks;
 	}
@@ -98,6 +77,28 @@ public class OrderTemplate implements Serializable {
 		orderTemplateTask.setOrderTemplate(null);
 
 		return orderTemplateTask;
+	}
+
+	public List<Order> getOrders() {
+		return this.orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+	public Order addOrder(Order order) {
+		getOrders().add(order);
+		order.setOrderTemplate(this);
+
+		return order;
+	}
+
+	public Order removeOrder(Order order) {
+		getOrders().remove(order);
+		order.setOrderTemplate(null);
+
+		return order;
 	}
 
 }
