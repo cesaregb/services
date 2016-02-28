@@ -1,17 +1,23 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 
 /**
  * The persistent class for the OrderTemplateTasks database table.
- * 
+ *
  */
 @Entity
 @Table(name="OrderTemplateTasks")
 @NamedQuery(name="OrderTemplateTask.findAll", query="SELECT o FROM OrderTemplateTask o")
-public class OrderTemplateTask implements Serializable {
+public class OrderTemplateTask implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -74,5 +80,14 @@ public class OrderTemplateTask implements Serializable {
 	public void setTask(Task task) {
 		this.task = task;
 	}
+	@Override
+	public Integer getId() {
+		return this.idOrderTemplateTasks;
+	}
 
+	@Override
+	public OrderTemplateTask setId(Integer id) {
+		this.idOrderTemplateTasks = id;
+		return this;
+	}
 }

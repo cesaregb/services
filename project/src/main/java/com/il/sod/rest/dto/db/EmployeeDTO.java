@@ -1,6 +1,6 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class EmployeeDTO {
 	private int idEmployee;
@@ -9,9 +9,8 @@ public class EmployeeDTO {
 	private String password;
 	private int status;
 	private String username;
-	private EmployeeTypeDTO employeeType;
-	private List<EmployeeTaskOrderDTO> employeeTaskOrders;
-	private List<EmployeeTaskServiceDTO> employeeTaskServices;
+	private int employeeTypeId;
+	
 	public int getIdEmployee() {
 		return idEmployee;
 	}
@@ -48,23 +47,19 @@ public class EmployeeDTO {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public EmployeeTypeDTO getEmployeeType() {
-		return employeeType;
+	public int getEmployeeTypeId() {
+		return employeeTypeId;
 	}
-	public void setEmployeeType(EmployeeTypeDTO employeeType) {
-		this.employeeType = employeeType;
+	public void setEmployeeTypeId(int employeeTypeId) {
+		this.employeeTypeId = employeeTypeId;
 	}
-	public List<EmployeeTaskOrderDTO> getEmployeeTaskOrders() {
-		return employeeTaskOrders;
+	
+	public EmployeeDTO setId(int id){
+		this.idEmployee = id;
+		return this;
 	}
-	public void setEmployeeTaskOrders(List<EmployeeTaskOrderDTO> employeeTaskOrders) {
-		this.employeeTaskOrders = employeeTaskOrders;
+	@JsonIgnore
+	public Integer getId(){
+		return this.idEmployee;
 	}
-	public List<EmployeeTaskServiceDTO> getEmployeeTaskServices() {
-		return employeeTaskServices;
-	}
-	public void setEmployeeTaskServices(List<EmployeeTaskServiceDTO> employeeTaskServices) {
-		this.employeeTaskServices = employeeTaskServices;
-	}
-
 }

@@ -1,17 +1,23 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 
 /**
  * The persistent class for the AssetType database table.
- * 
+ *
  */
 @Entity
 @NamedQuery(name="AssetType.findAll", query="SELECT a FROM AssetType a")
-public class AssetType implements Serializable {
+public class AssetType implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -74,5 +80,14 @@ public class AssetType implements Serializable {
 
 		return asset;
 	}
+	@Override
+	public Integer getId() {
+		return this.idAssetType;
+	}
 
+	@Override
+	public AssetType setId(Integer id) {
+		this.idAssetType = id;
+		return this;
+	}
 }

@@ -2,18 +2,26 @@ package com.il.sod.rest.api;
 
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.text.SimpleDateFormat;
+import java.util.List;
 
+import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.il.sod.config.JacksonObjectMapperProvider;
+import com.il.sod.db.dao.IDAO;
 import com.il.sod.exception.SODAPIException;
+import com.il.sod.mapper.BaseMapper;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.util.RestUtil;
 
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
+import ma.glasnost.orika.MapperFacade;
 
 @SwaggerDefinition(
     tags = {
@@ -21,13 +29,18 @@ import io.swagger.annotations.Tag;
 		@Tag(name = "health", description = "Validate API + MODEL Healt")
     }
 )
+@Path("/v1")
 public abstract class AbstractService{
 	
 	protected ObjectMapper mapper;
-
+	
+	protected MapperFacade converter = BaseMapper.MAPPER_FACTORY.getMapperFacade();
+	
+	@Autowired
+	protected IDAO genericDaoImpl;
+	
 	protected AbstractService() {
-		mapper = new ObjectMapper();
-		mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+		mapper = JacksonObjectMapperProvider.MAPPER;
 	}
 	
 	protected Response castEntityAsResponse(Object entity) throws SODAPIException {
@@ -93,5 +106,23 @@ public abstract class AbstractService{
 		} catch (Exception e) {
 			throw new SODAPIException(403,"No valid authentication", e);
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected <T> T getEntity(JpaRepository<T, Integer> repository, Integer id){	
+		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
+		gDao.setRepository(repository);
+		return gDao.findById(id);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected <T> List<T> getEntityList(JpaRepository<T, Integer> repository){	
+		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
+		gDao.setRepository(repository);
+		return gDao.findAll();
+	}
+
+	public IDAO getGenericDaoImpl() {
+		return genericDaoImpl;
 	}
 }

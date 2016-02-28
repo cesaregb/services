@@ -2,11 +2,16 @@ package com.il.sod.rest.dto.db;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class TaskTypeDTO {
 	private int idTaskType;
 	private String description;
 	private String name;
 	private List<TaskDTO> tasks;
+	
 	public int getIdTaskType() {
 		return idTaskType;
 	}

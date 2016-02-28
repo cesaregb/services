@@ -1,48 +1,50 @@
 package com.il.sod.mapper;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
-
 import com.il.sod.db.model.entities.Client;
+import com.il.sod.db.model.entities.Order;
 import com.il.sod.rest.dto.db.ClientDTO;
 
-public enum ClientMapper {
-	
-	INSTANCE;
-	
-	ModelMapper mm = new ModelMapper();
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.converter.BidirectionalConverter;
+import ma.glasnost.orika.converter.ConverterFactory;
+import ma.glasnost.orika.metadata.Type;
 
-	private ClientMapper(){
-		setDTOMapper();
+public enum ClientMapper {
+
+	INSTANCE;
+	private final MapperFacade mapperFacade;
+
+	private ClientMapper() {
+		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
+		converterFactory.registerConverter("orderListConverter", new OrderListConverter());
+
+		BaseMapper.MAPPER_FACTORY.classMap(ClientDTO.class, Client.class)
+			.fieldMap("orders", "orders").converter("orderListConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.byDefault()
+			.register();
+		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
 	}
-	
-	public void setDTOMapper(){
-		PropertyMap<Client, ClientDTO> map2DtoMapper = new PropertyMap<Client, ClientDTO>() {
-			protected void configure() {
-//				if (source.getOrders()!=null)
-					map().setOrders(source.getOrders().stream().map(p -> p.getIdOrder())
-							.collect(Collectors.toList()));
-					
-				if (source.getAddresses() != null && source.getAddresses().size() > 0)
-					map().setPhoneNumber(source.getAddresses().get(0).toString());
-				
-				map().setPhoneNumber("this is the phone number -- yeyyyy!!! ");
-			}
-		};
-		mm.addMappings(map2DtoMapper);
+
+	public Client map(ClientDTO dto) {
+		return this.mapperFacade.map(dto, Client.class);
 	}
-	
-	public ModelMapper getMapper(){
-		return mm;
+
+	public ClientDTO map(Client entity) {
+		return this.mapperFacade.map(entity, ClientDTO.class);
 	}
-	
-	/* 
-	 * example of simple usage
-	 * 
-	 * ModelMapper modelMapper = new ModelMapper();
-	 * OrderDTO dto = modelMapper.map(order, OrderDTO.class);
-	 * 
-	 * */ 
+}
+
+class OrderListConverter extends BidirectionalConverter<List<Order>, List<Integer>> {
+	@Override
+	public List<Order> convertFrom(List<Integer> source, Type<List<Order>> destT) {
+		return source.stream().map(p -> (new Order()).setIdOrder(p)).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Integer> convertTo(List<Order> source, Type<List<Integer>> destT) {
+		return source.stream().map(p -> p.getIdOrder()).collect(Collectors.toList());
+	}
 }

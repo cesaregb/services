@@ -1,17 +1,25 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 
 /**
  * The persistent class for the AccessKey database table.
- * 
+ *
  */
 @Entity
 @NamedQuery(name="AccessKey.findAll", query="SELECT a FROM AccessKey a")
-public class AccessKey implements Serializable {
+public class AccessKey implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -101,4 +109,14 @@ public class AccessKey implements Serializable {
 		return socialNetworkData;
 	}
 
+	@Override
+	public Integer getId() {
+		return this.idAccessKey;
+	}
+
+	@Override
+	public AccessKey setId(Integer id) {
+		this.idAccessKey = id;
+		return this;
+	}
 }

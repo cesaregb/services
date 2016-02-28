@@ -1,16 +1,11 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.List;
-
 public class TaskDTO {
 	private int idTask;
 	private String description;
 	private String name;
-	private List<OrderTaskDTO> orderTasks;
-	private List<OrderTemplateTaskDTO> orderTemplateTasks;
-	private List<ServiceTaskDTO> serviceTasks;
-	private List<ServiceTypeTaskDTO> serviceTypeTasks;
-	private TaskTypeDTO taskType;
+	private Integer taskTypeId;
+	
 	public int getIdTask() {
 		return idTask;
 	}
@@ -29,34 +24,18 @@ public class TaskDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<OrderTaskDTO> getOrderTasks() {
-		return orderTasks;
+	public Integer getTaskTypeId() {
+		return taskTypeId;
 	}
-	public void setOrderTasks(List<OrderTaskDTO> orderTasks) {
-		this.orderTasks = orderTasks;
+	public void setTaskTypeId(Integer taskTypeId) {
+		this.taskTypeId = taskTypeId;
 	}
-	public List<OrderTemplateTaskDTO> getOrderTemplateTasks() {
-		return orderTemplateTasks;
+	
+	public TaskDTO setId(int id){
+		this.idTask = id;
+		return this;
 	}
-	public void setOrderTemplateTasks(List<OrderTemplateTaskDTO> orderTemplateTasks) {
-		this.orderTemplateTasks = orderTemplateTasks;
-	}
-	public List<ServiceTaskDTO> getServiceTasks() {
-		return serviceTasks;
-	}
-	public void setServiceTasks(List<ServiceTaskDTO> serviceTasks) {
-		this.serviceTasks = serviceTasks;
-	}
-	public List<ServiceTypeTaskDTO> getServiceTypeTasks() {
-		return serviceTypeTasks;
-	}
-	public void setServiceTypeTasks(List<ServiceTypeTaskDTO> serviceTypeTasks) {
-		this.serviceTypeTasks = serviceTypeTasks;
-	}
-	public TaskTypeDTO getTaskType() {
-		return taskType;
-	}
-	public void setTaskType(TaskTypeDTO taskType) {
-		this.taskType = taskType;
+	public Integer getId(){
+		return this.idTask;
 	}
 }

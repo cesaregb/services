@@ -1,16 +1,21 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 
 /**
  * The persistent class for the PhoneNumber database table.
- * 
+ *
  */
 @Entity
 @NamedQuery(name="PhoneNumber.findAll", query="SELECT p FROM PhoneNumber p")
-public class PhoneNumber implements Serializable {
+public class PhoneNumber implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -50,5 +55,14 @@ public class PhoneNumber implements Serializable {
 	public void setClient(Client client) {
 		this.client = client;
 	}
+	@Override
+	public Integer getId() {
+		return this.idPhoneNumber;
+	}
 
+	@Override
+	public PhoneNumber setId(Integer id) {
+		this.idPhoneNumber = id;
+		return this;
+	}
 }

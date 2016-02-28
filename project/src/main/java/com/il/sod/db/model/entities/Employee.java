@@ -1,17 +1,26 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 
 /**
  * The persistent class for the Employee database table.
- * 
+ *
  */
 @Entity
 @NamedQuery(name="Employee.findAll", query="SELECT e FROM Employee e")
-public class Employee implements Serializable {
+public class Employee implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -144,5 +153,14 @@ public class Employee implements Serializable {
 
 		return employeeTaskService;
 	}
+	@Override
+	public Integer getId() {
+		return this.idEmployee;
+	}
 
+	@Override
+	public Employee setId(Integer id) {
+		this.idEmployee = id;
+		return this;
+	}
 }

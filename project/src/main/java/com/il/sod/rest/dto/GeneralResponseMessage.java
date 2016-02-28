@@ -8,16 +8,14 @@ public class GeneralResponseMessage {
 	private String message; 
 	private boolean status;
 	
-	protected GeneralResponseMessage(){}
+	private static class Holder {
+        static final GeneralResponseMessage INSTANCE = new GeneralResponseMessage();
+    }
 	
-	private static GeneralResponseMessage instance = null;
-	
+	private GeneralResponseMessage(){}
 	
 	public static GeneralResponseMessage getInstance() {
-		if (instance == null) {
-			instance = new GeneralResponseMessage();
-		}
-		return instance.success();
+		return Holder.INSTANCE.success();
 	}
 	
 	public GeneralResponseMessage success(){

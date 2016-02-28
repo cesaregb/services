@@ -1,5 +1,7 @@
 package com.il.sod.rest.api.impl;
 
+import java.io.InputStream;
+
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
@@ -20,16 +22,16 @@ import com.il.sod.db.dao.SocialNetworkServiceDAO;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractService;
 import com.il.sod.rest.dto.GeneralResponseMessage;
+import com.il.sod.rest.dto.TestDto;
 import com.il.sod.services.MyService;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @Component
 @Path("/health")
-@Api(value="healt", tags={"healt"})
+//@Api(value="healt", tags={"healt"})
 @Produces(MediaType.APPLICATION_JSON)
 public class Health extends AbstractService {
 	final static Logger LOGGER = LoggerFactory.getLogger(AbstractService.class);
@@ -83,7 +85,8 @@ public class Health extends AbstractService {
 	@GET
 	@Path("/admin_service")
 	@ApiOperation(value = "Test")
-	public GeneralResponseMessage secureMethod() throws SODAPIException{	
-		return GeneralResponseMessage.getInstance().setMessage("ok your ar an admin!! good for you!!");
+	public GeneralResponseMessage secureMethod(InputStream is) throws SODAPIException{
+		TestDto tst = this.getJsonISAsObject(is, TestDto.class);
+		return GeneralResponseMessage.getInstance().setMessage("ok your ar an admin!! good for you!! " + tst.getVal());
 	}	
 }

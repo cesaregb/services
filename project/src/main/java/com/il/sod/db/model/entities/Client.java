@@ -1,18 +1,28 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 /**
  * The persistent class for the Clients database table.
- * 
+ *
  */
 @Entity
 @Table(name="Clients")
 @NamedQuery(name="Client.findAll", query="SELECT c FROM Client c")
-public class Client implements Serializable {
+public class Client implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -36,10 +46,12 @@ public class Client implements Serializable {
 	private List<AccessKey> accessKeys;
 
 	//bi-directional many-to-one association to Address
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference
 	private List<Address> addresses;
 
 	//bi-directional many-to-one association to PhoneNumber
+//	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	private List<PhoneNumber> phoneNumbers;
 
@@ -193,5 +205,14 @@ public class Client implements Serializable {
 
 		return order;
 	}
+	@Override
+	public Integer getId() {
+		return this.idClient;
+	}
 
+	@Override
+	public Client setId(Integer id) {
+		this.idClient = id;
+		return this;
+	}
 }

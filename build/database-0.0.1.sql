@@ -23,7 +23,7 @@ USE `sod_db` ;
 -- Table `sod_db`.`Clients`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`Clients` (
-  `idClient` INT UNSIGNED NOT NULL,
+  `idClient` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(100) NULL,
   `password` CHAR(128) NULL,
   `name` VARCHAR(250) NULL,
