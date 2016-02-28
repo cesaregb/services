@@ -32,11 +32,11 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/task-type")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/task-type", tags = { "task" })
+@Api(value = "/task-type", tags = { "generic" })
 public class TaskTypeService extends AbstractServiceMutations {
 	@Autowired
 	TaskTypeRepository taskTypeRepository;
-	
+
 	@PUT
 	@ApiOperation(value = "Create Task Type", response = TaskTypeDTO.class)
 	@ApiResponses(value = {
@@ -52,7 +52,7 @@ public class TaskTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@POST
 	@ApiOperation(value = "Update Task Type", response = TaskTypeDTO.class)
 	@ApiResponses(value = {
@@ -68,7 +68,7 @@ public class TaskTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@DELETE
 	@ApiOperation(value = "Create Task Type", response = TaskTypeDTO.class)
 	@ApiResponses(value = {

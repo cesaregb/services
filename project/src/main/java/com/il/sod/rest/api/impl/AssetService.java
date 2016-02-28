@@ -34,14 +34,14 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/asset")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/asset", tags = { "asset" })
+@Api(value = "/asset", tags = { "generic" })
 public class AssetService extends AbstractServiceMutations {
 	@Autowired
 	AssetRepository assetRepository;
-	
+
 	@Autowired
 	AssetTypeRepository assetTypeRepository;
-	
+
 	@PUT
 	@ApiOperation(value = "Create Asset", response = AssetDTO.class)
 	@ApiResponses(value = {
@@ -81,7 +81,7 @@ public class AssetService extends AbstractServiceMutations {
 //		return tt;
 //	}
 
-	
+
 	@DELETE
 	@ApiOperation(value = "Create Asset", response = AssetDTO.class)
 	@ApiResponses(value = {
@@ -98,7 +98,7 @@ public class AssetService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@GET
 	@ApiOperation(value = "Get Asset list", response = AssetDTO.class, responseContainer = "List")
 	@ApiResponses(value = {
@@ -112,5 +112,5 @@ public class AssetService extends AbstractServiceMutations {
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
-	
+
 }

@@ -1,0 +1,5 @@
+# DB 
+Amazon 
+	sod_user/Welcome1
+	db_name: sod_db
+	

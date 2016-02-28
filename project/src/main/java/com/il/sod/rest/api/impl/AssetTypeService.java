@@ -32,11 +32,11 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/asset-type")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/asset-type", tags = { "asset" })
+@Api(value = "/asset-type", tags = { "generic" })
 public class AssetTypeService extends AbstractServiceMutations {
 	@Autowired
 	AssetTypeRepository assetTypeRepository;
-	
+
 	@PUT
 	@ApiOperation(value = "Create Asset Type", response = AssetTypeDTO.class)
 	@ApiResponses(value = {
@@ -52,7 +52,7 @@ public class AssetTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@POST
 	@ApiOperation(value = "Update Asset Type", response = AssetTypeDTO.class)
 	@ApiResponses(value = {
@@ -68,7 +68,7 @@ public class AssetTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@DELETE
 	@ApiOperation(value = "Create Asset Type", response = AssetTypeDTO.class)
 	@ApiResponses(value = {

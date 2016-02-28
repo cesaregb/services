@@ -34,14 +34,14 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/product")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/product", tags = { "product" })
+@Api(value = "/product", tags = { "generic" })
 public class ProductService extends AbstractServiceMutations {
 	@Autowired
 	ProductRepository productRepository;
-	
+
 	@Autowired
 	ProductTypeRepository productTypeRepository;
-	
+
 	@PUT
 	@ApiOperation(value = "Create Product", response = ProductDTO.class)
 	@ApiResponses(value = {
@@ -81,7 +81,7 @@ public class ProductService extends AbstractServiceMutations {
 //		return tt;
 //	}
 
-	
+
 	@DELETE
 	@ApiOperation(value = "Create Product", response = ProductDTO.class)
 	@ApiResponses(value = {
@@ -98,7 +98,7 @@ public class ProductService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@GET
 	@ApiOperation(value = "Get Product list", response = ProductDTO.class, responseContainer = "List")
 	@ApiResponses(value = {
@@ -112,5 +112,5 @@ public class ProductService extends AbstractServiceMutations {
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
-	
+
 }

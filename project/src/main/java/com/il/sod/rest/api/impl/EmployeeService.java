@@ -33,11 +33,11 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/employee")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/employee", tags = { "employee" })
+@Api(value = "/employee", tags = { "generic" })
 public class EmployeeService extends AbstractServiceMutations {
 	@Autowired
 	EmployeeRepository employeeRepository;
-	
+
 	@PUT
 	@ApiOperation(value = "Create Employee", response = EmployeeDTO.class)
 	@ApiResponses(value = {
@@ -86,7 +86,7 @@ public class EmployeeService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@GET
 	@ApiOperation(value = "Get Employee list", response = EmployeeDTO.class, responseContainer = "List")
 	@ApiResponses(value = {
@@ -100,6 +100,6 @@ public class EmployeeService extends AbstractServiceMutations {
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
-	
-	
+
+
 }

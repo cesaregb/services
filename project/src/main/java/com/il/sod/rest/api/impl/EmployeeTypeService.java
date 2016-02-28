@@ -32,11 +32,11 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/employee-type")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/employee-type", tags = { "employee" })
+@Api(value = "/employee-type", tags = { "generic" })
 public class EmployeeTypeService extends AbstractServiceMutations {
 	@Autowired
 	EmployeeTypeRepository employeeTypeRepository;
-	
+
 	@PUT
 	@ApiOperation(value = "Create Employee Type", response = EmployeeTypeDTO.class)
 	@ApiResponses(value = {
@@ -52,7 +52,7 @@ public class EmployeeTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@POST
 	@ApiOperation(value = "Update Employee Type", response = EmployeeTypeDTO.class)
 	@ApiResponses(value = {
@@ -68,7 +68,7 @@ public class EmployeeTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@DELETE
 	@ApiOperation(value = "Create Employee Type", response = EmployeeTypeDTO.class)
 	@ApiResponses(value = {

@@ -32,12 +32,12 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/spec")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/spec", tags = { "spec" })
+@Api(value = "/spec", tags = { "generic" })
 public class SpecService extends AbstractServiceMutations {
 	@Autowired
 	SpecRepository specRepository;
-	
-	
+
+
 	@PUT
 	@ApiOperation(value = "Create Spec", response = SpecDTO.class)
 	@ApiResponses(value = {
@@ -69,7 +69,7 @@ public class SpecService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@DELETE
 	@ApiOperation(value = "Create Spec", response = SpecDTO.class)
 	@ApiResponses(value = {
@@ -86,7 +86,7 @@ public class SpecService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@GET
 	@ApiOperation(value = "Get Spec list", response = SpecDTO.class, responseContainer = "List")
 	@ApiResponses(value = {
@@ -100,5 +100,5 @@ public class SpecService extends AbstractServiceMutations {
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
-	
+
 }

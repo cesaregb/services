@@ -34,14 +34,14 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/task")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/task", tags = { "task" })
+@Api(value = "/task", tags = { "generic" })
 public class TaskService extends AbstractServiceMutations {
 	@Autowired
 	TaskRepository taskRepository;
-	
+
 	@Autowired
 	TaskTypeRepository taskTypeRepository;
-	
+
 	@PUT
 	@ApiOperation(value = "Create Task", response = TaskDTO.class)
 	@ApiResponses(value = {
@@ -81,7 +81,7 @@ public class TaskService extends AbstractServiceMutations {
 //		return tt;
 //	}
 
-	
+
 	@DELETE
 	@ApiOperation(value = "Create Task", response = TaskDTO.class)
 	@ApiResponses(value = {
@@ -98,7 +98,7 @@ public class TaskService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@GET
 	@ApiOperation(value = "Get Task list", response = TaskDTO.class, responseContainer = "List")
 	@ApiResponses(value = {
@@ -112,5 +112,5 @@ public class TaskService extends AbstractServiceMutations {
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
-	
+
 }
