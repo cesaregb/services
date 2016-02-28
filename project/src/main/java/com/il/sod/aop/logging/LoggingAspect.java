@@ -30,7 +30,7 @@ public class LoggingAspect {
 				e.getCause());
 	}
 
-	@After("execution(* com.il.sod.rest.api.impl.Health.*(..))")
+	@After("execution(* com.il.sod.rest.api.Health.*(..))")
 	public void log(JoinPoint point) {
 		LOGGER.info("====>" + point.getSignature().getName() + " called...");
 	}

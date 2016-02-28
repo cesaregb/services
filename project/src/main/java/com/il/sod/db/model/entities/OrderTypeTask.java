@@ -11,42 +11,42 @@ import javax.persistence.Table;
 
 
 /**
- * The persistent class for the OrderTemplateTasks database table.
+ * The persistent class for the OrderTypeTasks database table.
  *
  */
 @Entity
-@Table(name="OrderTemplateTasks")
-@NamedQuery(name="OrderTemplateTask.findAll", query="SELECT o FROM OrderTemplateTask o")
-public class OrderTemplateTask implements IEntity<Integer> {
+@Table(name="OrderTypeTasks")
+@NamedQuery(name="OrderTypeTask.findAll", query="SELECT o FROM OrderTypeTask o")
+public class OrderTypeTask implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idOrderTemplateTasks;
+	private int idOrderTypeTasks;
 
 	private String description;
 
 	private int time;
 
-	//bi-directional many-to-one association to OrderTemplate
+	//bi-directional many-to-one association to OrderType
 	@ManyToOne
-	@JoinColumn(name="idOrderTemplate")
-	private OrderTemplate orderTemplate;
+	@JoinColumn(name="idOrderType")
+	private OrderType orderType;
 
 	//bi-directional many-to-one association to Task
 	@ManyToOne
 	@JoinColumn(name="idTask")
 	private Task task;
 
-	public OrderTemplateTask() {
+	public OrderTypeTask() {
 	}
 
-	public int getIdOrderTemplateTasks() {
-		return this.idOrderTemplateTasks;
+	public int getIdOrderTypeTasks() {
+		return this.idOrderTypeTasks;
 	}
 
-	public void setIdOrderTemplateTasks(int idOrderTemplateTasks) {
-		this.idOrderTemplateTasks = idOrderTemplateTasks;
+	public void setIdOrderTypeTasks(int idOrderTypeTasks) {
+		this.idOrderTypeTasks = idOrderTypeTasks;
 	}
 
 	public String getDescription() {
@@ -65,12 +65,12 @@ public class OrderTemplateTask implements IEntity<Integer> {
 		this.time = time;
 	}
 
-	public OrderTemplate getOrderTemplate() {
-		return this.orderTemplate;
+	public OrderType getOrderType() {
+		return this.orderType;
 	}
 
-	public void setOrderTemplate(OrderTemplate orderTemplate) {
-		this.orderTemplate = orderTemplate;
+	public void setOrderType(OrderType orderType) {
+		this.orderType = orderType;
 	}
 
 	public Task getTask() {
@@ -82,12 +82,12 @@ public class OrderTemplateTask implements IEntity<Integer> {
 	}
 	@Override
 	public Integer getId() {
-		return this.idOrderTemplateTasks;
+		return this.idOrderTypeTasks;
 	}
 
 	@Override
-	public OrderTemplateTask setId(Integer id) {
-		this.idOrderTemplateTasks = id;
+	public OrderTypeTask setId(Integer id) {
+		this.idOrderTypeTasks = id;
 		return this;
 	}
 }

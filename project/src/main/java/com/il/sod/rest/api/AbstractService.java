@@ -25,7 +25,10 @@ import ma.glasnost.orika.MapperFacade;
 
 @SwaggerDefinition(
     tags = {
-        @Tag(name = "clients", description = "Methods related to clients"),
+        @Tag(name = "clients", description = "Client services"),
+        @Tag(name = "employee", description = "Employee Services"),
+        @Tag(name = "task", description = "Tasks Services"),
+        @Tag(name = "task", description = "Tasks Services"),
 		@Tag(name = "health", description = "Validate API + MODEL Healt")
     }
 )

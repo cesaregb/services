@@ -53,10 +53,10 @@ public class Order implements IEntity<Integer> {
 	@JoinColumn(name="idClient")
 	private Client client;
 
-	//bi-directional many-to-one association to OrderTemplate
+	//bi-directional many-to-one association to OrderType
 	@ManyToOne
-	@JoinColumn(name="idOrderTemplate")
-	private OrderTemplate orderTemplate;
+	@JoinColumn(name="idOrderType")
+	private OrderType orderType;
 
 	public Order() {
 	}
@@ -148,12 +148,12 @@ public class Order implements IEntity<Integer> {
 		this.client = client;
 	}
 
-	public OrderTemplate getOrderTemplate() {
-		return this.orderTemplate;
+	public OrderType getOrderType() {
+		return this.orderType;
 	}
 
-	public void setOrderTemplate(OrderTemplate orderTemplate) {
-		this.orderTemplate = orderTemplate;
+	public void setOrderType(OrderType orderType) {
+		this.orderType = orderType;
 	}
 	@Override
 	public Integer getId() {

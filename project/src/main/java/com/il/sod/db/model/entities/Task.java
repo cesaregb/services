@@ -36,7 +36,7 @@ public class Task implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to OrderTemplateTask
 	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
-	private List<OrderTemplateTask> orderTemplateTasks;
+	private List<OrderTypeTask> orderTemplateTasks;
 
 	//bi-directional many-to-one association to ServiceTask
 	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
@@ -100,22 +100,22 @@ public class Task implements IEntity<Integer> {
 		return orderTask;
 	}
 
-	public List<OrderTemplateTask> getOrderTemplateTasks() {
+	public List<OrderTypeTask> getOrderTemplateTasks() {
 		return this.orderTemplateTasks;
 	}
 
-	public void setOrderTemplateTasks(List<OrderTemplateTask> orderTemplateTasks) {
+	public void setOrderTemplateTasks(List<OrderTypeTask> orderTemplateTasks) {
 		this.orderTemplateTasks = orderTemplateTasks;
 	}
 
-	public OrderTemplateTask addOrderTemplateTask(OrderTemplateTask orderTemplateTask) {
+	public OrderTypeTask addOrderTemplateTask(OrderTypeTask orderTemplateTask) {
 		getOrderTemplateTasks().add(orderTemplateTask);
 		orderTemplateTask.setTask(this);
 
 		return orderTemplateTask;
 	}
 
-	public OrderTemplateTask removeOrderTemplateTask(OrderTemplateTask orderTemplateTask) {
+	public OrderTypeTask removeOrderTemplateTask(OrderTypeTask orderTemplateTask) {
 		getOrderTemplateTasks().remove(orderTemplateTask);
 		orderTemplateTask.setTask(null);
 

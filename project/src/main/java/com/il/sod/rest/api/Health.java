@@ -1,4 +1,4 @@
-package com.il.sod.rest.api.impl;
+package com.il.sod.rest.api;
 
 import java.io.InputStream;
 
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 
 import com.il.sod.db.dao.SocialNetworkServiceDAO;
 import com.il.sod.exception.SODAPIException;
-import com.il.sod.rest.api.AbstractService;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.TestDto;
 import com.il.sod.services.MyService;

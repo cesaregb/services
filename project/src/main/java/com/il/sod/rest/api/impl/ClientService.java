@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiResponses;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/cleints")
+@Path("/clients")
 @Produces(MediaType.APPLICATION_JSON)
 @Api(value="clients", tags={"clients"})
 public class ClientService extends AbstractServiceMutations {

@@ -16,12 +16,12 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.il.sod.db.model.entities.EmployeeType;
-import com.il.sod.db.model.repositories.EmployeeTypeRepository;
+import com.il.sod.db.model.entities.Spec;
+import com.il.sod.db.model.repositories.SpecRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
-import com.il.sod.rest.dto.db.EmployeeTypeDTO;
+import com.il.sod.rest.dto.db.SpecDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,39 +30,40 @@ import io.swagger.annotations.ApiResponses;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/employee-type")
+@Path("/spec")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/employee-type", tags = { "employee" })
-public class EmployeeTypeService extends AbstractServiceMutations {
+@Api(value = "/spec", tags = { "spec" })
+public class SpecService extends AbstractServiceMutations {
 	@Autowired
-	EmployeeTypeRepository employeeTypeRepository;
+	SpecRepository specRepository;
+	
 	
 	@PUT
-	@ApiOperation(value = "Create Employee Type", response = EmployeeTypeDTO.class)
+	@ApiOperation(value = "Create Spec", response = SpecDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response saveEmployeeType(EmployeeTypeDTO dto) throws SODAPIException {
+	public Response saveSpec(SpecDTO dto) throws SODAPIException {
 		try {
-			EmployeeType entity = converter.map(dto, EmployeeType.class);
-			this.saveEntity(employeeTypeRepository, entity);
-			dto = converter.map(entity, EmployeeTypeDTO.class);
+			Spec entity = converter.map(dto, Spec.class);
+			this.saveEntity(specRepository, entity);
+			dto = converter.map(entity, SpecDTO.class);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@POST
-	@ApiOperation(value = "Update Employee Type", response = EmployeeTypeDTO.class)
+	@ApiOperation(value = "Update Spec", response = SpecDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateEmployeeType(EmployeeTypeDTO dto) throws SODAPIException {
+	public Response updateSpec(SpecDTO dto) throws SODAPIException {
 		try {
-			EmployeeType entity = converter.map(dto, EmployeeType.class);
-			this.updateEntity(employeeTypeRepository, entity);
-			dto = converter.map(entity, EmployeeTypeDTO.class);
+			Spec entity = converter.map(dto, Spec.class);
+			this.updateEntity(specRepository, entity);
+			dto = converter.map(entity, SpecDTO.class);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
@@ -70,34 +71,34 @@ public class EmployeeTypeService extends AbstractServiceMutations {
 	}
 	
 	@DELETE
-	@ApiOperation(value = "Create Employee Type", response = EmployeeTypeDTO.class)
+	@ApiOperation(value = "Create Spec", response = SpecDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteEmployeeType(EmployeeTypeDTO dto) throws SODAPIException {
+	public Response deleteSpec(SpecDTO dto) throws SODAPIException {
 		try {
-			EmployeeType entity = converter.map(dto, EmployeeType.class);
-			this.deleteEntity(employeeTypeRepository, entity.getIdEmployeeType());
+			Spec entity = converter.map(dto, Spec.class);
+			this.deleteEntity(specRepository, entity.getIdSpecs());
 			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Employee deleted"),
+					GeneralResponseMessage.getInstance().success().setMessage("Spec deleted"),
 					Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}
 	}
-
+	
 	@GET
-	@ApiOperation(value = "Get Employee Type list", response = EmployeeTypeDTO.class, responseContainer = "List")
+	@ApiOperation(value = "Get Spec list", response = SpecDTO.class, responseContainer = "List")
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response getEmployeeTypeList() throws SODAPIException {
-		List<EmployeeType> rentityList = this.getEntityList(employeeTypeRepository);
-		List<EmployeeTypeDTO> list = rentityList.stream().map((i) -> {
-			EmployeeTypeDTO dto = converter.map(i, EmployeeTypeDTO.class);
+	public Response getSpecList() throws SODAPIException {
+		List<Spec> entityList = this.getEntityList(specRepository);
+		List<SpecDTO> list = entityList.stream().map((i) -> {
+			SpecDTO dto = converter.map(i, SpecDTO.class);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
-
+	
 }

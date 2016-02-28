@@ -2,17 +2,17 @@ package com.il.sod.rest.dto.db;
 
 import java.util.List;
 
-public class OrderTemplateDTO {
-	private int idOrderTemplate;
+public class OrderTypeDTO {
+	private int idOrderType;
 	private String description;
 	private String name;
 	private List<OrderDTO> orders;
-	private List<OrderTemplateTaskDTO> orderTemplateTasks;
-	public int getIdOrderTemplate() {
-		return idOrderTemplate;
+	private List<OrderTypeTaskDTO> orderTypeTasks;
+	public int getIdOrderType() {
+		return idOrderType;
 	}
-	public void setIdOrderTemplate(int idOrderTemplate) {
-		this.idOrderTemplate = idOrderTemplate;
+	public void setIdOrderType(int idOrderType) {
+		this.idOrderType = idOrderType;
 	}
 	public String getDescription() {
 		return description;
@@ -32,11 +32,11 @@ public class OrderTemplateDTO {
 	public void setOrders(List<OrderDTO> orders) {
 		this.orders = orders;
 	}
-	public List<OrderTemplateTaskDTO> getOrderTemplateTasks() {
-		return orderTemplateTasks;
+	public List<OrderTypeTaskDTO> getOrderTypeTasks() {
+		return orderTypeTasks;
 	}
-	public void setOrderTemplateTasks(List<OrderTemplateTaskDTO> orderTemplateTasks) {
-		this.orderTemplateTasks = orderTemplateTasks;
+	public void setOrderTypeTasks(List<OrderTypeTaskDTO> orderTypeTasks) {
+		this.orderTypeTasks = orderTypeTasks;
 	}
 
 }

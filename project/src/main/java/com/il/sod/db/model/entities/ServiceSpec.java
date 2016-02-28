@@ -22,7 +22,7 @@ public class ServiceSpec implements IEntity<Integer> {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idServiceTypeSpecs;
+	private int idServiceSpecs;
 
 	private String comments;
 
@@ -39,12 +39,12 @@ public class ServiceSpec implements IEntity<Integer> {
 	public ServiceSpec() {
 	}
 
-	public int getIdServiceTypeSpecs() {
-		return this.idServiceTypeSpecs;
+	public int getIdServiceSpecs() {
+		return this.idServiceSpecs;
 	}
 
-	public void setIdServiceTypeSpecs(int idServiceTypeSpecs) {
-		this.idServiceTypeSpecs = idServiceTypeSpecs;
+	public void setIdServiceSpecs(int idServiceSpecs) {
+		this.idServiceSpecs = idServiceSpecs;
 	}
 
 	public String getComments() {
@@ -72,12 +72,12 @@ public class ServiceSpec implements IEntity<Integer> {
 	}
 	@Override
 	public Integer getId() {
-		return this.idServiceTypeSpecs;
+		return this.idServiceSpecs;
 	}
 
 	@Override
 	public ServiceSpec setId(Integer id) {
-		this.idServiceTypeSpecs = id;
+		this.idServiceSpecs = id;
 		return this;
 	}
 }
