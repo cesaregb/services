@@ -15,10 +15,7 @@ RUN yum -y upgrade
 RUN yum -y install wget
 #RUN apt-get update
 
-RUN yum -y install git
-RUN yum -y install curl
-RUN yum -y install unzip
-RUN yum -y install tar
+RUN yum -y install git curl unzip tar
 
 # Downloading Java
 RUN wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/$JAVA_VERSION-$BUILD_VERSION/jdk-$JAVA_VERSION-linux-x64.rpm" -O /tmp/jdk-8-linux-x64.rpm
@@ -73,4 +70,5 @@ WORKDIR ${MODULE_SOURCE}/project
 RUN mvn clean install package
 
 #When this image is run as a container, start the jetty server. It will be listening on the ${REGISTRATION_API_PORT}
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "target/sod_project-1.0.jar"]
+# ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "target/sod_project-1.0.jar"]
+ENTRYPOINT ["mvn", "clean", "compile", "-Dspring.profiles.active=dev", "exec:java"]

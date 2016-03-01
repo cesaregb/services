@@ -277,7 +277,7 @@
 					<target>${java.version}</target>
 				</configuration>
 			</plugin>
-			
+			<!-- This plung generates the jar 2 way -->
 			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -285,6 +285,10 @@
 				<configuration>
 					<finalName>sod_project</finalName>
 					<archive>
+						<manifestEntries>
+		                    <Permissions>all-permissions</Permissions>
+		                    <Codebase>*</Codebase>
+		                </manifestEntries>
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<mainClass>com.il.sod.config.App</mainClass>
@@ -313,10 +317,30 @@
 									<mainClass>com.il.sod.config.App</mainClass>
 								</manifest>
 							</archive>
+							<archiverConfig>
+								<fileMode>420</fileMode> 420(dec) = 644(oct)
+						        <directoryMode>493</directoryMode> 493(dec) = 755(oct)
+						        <defaultDirectoryMode>493</defaultDirectoryMode>
+							</archiverConfig>
+							
+							<fileSets>
+								<fileSet>
+									<directory>src/main/webapp</directory>
+									<outputDirectory>/</outputDirectory>
+									<includes>
+										<include>**</include>
+									</includes>
+									<useDefaultExcludes>true</useDefaultExcludes>
+									<fileMode>0755</fileMode>
+									<directoryMode>0755</directoryMode>
+								</fileSet>
+							</fileSets>
+							
 						</configuration>
 					</execution>
 				</executions>
-			</plugin> -->
+			</plugin>  -->
+			<!-- This plung generates the jar 2 way -->
 
 			<!-- mvn clean compile exec:java -->
 			<plugin>
@@ -339,6 +363,9 @@
 					<mainClass>com.il.sod.config.App</mainClass>
 				</configuration>
 			</plugin>
+			<!-- end mvn clean compile exec:java -->
+			
+			<!-- This plung generates the jar 1 way -->
 			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -387,8 +414,9 @@
 					</execution>
 				</executions>
 			</plugin> -->
+			<!-- end This plung generates the jar 1 way -->
+			
 		</plugins>
-		
  		<resources>
 			<resource>
 				<directory>src/main/resources</directory>

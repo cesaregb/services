@@ -1,8 +1,11 @@
+# NOT WORKING!!!! 
+# This is dockerfile uses the existing jar that has to be in ./project/target/sod_project-1.0.jar
 # To build:
-# docker build -t sod-service:v1 -f docker/Dockerfile.app .
+# docker build -t sod-service:v1 -f docker/Dockerfile_jar.app .
 #
 # To run:
 # docker run -p 8080:8080 -it sod-service:v1
+# docker run -p 8080:8080 -it --entrypoint bash sod-service:v1
 FROM centos:6
 MAINTAINER cesareg.borjon@gmail.com
 
@@ -15,10 +18,7 @@ RUN yum -y upgrade
 RUN yum -y install wget
 #RUN apt-get update
 
-RUN yum -y install git
-RUN yum -y install curl
-RUN yum -y install unzip
-RUN yum -y install tar
+RUN yum -y install git curl zip unzip tar
 
 # Downloading Java
 RUN wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/$JAVA_VERSION-$BUILD_VERSION/jdk-$JAVA_VERSION-linux-x64.rpm" -O /tmp/jdk-8-linux-x64.rpm
@@ -46,21 +46,24 @@ RUN cd /usr && tar --strip-components 1 -xzf /tmp/node-v0.12.3-linux-x64.tar.gz
 #User IL = Interactive labs
 ENV BASE_USER il
 ENV USER_HOME /home/$BASE_USER
+
 # Create our user
 RUN useradd $BASE_USER
+
 #make the base_user the owner of all its HOME files, including the .ssh and DOCENG_BASE_SRC dirs
 RUN chown -R $BASE_USER:$BASE_USER $USER_HOME
+
 
 #docker project file specific
 EXPOSE 8080
 #microservice name
 ENV MODULE services
+ENV JAR_NAME=sod_project-1.0.jar
 ENV MODULE_SOURCE ${USER_HOME}/${MODULE}
 # add in the source files
 RUN mkdir -p ${MODULE_SOURCE}
-WORKDIR ${MODULE_SOURCE}
-
-RUN git clone --branch $GIT_BRANCH --depth 1 alm:/doceng_selfpublish/${MODULE}.git ${MODULE_SOURCE}
+ENV JAR_DIR=${MODULE_SOURCE}/${JAR_NAME}
+ADD project/target/${JAR_NAME} ${JAR_DIR}
 
 # make doceng the owner of all the source files, so when mvn clean install package runs it can create the target/classes dir
 RUN chown -R ${BASE_USER}:${BASE_USER} ${MODULE_SOURCE}
@@ -68,8 +71,8 @@ RUN chown -R ${BASE_USER}:${BASE_USER} ${MODULE_SOURCE}
 USER $BASE_USER
 
 # Build the registration services now
-WORKDIR ${MODULE_SOURCE}/project
-RUN mvn clean install package
+WORKDIR ${MODULE_SOURCE}
+# RUN mvn clean install package
 
 #When this image is run as a container, start the jetty server. It will be listening on the ${REGISTRATION_API_PORT}
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=docker", "target/sod_project-1.0.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "sod_project-1.0.jar"]
