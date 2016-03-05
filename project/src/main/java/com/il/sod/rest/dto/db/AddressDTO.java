@@ -7,7 +7,7 @@ public class AddressDTO {
 	private String city;
 	private String country;
 	private String state;
-	private ClientDTO client;
+	private int idClient;
 	public int getIdAddress() {
 		return idAddress;
 	}
@@ -44,11 +44,10 @@ public class AddressDTO {
 	public void setState(String state) {
 		this.state = state;
 	}
-	public ClientDTO getClient() {
-		return client;
+	public int getIdClient() {
+		return idClient;
 	}
-	public void setClient(ClientDTO client) {
-		this.client = client;
+	public void setIdClient(int idClient) {
+		this.idClient = idClient;
 	}
-
 }

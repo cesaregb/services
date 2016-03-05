@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/access-key")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/access-key", tags = { "clients" })
+// @Api(value = "/access-key", tags = { "clients" })
 public class AccessKeyService extends AbstractServiceMutations {
 	@Autowired
 	AccessKeyRepository accessKeyRepository;

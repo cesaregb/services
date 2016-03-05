@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/social-network-data")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/social-network-data", tags = { "clients" })
+// @Api(value = "/social-network-data", tags = { "clients" })
 public class SocialNetworkDataService extends AbstractServiceMutations {
 	@Autowired
 	SocialNetworkDataRepository socialNetworkDataRepository;

@@ -6,7 +6,7 @@ public class AccessKeyDTO {
 	private int idAccessKey;
 	private String token;
 	private String tokenSecre;
-	private ClientDTO client;
+	private int clientId;
 	private SocialNetworkDTO socialNetwork;
 	private List<SocialNetworkDataDTO> socialNetworkData;
 	
@@ -28,12 +28,6 @@ public class AccessKeyDTO {
 	public void setTokenSecre(String tokenSecre) {
 		this.tokenSecre = tokenSecre;
 	}
-	public ClientDTO getClient() {
-		return client;
-	}
-	public void setClient(ClientDTO client) {
-		this.client = client;
-	}
 	public SocialNetworkDTO getSocialNetwork() {
 		return socialNetwork;
 	}
@@ -45,6 +39,12 @@ public class AccessKeyDTO {
 	}
 	public void setSocialNetworkData(List<SocialNetworkDataDTO> socialNetworkData) {
 		this.socialNetworkData = socialNetworkData;
+	}
+	public int getClientId() {
+		return clientId;
+	}
+	public void setClientId(int clientId) {
+		this.clientId = clientId;
 	}
 
 }

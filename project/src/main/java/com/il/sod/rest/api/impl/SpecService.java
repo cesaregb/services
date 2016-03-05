@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/spec")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/spec", tags = { "generic" })
+// @Api(value = "/spec", tags = { "generic" })
 public class SpecService extends AbstractServiceMutations {
 	@Autowired
 	SpecRepository specRepository;

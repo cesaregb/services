@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/asset-type")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/asset-type", tags = { "generic" })
+//@Api(value = "/asset-type", tags = { "generic" })
 public class AssetTypeService extends AbstractServiceMutations {
 	@Autowired
 	AssetTypeRepository assetTypeRepository;

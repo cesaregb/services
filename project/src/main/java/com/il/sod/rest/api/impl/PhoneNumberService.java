@@ -44,9 +44,9 @@ public class PhoneNumberService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response savePhoneNumber(PhoneNumberDTO dto) throws SODAPIException {
 		try {
-			PhoneNumber entity = converter.map(dto, PhoneNumber.class);
+			PhoneNumber entity = ClientMapper.INSTANCE.map(dto, PhoneNumber.class);
 			this.saveEntity(phoneNumberRepository, entity);
-			dto = converter.map(entity, PhoneNumberDTO.class);
+			dto = ClientMapper.INSTANCE.map(entity, PhoneNumberDTO.class);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
@@ -60,9 +60,9 @@ public class PhoneNumberService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updatePhoneNumber(PhoneNumberDTO dto) throws SODAPIException {
 		try {
-			PhoneNumber entity = converter.map(dto, PhoneNumber.class);
+			PhoneNumber entity = ClientMapper.INSTANCE.map(dto, PhoneNumber.class);
 			this.updateEntity(phoneNumberRepository, entity);
-			dto = converter.map(entity, PhoneNumberDTO.class);
+			dto = ClientMapper.INSTANCE.map(entity, PhoneNumberDTO.class);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
@@ -76,7 +76,7 @@ public class PhoneNumberService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deletePhoneNumber(PhoneNumberDTO dto) throws SODAPIException {
 		try {
-			PhoneNumber entity = converter.map(dto, PhoneNumber.class);
+			PhoneNumber entity = ClientMapper.INSTANCE.map(dto, PhoneNumber.class);
 			this.deleteEntity(phoneNumberRepository, entity.getIdPhoneNumber());
 			return castEntityAsResponse(
 					GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
@@ -94,7 +94,7 @@ public class PhoneNumberService extends AbstractServiceMutations {
 	public Response getPhoneNumberList() throws SODAPIException {
 		List<PhoneNumber> rentityList = this.getEntityList(phoneNumberRepository);
 		List<PhoneNumberDTO> list = rentityList.stream().map((i) -> {
-			PhoneNumberDTO dto = converter.map(i, PhoneNumberDTO.class);
+			PhoneNumberDTO dto = ClientMapper.INSTANCE.map(i, PhoneNumberDTO.class);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);

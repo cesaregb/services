@@ -32,11 +32,11 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/order-type")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/order-type", tags = { "order" })
+// @Api(value = "/order-type", tags = { "order" })
 public class OrderTypeService extends AbstractServiceMutations {
 	@Autowired
 	OrderTypeRepository orderTypeRepository;
-	
+
 	@PUT
 	@ApiOperation(value = "Create Order Type", response = OrderTypeDTO.class)
 	@ApiResponses(value = {
@@ -52,7 +52,7 @@ public class OrderTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@POST
 	@ApiOperation(value = "Update Order Type", response = OrderTypeDTO.class)
 	@ApiResponses(value = {
@@ -68,7 +68,7 @@ public class OrderTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@DELETE
 	@ApiOperation(value = "Create Order Type", response = OrderTypeDTO.class)
 	@ApiResponses(value = {

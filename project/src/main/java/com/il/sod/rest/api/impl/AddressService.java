@@ -44,9 +44,9 @@ public class AddressService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveAddress(AddressDTO dto) throws SODAPIException {
 		try {
-			Address entity = converter.map(dto, Address.class);
+			Address entity = ClientMapper.INSTANCE.map(dto, Address.class);
 			this.saveEntity(addressRepository, entity);
-			dto = converter.map(entity, AddressDTO.class);
+			dto = ClientMapper.INSTANCE.map(entity, AddressDTO.class);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
@@ -60,9 +60,9 @@ public class AddressService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateAddress(AddressDTO dto) throws SODAPIException {
 		try {
-			Address entity = converter.map(dto, Address.class);
+			Address entity = ClientMapper.INSTANCE.map(dto, Address.class);
 			this.updateEntity(addressRepository, entity);
-			dto = converter.map(entity, AddressDTO.class);
+			dto = ClientMapper.INSTANCE.map(entity, AddressDTO.class);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
@@ -76,7 +76,7 @@ public class AddressService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteAddress(AddressDTO dto) throws SODAPIException {
 		try {
-			Address entity = converter.map(dto, Address.class);
+			Address entity = ClientMapper.INSTANCE.map(dto, Address.class);
 			this.deleteEntity(addressRepository, entity.getIdAddress());
 			return castEntityAsResponse(
 					GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
@@ -94,7 +94,7 @@ public class AddressService extends AbstractServiceMutations {
 	public Response getAddressList() throws SODAPIException {
 		List<Address> rentityList = this.getEntityList(addressRepository);
 		List<AddressDTO> list = rentityList.stream().map((i) -> {
-			AddressDTO dto = converter.map(i, AddressDTO.class);
+			AddressDTO dto = ClientMapper.INSTANCE.map(i, AddressDTO.class);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);

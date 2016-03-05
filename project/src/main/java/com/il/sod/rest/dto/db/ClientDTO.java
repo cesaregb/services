@@ -2,10 +2,6 @@ package com.il.sod.rest.dto.db;
 
 import java.util.List;
 
-import com.il.sod.db.model.entities.AccessKey;
-import com.il.sod.db.model.entities.Address;
-import com.il.sod.db.model.entities.PhoneNumber;
-
 public class ClientDTO {
 	private int idClient;
 	private String email;
@@ -15,9 +11,9 @@ public class ClientDTO {
 	private String phoneNumber;
 	private String twitter;
 	private List<Integer> orders;
-	private List<AccessKey> accessKeys;
-	private List<Address> addresses;
-	private List<PhoneNumber> phoneNumbers;
+//	private List<AccessKeyDTO> accessKeys;
+	private List<AddressDTO> addresses;
+	private List<PhoneNumberDTO> phoneNumbers;
 	
 	
 	public int getIdClient() {
@@ -68,22 +64,16 @@ public class ClientDTO {
 	public void setOrders(List<Integer> orders) {
 		this.orders = orders;
 	}
-	public List<AccessKey> getAccessKeys() {
-		return accessKeys;
-	}
-	public void setAccessKeys(List<AccessKey> accessKeys) {
-		this.accessKeys = accessKeys;
-	}
-	public List<Address> getAddresses() {
+	public List<AddressDTO> getAddresses() {
 		return addresses;
 	}
-	public void setAddresses(List<Address> addresses) {
+	public void setAddresses(List<AddressDTO> addresses) {
 		this.addresses = addresses;
 	}
-	public List<PhoneNumber> getPhoneNumbers() {
+	public List<PhoneNumberDTO> getPhoneNumbers() {
 		return phoneNumbers;
 	}
-	public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
+	public void setPhoneNumbers(List<PhoneNumberDTO> phoneNumbers) {
 		this.phoneNumbers = phoneNumbers;
 	}
 
