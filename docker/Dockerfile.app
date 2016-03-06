@@ -57,7 +57,7 @@ ENV MODULE services
 ENV MODULE_SOURCE ${USER_HOME}/${MODULE}
 # add in the source files
 RUN mkdir -p ${MODULE_SOURCE}
-COPY . ${MODULE_SOURCE}
+COPY /project ${MODULE_SOURCE}/project
 
 # make doceng the owner of all the source files, so when mvn clean install package runs it can create the target/classes dir
 RUN chown -R ${BASE_USER}:${BASE_USER} ${MODULE_SOURCE}
