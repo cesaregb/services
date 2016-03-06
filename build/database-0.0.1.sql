@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Clients` (
   `email` VARCHAR(100) NULL,
   `password` CHAR(128) NULL,
   `name` VARCHAR(250) NULL,
-  `lasName` VARCHAR(250) NULL,
+  `lastName` VARCHAR(250) NULL,
   `phoneNumber` VARCHAR(250) NULL,
   `twitter` VARCHAR(250) NULL,
   PRIMARY KEY (`idClient`))

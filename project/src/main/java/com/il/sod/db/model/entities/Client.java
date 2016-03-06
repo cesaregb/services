@@ -31,7 +31,7 @@ public class Client implements IEntity<Integer> {
 
 	private String email;
 
-	private String lasName;
+	private String lastName;
 
 	private String name;
 
@@ -78,12 +78,12 @@ public class Client implements IEntity<Integer> {
 		this.email = email;
 	}
 
-	public String getLasName() {
-		return this.lasName;
+	public String getLastName() {
+		return this.lastName;
 	}
 
-	public void setLasName(String lasName) {
-		this.lasName = lasName;
+	public void setLastName(String lasName) {
+		this.lastName = lasName;
 	}
 
 	public String getName() {

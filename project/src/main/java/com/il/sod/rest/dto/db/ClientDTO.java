@@ -5,7 +5,7 @@ import java.util.List;
 public class ClientDTO {
 	private int idClient;
 	private String email;
-	private String lasName;
+	private String lastName;
 	private String name;
 	private String password;
 	private String phoneNumber;
@@ -28,11 +28,11 @@ public class ClientDTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getLasName() {
-		return lasName;
+	public String getLastName() {
+		return lastName;
 	}
-	public void setLasName(String lasName) {
-		this.lasName = lasName;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 	public String getName() {
 		return name;

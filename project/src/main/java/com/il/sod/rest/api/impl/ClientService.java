@@ -37,17 +37,19 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/clients")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value="clients", tags={"clients"})
+@Api(value = "clients", tags = { "clients" })
 public class ClientService extends AbstractServiceMutations {
 	final static Logger LOGGER = LoggerFactory.getLogger(AbstractService.class);
-	
+
 	@Autowired
 	ClientRepository clientRepository;
-	
+
 	@PUT
-	@ApiOperation(value = "Create Client", response=ClientDTO.class)
-	@ApiResponses(value = { @ApiResponse(code=400, message="4## errors: Invalid input supplied", response=GeneralResponseMessage.class), @ApiResponse(code=500, message="5## errors: Server error", response=GeneralResponseMessage.class)})
-	public Response saveClient(ClientDTO dto) throws SODAPIException{
+	@ApiOperation(value = "Create Client", response = ClientDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response saveClient(ClientDTO dto) throws SODAPIException {
 		try{
 			Client entity = ClientMapper.INSTANCE.map(dto);
 			assignDependencyToChilds(entity);
@@ -60,9 +62,11 @@ public class ClientService extends AbstractServiceMutations {
 	}
 
 	@POST
-	@ApiOperation(value = "Update Client", response=ClientDTO.class)
-	@ApiResponses(value = { @ApiResponse(code=400, message="4## errors: Invalid input supplied", response=GeneralResponseMessage.class), @ApiResponse(code=500, message="5## errors: Server error", response=GeneralResponseMessage.class)})
-	public Response updateClient(ClientDTO dto) throws SODAPIException{
+	@ApiOperation(value = "Update Client", response = ClientDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response updateClient(ClientDTO dto) throws SODAPIException {
 		Client entity = ClientMapper.INSTANCE.map(dto);
 		if (entity.getIdClient() == 0) {
 			return castEntityAsResponse(
@@ -74,11 +78,13 @@ public class ClientService extends AbstractServiceMutations {
 		dto = ClientMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
-	
-	@DELETE	
-	@ApiOperation(value = "Delete Client", response=GeneralResponseMessage.class)
-	@ApiResponses(value = { @ApiResponse(code=400, message="4## errors: Invalid input supplied", response=GeneralResponseMessage.class), @ApiResponse(code=500, message="5## errors: Server error", response=GeneralResponseMessage.class)})
-	public Response deleteClient(ClientDTO dto) throws SODAPIException{
+
+	@DELETE
+	@ApiOperation(value = "Delete Client", response = GeneralResponseMessage.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response deleteClient(ClientDTO dto) throws SODAPIException {
 		Client entity = ClientMapper.INSTANCE.map(dto);
 		if (entity.getIdClient() == 0) {
 			return castEntityAsResponse(
@@ -87,29 +93,32 @@ public class ClientService extends AbstractServiceMutations {
 		}
 		assignDependencyToChilds(entity);
 		this.deleteEntity(clientRepository, entity.getIdClient());
-		return castEntityAsResponse(
-				GeneralResponseMessage.getInstance().success().setMessage("Client deleted"),
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Client deleted"),
 				Response.Status.OK);
-	}	
-	
+	}
+
 	@GET
-	@ApiOperation(value = "Get Client list", response=ClientDTO.class, responseContainer = "List")
-	@ApiResponses(value = { @ApiResponse(code=400, message="4## errors: Invalid input supplied", response=GeneralResponseMessage.class), @ApiResponse(code=500, message="5## errors: Server error", response=GeneralResponseMessage.class)})
-	public Response getClientList() throws SODAPIException{	
+	@ApiOperation(value = "Get Client list", response = ClientDTO.class, responseContainer = "List")
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getClientList() throws SODAPIException {
 		List<Client> r = this.getEntityList(clientRepository);
 		List<ClientDTO> list = r.stream().map(ClientMapper.INSTANCE::map).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
-	
+
 	@GET
 	@Path("/{clientId}")
-	@ApiOperation(value = "Get Client list", response=ClientDTO.class)
-	@ApiResponses(value = { @ApiResponse(code=400, message="4## errors: Invalid input supplied", response=GeneralResponseMessage.class), @ApiResponse(code=500, message="5## errors: Server error", response=GeneralResponseMessage.class)})
-	public Response getClient(@PathParam("clientId") String clientId) throws SODAPIException{
+	@ApiOperation(value = "Get Client list", response = ClientDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getClient(@PathParam("clientId") String clientId) throws SODAPIException {
 		ClientDTO dto = ClientMapper.INSTANCE.map(this.getEntity(clientRepository, Integer.valueOf(clientId)));
 		return castEntityAsResponse(dto, Response.Status.OK);
 	}
-	
+
 	private void assignDependencyToChilds(Client entity) {
 		if (entity.getAddresses() != null)
 			entity.getAddresses().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));

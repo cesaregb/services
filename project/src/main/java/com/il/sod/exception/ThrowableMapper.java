@@ -16,14 +16,14 @@ import org.slf4j.LoggerFactory;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 
 @Provider
-public class RTMapper extends GeneralMapper implements ExceptionMapper<RuntimeException> {
-	final static Logger LOGGER = LoggerFactory.getLogger(RTMapper.class);
+public class ThrowableMapper extends GeneralMapper implements ExceptionMapper<Throwable> {
+	final static Logger LOGGER = LoggerFactory.getLogger(ThrowableMapper.class);
 	
 	@Context
 	HttpServletRequest request;
 	
 	@Override
-	public Response toResponse(RuntimeException ex) {
+	public Response toResponse(Throwable ex) {
 		String error = ex.getMessage(); 
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);

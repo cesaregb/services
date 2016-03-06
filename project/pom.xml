@@ -64,12 +64,13 @@
 			<version>${gson.version}</version>
 		</dependency> -->
 		
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>${jackson.version}</version>
-		</dependency> -->
+		</dependency>
 		
+		<!-- Has its own mappers,.. for some type of exceptions... -->
 		<dependency>
 		    <groupId>org.glassfish.jersey.media</groupId>
 		    <artifactId>jersey-media-json-jackson</artifactId>
@@ -250,13 +251,6 @@
 			<artifactId>orika-core</artifactId>
 			<version>${orika.version}</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.modelmapper</groupId>
-			<artifactId>modelmapper</artifactId>
-			<version>0.7.5</version>
-		</dependency>
-
     </dependencies>
     
     <build>

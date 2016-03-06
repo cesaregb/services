@@ -1,6 +1,9 @@
 package com.il.sod.rest.dto.db;
 
-public class AddressDTO {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.il.sod.rest.dto.GenericDBDTO;
+
+public class AddressDTO implements GenericDBDTO{
 	private int idAddress;
 	private String address;
 	private String address2;
@@ -49,5 +52,11 @@ public class AddressDTO {
 	}
 	public void setIdClient(int idClient) {
 		this.idClient = idClient;
+	}
+	
+	@Override
+	@JsonIgnore
+	public Integer getParentId() {
+		return this.idClient;
 	}
 }

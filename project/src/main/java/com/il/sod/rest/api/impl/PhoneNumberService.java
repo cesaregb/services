@@ -17,8 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.il.sod.db.model.entities.PhoneNumber;
+import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.db.model.repositories.PhoneNumberRepository;
 import com.il.sod.exception.SODAPIException;
+import com.il.sod.mapper.ClientMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.PhoneNumberDTO;
@@ -37,64 +39,58 @@ public class PhoneNumberService extends AbstractServiceMutations {
 	@Autowired
 	PhoneNumberRepository phoneNumberRepository;
 
+	@Autowired
+	ClientRepository clientRepository;
+
 	@PUT
-	@ApiOperation(value = "Create Service Type", response = PhoneNumberDTO.class)
+	@ApiOperation(value = "Create Phone Number", response = PhoneNumberDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response savePhoneNumber(PhoneNumberDTO dto) throws SODAPIException {
-		try {
-			PhoneNumber entity = ClientMapper.INSTANCE.map(dto, PhoneNumber.class);
-			this.saveEntity(phoneNumberRepository, entity);
-			dto = ClientMapper.INSTANCE.map(entity, PhoneNumberDTO.class);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		serviceDbHelper.validateClient(clientRepository, dto);
+
+		PhoneNumber entity = ClientMapper.INSTANCE.map(dto);
+		this.saveEntity(phoneNumberRepository, entity);
+		dto = ClientMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@POST
-	@ApiOperation(value = "Update Service Type", response = PhoneNumberDTO.class)
+	@ApiOperation(value = "Update Phone Number", response = PhoneNumberDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updatePhoneNumber(PhoneNumberDTO dto) throws SODAPIException {
-		try {
-			PhoneNumber entity = ClientMapper.INSTANCE.map(dto, PhoneNumber.class);
-			this.updateEntity(phoneNumberRepository, entity);
-			dto = ClientMapper.INSTANCE.map(entity, PhoneNumberDTO.class);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		serviceDbHelper.validateClient(clientRepository, dto);
+
+		PhoneNumber entity = ClientMapper.INSTANCE.map(dto);
+		this.updateEntity(phoneNumberRepository, entity);
+		dto = ClientMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@DELETE
-	@ApiOperation(value = "Create Service Type", response = PhoneNumberDTO.class)
+	@ApiOperation(value = "Create Phone Number", response = PhoneNumberDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deletePhoneNumber(PhoneNumberDTO dto) throws SODAPIException {
-		try {
-			PhoneNumber entity = ClientMapper.INSTANCE.map(dto, PhoneNumber.class);
-			this.deleteEntity(phoneNumberRepository, entity.getIdPhoneNumber());
-			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
-					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		PhoneNumber entity = ClientMapper.INSTANCE.map(dto);
+		this.deleteEntity(phoneNumberRepository, entity.getIdPhoneNumber());
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
+				Response.Status.OK);
 	}
 
 	@GET
-	@ApiOperation(value = "Get Service Type list", response = PhoneNumberDTO.class, responseContainer = "List")
+	@ApiOperation(value = "Get Phone Number list", response = PhoneNumberDTO.class, responseContainer = "List")
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getPhoneNumberList() throws SODAPIException {
 		List<PhoneNumber> rentityList = this.getEntityList(phoneNumberRepository);
 		List<PhoneNumberDTO> list = rentityList.stream().map((i) -> {
-			PhoneNumberDTO dto = ClientMapper.INSTANCE.map(i, PhoneNumberDTO.class);
+			PhoneNumberDTO dto = ClientMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);

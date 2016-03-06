@@ -13,17 +13,18 @@ import javax.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 
 @Provider
-public class RTMapper extends GeneralMapper implements ExceptionMapper<RuntimeException> {
-	final static Logger LOGGER = LoggerFactory.getLogger(RTMapper.class);
+public class UnrecognizedPropertyExceptionMapper extends GeneralMapper implements ExceptionMapper<UnrecognizedPropertyException> {
+	final static Logger LOGGER = LoggerFactory.getLogger(UnrecognizedPropertyExceptionMapper.class);
 	
 	@Context
 	HttpServletRequest request;
 	
 	@Override
-	public Response toResponse(RuntimeException ex) {
+	public Response toResponse(UnrecognizedPropertyException ex) {
 		String error = ex.getMessage(); 
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
@@ -32,7 +33,7 @@ public class RTMapper extends GeneralMapper implements ExceptionMapper<RuntimeEx
 		String errorMessage = buildErrorMessage(request, error);
 		LOGGER.error(errorMessage);
 		return Response.
-				status(Response.Status.SERVICE_UNAVAILABLE).
+				status(Response.Status.BAD_REQUEST).
 				entity(GeneralResponseMessage.getInstance().error().setMessage("Server error, we are working on this sorry!")).
 				type(MediaType.APPLICATION_JSON).
 				build();

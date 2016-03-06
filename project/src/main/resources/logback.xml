@@ -18,7 +18,7 @@
 	<!-- By default, the level of the root level is set to DEBUG 
 		<root level="${logback.loglevel}">
 	-->
-	<root level="INFO">
+	<root level="TRACE">
 		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>

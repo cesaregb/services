@@ -38,7 +38,7 @@ public class ClientDaoTest extends SpringTestConfiguration{
     	Client entity = new Client();
     	entity.setEmail("email");
     	entity.setName("name");
-    	entity.setLasName("last name");
+    	entity.setLastName("last name");
     	entity.setPhoneNumber("number");
     	entity.setTwitter("twiiter");
 		genericDaoImpl.create(entity);

@@ -1,4 +1,4 @@
-package com.il.sod.config;
+package com.il.sod.config.jersey;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
