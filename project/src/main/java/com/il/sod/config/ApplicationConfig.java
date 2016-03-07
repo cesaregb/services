@@ -8,7 +8,6 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.il.sod.config.jersey.AuthenticationFilter;
 import com.il.sod.config.jersey.CORSResponseFilter;
@@ -17,7 +16,6 @@ import com.il.sod.config.jersey.JacksonObjectMapperProvider;
 import com.il.sod.rest.util.PropertyHandler;
 
 import io.swagger.jaxrs.config.BeanConfig;
-import io.swagger.util.Json;
 
 @ApplicationPath("/api") 
 public class ApplicationConfig extends ResourceConfig {
@@ -58,7 +56,6 @@ public class ApplicationConfig extends ResourceConfig {
 		beanConfig.setResourcePackage("com.il.sod.rest.api");
 		beanConfig.setScan(true);
 		
-		Json.mapper().setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
-		
+//		Json.mapper().setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 	}
 }

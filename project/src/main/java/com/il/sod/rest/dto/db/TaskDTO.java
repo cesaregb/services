@@ -4,7 +4,7 @@ public class TaskDTO {
 	private int idTask;
 	private String description;
 	private String name;
-	private Integer taskTypeId;
+	private Integer taskType;
 	
 	public int getIdTask() {
 		return idTask;
@@ -24,18 +24,10 @@ public class TaskDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getTaskTypeId() {
-		return taskTypeId;
+	public Integer getTaskType() {
+		return taskType;
 	}
-	public void setTaskTypeId(Integer taskTypeId) {
-		this.taskTypeId = taskTypeId;
-	}
-	
-	public TaskDTO setId(int id){
-		this.idTask = id;
-		return this;
-	}
-	public Integer getId(){
-		return this.idTask;
+	public void setTaskType(Integer taskType) {
+		this.taskType = taskType;
 	}
 }

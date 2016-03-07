@@ -24,7 +24,7 @@ public enum EmployeeMapper {
 		converterFactory.registerConverter("employeeListConverter", new EmployeeListConverter());
 		
 		BaseMapper.MAPPER_FACTORY.classMap(EmployeeDTO.class, Employee.class)
-			.field("employeeTypeId", "employeeType.idEmployeeType")
+			.field("employeeType", "employeeType.idEmployeeType")
 			.byDefault()
 			.register();
 		

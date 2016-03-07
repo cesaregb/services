@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import com.il.sod.db.model.entities.AssetType;
 import com.il.sod.db.model.repositories.AssetTypeRepository;
 import com.il.sod.exception.SODAPIException;
+import com.il.sod.mapper.AssetMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.AssetTypeDTO;
@@ -32,7 +33,7 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/asset-type")
 @Produces(MediaType.APPLICATION_JSON)
-//@Api(value = "/asset-type", tags = { "generic" })
+@Api(value = "/asset-type", tags = { "asset" })
 public class AssetTypeService extends AbstractServiceMutations {
 	@Autowired
 	AssetTypeRepository assetTypeRepository;
@@ -43,14 +44,10 @@ public class AssetTypeService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveAssetType(AssetTypeDTO dto) throws SODAPIException {
-		try {
-			AssetType entity = converter.map(dto, AssetType.class);
-			this.saveEntity(assetTypeRepository, entity);
-			dto = converter.map(entity, AssetTypeDTO.class);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		AssetType entity = AssetMapper.INSTANCE.map(dto);
+		this.saveEntity(assetTypeRepository, entity);
+		dto = AssetMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@POST
@@ -59,14 +56,10 @@ public class AssetTypeService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateAssetType(AssetTypeDTO dto) throws SODAPIException {
-		try {
-			AssetType entity = converter.map(dto, AssetType.class);
-			this.updateEntity(assetTypeRepository, entity);
-			dto = converter.map(entity, AssetTypeDTO.class);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		AssetType entity = AssetMapper.INSTANCE.map(dto);
+		this.updateEntity(assetTypeRepository, entity);
+		dto = AssetMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@DELETE
@@ -75,15 +68,10 @@ public class AssetTypeService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteAssetType(AssetTypeDTO dto) throws SODAPIException {
-		try {
-			AssetType entity = converter.map(dto, AssetType.class);
-			this.deleteEntity(assetTypeRepository, entity.getIdAssetType());
-			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Asset deleted"),
-					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		AssetType entity = AssetMapper.INSTANCE.map(dto);
+		this.deleteEntity(assetTypeRepository, entity.getIdAssetType());
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Asset deleted"),
+				Response.Status.OK);
 	}
 
 	@GET
@@ -94,7 +82,7 @@ public class AssetTypeService extends AbstractServiceMutations {
 	public Response getAssetTypeList() throws SODAPIException {
 		List<AssetType> rentityList = this.getEntityList(assetTypeRepository);
 		List<AssetTypeDTO> list = rentityList.stream().map((i) -> {
-			AssetTypeDTO dto = converter.map(i, AssetTypeDTO.class);
+			AssetTypeDTO dto = AssetMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);

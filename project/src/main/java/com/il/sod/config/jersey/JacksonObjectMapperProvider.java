@@ -22,7 +22,7 @@ public class JacksonObjectMapperProvider implements ContextResolver<ObjectMapper
 		MAPPER.setSerializationInclusion(Include.NON_EMPTY);
 		MAPPER.disable(MapperFeature.USE_GETTERS_AS_SETTERS);
 		MAPPER.configure(Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
-		MAPPER.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+//		MAPPER.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 		MAPPER.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
 	}
 

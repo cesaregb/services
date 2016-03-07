@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import com.il.sod.db.model.entities.ServiceType;
 import com.il.sod.db.model.repositories.ServiceTypeRepository;
 import com.il.sod.exception.SODAPIException;
+import com.il.sod.mapper.ServiceMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ServiceTypeDTO;
@@ -32,7 +33,7 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/service-type")
 @Produces(MediaType.APPLICATION_JSON)
-// @Api(value = "/service-type", tags = { "service" })
+ @Api(value = "/service-type", tags = { "service" })
 public class ServiceTypeService extends AbstractServiceMutations {
 	@Autowired
 	ServiceTypeRepository serviceTypeRepository;
@@ -43,14 +44,10 @@ public class ServiceTypeService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveServiceType(ServiceTypeDTO dto) throws SODAPIException {
-		try {
-			ServiceType entity = converter.map(dto, ServiceType.class);
-			this.saveEntity(serviceTypeRepository, entity);
-			dto = converter.map(entity, ServiceTypeDTO.class);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		ServiceType entity = ServiceMapper.INSTANCE.map(dto);
+		this.saveEntity(serviceTypeRepository, entity);
+		dto = converter.map(entity, ServiceTypeDTO.class);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@POST
@@ -59,14 +56,10 @@ public class ServiceTypeService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateServiceType(ServiceTypeDTO dto) throws SODAPIException {
-		try {
-			ServiceType entity = converter.map(dto, ServiceType.class);
-			this.updateEntity(serviceTypeRepository, entity);
-			dto = converter.map(entity, ServiceTypeDTO.class);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		ServiceType entity = ServiceMapper.INSTANCE.map(dto);
+		this.updateEntity(serviceTypeRepository, entity);
+		dto = converter.map(entity, ServiceTypeDTO.class);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@DELETE
@@ -76,7 +69,7 @@ public class ServiceTypeService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteServiceType(ServiceTypeDTO dto) throws SODAPIException {
 		try {
-			ServiceType entity = converter.map(dto, ServiceType.class);
+			ServiceType entity = ServiceMapper.INSTANCE.map(dto);
 			this.deleteEntity(serviceTypeRepository, entity.getIdServiceType());
 			return castEntityAsResponse(
 					GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
@@ -94,7 +87,7 @@ public class ServiceTypeService extends AbstractServiceMutations {
 	public Response getServiceTypeList() throws SODAPIException {
 		List<ServiceType> rentityList = this.getEntityList(serviceTypeRepository);
 		List<ServiceTypeDTO> list = rentityList.stream().map((i) -> {
-			ServiceTypeDTO dto = converter.map(i, ServiceTypeDTO.class);
+			ServiceTypeDTO dto = ServiceMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
