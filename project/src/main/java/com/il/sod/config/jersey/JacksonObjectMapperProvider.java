@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 public class JacksonObjectMapperProvider implements ContextResolver<ObjectMapper> {
 	final static Logger LOGGER = LoggerFactory.getLogger(JacksonObjectMapperProvider.class);
