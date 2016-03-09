@@ -1,30 +1,39 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 
 /**
  * The persistent class for the ServiceTask database table.
- * 
+ *
  */
 @Entity
 @NamedQuery(name="ServiceTask.findAll", query="SELECT s FROM ServiceTask s")
-public class ServiceTask implements Serializable {
+public class ServiceTask implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idServiceTask;
 
 	private String comments;
 
 	//bi-directional many-to-one association to AssetTaskService
-	@OneToMany(mappedBy="serviceTask")
+	@OneToMany(mappedBy="serviceTask", fetch=FetchType.EAGER)
 	private List<AssetTaskService> assetTaskServices;
 
 	//bi-directional many-to-one association to EmployeeTaskService
-	@OneToMany(mappedBy="serviceTask")
+	@OneToMany(mappedBy="serviceTask", fetch=FetchType.EAGER)
 	private List<EmployeeTaskService> employeeTaskServices;
 
 	//bi-directional many-to-one association to Service
@@ -115,5 +124,14 @@ public class ServiceTask implements Serializable {
 	public void setTask(Task task) {
 		this.task = task;
 	}
+	@Override
+	public Integer getId() {
+		return this.idServiceTask;
+	}
 
+	@Override
+	public ServiceTask setId(Integer id) {
+		this.idServiceTask = id;
+		return this;
+	}
 }

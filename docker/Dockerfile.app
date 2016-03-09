@@ -1,8 +1,13 @@
 # To build:
-# docker build -t sod-service:v1 -f docker/Dockerfile.app .
+# docker build -t cesaregb/sod-service:v1 -f docker/Dockerfile.app .
+#
+# To publish:
+  # docker logn
+  # docker push cesaregb/sod-service:v1
+# docker run -p 8080:8080 -it cesaregb/sod-service:v1
 #
 # To run:
-# docker run -p 8080:8080 -it sod-service:v1
+# docker run -p 8080:8080 -it cesaregb/sod-service:v1
 FROM centos:6
 MAINTAINER cesareg.borjon@gmail.com
 
@@ -15,14 +20,10 @@ RUN yum -y upgrade
 RUN yum -y install wget
 #RUN apt-get update
 
-RUN yum -y install git
-RUN yum -y install curl
-RUN yum -y install unzip
-RUN yum -y install tar
+RUN yum -y install git curl unzip tar
 
 # Downloading Java
 RUN wget --no-cookies --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/$JAVA_VERSION-$BUILD_VERSION/jdk-$JAVA_VERSION-linux-x64.rpm" -O /tmp/jdk-8-linux-x64.rpm
-
 RUN yum -y install /tmp/jdk-8-linux-x64.rpm
 
 RUN alternatives --install /usr/bin/java jar /usr/java/latest/bin/java 200000
@@ -61,7 +62,7 @@ ENV MODULE services
 ENV MODULE_SOURCE ${USER_HOME}/${MODULE}
 # add in the source files
 RUN mkdir -p ${MODULE_SOURCE}
-COPY . ${MODULE_SOURCE}
+COPY /project ${MODULE_SOURCE}/project
 
 # make doceng the owner of all the source files, so when mvn clean install package runs it can create the target/classes dir
 RUN chown -R ${BASE_USER}:${BASE_USER} ${MODULE_SOURCE}
@@ -73,4 +74,5 @@ WORKDIR ${MODULE_SOURCE}/project
 RUN mvn clean install package
 
 #When this image is run as a container, start the jetty server. It will be listening on the ${REGISTRATION_API_PORT}
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "target/sod_project-1.0.jar"]
+# ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "target/sod_project-1.0.jar"]
+ENTRYPOINT ["mvn", "clean", "compile", "-Dspring.profiles.active=dev", "exec:java"]

@@ -1,21 +1,28 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 
 /**
  * The persistent class for the ServiceSpecs database table.
- * 
+ *
  */
 @Entity
 @Table(name="ServiceSpecs")
 @NamedQuery(name="ServiceSpec.findAll", query="SELECT s FROM ServiceSpec s")
-public class ServiceSpec implements Serializable {
+public class ServiceSpec implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int idServiceTypeSpecs;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int idServiceSpecs;
 
 	private String comments;
 
@@ -32,12 +39,12 @@ public class ServiceSpec implements Serializable {
 	public ServiceSpec() {
 	}
 
-	public int getIdServiceTypeSpecs() {
-		return this.idServiceTypeSpecs;
+	public int getIdServiceSpecs() {
+		return this.idServiceSpecs;
 	}
 
-	public void setIdServiceTypeSpecs(int idServiceTypeSpecs) {
-		this.idServiceTypeSpecs = idServiceTypeSpecs;
+	public void setIdServiceSpecs(int idServiceSpecs) {
+		this.idServiceSpecs = idServiceSpecs;
 	}
 
 	public String getComments() {
@@ -63,5 +70,14 @@ public class ServiceSpec implements Serializable {
 	public void setSpec(Spec spec) {
 		this.spec = spec;
 	}
+	@Override
+	public Integer getId() {
+		return this.idServiceSpecs;
+	}
 
+	@Override
+	public ServiceSpec setId(Integer id) {
+		this.idServiceSpecs = id;
+		return this;
+	}
 }

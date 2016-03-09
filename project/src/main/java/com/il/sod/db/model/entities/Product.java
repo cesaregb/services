@@ -1,19 +1,25 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 
 /**
  * The persistent class for the Product database table.
- * 
+ *
  */
 @Entity
 @NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
-public class Product implements Serializable {
+public class Product implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idProduct;
 
 	private String description;
@@ -79,5 +85,14 @@ public class Product implements Serializable {
 	public void setProductType(ProductType productType) {
 		this.productType = productType;
 	}
+	@Override
+	public Integer getId() {
+		return this.idProduct;
+	}
 
+	@Override
+	public Product setId(Integer id) {
+		this.idProduct = id;
+		return this;
+	}
 }

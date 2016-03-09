@@ -1,49 +1,37 @@
 package com.il.sod.rest.dto;
 
 public class GeneralResponseMessage {
-	public static final String GENERIC_MESSAGE_SUCCES = "Success";
-	public static final String GENERIC_MESSAGE_ERROR = "Error";
-	public static final int TYPE_SUCCES = 0;
-	public static final int TYPE_ERROR = 1;
-	private String code; 
+	private static final String GENERIC_MESSAGE_SUCCES = "Success";
+	private static final String GENERIC_MESSAGE_ERROR = "Error";
+	
+	private int code; 
 	private String message; 
-	private int type;
+	private boolean status;
 	
-	public GeneralResponseMessage(){}
+	private static class Holder {
+        static final GeneralResponseMessage INSTANCE = new GeneralResponseMessage();
+    }
 	
-	public GeneralResponseMessage(int type){
-		if (type == TYPE_SUCCES){
-			this.message = GENERIC_MESSAGE_SUCCES;
-		}else if(type == TYPE_ERROR){
-			this.message = GENERIC_MESSAGE_ERROR;
-		}
+	private GeneralResponseMessage(){}
+	
+	public static GeneralResponseMessage getInstance() {
+		return Holder.INSTANCE.success();
 	}
 	
-	public GeneralResponseMessage(int type, String code){
-		this.code = code;
-		if (type == TYPE_SUCCES){
-			this.message = GENERIC_MESSAGE_SUCCES;
-		}else if(type == TYPE_ERROR){
-			this.message = GENERIC_MESSAGE_ERROR;
-		}
-	}
-	
-	public GeneralResponseMessage(int type, String code, String message){
-		this.code = code;
-		if (type == TYPE_SUCCES){
-			this.message = GENERIC_MESSAGE_SUCCES;
-		}else if(type == TYPE_ERROR){
-			this.message = GENERIC_MESSAGE_ERROR;
-		}
-	}
-	
-	public String getCode() {
-		return code;
-	}
-	public GeneralResponseMessage setCode(String code) {
-		this.code = code;
+	public GeneralResponseMessage success(){
+		this.code = 200;
+		this.message = GENERIC_MESSAGE_SUCCES;
+		this.status = true;
 		return this;
 	}
+	
+	public GeneralResponseMessage error(){
+		this.code = 411;
+		this.message = GENERIC_MESSAGE_ERROR;
+		this.status = false;
+		return this;
+	}
+	
 	public String getMessage() {
 		return message;
 	}
@@ -51,11 +39,22 @@ public class GeneralResponseMessage {
 		this.message = message;
 		return this;
 	}
-	public int getType() {
-		return type;
+
+	public boolean isStatus() {
+		return status;
 	}
-	public GeneralResponseMessage setType(int type) {
-		this.type = type;
+
+	public GeneralResponseMessage setStatus(boolean status) {
+		this.status = status;
 		return this;
-	} 
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public GeneralResponseMessage setCode(int code) {
+		this.code = code;
+		return this;
+	}
 }

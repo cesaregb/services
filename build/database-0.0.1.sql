@@ -23,11 +23,11 @@ USE `sod_db` ;
 -- Table `sod_db`.`Clients`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`Clients` (
-  `idClient` INT UNSIGNED NOT NULL,
+  `idClient` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(100) NULL,
   `password` CHAR(128) NULL,
   `name` VARCHAR(250) NULL,
-  `lasName` VARCHAR(250) NULL,
+  `lastName` VARCHAR(250) NULL,
   `phoneNumber` VARCHAR(250) NULL,
   `twitter` VARCHAR(250) NULL,
   PRIMARY KEY (`idClient`))
@@ -248,48 +248,48 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`OrderTemplate`
+-- Table `sod_db`.`OrderType`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTemplate` (
-  `idOrderTemplate` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `sod_db`.`OrderType` (
+  `idOrderType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
-  PRIMARY KEY (`idOrderTemplate`))
+  PRIMARY KEY (`idOrderType`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`OrderTemplateTasks`
+-- Table `sod_db`.`OrderTypeTasks`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTemplateTasks` (
-  `idOrderTemplateTasks` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `idOrderTemplate` INT UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTypeTasks` (
+  `idOrderTypeTasks` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idOrderType` INT UNSIGNED NOT NULL,
   `idTask` INT UNSIGNED NOT NULL,
   `description` VARCHAR(45) NULL,
   `time` INT NULL,
-  PRIMARY KEY (`idOrderTemplateTasks`),
+  PRIMARY KEY (`idOrderTypeTasks`),
   INDEX `fk_OrderTemplateTasks_Task1_idx` (`idTask` ASC),
-  INDEX `fk_OrderTemplateTasks_OrderTemplate1_idx` (`idOrderTemplate` ASC),
+  INDEX `fk_OrderTemplateTasks_OrderTemplate1_idx` (`idOrderType` ASC),
   CONSTRAINT `fk_OrderTemplateTasks_Task1`
     FOREIGN KEY (`idTask`)
     REFERENCES `sod_db`.`Task` (`idTask`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_OrderTemplateTasks_OrderTemplate1`
-    FOREIGN KEY (`idOrderTemplate`)
-    REFERENCES `sod_db`.`OrderTemplate` (`idOrderTemplate`)
+    FOREIGN KEY (`idOrderType`)
+    REFERENCES `sod_db`.`OrderType` (`idOrderType`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`Order`
+-- Table `sod_db`.`Orders`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sod_db`.`Order` (
+CREATE TABLE IF NOT EXISTS `sod_db`.`Orders` (
   `idOrder` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idClient` INT UNSIGNED NOT NULL,
-  `idOrderTemplate` INT UNSIGNED NOT NULL,
+  `idOrderType` INT UNSIGNED NOT NULL,
   `idAddressPickup` INT NULL COMMENT 'Not froreing key ',
   `idAddressDeliver` INT NULL,
   `date` DATETIME NULL,
@@ -297,11 +297,11 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Order` (
   `status` INT NULL,
   `comments` VARCHAR(250) NULL,
   PRIMARY KEY (`idOrder`),
-  INDEX `fk_Order_OrderTemplate1_idx` (`idOrderTemplate` ASC),
+  INDEX `fk_Order_OrderTemplate1_idx` (`idOrderType` ASC),
   INDEX `fk_Order_Clients1_idx` (`idClient` ASC),
   CONSTRAINT `fk_Order_OrderTemplate1`
-    FOREIGN KEY (`idOrderTemplate`)
-    REFERENCES `sod_db`.`OrderTemplate` (`idOrderTemplate`)
+    FOREIGN KEY (`idOrderType`)
+    REFERENCES `sod_db`.`OrderType` (`idOrderType`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Order_Clients1`
@@ -331,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTask` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_OrderTask_Order1`
     FOREIGN KEY (`idOrder`)
-    REFERENCES `sod_db`.`Order` (`idOrder`)
+    REFERENCES `sod_db`.`Orders` (`idOrder`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -512,11 +512,11 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`ServiceSpecs`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceSpecs` (
-  `idServiceTypeSpecs` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idServiceSpecs` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idService` INT UNSIGNED NOT NULL,
   `idSpecs` INT UNSIGNED NOT NULL,
   `comments` VARCHAR(250) NULL,
-  PRIMARY KEY (`idServiceTypeSpecs`),
+  PRIMARY KEY (`idServiceSpecs`),
   INDEX `fk_ServiceSpecs_Specs1_idx` (`idSpecs` ASC),
   INDEX `fk_ServiceSpecs_Service1_idx` (`idService` ASC),
   CONSTRAINT `fk_ServiceSpecs_Specs1`

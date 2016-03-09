@@ -1,9 +1,12 @@
 package com.il.sod.rest.dto.db;
 
-public class PhoneNumberDTO {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.il.sod.rest.dto.GenericDBDTO;
+
+public class PhoneNumberDTO implements GenericDBDTO{
 	private int idPhoneNumber;
 	private String number;
-	private ClientDTO client;
+	private int idClient;
 	public int getIdPhoneNumber() {
 		return idPhoneNumber;
 	}
@@ -16,10 +19,17 @@ public class PhoneNumberDTO {
 	public void setNumber(String number) {
 		this.number = number;
 	}
-	public ClientDTO getClient() {
-		return client;
+	public int getIdClient() {
+		return idClient;
 	}
-	public void setClient(ClientDTO client) {
-		this.client = client;
+	public void setIdClient(int idClient) {
+		this.idClient = idClient;
 	}
+	
+	@Override
+	@JsonIgnore
+	public Integer getParentId() {
+		return idClient;
+	}
+	
 }

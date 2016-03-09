@@ -1,20 +1,29 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 
 /**
  * The persistent class for the Task database table.
- * 
+ *
  */
 @Entity
 @NamedQuery(name="Task.findAll", query="SELECT t FROM Task t")
-public class Task implements Serializable {
+public class Task implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idTask;
 
 	private String description;
@@ -22,19 +31,19 @@ public class Task implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to OrderTask
-	@OneToMany(mappedBy="task")
+	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
 	private List<OrderTask> orderTasks;
 
 	//bi-directional many-to-one association to OrderTemplateTask
-	@OneToMany(mappedBy="task")
-	private List<OrderTemplateTask> orderTemplateTasks;
+	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
+	private List<OrderTypeTask> orderTemplateTasks;
 
 	//bi-directional many-to-one association to ServiceTask
-	@OneToMany(mappedBy="task")
+	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
 	private List<ServiceTask> serviceTasks;
 
 	//bi-directional many-to-one association to ServiceTypeTask
-	@OneToMany(mappedBy="task")
+	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
 	private List<ServiceTypeTask> serviceTypeTasks;
 
 	//bi-directional many-to-one association to TaskType
@@ -91,22 +100,22 @@ public class Task implements Serializable {
 		return orderTask;
 	}
 
-	public List<OrderTemplateTask> getOrderTemplateTasks() {
+	public List<OrderTypeTask> getOrderTemplateTasks() {
 		return this.orderTemplateTasks;
 	}
 
-	public void setOrderTemplateTasks(List<OrderTemplateTask> orderTemplateTasks) {
+	public void setOrderTemplateTasks(List<OrderTypeTask> orderTemplateTasks) {
 		this.orderTemplateTasks = orderTemplateTasks;
 	}
 
-	public OrderTemplateTask addOrderTemplateTask(OrderTemplateTask orderTemplateTask) {
+	public OrderTypeTask addOrderTemplateTask(OrderTypeTask orderTemplateTask) {
 		getOrderTemplateTasks().add(orderTemplateTask);
 		orderTemplateTask.setTask(this);
 
 		return orderTemplateTask;
 	}
 
-	public OrderTemplateTask removeOrderTemplateTask(OrderTemplateTask orderTemplateTask) {
+	public OrderTypeTask removeOrderTemplateTask(OrderTypeTask orderTemplateTask) {
 		getOrderTemplateTasks().remove(orderTemplateTask);
 		orderTemplateTask.setTask(null);
 
@@ -164,5 +173,14 @@ public class Task implements Serializable {
 	public void setTaskType(TaskType taskType) {
 		this.taskType = taskType;
 	}
+	@Override
+	public Integer getId() {
+		return this.idTask;
+	}
 
+	@Override
+	public Task setId(Integer id) {
+		this.idTask = id;
+		return this;
+	}
 }

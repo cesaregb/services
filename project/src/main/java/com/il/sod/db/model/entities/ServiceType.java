@@ -1,21 +1,30 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
  * The persistent class for the ServiceType database table.
- * 
+ *
  */
 @Entity
 @NamedQuery(name="ServiceType.findAll", query="SELECT s FROM ServiceType s")
-public class ServiceType implements Serializable {
+public class ServiceType implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idServiceType;
 
 	private String description;
@@ -28,15 +37,15 @@ public class ServiceType implements Serializable {
 	private Date time;
 
 	//bi-directional many-to-one association to Service
-	@OneToMany(mappedBy="serviceType")
+	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
 	private List<Service> services;
 
 	//bi-directional many-to-one association to ServiceTypeSpec
-	@OneToMany(mappedBy="serviceType")
+	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
 	private List<ServiceTypeSpec> serviceTypeSpecs;
 
 	//bi-directional many-to-one association to ServiceTypeTask
-	@OneToMany(mappedBy="serviceType")
+	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
 	private List<ServiceTypeTask> serviceTypeTasks;
 
 	public ServiceType() {
@@ -147,5 +156,14 @@ public class ServiceType implements Serializable {
 
 		return serviceTypeTask;
 	}
+	@Override
+	public Integer getId() {
+		return this.idServiceType;
+	}
 
+	@Override
+	public ServiceType setId(Integer id) {
+		this.idServiceType = id;
+		return this;
+	}
 }

@@ -12,7 +12,7 @@ public class OrderDTO {
 	private double price;
 	private int status;
 	private ClientDTO client;
-	private OrderTemplateDTO orderTemplate;
+	private OrderTypeDTO orderTemplate;
 	private List<OrderTaskDTO> orderTasks;
 	public int getIdOrder() {
 		return idOrder;
@@ -62,10 +62,10 @@ public class OrderDTO {
 	public void setClient(ClientDTO client) {
 		this.client = client;
 	}
-	public OrderTemplateDTO getOrderTemplate() {
+	public OrderTypeDTO getOrderTemplate() {
 		return orderTemplate;
 	}
-	public void setOrderTemplate(OrderTemplateDTO orderTemplate) {
+	public void setOrderTemplate(OrderTypeDTO orderTemplate) {
 		this.orderTemplate = orderTemplate;
 	}
 	public List<OrderTaskDTO> getOrderTasks() {

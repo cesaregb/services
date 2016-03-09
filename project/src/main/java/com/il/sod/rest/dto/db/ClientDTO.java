@@ -5,15 +5,17 @@ import java.util.List;
 public class ClientDTO {
 	private int idClient;
 	private String email;
-	private String lasName;
+	private String lastName;
 	private String name;
 	private String password;
 	private String phoneNumber;
 	private String twitter;
-	private List<AccessKeyDTO> accessKeys;
+	private List<Integer> orders;
+//	private List<AccessKeyDTO> accessKeys;
 	private List<AddressDTO> addresses;
-	private List<OrderDTO> orders;
 	private List<PhoneNumberDTO> phoneNumbers;
+	
+	
 	public int getIdClient() {
 		return idClient;
 	}
@@ -26,11 +28,11 @@ public class ClientDTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getLasName() {
-		return lasName;
+	public String getLastName() {
+		return lastName;
 	}
-	public void setLasName(String lasName) {
-		this.lasName = lasName;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 	public String getName() {
 		return name;
@@ -56,23 +58,17 @@ public class ClientDTO {
 	public void setTwitter(String twitter) {
 		this.twitter = twitter;
 	}
-	public List<AccessKeyDTO> getAccessKeys() {
-		return accessKeys;
+	public List<Integer> getOrders() {
+		return orders;
 	}
-	public void setAccessKeys(List<AccessKeyDTO> accessKeys) {
-		this.accessKeys = accessKeys;
+	public void setOrders(List<Integer> orders) {
+		this.orders = orders;
 	}
 	public List<AddressDTO> getAddresses() {
 		return addresses;
 	}
 	public void setAddresses(List<AddressDTO> addresses) {
 		this.addresses = addresses;
-	}
-	public List<OrderDTO> getOrders() {
-		return orders;
-	}
-	public void setOrders(List<OrderDTO> orders) {
-		this.orders = orders;
 	}
 	public List<PhoneNumberDTO> getPhoneNumbers() {
 		return phoneNumbers;

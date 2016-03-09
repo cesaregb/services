@@ -1,20 +1,27 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 
 /**
  * The persistent class for the TaskType database table.
- * 
+ *
  */
 @Entity
 @NamedQuery(name="TaskType.findAll", query="SELECT t FROM TaskType t")
-public class TaskType implements Serializable {
+public class TaskType implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idTaskType;
 
 	private String description;
@@ -22,7 +29,7 @@ public class TaskType implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to Task
-	@OneToMany(mappedBy="taskType")
+	@OneToMany(mappedBy="taskType", fetch=FetchType.EAGER)
 	private List<Task> tasks;
 
 	public TaskType() {
@@ -73,5 +80,14 @@ public class TaskType implements Serializable {
 
 		return task;
 	}
+	@Override
+	public Integer getId() {
+		return this.idTaskType;
+	}
 
+	@Override
+	public TaskType setId(Integer id) {
+		this.idTaskType = id;
+		return this;
+	}
 }

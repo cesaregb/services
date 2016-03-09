@@ -1,21 +1,29 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
  * The persistent class for the SocialNetworks database table.
- * 
+ *
  */
 @Entity
 @Table(name="SocialNetworks")
 @NamedQuery(name="SocialNetwork.findAll", query="SELECT s FROM SocialNetwork s")
-public class SocialNetwork implements Serializable {
+public class SocialNetwork implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idSocialNetworks;
 
 	private String domain;
@@ -23,7 +31,7 @@ public class SocialNetwork implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to AccessKey
-	@OneToMany(mappedBy="socialNetwork")
+	@OneToMany(mappedBy="socialNetwork", fetch=FetchType.EAGER)
 	private List<AccessKey> accessKeys;
 
 	public SocialNetwork() {
@@ -74,5 +82,14 @@ public class SocialNetwork implements Serializable {
 
 		return accessKey;
 	}
+	@Override
+	public Integer getId() {
+		return this.idSocialNetworks;
+	}
 
+	@Override
+	public SocialNetwork setId(Integer id) {
+		this.idSocialNetworks = id;
+		return this;
+	}
 }

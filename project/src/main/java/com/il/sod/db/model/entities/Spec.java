@@ -1,21 +1,31 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
  * The persistent class for the Specs database table.
- * 
+ *
  */
 @Entity
 @Table(name="Specs")
 @NamedQuery(name="Spec.findAll", query="SELECT s FROM Spec s")
-public class Spec implements Serializable {
+public class Spec implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idSpecs;
 
 	private String description;
@@ -23,11 +33,11 @@ public class Spec implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to ServiceSpec
-	@OneToMany(mappedBy="spec")
+	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER)
 	private List<ServiceSpec> serviceSpecs;
 
 	//bi-directional many-to-one association to ServiceTypeSpec
-	@OneToMany(mappedBy="spec")
+	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER)
 	private List<ServiceTypeSpec> serviceTypeSpecs;
 
 	//bi-directional many-to-one association to ProductType
@@ -113,5 +123,14 @@ public class Spec implements Serializable {
 	public void setProductType(ProductType productType) {
 		this.productType = productType;
 	}
+	@Override
+	public Integer getId() {
+		return this.idSpecs;
+	}
 
+	@Override
+	public Spec setId(Integer id) {
+		this.idSpecs = id;
+		return this;
+	}
 }

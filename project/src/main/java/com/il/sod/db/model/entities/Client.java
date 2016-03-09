@@ -1,26 +1,37 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 /**
  * The persistent class for the Clients database table.
- * 
+ *
  */
 @Entity
 @Table(name="Clients")
 @NamedQuery(name="Client.findAll", query="SELECT c FROM Client c")
-public class Client implements Serializable {
+public class Client implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idClient;
 
 	private String email;
 
-	private String lasName;
+	private String lastName;
 
 	private String name;
 
@@ -31,20 +42,22 @@ public class Client implements Serializable {
 	private String twitter;
 
 	//bi-directional many-to-one association to AccessKey
-	@OneToMany(mappedBy="client")
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	private List<AccessKey> accessKeys;
 
 	//bi-directional many-to-one association to Address
-	@OneToMany(mappedBy="client")
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference
 	private List<Address> addresses;
 
-	//bi-directional many-to-one association to Order
-	@OneToMany(mappedBy="client")
-	private List<Order> orders;
-
 	//bi-directional many-to-one association to PhoneNumber
-	@OneToMany(mappedBy="client")
+//	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	private List<PhoneNumber> phoneNumbers;
+
+	//bi-directional many-to-one association to Order
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	private List<Order> orders;
 
 	public Client() {
 	}
@@ -65,12 +78,12 @@ public class Client implements Serializable {
 		this.email = email;
 	}
 
-	public String getLasName() {
-		return this.lasName;
+	public String getLastName() {
+		return this.lastName;
 	}
 
-	public void setLasName(String lasName) {
-		this.lasName = lasName;
+	public void setLastName(String lasName) {
+		this.lastName = lasName;
 	}
 
 	public String getName() {
@@ -149,28 +162,6 @@ public class Client implements Serializable {
 		return address;
 	}
 
-	public List<Order> getOrders() {
-		return this.orders;
-	}
-
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
-	}
-
-	public Order addOrder(Order order) {
-		getOrders().add(order);
-		order.setClient(this);
-
-		return order;
-	}
-
-	public Order removeOrder(Order order) {
-		getOrders().remove(order);
-		order.setClient(null);
-
-		return order;
-	}
-
 	public List<PhoneNumber> getPhoneNumbers() {
 		return this.phoneNumbers;
 	}
@@ -193,4 +184,35 @@ public class Client implements Serializable {
 		return phoneNumber;
 	}
 
+	public List<Order> getOrders() {
+		return this.orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+	public Order addOrder(Order order) {
+		getOrders().add(order);
+		order.setClient(this);
+
+		return order;
+	}
+
+	public Order removeOrder(Order order) {
+		getOrders().remove(order);
+		order.setClient(null);
+
+		return order;
+	}
+	@Override
+	public Integer getId() {
+		return this.idClient;
+	}
+
+	@Override
+	public Client setId(Integer id) {
+		this.idClient = id;
+		return this;
+	}
 }

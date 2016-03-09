@@ -1,20 +1,29 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 
 /**
  * The persistent class for the Asset database table.
- * 
+ *
  */
 @Entity
 @NamedQuery(name="Asset.findAll", query="SELECT a FROM Asset a")
-public class Asset implements Serializable {
+public class Asset implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idAsset;
 
 	private String description;
@@ -29,11 +38,11 @@ public class Asset implements Serializable {
 	private AssetType assetType;
 
 	//bi-directional many-to-one association to AssetTaskOrder
-	@OneToMany(mappedBy="asset")
+	@OneToMany(mappedBy="asset", fetch=FetchType.EAGER)
 	private List<AssetTaskOrder> assetTaskOrders;
 
 	//bi-directional many-to-one association to AssetTaskService
-	@OneToMany(mappedBy="asset")
+	@OneToMany(mappedBy="asset", fetch=FetchType.EAGER)
 	private List<AssetTaskService> assetTaskServices;
 
 	public Asset() {
@@ -122,5 +131,14 @@ public class Asset implements Serializable {
 
 		return assetTaskService;
 	}
+	@Override
+	public Integer getId() {
+		return this.idAsset;
+	}
 
+	@Override
+	public Asset setId(Integer id) {
+		this.idAsset = id;
+		return this;
+	}
 }

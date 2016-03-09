@@ -8,6 +8,11 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.il.sod.config.jersey.AuthenticationFilter;
+import com.il.sod.config.jersey.CORSResponseFilter;
+import com.il.sod.config.jersey.CustomLoggingFilter;
+import com.il.sod.config.jersey.JacksonObjectMapperProvider;
 import com.il.sod.rest.util.PropertyHandler;
 
 import io.swagger.jaxrs.config.BeanConfig;
@@ -22,12 +27,16 @@ public class ApplicationConfig extends ResourceConfig {
 	public static final String PARAM_PORT = "rest.api.port"; // 8080
     
 	public ApplicationConfig() {
-		packages("io.swagger.jaxrs.listing,"
-        		+ "com.il.sod.exception,"
-        		+ "com.il.sod.rest.api");
         register(LoggingFilter.class);
         register(CORSResponseFilter.class);
         register(AuthenticationFilter.class);
+        register(CustomLoggingFilter.class);
+        register(JacksonObjectMapperProvider.class);
+        register(JacksonJaxbJsonProvider.class);
+        packages("io.swagger.jaxrs.listing,"
+        		+ "com.il.sod.exception,"
+        		+ "com.il.sod.rest.api");
+        
     }
 	
 	/* Swagger configuratoin */
@@ -46,5 +55,7 @@ public class ApplicationConfig extends ResourceConfig {
 		beanConfig.setDescription("Information");
 		beanConfig.setResourcePackage("com.il.sod.rest.api");
 		beanConfig.setScan(true);
+		
+//		Json.mapper().setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 	}
 }

@@ -1,19 +1,27 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 /**
  * The persistent class for the Address database table.
- * 
+ *
  */
 @Entity
 @NamedQuery(name="Address.findAll", query="SELECT a FROM Address a")
-public class Address implements Serializable {
+public class Address implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idAddress;
 
 	private String address;
@@ -29,6 +37,7 @@ public class Address implements Serializable {
 	//bi-directional many-to-one association to Client
 	@ManyToOne
 	@JoinColumn(name="idClient")
+	@JsonBackReference
 	private Client client;
 
 	public Address() {
@@ -89,5 +98,14 @@ public class Address implements Serializable {
 	public void setClient(Client client) {
 		this.client = client;
 	}
+	@Override
+	public Integer getId() {
+		return this.idAddress;
+	}
 
+	@Override
+	public Address setId(Integer id) {
+		this.idAddress = id;
+		return this;
+	}
 }

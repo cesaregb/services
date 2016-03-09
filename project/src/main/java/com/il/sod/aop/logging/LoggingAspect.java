@@ -20,7 +20,6 @@ public class LoggingAspect {
 	
 	@Pointcut("within(com.il.sod.rest.api.impl..*) || within(com.il.sod.services..*)")
 	public void loggingPointcut() {
-		System.out.println("====== Within the pointcut");
 	}
 
 	@AfterThrowing(pointcut = "loggingPointcut()", throwing = "e")
@@ -31,20 +30,20 @@ public class LoggingAspect {
 				e.getCause());
 	}
 
-	@After("execution(* com.il.sod.rest.api.impl.Health.*(..))")
+	@After("execution(* com.il.sod.rest.api.Health.*(..))")
 	public void log(JoinPoint point) {
 		LOGGER.info("====>" + point.getSignature().getName() + " called...");
 	}
 	
 	@Around("loggingPointcut()")
 	public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-		System.out.println("****** Into the logAround method!!!!!");
-		
+		LOGGER.info("************* AROUND CALL IN THE API **********");
 		LOGGER.info("Enter: {}.{}() with argument[s] = {}", 
 				joinPoint.getSignature().getDeclaringTypeName(),
 				joinPoint.getSignature().getName(), 
 				Arrays.toString(joinPoint.getArgs()));
 		if (LOGGER.isDebugEnabled()) {
+			// TODO move content in here!!  
 		}
 		try {
 			Object result = joinPoint.proceed();
@@ -62,7 +61,10 @@ public class LoggingAspect {
 					joinPoint.getSignature().getName());
 
 			throw e;
+		}finally{
+			LOGGER.info("************* END AROUND CALL IN THE API **********");
 		}
+		
 	}
 
 }

@@ -1,21 +1,34 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 
 /**
- * The persistent class for the Order database table.
- * 
+ * The persistent class for the Orders database table.
+ *
  */
 @Entity
+@Table(name="Orders")
 @NamedQuery(name="Order.findAll", query="SELECT o FROM Order o")
-public class Order implements Serializable {
+public class Order implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idOrder;
 
 	private String comments;
@@ -31,19 +44,19 @@ public class Order implements Serializable {
 
 	private int status;
 
+	//bi-directional many-to-one association to OrderTask
+	@OneToMany(mappedBy="order", fetch=FetchType.EAGER)
+	private List<OrderTask> orderTasks;
+
 	//bi-directional many-to-one association to Client
 	@ManyToOne
 	@JoinColumn(name="idClient")
 	private Client client;
 
-	//bi-directional many-to-one association to OrderTemplate
+	//bi-directional many-to-one association to OrderType
 	@ManyToOne
-	@JoinColumn(name="idOrderTemplate")
-	private OrderTemplate orderTemplate;
-
-	//bi-directional many-to-one association to OrderTask
-	@OneToMany(mappedBy="order")
-	private List<OrderTask> orderTasks;
+	@JoinColumn(name="idOrderType")
+	private OrderType orderType;
 
 	public Order() {
 	}
@@ -52,8 +65,9 @@ public class Order implements Serializable {
 		return this.idOrder;
 	}
 
-	public void setIdOrder(int idOrder) {
+	public Order setIdOrder(int idOrder) {
 		this.idOrder = idOrder;
+		return this;
 	}
 
 	public String getComments() {
@@ -104,22 +118,6 @@ public class Order implements Serializable {
 		this.status = status;
 	}
 
-	public Client getClient() {
-		return this.client;
-	}
-
-	public void setClient(Client client) {
-		this.client = client;
-	}
-
-	public OrderTemplate getOrderTemplate() {
-		return this.orderTemplate;
-	}
-
-	public void setOrderTemplate(OrderTemplate orderTemplate) {
-		this.orderTemplate = orderTemplate;
-	}
-
 	public List<OrderTask> getOrderTasks() {
 		return this.orderTasks;
 	}
@@ -142,4 +140,29 @@ public class Order implements Serializable {
 		return orderTask;
 	}
 
+	public Client getClient() {
+		return this.client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	public OrderType getOrderType() {
+		return this.orderType;
+	}
+
+	public void setOrderType(OrderType orderType) {
+		this.orderType = orderType;
+	}
+	@Override
+	public Integer getId() {
+		return this.idOrder;
+	}
+
+	@Override
+	public Order setId(Integer id) {
+		this.idOrder = id;
+		return this;
+	}
 }

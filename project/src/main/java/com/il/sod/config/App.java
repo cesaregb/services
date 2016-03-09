@@ -16,7 +16,6 @@ public class App {
 	final static Logger LOGGER = LoggerFactory.getLogger(App.class);
 	
 	public static void main(String[] args) {
-		
 		Integer port = Integer.valueOf(PropertyHandler.getInstance().getValue(ApplicationConfig.PARAM_PORT));
 		Server server = new Server(port);
 

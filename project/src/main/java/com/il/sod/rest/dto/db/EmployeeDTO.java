@@ -1,7 +1,5 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.List;
-
 public class EmployeeDTO {
 	private int idEmployee;
 	private String lastname;
@@ -9,9 +7,8 @@ public class EmployeeDTO {
 	private String password;
 	private int status;
 	private String username;
-	private EmployeeTypeDTO employeeType;
-	private List<EmployeeTaskOrderDTO> employeeTaskOrders;
-	private List<EmployeeTaskServiceDTO> employeeTaskServices;
+	private Integer employeeType;
+	
 	public int getIdEmployee() {
 		return idEmployee;
 	}
@@ -48,23 +45,10 @@ public class EmployeeDTO {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public EmployeeTypeDTO getEmployeeType() {
+	public Integer getEmployeeType() {
 		return employeeType;
 	}
-	public void setEmployeeType(EmployeeTypeDTO employeeType) {
+	public void setEmployeeType(Integer employeeType) {
 		this.employeeType = employeeType;
 	}
-	public List<EmployeeTaskOrderDTO> getEmployeeTaskOrders() {
-		return employeeTaskOrders;
-	}
-	public void setEmployeeTaskOrders(List<EmployeeTaskOrderDTO> employeeTaskOrders) {
-		this.employeeTaskOrders = employeeTaskOrders;
-	}
-	public List<EmployeeTaskServiceDTO> getEmployeeTaskServices() {
-		return employeeTaskServices;
-	}
-	public void setEmployeeTaskServices(List<EmployeeTaskServiceDTO> employeeTaskServices) {
-		this.employeeTaskServices = employeeTaskServices;
-	}
-
 }

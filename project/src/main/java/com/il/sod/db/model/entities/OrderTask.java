@@ -1,21 +1,32 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
  * The persistent class for the OrderTask database table.
- * 
+ *
  */
 @Entity
 @NamedQuery(name="OrderTask.findAll", query="SELECT o FROM OrderTask o")
-public class OrderTask implements Serializable {
+public class OrderTask implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idOrderTask;
 
 	private String comments;
@@ -24,22 +35,22 @@ public class OrderTask implements Serializable {
 	private Date time;
 
 	//bi-directional many-to-one association to AssetTaskOrder
-	@OneToMany(mappedBy="orderTask")
+	@OneToMany(mappedBy="orderTask", fetch=FetchType.EAGER)
 	private List<AssetTaskOrder> assetTaskOrders;
 
 	//bi-directional many-to-one association to EmployeeTaskOrder
-	@OneToMany(mappedBy="orderTask")
+	@OneToMany(mappedBy="orderTask", fetch=FetchType.EAGER)
 	private List<EmployeeTaskOrder> employeeTaskOrders;
-
-	//bi-directional many-to-one association to Order
-	@ManyToOne
-	@JoinColumn(name="idOrder")
-	private Order order;
 
 	//bi-directional many-to-one association to Task
 	@ManyToOne
 	@JoinColumn(name="idTask")
 	private Task task;
+
+	//bi-directional many-to-one association to Order
+	@ManyToOne
+	@JoinColumn(name="idOrder")
+	private Order order;
 
 	public OrderTask() {
 	}
@@ -112,14 +123,6 @@ public class OrderTask implements Serializable {
 		return employeeTaskOrder;
 	}
 
-	public Order getOrder() {
-		return this.order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
-	}
-
 	public Task getTask() {
 		return this.task;
 	}
@@ -128,4 +131,21 @@ public class OrderTask implements Serializable {
 		this.task = task;
 	}
 
+	public Order getOrder() {
+		return this.order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+	@Override
+	public Integer getId() {
+		return this.idOrderTask;
+	}
+
+	@Override
+	public OrderTask setId(Integer id) {
+		this.idOrderTask = id;
+		return this;
+	}
 }
