@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/employee-task-services")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/employee-task-services", tags = { "service" })
+// @Api(value = "/employee-task-services", tags = { "service" })
 public class EmployeeTaskServicesService extends AbstractServiceMutations {
 	@Autowired
 	EmployeeTaskServiceRepository employeeTaskServiceRepository;

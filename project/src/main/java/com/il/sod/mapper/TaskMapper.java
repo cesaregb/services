@@ -24,7 +24,7 @@ public enum TaskMapper {
 		converterFactory.registerConverter("taskListConverter", new TaskListConverter());
 		
 		BaseMapper.MAPPER_FACTORY.classMap(TaskDTO.class, Task.class)
-			.field("taskTypeId", "taskType.idTaskType")
+			.field("taskType", "taskType.idTaskType")
 			.byDefault()
 			.register();
 		

@@ -1,7 +1,5 @@
 package com.il.sod.rest.dto.db;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class EmployeeDTO {
 	private int idEmployee;
 	private String lastname;
@@ -9,7 +7,7 @@ public class EmployeeDTO {
 	private String password;
 	private int status;
 	private String username;
-	private int employeeTypeId;
+	private Integer employeeType;
 	
 	public int getIdEmployee() {
 		return idEmployee;
@@ -47,19 +45,10 @@ public class EmployeeDTO {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public int getEmployeeTypeId() {
-		return employeeTypeId;
+	public Integer getEmployeeType() {
+		return employeeType;
 	}
-	public void setEmployeeTypeId(int employeeTypeId) {
-		this.employeeTypeId = employeeTypeId;
-	}
-	
-	public EmployeeDTO setId(int id){
-		this.idEmployee = id;
-		return this;
-	}
-	@JsonIgnore
-	public Integer getId(){
-		return this.idEmployee;
+	public void setEmployeeType(Integer employeeType) {
+		this.employeeType = employeeType;
 	}
 }

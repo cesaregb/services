@@ -34,7 +34,7 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/asset")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/asset", tags = { "generic" })
+@Api(value = "/asset", tags = { "asset" })
 public class AssetService extends AbstractServiceMutations {
 	@Autowired
 	AssetRepository assetRepository;
@@ -48,14 +48,10 @@ public class AssetService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveAsset(AssetDTO dto) throws SODAPIException {
-		try {
-			Asset entity = AssetMapper.INSTANCE.map(dto);
-			this.saveEntity(assetRepository, entity);
-			dto = AssetMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		Asset entity = AssetMapper.INSTANCE.map(dto);
+		this.saveEntity(assetRepository, entity);
+		dto = AssetMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@POST
@@ -64,23 +60,11 @@ public class AssetService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateAsset(AssetDTO dto) throws SODAPIException {
-		try {
-			Asset entity = AssetMapper.INSTANCE.map(dto);
-			this.updateEntity(assetRepository, entity);
-			dto = AssetMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		Asset entity = AssetMapper.INSTANCE.map(dto);
+		this.updateEntity(assetRepository, entity);
+		dto = AssetMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
-
-//	private AssetType getAssetType(Asset entity, int idAssetType) {
-//		entity.setAssetType(getAssetType(entity, dto.getAssetTypeId()));
-//		AssetType tt = this.getEntity(assetTypeRepository, idAssetType);
-//		tt.addAsset(entity);
-//		return tt;
-//	}
-
 
 	@DELETE
 	@ApiOperation(value = "Create Asset", response = AssetDTO.class)
@@ -88,15 +72,10 @@ public class AssetService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteAsset(AssetDTO dto) throws SODAPIException {
-		try {
-			Asset entity = AssetMapper.INSTANCE.map(dto);
-			this.deleteEntity(assetRepository, entity.getIdAsset());
-			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Asset deleted"),
-					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		Asset entity = AssetMapper.INSTANCE.map(dto);
+		this.deleteEntity(assetRepository, entity.getIdAsset());
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Asset deleted"),
+				Response.Status.OK);
 	}
 
 	@GET

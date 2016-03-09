@@ -1,15 +1,11 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.List;
-
 public class AssetDTO {
 	private int idAsset;
 	private String description;
 	private String name;
 	private int status;
-	private AssetTypeDTO assetType;
-	private List<AssetTaskOrderDTO> assetTaskOrders;
-	private List<AssetTaskServiceDTO> assetTaskServices;
+	private Integer assetType;
 	public int getIdAsset() {
 		return idAsset;
 	}
@@ -34,23 +30,10 @@ public class AssetDTO {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public AssetTypeDTO getAssetType() {
+	public Integer getAssetType() {
 		return assetType;
 	}
-	public void setAssetType(AssetTypeDTO assetType) {
+	public void setAssetType(Integer assetType) {
 		this.assetType = assetType;
 	}
-	public List<AssetTaskOrderDTO> getAssetTaskOrders() {
-		return assetTaskOrders;
-	}
-	public void setAssetTaskOrders(List<AssetTaskOrderDTO> assetTaskOrders) {
-		this.assetTaskOrders = assetTaskOrders;
-	}
-	public List<AssetTaskServiceDTO> getAssetTaskServices() {
-		return assetTaskServices;
-	}
-	public void setAssetTaskServices(List<AssetTaskServiceDTO> assetTaskServices) {
-		this.assetTaskServices = assetTaskServices;
-	}
-
 }

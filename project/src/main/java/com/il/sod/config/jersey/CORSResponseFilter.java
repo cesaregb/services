@@ -1,4 +1,4 @@
-package com.il.sod.config;
+package com.il.sod.config.jersey;
 
 import java.io.IOException;
 

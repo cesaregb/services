@@ -3,17 +3,20 @@ package com.il.sod.exception;
 public class SODAPIException extends Exception {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	public static final Integer BAD_REQUEST_CODE = 1;
+	
+	Integer code = 0;
 	Integer status = 500; // default code server error 
 	
-	public SODAPIException(Integer status, String message) {
+	public SODAPIException(Integer code, String message) {
 		super(message);
-		this.status = status;
+		this.code = code;
 	}
 	
-	public SODAPIException(Integer status, String message, Exception e) {
+	public SODAPIException(Integer code, String message, Exception e) {
 		super(message, e);
-		this.status = status;
+		this.code = code;
 	}
 	
 	public SODAPIException(String message) {
@@ -35,5 +38,13 @@ public class SODAPIException extends Exception {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Integer getCode() {
+		return code;
+	}
+
+	public void setCode(Integer code) {
+		this.code = code;
 	}			
 }

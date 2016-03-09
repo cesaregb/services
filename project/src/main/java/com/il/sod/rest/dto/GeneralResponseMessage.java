@@ -26,7 +26,7 @@ public class GeneralResponseMessage {
 	}
 	
 	public GeneralResponseMessage error(){
-		this.code = 400;
+		this.code = 411;
 		this.message = GENERIC_MESSAGE_ERROR;
 		this.status = false;
 		return this;

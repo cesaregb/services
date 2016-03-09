@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/asset-task-order")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/asset-task-order", tags = { "order" })
+//@Api(value = "/asset-task-order", tags = { "order" })
 public class AssetTaskOrderService extends AbstractServiceMutations {
 	@Autowired
 	AssetTaskOrderRepository assetTaskOrderRepository;

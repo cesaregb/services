@@ -23,7 +23,6 @@ import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.EmployeeTaskOrderDTO;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -32,7 +31,7 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/employee-task-order")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/employee-task-order", tags = { "order" })
+// @Api(value = "/employee-task-order", tags = { "order" })
 public class EmployeeTaskOrderService extends AbstractServiceMutations {
 	@Autowired
 	EmployeeTaskOrderRepository employeeTaskOrderRepository;

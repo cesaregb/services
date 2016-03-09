@@ -11,11 +11,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import org.glassfish.jersey.message.internal.MessageBodyProviderNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 
+@Component
 @Provider
 public class APIMapper extends GeneralMapper implements ExceptionMapper<Exception> {
 	final static Logger LOGGER = LoggerFactory.getLogger(APIMapper.class);
@@ -35,17 +41,55 @@ public class APIMapper extends GeneralMapper implements ExceptionMapper<Exceptio
 		LOGGER.error(errorMessage);
 		
 		if (ex instanceof SODAPIException) {
-			return Response.
-					status(((SODAPIException) ex).getStatus()).
-					entity(GeneralResponseMessage.getInstance().error().setMessage(ex.getMessage())).
+			if (((SODAPIException) ex).getCode() == SODAPIException.BAD_REQUEST_CODE){
+				return Response.
+						status(Response.Status.BAD_REQUEST).
+						entity(GeneralResponseMessage.getInstance().error().setMessage(ex.getMessage())).
+						type(MediaType.APPLICATION_JSON).
+						build();
+			}else{
+				return Response.
+						status(((SODAPIException) ex).getStatus()).
+						entity(GeneralResponseMessage.getInstance().error().setMessage(ex.getMessage())).
+						type(MediaType.APPLICATION_JSON).
+						build();
+			}
+		}else if (ex instanceof JsonMappingException) {
+        	return Response.
+					status(Response.Status.BAD_REQUEST).
+					entity(GeneralResponseMessage.getInstance().error().setMessage("Error parsing json")).
 					type(MediaType.APPLICATION_JSON).
 					build();
+        }else if(ex instanceof JsonParseException){
+        	return Response.
+					status(Response.Status.BAD_REQUEST).
+					entity(GeneralResponseMessage.getInstance().error().setMessage("Error parsing json")).
+					type(MediaType.APPLICATION_JSON).
+					build();
+        }else if(ex instanceof MessageBodyProviderNotFoundException){
+        	return Response.
+        			status(Response.Status.BAD_REQUEST).
+        			entity(GeneralResponseMessage.getInstance().error().setMessage("Error parsing json")).
+        			type(MediaType.APPLICATION_JSON).
+        			build();
         }else if (ex instanceof NotFoundException) {
         	return Response.
-					status(Response.Status.NOT_FOUND).
-					entity(GeneralResponseMessage.getInstance().error().setMessage(ex.getMessage())).
-					type(MediaType.APPLICATION_JSON).
-					build();
+        			status(Response.Status.NOT_FOUND).
+        			entity(GeneralResponseMessage.getInstance().error().setMessage("Resource not found")).
+        			type(MediaType.APPLICATION_JSON).
+        			build();
+        }else if (ex instanceof UnrecognizedPropertyException) {
+        	return Response.
+        			status(Response.Status.BAD_REQUEST).
+        			entity(GeneralResponseMessage.getInstance().error().setMessage("Error parsing json")).
+        			type(MediaType.APPLICATION_JSON).
+        			build();
+        }else if (ex instanceof NotFoundException) {
+        	return Response.
+        			status(Response.Status.NOT_FOUND).
+        			entity(GeneralResponseMessage.getInstance().error().setMessage(ex.getMessage())).
+        			type(MediaType.APPLICATION_JSON).
+        			build();
         }else{
         	return Response.
 					status(Response.Status.SERVICE_UNAVAILABLE).

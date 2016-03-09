@@ -1,5 +1,21 @@
 # DB 
+db.url=jdbc:mysql://lavanderia.cbipceqbp2ux.us-west-2.rds.amazonaws.com:3306/sod_db
 Amazon 
 	sod_user/Welcome1
 	db_name: sod_db
 	
+#WEB
+http://ec2-52-37-88-203.us-west-2.compute.amazonaws.com:8080/swagger-ui/
+
+#Install java in EC2
+http://tecadmin.net/install-java-8-on-centos-rhel-and-fedora/
+
+#API Info
+
+@SwaggerDefinition(tags = { @Tag(name = "clients", description = "Client Layer services"),
+		@Tag(name = "asset", description = "Assets Services ADMIN"),
+		@Tag(name = "employee", description = "Employee Services ADMIN"),
+		@Tag(name = "task", description = "Task Services ADMIN"),
+		@Tag(name = "order", description = "Order Layer Services"),
+		@Tag(name = "service", description = "Service Layer Services"),
+		@Tag(name = "health", description = "Validate API + MODEL Healt") })

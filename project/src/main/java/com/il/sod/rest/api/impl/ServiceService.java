@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import com.il.sod.db.model.entities.Service;
 import com.il.sod.db.model.repositories.ServiceRepository;
 import com.il.sod.exception.SODAPIException;
+import com.il.sod.mapper.ServiceMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ServiceDTO;
@@ -36,7 +37,7 @@ import io.swagger.annotations.ApiResponses;
 public class ServiceService extends AbstractServiceMutations {
 	@Autowired
 	ServiceRepository serviceRepository;
-	
+
 	@PUT
 	@ApiOperation(value = "Create Service Type", response = ServiceDTO.class)
 	@ApiResponses(value = {
@@ -44,15 +45,15 @@ public class ServiceService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveService(ServiceDTO dto) throws SODAPIException {
 		try {
-			Service entity = converter.map(dto, Service.class);
+			Service entity = ServiceMapper.INSTANCE.map(dto);
 			this.saveEntity(serviceRepository, entity);
-			dto = converter.map(entity, ServiceDTO.class);
+			dto = ServiceMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@POST
 	@ApiOperation(value = "Update Service Type", response = ServiceDTO.class)
 	@ApiResponses(value = {
@@ -60,15 +61,15 @@ public class ServiceService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateService(ServiceDTO dto) throws SODAPIException {
 		try {
-			Service entity = converter.map(dto, Service.class);
+			Service entity = ServiceMapper.INSTANCE.map(dto);
 			this.updateEntity(serviceRepository, entity);
-			dto = converter.map(entity, ServiceDTO.class);
+			dto = ServiceMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}
 	}
-	
+
 	@DELETE
 	@ApiOperation(value = "Create Service Type", response = ServiceDTO.class)
 	@ApiResponses(value = {
@@ -76,7 +77,7 @@ public class ServiceService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteService(ServiceDTO dto) throws SODAPIException {
 		try {
-			Service entity = converter.map(dto, Service.class);
+			Service entity = ServiceMapper.INSTANCE.map(dto);
 			this.deleteEntity(serviceRepository, entity.getIdService());
 			return castEntityAsResponse(
 					GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
@@ -94,7 +95,7 @@ public class ServiceService extends AbstractServiceMutations {
 	public Response getServiceList() throws SODAPIException {
 		List<Service> rentityList = this.getEntityList(serviceRepository);
 		List<ServiceDTO> list = rentityList.stream().map((i) -> {
-			ServiceDTO dto = converter.map(i, ServiceDTO.class);
+			ServiceDTO dto = ServiceMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);

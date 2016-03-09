@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import com.il.sod.db.model.entities.EmployeeType;
 import com.il.sod.db.model.repositories.EmployeeTypeRepository;
 import com.il.sod.exception.SODAPIException;
+import com.il.sod.mapper.EmployeeMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.EmployeeTypeDTO;
@@ -32,7 +33,7 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/employee-type")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/employee-type", tags = { "generic" })
+@Api(value = "/employee-type", tags = { "employee" })
 public class EmployeeTypeService extends AbstractServiceMutations {
 	@Autowired
 	EmployeeTypeRepository employeeTypeRepository;
@@ -44,9 +45,9 @@ public class EmployeeTypeService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveEmployeeType(EmployeeTypeDTO dto) throws SODAPIException {
 		try {
-			EmployeeType entity = converter.map(dto, EmployeeType.class);
+			EmployeeType entity = EmployeeMapper.INSTANCE.map(dto);
 			this.saveEntity(employeeTypeRepository, entity);
-			dto = converter.map(entity, EmployeeTypeDTO.class);
+			dto = EmployeeMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
@@ -59,14 +60,10 @@ public class EmployeeTypeService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateEmployeeType(EmployeeTypeDTO dto) throws SODAPIException {
-		try {
-			EmployeeType entity = converter.map(dto, EmployeeType.class);
-			this.updateEntity(employeeTypeRepository, entity);
-			dto = converter.map(entity, EmployeeTypeDTO.class);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		EmployeeType entity = EmployeeMapper.INSTANCE.map(dto);
+		this.updateEntity(employeeTypeRepository, entity);
+		dto = EmployeeMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@DELETE
@@ -75,15 +72,10 @@ public class EmployeeTypeService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteEmployeeType(EmployeeTypeDTO dto) throws SODAPIException {
-		try {
-			EmployeeType entity = converter.map(dto, EmployeeType.class);
-			this.deleteEntity(employeeTypeRepository, entity.getIdEmployeeType());
-			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Employee deleted"),
-					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		EmployeeType entity = EmployeeMapper.INSTANCE.map(dto);
+		this.deleteEntity(employeeTypeRepository, entity.getIdEmployeeType());
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Employee deleted"),
+				Response.Status.OK);
 	}
 
 	@GET
@@ -94,7 +86,7 @@ public class EmployeeTypeService extends AbstractServiceMutations {
 	public Response getEmployeeTypeList() throws SODAPIException {
 		List<EmployeeType> rentityList = this.getEntityList(employeeTypeRepository);
 		List<EmployeeTypeDTO> list = rentityList.stream().map((i) -> {
-			EmployeeTypeDTO dto = converter.map(i, EmployeeTypeDTO.class);
+			EmployeeTypeDTO dto = EmployeeMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);

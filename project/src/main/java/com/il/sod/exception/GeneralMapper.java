@@ -21,6 +21,7 @@ public class GeneralMapper  {
             // Ignore exceptions around getting the entity
         }
 
+        message.append("*** ERROR *** \n");
         message.append("Uncaught REST API exception:\n");
         message.append("URL: ").append(getOriginalURL(req)).append("\n");
         message.append("Method: ").append(req.getMethod()).append("\n");

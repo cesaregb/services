@@ -34,7 +34,7 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/product")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/product", tags = { "generic" })
+// @Api(value = "/product", tags = { "generic" })
 public class ProductService extends AbstractServiceMutations {
 	@Autowired
 	ProductRepository productRepository;
