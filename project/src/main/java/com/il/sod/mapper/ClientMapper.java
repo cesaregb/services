@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import com.il.sod.db.model.entities.Address;
 import com.il.sod.db.model.entities.Client;
-import com.il.sod.db.model.entities.Order;
 import com.il.sod.db.model.entities.PhoneNumber;
 import com.il.sod.rest.dto.db.AddressDTO;
 import com.il.sod.rest.dto.db.ClientDTO;
@@ -50,6 +49,11 @@ public enum ClientMapper {
 	public Client map(ClientDTO dto) {
 		return this.mapperFacade.map(dto, Client.class);
 	}
+	
+	public Client map(ClientDTO dto, Client entity) {
+		this.mapperFacade.map(dto, entity);
+		return entity;
+	}
 
 	public ClientDTO map(Client entity) {
 		return this.mapperFacade.map(entity, ClientDTO.class);
@@ -69,18 +73,6 @@ public enum ClientMapper {
 	
 	public PhoneNumberDTO map(PhoneNumber entity) {
 		return this.mapperFacade.map(entity, PhoneNumberDTO.class);
-	}
-}
-
-class OrderListConverter extends BidirectionalConverter<List<Order>, List<Integer>> {
-	@Override
-	public List<Order> convertFrom(List<Integer> source, Type<List<Order>> destT) {
-		return source.stream().map(p -> (new Order()).setIdOrder(p)).collect(Collectors.toList());
-	}
-
-	@Override
-	public List<Integer> convertTo(List<Order> source, Type<List<Integer>> destT) {
-		return source.stream().map(p -> p.getIdOrder()).collect(Collectors.toList());
 	}
 }
 

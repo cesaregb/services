@@ -11,6 +11,8 @@ import com.il.sod.db.model.entities.ServiceTypeSpec;
 import com.il.sod.db.model.entities.ServiceTypeTask;
 import com.il.sod.rest.dto.db.ServiceDTO;
 import com.il.sod.rest.dto.db.ServiceTypeDTO;
+import com.il.sod.rest.dto.db.ServiceTypeSpecDTO;
+import com.il.sod.rest.dto.db.ServiceTypeTaskDTO;
 
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.converter.BidirectionalConverter;
@@ -46,6 +48,18 @@ public enum ServiceMapper {
 			.byDefault()
 			.register();
 		
+		BaseMapper.MAPPER_FACTORY.classMap(ServiceTypeSpecDTO.class, ServiceTypeSpec.class)
+			.field("serviceType", "serviceType.idServiceType")
+			.field("spec", "serviceType.idSpecs")
+			.byDefault()
+			.register();
+		
+		BaseMapper.MAPPER_FACTORY.classMap(ServiceTypeTaskDTO.class, ServiceTypeTask.class)
+			.field("serviceType", "serviceType.idServiceType")
+			.field("task", "task.idSpecs")
+			.byDefault()
+			.register();
+		
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
 	}
 
@@ -63,6 +77,22 @@ public enum ServiceMapper {
 	
 	public ServiceTypeDTO map(ServiceType entity) {
 		return this.mapperFacade.map(entity, ServiceTypeDTO.class);
+	}
+	
+	public ServiceTypeSpec map(ServiceTypeSpecDTO dto) {
+		return this.mapperFacade.map(dto, ServiceTypeSpec.class);
+	}
+	
+	public ServiceTypeSpecDTO map(ServiceTypeSpec entity) {
+		return this.mapperFacade.map(entity, ServiceTypeSpecDTO.class);
+	}
+	
+	public ServiceTypeTask map(ServiceTypeTaskDTO dto) {
+		return this.mapperFacade.map(dto, ServiceTypeTask.class);
+	}
+	
+	public ServiceTypeTaskDTO map(ServiceTypeTask entity) {
+		return this.mapperFacade.map(entity, ServiceTypeTaskDTO.class);
 	}
 }
 

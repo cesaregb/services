@@ -6,7 +6,7 @@ public class ProductDTO {
 	private String name;
 	private float price;
 	private int status;
-	private ProductTypeDTO productType;
+	private Integer productType;
 	
 	public int getIdProduct() {
 		return idProduct;
@@ -38,10 +38,10 @@ public class ProductDTO {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public ProductTypeDTO getProductType() {
+	public Integer getProductType() {
 		return productType;
 	}
-	public void setProductType(ProductTypeDTO productType) {
+	public void setProductType(Integer productType) {
 		this.productType = productType;
 	}
 

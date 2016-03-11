@@ -3,8 +3,8 @@ package com.il.sod.rest.dto.db;
 public class ServiceTypeSpecDTO {
 	private int idServiceTypeSpecs;
 	private String comments;
-	private ServiceTypeDTO serviceType;
-	private SpecDTO spec;
+	private Integer serviceType;
+	private Integer spec;
 	public int getIdServiceTypeSpecs() {
 		return idServiceTypeSpecs;
 	}
@@ -17,16 +17,16 @@ public class ServiceTypeSpecDTO {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-	public ServiceTypeDTO getServiceType() {
+	public Integer getServiceType() {
 		return serviceType;
 	}
-	public void setServiceType(ServiceTypeDTO serviceType) {
+	public void setServiceType(Integer serviceType) {
 		this.serviceType = serviceType;
 	}
-	public SpecDTO getSpec() {
+	public Integer getSpec() {
 		return spec;
 	}
-	public void setSpec(SpecDTO spec) {
+	public void setSpec(Integer spec) {
 		this.spec = spec;
 	}
 }

@@ -1,14 +1,10 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.List;
-
 public class SpecDTO {
 	private int idSpecs;
 	private String description;
 	private String name;
-	private List<ServiceSpecDTO> serviceSpecs;
-	private List<ServiceTypeSpecDTO> serviceTypeSpecs;
-	private ProductTypeDTO productType;
+	private Integer productType;
 	public int getIdSpecs() {
 		return idSpecs;
 	}
@@ -27,22 +23,10 @@ public class SpecDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<ServiceSpecDTO> getServiceSpecs() {
-		return serviceSpecs;
-	}
-	public void setServiceSpecs(List<ServiceSpecDTO> serviceSpecs) {
-		this.serviceSpecs = serviceSpecs;
-	}
-	public List<ServiceTypeSpecDTO> getServiceTypeSpecs() {
-		return serviceTypeSpecs;
-	}
-	public void setServiceTypeSpecs(List<ServiceTypeSpecDTO> serviceTypeSpecs) {
-		this.serviceTypeSpecs = serviceTypeSpecs;
-	}
-	public ProductTypeDTO getProductType() {
+	public Integer getProductType() {
 		return productType;
 	}
-	public void setProductType(ProductTypeDTO productType) {
+	public void setProductType(Integer productType) {
 		this.productType = productType;
 	}
 }

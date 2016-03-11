@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import com.il.sod.db.model.entities.Spec;
 import com.il.sod.db.model.repositories.SpecRepository;
 import com.il.sod.exception.SODAPIException;
+import com.il.sod.mapper.SpecsMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.SpecDTO;
@@ -32,11 +33,11 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/spec")
 @Produces(MediaType.APPLICATION_JSON)
-// @Api(value = "/spec", tags = { "generic" })
+@Api(value = "/spec", tags = { "specs" })
 public class SpecService extends AbstractServiceMutations {
+	
 	@Autowired
 	SpecRepository specRepository;
-
 
 	@PUT
 	@ApiOperation(value = "Create Spec", response = SpecDTO.class)
@@ -45,9 +46,9 @@ public class SpecService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveSpec(SpecDTO dto) throws SODAPIException {
 		try {
-			Spec entity = converter.map(dto, Spec.class);
+			Spec entity = SpecsMapper.INSTANCE.map(dto);
 			this.saveEntity(specRepository, entity);
-			dto = converter.map(entity, SpecDTO.class);
+			dto = SpecsMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
@@ -61,9 +62,9 @@ public class SpecService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateSpec(SpecDTO dto) throws SODAPIException {
 		try {
-			Spec entity = converter.map(dto, Spec.class);
+			Spec entity = SpecsMapper.INSTANCE.map(dto);
 			this.updateEntity(specRepository, entity);
-			dto = converter.map(entity, SpecDTO.class);
+			dto = SpecsMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
@@ -77,7 +78,7 @@ public class SpecService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteSpec(SpecDTO dto) throws SODAPIException {
 		try {
-			Spec entity = converter.map(dto, Spec.class);
+			Spec entity = SpecsMapper.INSTANCE.map(dto);
 			this.deleteEntity(specRepository, entity.getIdSpecs());
 			return castEntityAsResponse(
 					GeneralResponseMessage.getInstance().success().setMessage("Spec deleted"),
@@ -95,7 +96,7 @@ public class SpecService extends AbstractServiceMutations {
 	public Response getSpecList() throws SODAPIException {
 		List<Spec> entityList = this.getEntityList(specRepository);
 		List<SpecDTO> list = entityList.stream().map((i) -> {
-			SpecDTO dto = converter.map(i, SpecDTO.class);
+			SpecDTO dto = SpecsMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
