@@ -80,8 +80,6 @@ public enum OrderMapper {
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
 	}
 
-
-
 	public Order map(OrderDTO dto) {
 		return this.mapperFacade.map(dto, Order.class);
 	}
