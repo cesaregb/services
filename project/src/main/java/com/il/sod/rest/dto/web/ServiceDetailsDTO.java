@@ -1,16 +1,18 @@
-package com.il.sod.rest.dto.db;
+package com.il.sod.rest.dto.web;
 
 import java.util.List;
 
-public class ServiceTypeDTO {
+import com.il.sod.rest.dto.db.TaskDTO;
+
+public class ServiceDetailsDTO {
 	private int idServiceType;
 	private String description;
 	private String name;
 	private double price;
 	private int time;
-	private List<Integer> services;
-	private List<Integer> serviceTypeSpecs;
-	private List<Integer> serviceTypeTasks;
+	private List<TaskDTO> tasks;
+	private List<SpecInfoDTO> specs;
+	
 	public int getIdServiceType() {
 		return idServiceType;
 	}
@@ -35,28 +37,22 @@ public class ServiceTypeDTO {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public List<Integer> getServiceTypeTasks() {
-		return serviceTypeTasks;
-	}
-	public void setServiceTypeTasks(List<Integer> serviceTypeTasks) {
-		this.serviceTypeTasks = serviceTypeTasks;
-	}
-	public List<Integer> getServices() {
-		return services;
-	}
-	public void setServices(List<Integer> services) {
-		this.services = services;
-	}
-	public List<Integer> getServiceTypeSpecs() {
-		return serviceTypeSpecs;
-	}
-	public void setServiceTypeSpecs(List<Integer> serviceTypeSpecs) {
-		this.serviceTypeSpecs = serviceTypeSpecs;
-	}
 	public int getTime() {
 		return time;
 	}
 	public void setTime(int time) {
 		this.time = time;
+	}
+	public List<TaskDTO> getTasks() {
+		return tasks;
+	}
+	public void setTasks(List<TaskDTO> tasks) {
+		this.tasks = tasks;
+	}
+	public List<SpecInfoDTO> getSpecs() {
+		return specs;
+	}
+	public void setSpecs(List<SpecInfoDTO> specs) {
+		this.specs = specs;
 	}
 }

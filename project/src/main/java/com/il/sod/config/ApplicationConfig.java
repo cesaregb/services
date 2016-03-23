@@ -36,7 +36,6 @@ public class ApplicationConfig extends ResourceConfig {
         packages("io.swagger.jaxrs.listing,"
         		+ "com.il.sod.exception,"
         		+ "com.il.sod.rest.api");
-        
     }
 	
 	/* Swagger configuratoin */

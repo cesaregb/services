@@ -16,6 +16,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- This is the initial_scheema for the service on demand application
 -- 
 -- -----------------------------------------------------
+DROP DATABASE `sod_db`;
 CREATE SCHEMA IF NOT EXISTS `sod_db` DEFAULT CHARACTER SET utf8 ;
 USE `sod_db` ;
 
@@ -30,6 +31,8 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Clients` (
   `lastName` VARCHAR(250) NULL,
   `phoneNumber` VARCHAR(250) NULL,
   `twitter` VARCHAR(250) NULL,
+  `created` DATETIME NULL,
+  `updated` DATETIME NULL,
   PRIMARY KEY (`idClient`))
 ENGINE = InnoDB;
 
@@ -112,9 +115,13 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Address` (
   `idClient` INT UNSIGNED NOT NULL,
   `country` VARCHAR(45) NULL,
   `state` VARCHAR(45) NULL,
+  `zipcode` VARCHAR(45) NULL,
   `city` VARCHAR(45) NULL,
   `address` VARCHAR(250) NULL,
   `address2` VARCHAR(250) NULL,
+  `comments` VARCHAR(255) NULL,
+  `lat` FLOAT NULL,
+  `long` FLOAT NULL,
   PRIMARY KEY (`idAddress`),
   INDEX `fk_Address_Clients1_idx` (`idClient` ASC),
   CONSTRAINT `fk_Address_Clients1`
@@ -198,6 +205,8 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Employee` (
   `lastname` VARCHAR(45) NULL,
   `password` LONGTEXT NULL,
   `username` VARCHAR(45) NULL,
+  `created` DATETIME NULL,
+  `updated` DATETIME NULL,
   PRIMARY KEY (`idEmployee`),
   INDEX `fk_Employee_EmployeeType1_idx` (`idEmployeeType` ASC),
   CONSTRAINT `fk_Employee_EmployeeType1`
@@ -292,10 +301,12 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Orders` (
   `idOrderType` INT UNSIGNED NOT NULL,
   `idAddressPickup` INT NULL COMMENT 'Not froreing key ',
   `idAddressDeliver` INT NULL,
-  `date` DATETIME NULL,
+  `time` INT NULL,
   `price` DOUBLE NULL,
   `status` INT NULL,
   `comments` VARCHAR(250) NULL,
+  `created` DATETIME NULL,
+  `updated` DATETIME NULL,
   PRIMARY KEY (`idOrder`),
   INDEX `fk_Order_OrderTemplate1_idx` (`idOrderType` ASC),
   INDEX `fk_Order_Clients1_idx` (`idClient` ASC),
@@ -393,8 +404,15 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceType` (
   `name` VARCHAR(250) NULL,
   `description` VARCHAR(250) NULL,
   `price` DOUBLE NULL,
-  `time` DATETIME NULL,
-  PRIMARY KEY (`idServiceType`))
+  `time` INT NULL,
+  `idOrderType` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`idServiceType`),
+  INDEX `fk_ServiceType_OrderType1_idx` (`idOrderType` ASC),
+  CONSTRAINT `fk_ServiceType_OrderType1`
+    FOREIGN KEY (`idOrderType`)
+    REFERENCES `sod_db`.`OrderType` (`idOrderType`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -402,7 +420,7 @@ ENGINE = InnoDB;
 -- Table `sod_db`.`Specs`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sod_db`.`Specs` (
-  `idSpecs` INT UNSIGNED NOT NULL,
+  `idSpecs` INT UNSIGNED NOT NULL COMMENT 'This table is for information about a service\nsuch as \njavon \nsuavisante\ntypo lavador\n',
   `idProductType` INT UNSIGNED NOT NULL,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(45) NULL,
@@ -473,7 +491,10 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Service` (
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(250) NULL,
   `price` DOUBLE NULL,
-  `time` DATETIME NULL,
+  `time` INT NULL,
+  `created` DATETIME NULL,
+  `updated` DATETIME NULL,
+  `status` INT NULL,
   PRIMARY KEY (`idService`),
   INDEX `fk_Service_ServiceType1_idx` (`idServiceType` ASC),
   CONSTRAINT `fk_Service_ServiceType1`
@@ -575,6 +596,32 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`AssetTaskService` (
   CONSTRAINT `fk_AssetTaskService_ServiceTask1`
     FOREIGN KEY (`idServiceTask`)
     REFERENCES `sod_db`.`ServiceTask` (`idServiceTask`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sod_db`.`OrderPickNDeliver`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sod_db`.`OrderPickNDeliver` (
+  `idOrderPickNDeliver` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `time` DATETIME NULL,
+  `comments` VARCHAR(255) NULL,
+  `typeAction` INT NULL DEFAULT 1 COMMENT '1 = pickup\n2 = delivery ',
+  `idAddress` INT UNSIGNED NOT NULL,
+  `idOrder` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`idOrderPickNDeliver`),
+  INDEX `fk_OrderPickNDeliver_Address1_idx` (`idAddress` ASC),
+  INDEX `fk_OrderPickNDeliver_Orders1_idx` (`idOrder` ASC),
+  CONSTRAINT `fk_OrderPickNDeliver_Address1`
+    FOREIGN KEY (`idAddress`)
+    REFERENCES `sod_db`.`Address` (`idAddress`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_OrderPickNDeliver_Orders1`
+    FOREIGN KEY (`idOrder`)
+    REFERENCES `sod_db`.`Orders` (`idOrder`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

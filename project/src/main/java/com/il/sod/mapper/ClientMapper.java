@@ -35,6 +35,7 @@ public enum ClientMapper {
 		
 		BaseMapper.MAPPER_FACTORY.classMap(AddressDTO.class, Address.class)
 			.field("idClient", "client.idClient")
+			.exclude("orderPickNdelivers")
 			.byDefault()
 			.register();
 		
@@ -65,6 +66,10 @@ public enum ClientMapper {
 	
 	public AddressDTO map(Address entity) {
 		return this.mapperFacade.map(entity, AddressDTO.class);
+	}
+	
+	public List<AddressDTO> map(List<Address> source) {
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
 	}
 	
 	public PhoneNumber map(PhoneNumberDTO dto) {

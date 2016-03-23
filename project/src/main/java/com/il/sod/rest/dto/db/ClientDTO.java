@@ -1,5 +1,6 @@
 package com.il.sod.rest.dto.db;
 
+import java.util.Date;
 import java.util.List;
 
 public class ClientDTO {
@@ -11,9 +12,15 @@ public class ClientDTO {
 	private String phoneNumber;
 	private String twitter;
 	private List<Integer> orders;
+	// key value  
+	// key = id 
+	// value = map {"name"}
 //	private List<AccessKeyDTO> accessKeys;
 	private List<AddressDTO> addresses;
 	private List<PhoneNumberDTO> phoneNumbers;
+	
+	private Date created;
+	private Date updated;
 	
 	
 	public int getIdClient() {
@@ -75,6 +82,18 @@ public class ClientDTO {
 	}
 	public void setPhoneNumbers(List<PhoneNumberDTO> phoneNumbers) {
 		this.phoneNumbers = phoneNumbers;
+	}
+	public Date getCreated() {
+		return created;
+	}
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+	public Date getUpdated() {
+		return updated;
+	}
+	public void setUpdated(Date updated) {
+		this.updated = updated;
 	}
 
 }

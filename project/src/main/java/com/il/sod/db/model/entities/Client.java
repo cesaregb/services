@@ -1,5 +1,6 @@
 package com.il.sod.db.model.entities;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -58,6 +61,12 @@ public class Client implements IEntity<Integer> {
 	//bi-directional many-to-one association to Order
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	private List<Order> orders;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date created;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updated;
 
 	public Client() {
 	}
@@ -214,5 +223,21 @@ public class Client implements IEntity<Integer> {
 	public Client setId(Integer id) {
 		this.idClient = id;
 		return this;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
 	}
 }

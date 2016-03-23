@@ -1,0 +1,81 @@
+#%RAML 1.0
+title: SOD for web-app
+version: v1
+baseUri: http://api.samplehost.com
+types:
+  SimpleNewObject: # general object reponse!!
+    type: object
+    properties:
+      status: string
+      id: number
+  OrderClient:
+    type: object
+    properties:
+      order:
+        type: object
+        properties:
+          idOrderType: number
+          idClient: number
+          idAddressPickup: number
+          idAddressDeliver: number
+          price: number
+          comments: string
+          pickUpDate: date
+          pickUpComments: string
+          deliveryDate: date
+          deliveryComments: string
+          services: ServiceSub[]
+  ServiceSub:
+    type: object
+    properties:
+      idServiceType: number
+      price: number
+      comments: string
+      specs: Spec[]
+  Spec:
+    type: object
+    properties:
+      idSpec: number
+      comments: string
+      product: Product
+  Product:
+    type: object
+    properties:
+      idProduct: number
+      name: string
+  Order:
+    type: object
+
+/appOrders:
+  put:
+    description: Add new order for the client
+    body:
+      application/json:
+        type: OrderClient
+    responses:
+      201:
+        body:
+          application/json:
+            type: SimpleNewObject
+            example: |
+              {
+                "status" : "success",
+                "id" : 1
+              }
+  /{clientId}:
+    uriParameters:
+      clientId:
+        type: integer
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: OrderClient[]
+
+/address:
+  /{clientId}:
+    uriParameters:
+      clientId:
+        type: integer
+    get:

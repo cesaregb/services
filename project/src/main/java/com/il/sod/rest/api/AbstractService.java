@@ -27,6 +27,7 @@ import ma.glasnost.orika.MapperFacade;
 
 @Component
 @SwaggerDefinition(tags = { @Tag(name = "clients", description = "Client Layer services"),
+		@Tag(name = "app-orders", description = "Services used by web-app"),
 		@Tag(name = "employee", description = "Employee services"),
 		@Tag(name = "specs", description = "Specs are the 'type of generics' that uses a service "),
 		@Tag(name = "asset", description = "Assets  - Business assets"),

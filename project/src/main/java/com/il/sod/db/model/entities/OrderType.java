@@ -35,6 +35,10 @@ public class OrderType implements IEntity<Integer> {
 	//bi-directional many-to-one association to Order
 	@OneToMany(mappedBy="orderType", fetch=FetchType.EAGER)
 	private List<Order> orders;
+	
+	//bi-directional many-to-one association to ServiceType
+	@OneToMany(mappedBy="orderType")
+	private List<ServiceType> serviceTypes;
 
 	public OrderType() {
 	}
@@ -115,5 +119,27 @@ public class OrderType implements IEntity<Integer> {
 	public OrderType setId(Integer id) {
 		this.idOrderType = id;
 		return this;
+	}
+	
+	public List<ServiceType> getServiceTypes() {
+		return this.serviceTypes;
+	}
+
+	public void setServiceTypes(List<ServiceType> serviceTypes) {
+		this.serviceTypes = serviceTypes;
+	}
+
+	public ServiceType addServiceType(ServiceType serviceType) {
+		getServiceTypes().add(serviceType);
+		serviceType.setOrderType(this);
+
+		return serviceType;
+	}
+
+	public ServiceType removeServiceType(ServiceType serviceType) {
+		getServiceTypes().remove(serviceType);
+		serviceType.setOrderType(null);
+
+		return serviceType;
 	}
 }

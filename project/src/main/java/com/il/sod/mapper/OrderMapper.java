@@ -7,6 +7,7 @@ import com.il.sod.db.model.entities.AssetTaskOrder;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.entities.EmployeeTaskOrder;
 import com.il.sod.db.model.entities.Order;
+import com.il.sod.db.model.entities.OrderPickNDeliver;
 import com.il.sod.db.model.entities.OrderTask;
 import com.il.sod.db.model.entities.OrderType;
 import com.il.sod.db.model.entities.OrderTypeTask;
@@ -14,6 +15,7 @@ import com.il.sod.rest.dto.db.AssetTaskOrderDTO;
 import com.il.sod.rest.dto.db.ClientDTO;
 import com.il.sod.rest.dto.db.EmployeeTaskOrderDTO;
 import com.il.sod.rest.dto.db.OrderDTO;
+import com.il.sod.rest.dto.db.OrderPickNDeliverDTO;
 import com.il.sod.rest.dto.db.OrderTaskDTO;
 import com.il.sod.rest.dto.db.OrderTypeDTO;
 import com.il.sod.rest.dto.db.OrderTypeTaskDTO;
@@ -37,6 +39,7 @@ public enum OrderMapper {
 		converterFactory.registerConverter("clientConverter", new ClientConverter());
 		converterFactory.registerConverter("assetTaskOrderListConverter", new AssetTaskOrderListConverter());
 		converterFactory.registerConverter("employeeTaskOrderListConverter", new EmployeeTaskOrderListConverter());
+		converterFactory.registerConverter("orderPickNDeliverListConverter", new OrderPickNDeliverListConverter());
 		
 		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeDTO.class, OrderType.class)
 			.fieldMap("orders", "orders").converter("orderListConverter").mapNulls(true).mapNullsInReverse(true).add()
@@ -53,6 +56,7 @@ public enum OrderMapper {
 		BaseMapper.MAPPER_FACTORY.classMap(OrderDTO.class, Order.class)
 			.fieldMap("client", "client").converter("clientConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("orderTasks", "orderTasks").converter("orderTaskListConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("orderPickNdelivers", "orderPickNdelivers").converter("orderPickNDeliverListConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.field("orderType", "orderType.idOrderType")
 			.byDefault()
 			.register();
@@ -74,6 +78,12 @@ public enum OrderMapper {
 		BaseMapper.MAPPER_FACTORY.classMap(EmployeeTaskOrderDTO.class, EmployeeTaskOrder.class)
 			.field("orderTask", "orderTask.idOrderTask")
 			.field("employee", "employee.idEmployee")
+			.byDefault()
+			.register();
+		
+		BaseMapper.MAPPER_FACTORY.classMap(OrderPickNDeliverDTO.class, OrderPickNDeliver.class)
+			.field("order", "order.idOrder")
+			.field("address", "address.idAddress")
 			.byDefault()
 			.register();
 		
@@ -127,6 +137,15 @@ public enum OrderMapper {
 	public EmployeeTaskOrder map(EmployeeTaskOrderDTO entity) {
 		return this.mapperFacade.map(entity, EmployeeTaskOrder.class);
 	}
+	
+	public OrderPickNDeliver map(OrderPickNDeliverDTO dto) {
+		return this.mapperFacade.map(dto, OrderPickNDeliver.class);
+	}
+	
+	public OrderPickNDeliverDTO map(OrderPickNDeliver entity) {
+		return this.mapperFacade.map(entity, OrderPickNDeliverDTO.class);
+	}
+
 }
 
 class OrderListConverter extends BidirectionalConverter<List<Order>, List<Integer>> {
@@ -193,6 +212,18 @@ class EmployeeTaskOrderListConverter extends BidirectionalConverter<List<Employe
 	}
 	@Override
 	public List<EmployeeTaskOrderDTO> convertTo(List<EmployeeTaskOrder> source, Type<List<EmployeeTaskOrderDTO>> arg1) {
+		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	}
+}
+
+class OrderPickNDeliverListConverter extends BidirectionalConverter<List<OrderPickNDeliver>, List<OrderPickNDeliverDTO>> {
+	@Override
+	public List<OrderPickNDeliver> convertFrom(List<OrderPickNDeliverDTO> source, Type<List<OrderPickNDeliver>> arg1) {
+		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<OrderPickNDeliverDTO> convertTo(List<OrderPickNDeliver> source, Type<List<OrderPickNDeliverDTO>> arg1) {
 		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toList());
 	}
 }

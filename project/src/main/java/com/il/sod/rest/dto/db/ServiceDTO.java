@@ -8,10 +8,13 @@ public class ServiceDTO {
 	private String description;
 	private String name;
 	private double price;
-	private Date time;
 	private Integer serviceType;
 	private List<Integer> serviceSpecs;
 	private List<Integer> serviceTasks;
+	private Date created;
+	private Date updated;
+	private int time;
+	
 	public int getIdService() {
 		return idService;
 	}
@@ -36,12 +39,6 @@ public class ServiceDTO {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public Date getTime() {
-		return time;
-	}
-	public void setTime(Date time) {
-		this.time = time;
-	}
 	public List<Integer> getServiceSpecs() {
 		return serviceSpecs;
 	}
@@ -59,6 +56,24 @@ public class ServiceDTO {
 	}
 	public void setServiceType(Integer serviceType) {
 		this.serviceType = serviceType;
+	}
+	public Date getCreated() {
+		return created;
+	}
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+	public Date getUpdated() {
+		return updated;
+	}
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+	public void setTime(int time) {
+		this.time = time;
+	}
+	public int getTime() {
+		return time;
 	}
 
 }

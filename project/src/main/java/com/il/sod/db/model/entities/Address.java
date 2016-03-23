@@ -1,5 +1,7 @@
 package com.il.sod.db.model.entities;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -33,12 +36,19 @@ public class Address implements IEntity<Integer> {
 	private String country;
 
 	private String state;
+	
+	private String zipcode;
 
 	//bi-directional many-to-one association to Client
 	@ManyToOne
 	@JoinColumn(name="idClient")
 	@JsonBackReference
 	private Client client;
+	
+	//bi-directional many-to-one association to OrderPickNDeliver
+	@OneToMany(mappedBy="address")
+	private List<OrderPickNDeliver> orderPickNdelivers;
+
 
 	public Address() {
 	}
@@ -107,5 +117,35 @@ public class Address implements IEntity<Integer> {
 	public Address setId(Integer id) {
 		this.idAddress = id;
 		return this;
+	}
+
+	public String getZipcode() {
+		return zipcode;
+	}
+
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
+	
+	public List<OrderPickNDeliver> getOrderPickNdelivers() {
+		return this.orderPickNdelivers;
+	}
+
+	public void setOrderPickNdelivers(List<OrderPickNDeliver> orderPickNdelivers) {
+		this.orderPickNdelivers = orderPickNdelivers;
+	}
+
+	public OrderPickNDeliver addOrderPickNdeliver(OrderPickNDeliver orderPickNdeliver) {
+		getOrderPickNdelivers().add(orderPickNdeliver);
+		orderPickNdeliver.setAddress(this);
+
+		return orderPickNdeliver;
+	}
+
+	public OrderPickNDeliver removeOrderPickNdeliver(OrderPickNDeliver orderPickNdeliver) {
+		getOrderPickNdelivers().remove(orderPickNdeliver);
+		orderPickNdeliver.setAddress(null);
+
+		return orderPickNdeliver;
 	}
 }

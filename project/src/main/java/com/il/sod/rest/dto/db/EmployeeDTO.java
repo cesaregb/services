@@ -1,5 +1,7 @@
 package com.il.sod.rest.dto.db;
 
+import java.util.Date;
+
 public class EmployeeDTO {
 	private int idEmployee;
 	private String lastname;
@@ -8,6 +10,9 @@ public class EmployeeDTO {
 	private int status;
 	private String username;
 	private Integer employeeType;
+	
+	private Date created;
+	private Date updated;
 	
 	public int getIdEmployee() {
 		return idEmployee;
@@ -50,5 +55,17 @@ public class EmployeeDTO {
 	}
 	public void setEmployeeType(Integer employeeType) {
 		this.employeeType = employeeType;
+	}
+	public Date getCreated() {
+		return created;
+	}
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+	public Date getUpdated() {
+		return updated;
+	}
+	public void setUpdated(Date updated) {
+		this.updated = updated;
 	}
 }

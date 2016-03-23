@@ -1,6 +1,5 @@
 package com.il.sod.db.model.entities;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -8,10 +7,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 
 /**
@@ -33,8 +32,7 @@ public class ServiceType implements IEntity<Integer> {
 
 	private double price;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date time;
+	private Integer time;
 
 	//bi-directional many-to-one association to Service
 	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
@@ -47,6 +45,11 @@ public class ServiceType implements IEntity<Integer> {
 	//bi-directional many-to-one association to ServiceTypeTask
 	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
 	private List<ServiceTypeTask> serviceTypeTasks;
+	
+	//bi-directional many-to-one association to OrderType
+	@ManyToOne
+	@JoinColumn(name="idOrderType")
+	private OrderType orderType;
 
 	public ServiceType() {
 	}
@@ -81,14 +84,6 @@ public class ServiceType implements IEntity<Integer> {
 
 	public void setPrice(double price) {
 		this.price = price;
-	}
-
-	public Date getTime() {
-		return this.time;
-	}
-
-	public void setTime(Date time) {
-		this.time = time;
 	}
 
 	public List<Service> getServices() {
@@ -165,5 +160,21 @@ public class ServiceType implements IEntity<Integer> {
 	public ServiceType setId(Integer id) {
 		this.idServiceType = id;
 		return this;
+	}
+
+	public Integer getTime() {
+		return time;
+	}
+
+	public void setTime(Integer time) {
+		this.time = time;
+	}
+	
+	public OrderType getOrderType() {
+		return this.orderType;
+	}
+
+	public void setOrderType(OrderType orderType) {
+		this.orderType = orderType;
 	}
 }

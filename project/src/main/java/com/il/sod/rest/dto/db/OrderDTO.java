@@ -6,7 +6,6 @@ import java.util.List;
 public class OrderDTO {
 	private int idOrder;
 	private String comments;
-	private Date date;
 	private int idAddressDeliver;
 	private int idAddressPickup;
 	private double price;
@@ -14,6 +13,12 @@ public class OrderDTO {
 	private ClientDTO client;
 	private Integer orderType;
 	private List<OrderTaskDTO> orderTasks;
+	private List<OrderPickNDeliverDTO> orderPickNdelivers;
+	
+	private Date created;
+	private Date updated;
+	private int time;
+	
 	public int getIdOrder() {
 		return idOrder;
 	}
@@ -25,12 +30,6 @@ public class OrderDTO {
 	}
 	public void setComments(String comments) {
 		this.comments = comments;
-	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
 	}
 	public int getIdAddressDeliver() {
 		return idAddressDeliver;
@@ -73,6 +72,30 @@ public class OrderDTO {
 	}
 	public void setOrderType(Integer orderType) {
 		this.orderType = orderType;
+	}
+	public Date getCreated() {
+		return created;
+	}
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+	public Date getUpdated() {
+		return updated;
+	}
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+	public int getTime() {
+		return time;
+	}
+	public void setTime(int time) {
+		this.time = time;
+	}
+	public List<OrderPickNDeliverDTO> getOrderPickNdelivers() {
+		return orderPickNdelivers;
+	}
+	public void setOrderPickNdelivers(List<OrderPickNDeliverDTO> orderPickNdelivers) {
+		this.orderPickNdelivers = orderPickNdelivers;
 	}
 
 }
