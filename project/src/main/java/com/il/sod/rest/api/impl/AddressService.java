@@ -38,14 +38,14 @@ import io.swagger.annotations.ApiResponses;
 @Produces(MediaType.APPLICATION_JSON)
 @Api(value = "/address", tags = { "clients" })
 public class AddressService extends AbstractServiceMutations {
-	
+
 	@Autowired
 	AddressRepository addressRepository;
 
 	@Autowired
 	ClientRepository clientRepository;
 
-	@PUT
+	@POST
 	@ApiOperation(value = "Create Address", response = AddressDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -59,7 +59,7 @@ public class AddressService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
-	@POST
+	@PUT
 	@ApiOperation(value = "Update Address", response = AddressDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -97,9 +97,9 @@ public class AddressService extends AbstractServiceMutations {
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
-	
+
 	}
-	
+
 	@GET
 	@Path("/{clientId}")
 	@ApiOperation(value = "Get Address list", response = AddressDTO.class, responseContainer = "List")
@@ -107,7 +107,7 @@ public class AddressService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getAddressListByClient(@PathParam("clientId") String clientId) throws SODAPIException {
-		
+
 		Client client = this.getEntity(clientRepository, Integer.valueOf(clientId));
 		List<AddressDTO> result = ClientMapper.INSTANCE.map(client.getAddresses());
 		return castEntityAsResponse(result);

@@ -6,7 +6,9 @@ import com.il.sod.rest.dto.GenericDBDTO;
 public class PhoneNumberDTO implements GenericDBDTO{
 	private int idPhoneNumber;
 	private String number;
+	private int prefered;
 	private int idClient;
+	
 	public int getIdPhoneNumber() {
 		return idPhoneNumber;
 	}
@@ -30,6 +32,12 @@ public class PhoneNumberDTO implements GenericDBDTO{
 	@JsonIgnore
 	public Integer getParentId() {
 		return idClient;
+	}
+	public int getPrefered() {
+		return prefered;
+	}
+	public void setPrefered(int prefered) {
+		this.prefered = prefered;
 	}
 	
 }

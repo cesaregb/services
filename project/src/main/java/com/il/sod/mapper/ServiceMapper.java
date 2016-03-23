@@ -3,6 +3,7 @@ package com.il.sod.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.il.sod.db.model.entities.OrderType;
 import com.il.sod.db.model.entities.Service;
 import com.il.sod.db.model.entities.ServiceSpec;
 import com.il.sod.db.model.entities.ServiceTask;
@@ -30,9 +31,9 @@ public enum ServiceMapper {
 		converterFactory.registerConverter("serviceListConverter", new ServiceListConverter());
 		converterFactory.registerConverter("serviceTypeSpecListConverter", new ServiceTypeSpecListConverter());
 		converterFactory.registerConverter("serviceTypeTaskListConverter", new ServiceTypeTaskListConverter());
-		
 		converterFactory.registerConverter("serviceSpecListConverter", new ServiceSpecListConverter());
 		converterFactory.registerConverter("serviceTaskListConverter", new ServiceTaskListConverter());
+		converterFactory.registerConverter("orderTypeListConverter", new OrderTypeListConverter());
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceDTO.class, Service.class)
 			.fieldMap("serviceSpecs", "serviceSpecs").converter("serviceSpecListConverter").mapNulls(true).mapNullsInReverse(true).add()
@@ -45,6 +46,7 @@ public enum ServiceMapper {
 			.fieldMap("services", "services").converter("serviceListConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("serviceTypeSpecs", "serviceTypeSpecs").converter("serviceTypeSpecListConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("serviceTypeTasks", "serviceTypeTasks").converter("serviceTypeTaskListConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("orderTypes", "orderTypes").converter("orderTypeListConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 		
@@ -155,4 +157,17 @@ class ServiceTaskListConverter extends BidirectionalConverter<List<ServiceTask>,
 		return source.stream().map(p -> p.getId()).collect(Collectors.toList());
 	}
 }
+
+class OrderTypeListConverter extends BidirectionalConverter<List<OrderType>, List<Integer>> {
+	@Override
+	public List<OrderType> convertFrom(List<Integer> source, Type<List<OrderType>> arg1) {
+		return source.stream().map(p -> (new OrderType()).setId(p)).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Integer> convertTo(List<OrderType> source, Type<List<Integer>> arg1) {
+		return source.stream().map(p -> p.getId()).collect(Collectors.toList());
+	}
+}
+
 

@@ -5,9 +5,11 @@ import java.util.stream.Collectors;
 
 import com.il.sod.db.model.entities.Address;
 import com.il.sod.db.model.entities.Client;
+import com.il.sod.db.model.entities.ClientPaymentInfo;
 import com.il.sod.db.model.entities.PhoneNumber;
 import com.il.sod.rest.dto.db.AddressDTO;
 import com.il.sod.rest.dto.db.ClientDTO;
+import com.il.sod.rest.dto.db.ClientPaymentInfoDTO;
 import com.il.sod.rest.dto.db.PhoneNumberDTO;
 
 import ma.glasnost.orika.MapperFacade;
@@ -43,7 +45,12 @@ public enum ClientMapper {
 			.field("idClient", "client.idClient")
 			.byDefault()
 			.register();
-			
+		
+		BaseMapper.MAPPER_FACTORY.classMap(ClientPaymentInfoDTO.class, ClientPaymentInfo.class)
+			.field("idClient", "client.idClient")
+			.byDefault()
+			.register();
+		
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
 	}
 
@@ -79,6 +86,14 @@ public enum ClientMapper {
 	public PhoneNumberDTO map(PhoneNumber entity) {
 		return this.mapperFacade.map(entity, PhoneNumberDTO.class);
 	}
+	
+	public ClientPaymentInfo map(ClientPaymentInfoDTO dto) {
+		return this.mapperFacade.map(dto, ClientPaymentInfo.class);
+	}
+	
+	public ClientPaymentInfoDTO map(ClientPaymentInfo entity) {
+		return this.mapperFacade.map(entity, ClientPaymentInfoDTO.class);
+	}
 }
 
 class AddressDTOConverter extends BidirectionalConverter<List<Address>, List<AddressDTO>> {
@@ -104,3 +119,17 @@ class PhoneNumberDTOConverter extends BidirectionalConverter<List<PhoneNumber>, 
 		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
 	}
 }
+
+class ClientPaymentInfoConverter extends BidirectionalConverter<List<ClientPaymentInfo>, List<ClientPaymentInfoDTO>> {
+
+	@Override
+	public List<ClientPaymentInfo> convertFrom(List<ClientPaymentInfoDTO> source, Type<List<ClientPaymentInfo>> arg1) {
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<ClientPaymentInfoDTO> convertTo(List<ClientPaymentInfo> source, Type<List<ClientPaymentInfoDTO>> arg1) {
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	}
+}
+

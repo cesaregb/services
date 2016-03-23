@@ -44,7 +44,7 @@ public class ClientService extends AbstractServiceMutations {
 	@Autowired
 	ClientRepository clientRepository;
 
-	@PUT
+	@POST
 	@ApiOperation(value = "Create Client", response = ClientDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -61,7 +61,7 @@ public class ClientService extends AbstractServiceMutations {
 		}
 	}
 
-	@POST
+	@PUT
 	@ApiOperation(value = "Update Client", response = ClientDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -116,6 +116,19 @@ public class ClientService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getClient(@PathParam("clientId") String clientId) throws SODAPIException {
 		ClientDTO dto = ClientMapper.INSTANCE.map(this.getEntity(clientRepository, Integer.valueOf(clientId)));
+		return castEntityAsResponse(dto, Response.Status.OK);
+	}
+	
+	@GET
+	@Path("/{email}")
+	@ApiOperation(value = "Get Client list", response = ClientDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getClientByEmail(@PathParam("email") String email) throws SODAPIException {
+		
+		Client client = this.getEntity(clientRepository, Integer.valueOf("1"));
+		ClientDTO dto = ClientMapper.INSTANCE.map(client);
 		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 

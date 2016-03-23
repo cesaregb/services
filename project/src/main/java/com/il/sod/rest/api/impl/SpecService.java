@@ -39,7 +39,7 @@ public class SpecService extends AbstractServiceMutations {
 	@Autowired
 	SpecRepository specRepository;
 
-	@PUT
+	@POST
 	@ApiOperation(value = "Create Spec", response = SpecDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -55,7 +55,7 @@ public class SpecService extends AbstractServiceMutations {
 		}
 	}
 
-	@POST
+	@PUT
 	@ApiOperation(value = "Update Spec", response = SpecDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),

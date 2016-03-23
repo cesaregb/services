@@ -66,6 +66,10 @@ public class Order implements IEntity<Integer> {
 	//bi-directional many-to-one association to OrderPickNDeliver
 	@OneToMany(mappedBy="order")
 	private List<OrderPickNDeliver> orderPickNdelivers;
+	
+	//bi-directional many-to-one association to PaymentInfo
+	@OneToMany(mappedBy="order")
+	private List<PaymentInfo> paymentInfos;
 
 	public Order() {
 	}
@@ -211,5 +215,27 @@ public class Order implements IEntity<Integer> {
 		orderPickNdeliver.setOrder(null);
 
 		return orderPickNdeliver;
+	}
+	
+	public List<PaymentInfo> getPaymentInfos() {
+		return this.paymentInfos;
+	}
+
+	public void setPaymentInfos(List<PaymentInfo> paymentInfos) {
+		this.paymentInfos = paymentInfos;
+	}
+
+	public PaymentInfo addPaymentInfo(PaymentInfo paymentInfo) {
+		getPaymentInfos().add(paymentInfo);
+		paymentInfo.setOrder(this);
+
+		return paymentInfo;
+	}
+
+	public PaymentInfo removePaymentInfo(PaymentInfo paymentInfo) {
+		getPaymentInfos().remove(paymentInfo);
+		paymentInfo.setOrder(null);
+
+		return paymentInfo;
 	}
 }

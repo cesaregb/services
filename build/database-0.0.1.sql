@@ -9,6 +9,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- This is the initial_scheema for the service on demand application
 -- 
+DROP SCHEMA IF EXISTS `sod_db` ;
 
 -- -----------------------------------------------------
 -- Schema sod_db
@@ -16,13 +17,14 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- This is the initial_scheema for the service on demand application
 -- 
 -- -----------------------------------------------------
-DROP DATABASE `sod_db`;
 CREATE SCHEMA IF NOT EXISTS `sod_db` DEFAULT CHARACTER SET utf8 ;
 USE `sod_db` ;
 
 -- -----------------------------------------------------
 -- Table `sod_db`.`Clients`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Clients` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`Clients` (
   `idClient` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(100) NULL,
@@ -40,6 +42,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`SocialNetworks`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`SocialNetworks` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`SocialNetworks` (
   `idSocialNetworks` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
@@ -51,6 +55,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`AccessKey`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`AccessKey` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`AccessKey` (
   `idAccessKey` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idClient` INT UNSIGNED NOT NULL,
@@ -76,6 +82,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`SocialNetworkData`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`SocialNetworkData` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`SocialNetworkData` (
   `idSocialNetworkData` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `data` LONGTEXT NULL,
@@ -93,6 +101,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`PhoneNumber`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`PhoneNumber` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`PhoneNumber` (
   `idPhoneNumber` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idClient` INT UNSIGNED NOT NULL,
@@ -110,6 +120,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`Address`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Address` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`Address` (
   `idAddress` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idClient` INT UNSIGNED NOT NULL,
@@ -135,6 +147,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`TaskType`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`TaskType` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`TaskType` (
   `idTaskType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
@@ -146,6 +160,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`EmployeeType`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`EmployeeType` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`EmployeeType` (
   `idEmployeeType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
@@ -157,6 +173,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`AssetType`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`AssetType` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`AssetType` (
   `idAssetType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
@@ -168,6 +186,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`ProductType`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`ProductType` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`ProductType` (
   `idProductType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
@@ -179,6 +199,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`Task`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Task` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`Task` (
   `idTask` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idTaskType` INT UNSIGNED NOT NULL,
@@ -197,6 +219,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`Employee`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Employee` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`Employee` (
   `idEmployee` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idEmployeeType` INT UNSIGNED NOT NULL,
@@ -220,6 +244,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`Asset`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Asset` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`Asset` (
   `idAsset` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idAssetType` INT UNSIGNED NOT NULL,
@@ -239,6 +265,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`Product`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Product` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`Product` (
   `idProduct` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idProductType` INT UNSIGNED NOT NULL,
@@ -259,6 +287,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`OrderType`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`OrderType` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`OrderType` (
   `idOrderType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
@@ -270,6 +300,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`OrderTypeTasks`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`OrderTypeTasks` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTypeTasks` (
   `idOrderTypeTasks` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idOrderType` INT UNSIGNED NOT NULL,
@@ -295,6 +327,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`Orders`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Orders` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`Orders` (
   `idOrder` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idClient` INT UNSIGNED NOT NULL,
@@ -326,6 +360,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`OrderTask`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`OrderTask` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTask` (
   `idOrderTask` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idOrder` INT UNSIGNED NOT NULL,
@@ -351,6 +387,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`AssetTaskOrder`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`AssetTaskOrder` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`AssetTaskOrder` (
   `idAssetTaskOrder` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idOrderTask` INT UNSIGNED NOT NULL,
@@ -375,6 +413,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`EmployeeTaskOrder`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`EmployeeTaskOrder` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`EmployeeTaskOrder` (
   `idEmployeeTaskOrder` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idOrderTask` INT UNSIGNED NOT NULL,
@@ -399,29 +439,26 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`ServiceType`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`ServiceType` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceType` (
   `idServiceType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(250) NULL,
   `description` VARCHAR(250) NULL,
   `price` DOUBLE NULL,
   `time` INT NULL,
-  `idOrderType` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`idServiceType`),
-  INDEX `fk_ServiceType_OrderType1_idx` (`idOrderType` ASC),
-  CONSTRAINT `fk_ServiceType_OrderType1`
-    FOREIGN KEY (`idOrderType`)
-    REFERENCES `sod_db`.`OrderType` (`idOrderType`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`idServiceType`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `sod_db`.`Specs`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Specs` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`Specs` (
-  `idSpecs` INT UNSIGNED NOT NULL COMMENT 'This table is for information about a service\nsuch as \njavon \nsuavisante\ntypo lavador\n',
-  `idProductType` INT UNSIGNED NOT NULL,
+  `idSpecs` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'This table is for information about a service\nsuch as \njavon \nsuavisante\ntypo lavador\n',
+  `idProductType` INT UNSIGNED NOT NULL DEFAULT 1,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(45) NULL,
   PRIMARY KEY (`idSpecs`),
@@ -437,6 +474,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`ServiceTypeSpecs`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`ServiceTypeSpecs` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceTypeSpecs` (
   `idServiceTypeSpecs` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idServiceType` INT UNSIGNED NOT NULL,
@@ -461,6 +500,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`ServiceTypeTask`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`ServiceTypeTask` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceTypeTask` (
   `idServiceTypeTask` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idServiceType` INT UNSIGNED NOT NULL,
@@ -485,6 +526,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`Service`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Service` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`Service` (
   `idService` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idServiceType` INT UNSIGNED NOT NULL,
@@ -508,6 +551,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`ServiceTask`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`ServiceTask` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceTask` (
   `idServiceTask` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idService` INT UNSIGNED NOT NULL,
@@ -532,6 +577,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`ServiceSpecs`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`ServiceSpecs` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceSpecs` (
   `idServiceSpecs` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idService` INT UNSIGNED NOT NULL,
@@ -556,6 +603,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`EmployeeTaskService`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`EmployeeTaskService` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`EmployeeTaskService` (
   `idEmployeeTaskService` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idEmployee` INT UNSIGNED NOT NULL,
@@ -580,6 +629,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`AssetTaskService`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`AssetTaskService` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`AssetTaskService` (
   `idAssetTaskService` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idAsset` INT UNSIGNED NOT NULL,
@@ -604,6 +655,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `sod_db`.`OrderPickNDeliver`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`OrderPickNDeliver` ;
+
 CREATE TABLE IF NOT EXISTS `sod_db`.`OrderPickNDeliver` (
   `idOrderPickNDeliver` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `time` DATETIME NULL,
@@ -626,6 +679,70 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`OrderPickNDeliver` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `sod_db`.`PaymentInfo`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`PaymentInfo` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`PaymentInfo` (
+  `idPaymentInfo` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idOrder` INT UNSIGNED NOT NULL,
+  `type` INT NOT NULL COMMENT '0=cash\n1=stripe\n2=square\n',
+  `transactionInfo` VARCHAR(250) NULL,
+  PRIMARY KEY (`idPaymentInfo`),
+  INDEX `fk_PaymentInfo_Orders1_idx` (`idOrder` ASC),
+  CONSTRAINT `fk_PaymentInfo_Orders1`
+    FOREIGN KEY (`idOrder`)
+    REFERENCES `sod_db`.`Orders` (`idOrder`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sod_db`.`ServiceType_has_OrderType`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`ServiceType_has_OrderType` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceType_has_OrderType` (
+  `ServiceType_idServiceType` INT UNSIGNED NOT NULL,
+  `OrderType_idOrderType` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`ServiceType_idServiceType`, `OrderType_idOrderType`),
+  INDEX `fk_ServiceType_has_OrderType_OrderType1_idx` (`OrderType_idOrderType` ASC),
+  INDEX `fk_ServiceType_has_OrderType_ServiceType1_idx` (`ServiceType_idServiceType` ASC),
+  CONSTRAINT `fk_ServiceType_has_OrderType_ServiceType1`
+    FOREIGN KEY (`ServiceType_idServiceType`)
+    REFERENCES `sod_db`.`ServiceType` (`idServiceType`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ServiceType_has_OrderType_OrderType1`
+    FOREIGN KEY (`OrderType_idOrderType`)
+    REFERENCES `sod_db`.`OrderType` (`idOrderType`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sod_db`.`ClientPaymentInfo`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`ClientPaymentInfo` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`ClientPaymentInfo` (
+  `idClientPaymentInfo` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `type` INT NULL DEFAULT 0 COMMENT '0=stripe',
+  `token` VARCHAR(250) NULL,
+  `idClient` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`idClientPaymentInfo`),
+  INDEX `fk_ClientPaymentInfo_Clients1_idx` (`idClient` ASC),
+  CONSTRAINT `fk_ClientPaymentInfo_Clients1`
+    FOREIGN KEY (`idClient`)
+    REFERENCES `sod_db`.`Clients` (`idClient`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 USE `sod_db` ;
 
 -- -----------------------------------------------------
@@ -636,6 +753,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`view1` (`id` INT);
 -- -----------------------------------------------------
 -- View `sod_db`.`view1`
 -- -----------------------------------------------------
+DROP VIEW IF EXISTS `sod_db`.`view1` ;
 DROP TABLE IF EXISTS `sod_db`.`view1`;
 USE `sod_db`;
 
@@ -643,3 +761,88 @@ USE `sod_db`;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`TaskType`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`) VALUES (DEFAULT, 'lavado', 'todo lo relevante a lavar ropa');
+INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`) VALUES (DEFAULT, 'planchado', 'todo lo relevante a planchado');
+INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`) VALUES (DEFAULT, 'transporte', 'recojer o entregar pedidos');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`EmployeeType`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`EmployeeType` (`idEmployeeType`, `name`, `description`) VALUES (DEFAULT, 'admin', NULL);
+INSERT INTO `sod_db`.`EmployeeType` (`idEmployeeType`, `name`, `description`) VALUES (DEFAULT, 'general', NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`AssetType`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`AssetType` (`idAssetType`, `name`, `description`) VALUES (DEFAULT, 'lavado', NULL);
+INSERT INTO `sod_db`.`AssetType` (`idAssetType`, `name`, `description`) VALUES (DEFAULT, 'planchado', NULL);
+INSERT INTO `sod_db`.`AssetType` (`idAssetType`, `name`, `description`) VALUES (DEFAULT, 'transporte', NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`ProductType`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`) VALUES (DEFAULT, 'none', NULL);
+INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`) VALUES (DEFAULT, 'detergente', NULL);
+INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`) VALUES (DEFAULT, 'blanqueador', NULL);
+INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`) VALUES (DEFAULT, 'suavisante', NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`OrderType`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (DEFAULT, 'Order 1', 'Pickup + service + deliver');
+INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (DEFAULT, 'Order 2', 'Pickup + service');
+INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (DEFAULT, 'Order 3', 'Service + deliver');
+INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (DEFAULT, 'Order 4', 'Service');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`ServiceType`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (DEFAULT, 'lavado', NULL, 100, 2);
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (DEFAULT, 'planchado', NULL, 100, 2);
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (DEFAULT, 'tintoreria', NULL, 100, 2);
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (DEFAULT, 'costura', NULL, 100, 2);
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (DEFAULT, 'lavado delicado', 'ropa interior', 100, 2);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`Specs`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `idProductType`, `name`, `description`) VALUES (DEFAULT, DEFAULT, 'size', NULL);
+
+COMMIT;
+

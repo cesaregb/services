@@ -9,7 +9,6 @@ public class ClientDTO {
 	private String lastName;
 	private String name;
 	private String password;
-	private String phoneNumber;
 	private String twitter;
 	private List<Integer> orders;
 	// key value  
@@ -21,6 +20,8 @@ public class ClientDTO {
 	
 	private Date created;
 	private Date updated;
+	
+	private List<ClientPaymentInfoDTO> clientPaymentInfos;
 	
 	
 	public int getIdClient() {
@@ -52,12 +53,6 @@ public class ClientDTO {
 	}
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
 	}
 	public String getTwitter() {
 		return twitter;
@@ -95,5 +90,10 @@ public class ClientDTO {
 	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
-
+	public List<ClientPaymentInfoDTO> getClientPaymentInfos() {
+		return clientPaymentInfos;
+	}
+	public void setClientPaymentInfos(List<ClientPaymentInfoDTO> clientPaymentInfos) {
+		this.clientPaymentInfos = clientPaymentInfos;
+	}
 }

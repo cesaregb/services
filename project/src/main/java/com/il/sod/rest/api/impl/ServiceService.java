@@ -38,7 +38,7 @@ public class ServiceService extends AbstractServiceMutations {
 	@Autowired
 	ServiceRepository serviceRepository;
 
-	@PUT
+	@POST
 	@ApiOperation(value = "Create Service Type", response = ServiceDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -54,7 +54,7 @@ public class ServiceService extends AbstractServiceMutations {
 		}
 	}
 
-	@POST
+	@PUT
 	@ApiOperation(value = "Update Service Type", response = ServiceDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),

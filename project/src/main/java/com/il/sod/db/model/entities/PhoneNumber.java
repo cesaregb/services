@@ -8,7 +8,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 
-
 /**
  * The persistent class for the PhoneNumber database table.
  *
@@ -23,6 +22,8 @@ public class PhoneNumber implements IEntity<Integer> {
 	private int idPhoneNumber;
 
 	private String number;
+	
+	private int prefered;
 
 	//bi-directional many-to-one association to Client
 	@ManyToOne
@@ -64,5 +65,13 @@ public class PhoneNumber implements IEntity<Integer> {
 	public PhoneNumber setId(Integer id) {
 		this.idPhoneNumber = id;
 		return this;
+	}
+
+	public int getPrefered() {
+		return prefered;
+	}
+
+	public void setPrefered(int prefered) {
+		this.prefered = prefered;
 	}
 }

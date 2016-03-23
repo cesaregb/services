@@ -14,6 +14,7 @@ public class OrderDTO {
 	private Integer orderType;
 	private List<OrderTaskDTO> orderTasks;
 	private List<OrderPickNDeliverDTO> orderPickNdelivers;
+	private List<PaymentInfoDTO> paymentInfos;
 	
 	private Date created;
 	private Date updated;
@@ -96,6 +97,12 @@ public class OrderDTO {
 	}
 	public void setOrderPickNdelivers(List<OrderPickNDeliverDTO> orderPickNdelivers) {
 		this.orderPickNdelivers = orderPickNdelivers;
+	}
+	public List<PaymentInfoDTO> getPaymentInfos() {
+		return paymentInfos;
+	}
+	public void setPaymentInfos(List<PaymentInfoDTO> paymentInfos) {
+		this.paymentInfos = paymentInfos;
 	}
 
 }

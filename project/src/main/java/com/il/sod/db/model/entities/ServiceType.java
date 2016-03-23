@@ -8,9 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+
+import borrame.OrderType;
 
 
 /**
@@ -46,10 +49,18 @@ public class ServiceType implements IEntity<Integer> {
 	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
 	private List<ServiceTypeTask> serviceTypeTasks;
 	
-	//bi-directional many-to-one association to OrderType
-	@ManyToOne
-	@JoinColumn(name="idOrderType")
-	private OrderType orderType;
+	//bi-directional many-to-many association to OrderType
+	@ManyToMany
+	@JoinTable(
+		name="ServiceType_has_OrderType"
+		, joinColumns={
+			@JoinColumn(name="ServiceType_idServiceType")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="OrderType_idOrderType")
+			}
+		)
+	private List<OrderType> orderTypes;
 
 	public ServiceType() {
 	}
@@ -169,12 +180,12 @@ public class ServiceType implements IEntity<Integer> {
 	public void setTime(Integer time) {
 		this.time = time;
 	}
-	
-	public OrderType getOrderType() {
-		return this.orderType;
+
+	public List<OrderType> getOrderTypes() {
+		return orderTypes;
 	}
 
-	public void setOrderType(OrderType orderType) {
-		this.orderType = orderType;
+	public void setOrderTypes(List<OrderType> orderTypes) {
+		this.orderTypes = orderTypes;
 	}
 }

@@ -37,7 +37,7 @@ public class SocialNetworkDataService extends AbstractServiceMutations {
 	@Autowired
 	SocialNetworkDataRepository socialNetworkDataRepository;
 
-	@PUT
+	@POST
 	@ApiOperation(value = "Create Service Type", response = SocialNetworkDataDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -53,7 +53,7 @@ public class SocialNetworkDataService extends AbstractServiceMutations {
 		}
 	}
 
-	@POST
+	@PUT
 	@ApiOperation(value = "Update Service Type", response = SocialNetworkDataDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),

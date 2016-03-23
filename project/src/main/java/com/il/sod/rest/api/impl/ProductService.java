@@ -42,7 +42,7 @@ public class ProductService extends AbstractServiceMutations {
 	@Autowired
 	ProductTypeRepository productTypeRepository;
 
-	@PUT
+	@POST
 	@ApiOperation(value = "Create Product", response = ProductDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -58,7 +58,7 @@ public class ProductService extends AbstractServiceMutations {
 		}
 	}
 
-	@POST
+	@PUT
 	@ApiOperation(value = "Update Product", response = ProductDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),

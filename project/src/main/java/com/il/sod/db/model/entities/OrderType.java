@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
@@ -36,8 +37,8 @@ public class OrderType implements IEntity<Integer> {
 	@OneToMany(mappedBy="orderType", fetch=FetchType.EAGER)
 	private List<Order> orders;
 	
-	//bi-directional many-to-one association to ServiceType
-	@OneToMany(mappedBy="orderType")
+	//bi-directional many-to-many association to ServiceType
+	@ManyToMany(mappedBy="orderTypes")
 	private List<ServiceType> serviceTypes;
 
 	public OrderType() {
@@ -127,19 +128,5 @@ public class OrderType implements IEntity<Integer> {
 
 	public void setServiceTypes(List<ServiceType> serviceTypes) {
 		this.serviceTypes = serviceTypes;
-	}
-
-	public ServiceType addServiceType(ServiceType serviceType) {
-		getServiceTypes().add(serviceType);
-		serviceType.setOrderType(this);
-
-		return serviceType;
-	}
-
-	public ServiceType removeServiceType(ServiceType serviceType) {
-		getServiceTypes().remove(serviceType);
-		serviceType.setOrderType(null);
-
-		return serviceType;
 	}
 }

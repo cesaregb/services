@@ -38,7 +38,7 @@ public class OrderService extends AbstractServiceMutations {
 	@Autowired
 	OrderRepository orderRepository;
 
-	@PUT
+	@POST
 	@ApiOperation(value = "Create Order Type", response = OrderDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -54,7 +54,7 @@ public class OrderService extends AbstractServiceMutations {
 		}
 	}
 
-	@POST
+	@PUT
 	@ApiOperation(value = "Update Order Type", response = OrderDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),

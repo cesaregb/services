@@ -11,6 +11,8 @@ public class ServiceTypeDTO {
 	private List<Integer> services;
 	private List<Integer> serviceTypeSpecs;
 	private List<Integer> serviceTypeTasks;
+	private List<Integer> orderTypes;
+	
 	public int getIdServiceType() {
 		return idServiceType;
 	}
@@ -58,5 +60,11 @@ public class ServiceTypeDTO {
 	}
 	public void setTime(int time) {
 		this.time = time;
+	}
+	public List<Integer> getOrderTypes() {
+		return orderTypes;
+	}
+	public void setOrderTypes(List<Integer> orderTypes) {
+		this.orderTypes = orderTypes;
 	}
 }

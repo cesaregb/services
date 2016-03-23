@@ -38,7 +38,7 @@ public class EmployeeTypeService extends AbstractServiceMutations {
 	@Autowired
 	EmployeeTypeRepository employeeTypeRepository;
 
-	@PUT
+	@POST
 	@ApiOperation(value = "Create Employee Type", response = EmployeeTypeDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -54,7 +54,7 @@ public class EmployeeTypeService extends AbstractServiceMutations {
 		}
 	}
 
-	@POST
+	@PUT
 	@ApiOperation(value = "Update Employee Type", response = EmployeeTypeDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),

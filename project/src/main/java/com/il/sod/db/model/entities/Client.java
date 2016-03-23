@@ -40,8 +40,6 @@ public class Client implements IEntity<Integer> {
 
 	private String password;
 
-	private String phoneNumber;
-
 	private String twitter;
 
 	//bi-directional many-to-one association to AccessKey
@@ -67,6 +65,10 @@ public class Client implements IEntity<Integer> {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updated;
+	
+	//bi-directional many-to-one association to ClientPaymentInfo
+	@OneToMany(mappedBy="client")
+	private List<ClientPaymentInfo> clientPaymentInfos;
 
 	public Client() {
 	}
@@ -109,14 +111,6 @@ public class Client implements IEntity<Integer> {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getPhoneNumber() {
-		return this.phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
 	}
 
 	public String getTwitter() {
@@ -239,5 +233,27 @@ public class Client implements IEntity<Integer> {
 
 	public void setUpdated(Date updated) {
 		this.updated = updated;
+	}
+	
+	public List<ClientPaymentInfo> getClientPaymentInfos() {
+		return this.clientPaymentInfos;
+	}
+
+	public void setClientPaymentInfos(List<ClientPaymentInfo> clientPaymentInfos) {
+		this.clientPaymentInfos = clientPaymentInfos;
+	}
+
+	public ClientPaymentInfo addClientPaymentInfo(ClientPaymentInfo clientPaymentInfo) {
+		getClientPaymentInfos().add(clientPaymentInfo);
+		clientPaymentInfo.setClient(this);
+
+		return clientPaymentInfo;
+	}
+
+	public ClientPaymentInfo removeClientPaymentInfo(ClientPaymentInfo clientPaymentInfo) {
+		getClientPaymentInfos().remove(clientPaymentInfo);
+		clientPaymentInfo.setClient(null);
+
+		return clientPaymentInfo;
 	}
 }

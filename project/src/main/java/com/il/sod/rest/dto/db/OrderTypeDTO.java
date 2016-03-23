@@ -8,6 +8,7 @@ public class OrderTypeDTO {
 	private String name;
 	private List<Integer> orders;
 	private List<OrderTypeTaskDTO> orderTypeTasks;
+	private List<ServiceTypeDTO> serviceTypes;
 	public int getIdOrderType() {
 		return idOrderType;
 	}
@@ -37,6 +38,12 @@ public class OrderTypeDTO {
 	}
 	public void setOrderTypeTasks(List<OrderTypeTaskDTO> orderTypeTasks) {
 		this.orderTypeTasks = orderTypeTasks;
+	}
+	public List<ServiceTypeDTO> getServiceTypes() {
+		return serviceTypes;
+	}
+	public void setServiceTypes(List<ServiceTypeDTO> serviceTypes) {
+		this.serviceTypes = serviceTypes;
 	}
 
 }

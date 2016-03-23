@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import com.il.sod.db.model.repositories.AddressRepository;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.db.model.repositories.OrderRepository;
+import com.il.sod.db.model.repositories.OrderTypeRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
@@ -44,6 +45,9 @@ public class AppOrdersService extends AbstractServiceMutations {
 	
 	@Autowired
 	OrderRepository orderRepository;
+	
+	@Autowired
+	OrderTypeRepository orderTypeRepository;
 	
 	@GET
 	@Path("/by-client/{clientId}")
@@ -75,6 +79,9 @@ public class AppOrdersService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getOrderTypes() throws SODAPIException {
+		
+		
+		
 		List<OrderDetailsDTO> result = null;
 		throw new SODAPIException("not yet implemented!!");
 	}

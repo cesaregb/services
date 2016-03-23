@@ -42,7 +42,7 @@ public class TaskService extends AbstractServiceMutations {
 	@Autowired
 	TaskTypeRepository taskTypeRepository;
 
-	@PUT
+	@POST
 	@ApiOperation(value = "Create Task", response = TaskDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -58,7 +58,7 @@ public class TaskService extends AbstractServiceMutations {
 		}
 	}
 
-	@POST
+	@PUT
 	@ApiOperation(value = "Update Task", response = TaskDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),

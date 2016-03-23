@@ -11,6 +11,8 @@ import com.il.sod.db.model.entities.OrderPickNDeliver;
 import com.il.sod.db.model.entities.OrderTask;
 import com.il.sod.db.model.entities.OrderType;
 import com.il.sod.db.model.entities.OrderTypeTask;
+import com.il.sod.db.model.entities.PaymentInfo;
+import com.il.sod.db.model.entities.ServiceType;
 import com.il.sod.rest.dto.db.AssetTaskOrderDTO;
 import com.il.sod.rest.dto.db.ClientDTO;
 import com.il.sod.rest.dto.db.EmployeeTaskOrderDTO;
@@ -19,6 +21,8 @@ import com.il.sod.rest.dto.db.OrderPickNDeliverDTO;
 import com.il.sod.rest.dto.db.OrderTaskDTO;
 import com.il.sod.rest.dto.db.OrderTypeDTO;
 import com.il.sod.rest.dto.db.OrderTypeTaskDTO;
+import com.il.sod.rest.dto.db.PaymentInfoDTO;
+import com.il.sod.rest.dto.db.ServiceTypeDTO;
 
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.converter.BidirectionalConverter;
@@ -40,10 +44,13 @@ public enum OrderMapper {
 		converterFactory.registerConverter("assetTaskOrderListConverter", new AssetTaskOrderListConverter());
 		converterFactory.registerConverter("employeeTaskOrderListConverter", new EmployeeTaskOrderListConverter());
 		converterFactory.registerConverter("orderPickNDeliverListConverter", new OrderPickNDeliverListConverter());
+		converterFactory.registerConverter("paymentInfoListConverter", new PaymentInfoListConverter());
+		converterFactory.registerConverter("serviceTypeListConverter", new ServiceTypeListConverter());
 		
 		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeDTO.class, OrderType.class)
 			.fieldMap("orders", "orders").converter("orderListConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("orderTypeTasks", "orderTypeTasks").converter("orderTypeTaskListConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("serviceTypes", "serviceTypes").converter("serviceTypeListConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 		
@@ -57,6 +64,7 @@ public enum OrderMapper {
 			.fieldMap("client", "client").converter("clientConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("orderTasks", "orderTasks").converter("orderTaskListConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("orderPickNdelivers", "orderPickNdelivers").converter("orderPickNDeliverListConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("paymentInfos", "paymentInfos").converter("paymentInfoListConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.field("orderType", "orderType.idOrderType")
 			.byDefault()
 			.register();
@@ -87,6 +95,11 @@ public enum OrderMapper {
 			.byDefault()
 			.register();
 		
+		BaseMapper.MAPPER_FACTORY.classMap(PaymentInfoDTO.class, PaymentInfo.class)
+			.field("order", "order.idOrder")
+			.byDefault()
+			.register();
+			
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
 	}
 
@@ -144,6 +157,14 @@ public enum OrderMapper {
 	
 	public OrderPickNDeliverDTO map(OrderPickNDeliver entity) {
 		return this.mapperFacade.map(entity, OrderPickNDeliverDTO.class);
+	}
+	
+	public PaymentInfo map(PaymentInfoDTO dto) {
+		return this.mapperFacade.map(dto, PaymentInfo.class);
+	}
+	
+	public PaymentInfoDTO map(PaymentInfo entity) {
+		return this.mapperFacade.map(entity, PaymentInfoDTO.class);
 	}
 
 }
@@ -225,6 +246,29 @@ class OrderPickNDeliverListConverter extends BidirectionalConverter<List<OrderPi
 	@Override
 	public List<OrderPickNDeliverDTO> convertTo(List<OrderPickNDeliver> source, Type<List<OrderPickNDeliverDTO>> arg1) {
 		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	}
+}
+
+class PaymentInfoListConverter extends BidirectionalConverter<List<PaymentInfo>, List<PaymentInfoDTO>> {
+	@Override
+	public List<PaymentInfo> convertFrom(List<PaymentInfoDTO> source, Type<List<PaymentInfo>> arg1) {
+		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	}
+	@Override
+	public List<PaymentInfoDTO> convertTo(List<PaymentInfo> source, Type<List<PaymentInfoDTO>> arg1) {
+		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	}
+}
+
+class ServiceTypeListConverter extends BidirectionalConverter<List<ServiceType>, List<ServiceTypeDTO>> {
+	@Override
+	public List<ServiceType> convertFrom(List<ServiceTypeDTO> source, Type<List<ServiceType>> arg1) {
+		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<ServiceTypeDTO> convertTo(List<ServiceType> source, Type<List<ServiceTypeDTO>> arg1) {
+		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toList());
 	}
 }
 
