@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 /**
  * The persistent class for the ClientPaymentInfo database table.
@@ -29,6 +31,7 @@ public class ClientPaymentInfo implements IEntity<Integer> {
 	//bi-directional many-to-one association to Client
 	@ManyToOne
 	@JoinColumn(name="idClient")
+	@JsonBackReference
 	private Client client;
 
 	public ClientPaymentInfo() {

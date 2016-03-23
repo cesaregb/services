@@ -36,18 +36,18 @@ public enum ClientMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(AddressDTO.class, Address.class)
-			.field("idClient", "client.idClient")
+			.field("client", "client.idClient")
 			.exclude("orderPickNdelivers")
 			.byDefault()
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(PhoneNumberDTO.class, PhoneNumber.class)
-			.field("idClient", "client.idClient")
+			.field("client", "client.idClient")
 			.byDefault()
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ClientPaymentInfoDTO.class, ClientPaymentInfo.class)
-			.field("idClient", "client.idClient")
+			.field("client", "client.idClient")
 			.byDefault()
 			.register();
 		

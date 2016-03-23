@@ -13,8 +13,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
-import borrame.OrderType;
-
 
 /**
  * The persistent class for the ServiceType database table.

@@ -67,7 +67,8 @@ public class Client implements IEntity<Integer> {
 	private Date updated;
 	
 	//bi-directional many-to-one association to ClientPaymentInfo
-	@OneToMany(mappedBy="client")
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference
 	private List<ClientPaymentInfo> clientPaymentInfos;
 
 	public Client() {

@@ -13,7 +13,7 @@ public class AddressDTO implements GenericDBDTO{
 	private String country;
 	private String zipcode;
 	private String state;
-	private int idClient;
+	private int client;
 	private List<OrderPickNDeliverDTO> orderPickNdelivers;
 	
 	public int getIdAddress() {
@@ -52,17 +52,11 @@ public class AddressDTO implements GenericDBDTO{
 	public void setState(String state) {
 		this.state = state;
 	}
-	public int getIdClient() {
-		return idClient;
-	}
-	public void setIdClient(int idClient) {
-		this.idClient = idClient;
-	}
 	
 	@Override
 	@JsonIgnore
 	public Integer getParentId() {
-		return this.idClient;
+		return this.client;
 	}
 	public String getZipcode() {
 		return zipcode;
@@ -75,5 +69,11 @@ public class AddressDTO implements GenericDBDTO{
 	}
 	public void setOrderPickNdelivers(List<OrderPickNDeliverDTO> orderPickNdelivers) {
 		this.orderPickNdelivers = orderPickNdelivers;
+	}
+	public int getClient() {
+		return client;
+	}
+	public void setClient(int client) {
+		this.client = client;
 	}
 }

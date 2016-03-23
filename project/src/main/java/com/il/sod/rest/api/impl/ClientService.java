@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.il.sod.db.dao.IClientDAO;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.exception.SODAPIException;
@@ -42,7 +43,10 @@ public class ClientService extends AbstractServiceMutations {
 	final static Logger LOGGER = LoggerFactory.getLogger(AbstractService.class);
 
 	@Autowired
-	ClientRepository clientRepository;
+	private ClientRepository clientRepository;
+	
+	@Autowired
+	private IClientDAO clientDAO;
 
 	@POST
 	@ApiOperation(value = "Create Client", response = ClientDTO.class)
@@ -120,16 +124,30 @@ public class ClientService extends AbstractServiceMutations {
 	}
 	
 	@GET
-	@Path("/{email}")
-	@ApiOperation(value = "Get Client list", response = ClientDTO.class)
+	@Path("/email/{email}")
+	@ApiOperation(value = "Get Client list by email", response = ClientDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getClientByEmail(@PathParam("email") String email) throws SODAPIException {
-		
-		Client client = this.getEntity(clientRepository, Integer.valueOf("1"));
-		ClientDTO dto = ClientMapper.INSTANCE.map(client);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		List<Client> lClients = clientDAO.findByEmail(email);
+		List<ClientDTO> lResult = lClients.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
+		return castEntityAsResponse(lResult, Response.Status.OK);
+	}
+	
+	@GET
+	@Path("/token/{payment-token}")
+	@ApiOperation(value = "Get Client list by payment token", response = ClientDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getClientByToken(@PathParam("payment-token") String token) throws SODAPIException {
+		List<Client> lClients = clientDAO.findByToken(token);
+		System.out.println("******************");
+		System.out.println("--> " + this.castEntityAsString(lClients));
+		System.out.println("******************");
+		List<ClientDTO> lResult = lClients.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
+		return castEntityAsResponse(lResult, Response.Status.OK);
 	}
 
 	private void assignDependencyToChilds(Client entity) {
