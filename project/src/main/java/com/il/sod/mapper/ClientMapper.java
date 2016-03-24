@@ -121,7 +121,6 @@ class PhoneNumberDTOConverter extends BidirectionalConverter<List<PhoneNumber>, 
 }
 
 class ClientPaymentInfoConverter extends BidirectionalConverter<List<ClientPaymentInfo>, List<ClientPaymentInfoDTO>> {
-
 	@Override
 	public List<ClientPaymentInfo> convertFrom(List<ClientPaymentInfoDTO> source, Type<List<ClientPaymentInfo>> arg1) {
 		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());

@@ -143,9 +143,6 @@ public class ClientService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getClientByToken(@PathParam("payment-token") String token) throws SODAPIException {
 		List<Client> lClients = clientDAO.findByToken(token);
-		System.out.println("******************");
-		System.out.println("--> " + this.castEntityAsString(lClients));
-		System.out.println("******************");
 		List<ClientDTO> lResult = lClients.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
 		return castEntityAsResponse(lResult, Response.Status.OK);
 	}

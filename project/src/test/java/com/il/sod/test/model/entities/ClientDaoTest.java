@@ -40,8 +40,8 @@ public class ClientDaoTest extends SpringTestConfiguration{
 //    	clientDao.findByEmail("cesareg.borjon@gmail.com");
 //    	List<Client> c = clientDao.findAll();
 //    	List<Client> c = clientReadsDAO.findByEmail("cesareg.borjon@gmail.com");
-//    	List<Client> c = clientReadsDAO.findByToken("abcd");
-    	List<Client> c = clientDAO.findByToken2("abcd");
+    	List<Client> c = clientDAO.findByToken("abcd");
+//    	List<Client> c = clientDAO.findByToken2("abcd");
     	System.out.println("*************************");
     	System.out.println("*************************");
     	for ( Client item : c ){

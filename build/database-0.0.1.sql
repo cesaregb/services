@@ -31,7 +31,6 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Clients` (
   `password` CHAR(128) NULL,
   `name` VARCHAR(250) NULL,
   `lastName` VARCHAR(250) NULL,
-  `phoneNumber` VARCHAR(250) NULL,
   `twitter` VARCHAR(250) NULL,
   `created` DATETIME NULL,
   `updated` DATETIME NULL,
@@ -107,6 +106,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`PhoneNumber` (
   `idPhoneNumber` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idClient` INT UNSIGNED NOT NULL,
   `number` VARCHAR(45) NULL,
+  `prefered` INT NULL DEFAULT 0,
   PRIMARY KEY (`idPhoneNumber`),
   INDEX `fk_PhoneNumber_Clients1_idx` (`idClient` ASC),
   CONSTRAINT `fk_PhoneNumber_Clients1`
@@ -458,16 +458,9 @@ DROP TABLE IF EXISTS `sod_db`.`Specs` ;
 
 CREATE TABLE IF NOT EXISTS `sod_db`.`Specs` (
   `idSpecs` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'This table is for information about a service\nsuch as \njavon \nsuavisante\ntypo lavador\n',
-  `idProductType` INT UNSIGNED NOT NULL DEFAULT 1,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(45) NULL,
-  PRIMARY KEY (`idSpecs`),
-  INDEX `fk_Specs_ProductType1_idx` (`idProductType` ASC),
-  CONSTRAINT `fk_Specs_ProductType1`
-    FOREIGN KEY (`idProductType`)
-    REFERENCES `sod_db`.`ProductType` (`idProductType`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`idSpecs`))
 ENGINE = InnoDB;
 
 
@@ -743,6 +736,27 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`ClientPaymentInfo` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `sod_db`.`SpecsValues`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`SpecsValues` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`SpecsValues` (
+  `idSpecsValues` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idSpecs` INT UNSIGNED NOT NULL,
+  `type` INT NULL DEFAULT '1',
+  `value` VARCHAR(45) NULL,
+  `idProduct` INT NULL DEFAULT 0,
+  PRIMARY KEY (`idSpecsValues`),
+  INDEX `fk_SpecsValues_Specs1_idx` (`idSpecs` ASC),
+  CONSTRAINT `fk_SpecsValues_Specs1`
+    FOREIGN KEY (`idSpecs`)
+    REFERENCES `sod_db`.`Specs` (`idSpecs`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 USE `sod_db` ;
 
 -- -----------------------------------------------------
@@ -842,7 +856,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Specs` (`idSpecs`, `idProductType`, `name`, `description`) VALUES (DEFAULT, DEFAULT, 'size', NULL);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`) VALUES (DEFAULT, 'size', NULL);
 
 COMMIT;
 

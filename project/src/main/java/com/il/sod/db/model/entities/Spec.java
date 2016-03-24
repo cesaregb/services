@@ -7,8 +7,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -39,11 +37,10 @@ public class Spec implements IEntity<Integer> {
 	//bi-directional many-to-one association to ServiceTypeSpec
 	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER)
 	private List<ServiceTypeSpec> serviceTypeSpecs;
-
-	//bi-directional many-to-one association to ProductType
-	@ManyToOne
-	@JoinColumn(name="idProductType")
-	private ProductType productType;
+	
+	//bi-directional many-to-one association to SpecsValue
+	@OneToMany(mappedBy="spec")
+	private List<SpecsValue> specsValues;
 
 	public Spec() {
 	}
@@ -115,14 +112,29 @@ public class Spec implements IEntity<Integer> {
 
 		return serviceTypeSpec;
 	}
-
-	public ProductType getProductType() {
-		return this.productType;
+	
+	public List<SpecsValue> getSpecsValues() {
+		return this.specsValues;
 	}
 
-	public void setProductType(ProductType productType) {
-		this.productType = productType;
+	public void setSpecsValues(List<SpecsValue> specsValues) {
+		this.specsValues = specsValues;
 	}
+
+	public SpecsValue addSpecsValue(SpecsValue specsValue) {
+		getSpecsValues().add(specsValue);
+		specsValue.setSpec(this);
+
+		return specsValue;
+	}
+
+	public SpecsValue removeSpecsValue(SpecsValue specsValue) {
+		getSpecsValues().remove(specsValue);
+		specsValue.setSpec(null);
+
+		return specsValue;
+	}
+
 	@Override
 	public Integer getId() {
 		return this.idSpecs;

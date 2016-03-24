@@ -2,7 +2,6 @@ package com.il.sod.rest.dto.web;
 
 import java.util.List;
 
-import com.il.sod.rest.dto.db.ServiceDTO;
 import com.il.sod.rest.dto.db.TaskDTO;
 
 public class OrderDetailsDTO {
@@ -10,7 +9,7 @@ public class OrderDetailsDTO {
 	private String description;
 	private String name;
 	private List<TaskDTO> tasks;
-	private List<ServiceDTO> services;
+	private List<ServiceDetailsDTO> services;
 	
 	public int getIdOrderType() {
 		return idOrderType;
@@ -36,10 +35,10 @@ public class OrderDetailsDTO {
 	public void setTasks(List<TaskDTO> tasks) {
 		this.tasks = tasks;
 	}
-	public List<ServiceDTO> getServices() {
+	public List<ServiceDetailsDTO> getServices() {
 		return services;
 	}
-	public void setServices(List<ServiceDTO> services) {
+	public void setServices(List<ServiceDetailsDTO> services) {
 		this.services = services;
 	}
 	

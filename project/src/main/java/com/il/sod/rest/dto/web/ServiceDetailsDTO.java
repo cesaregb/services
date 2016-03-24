@@ -2,6 +2,7 @@ package com.il.sod.rest.dto.web;
 
 import java.util.List;
 
+import com.il.sod.rest.dto.db.SpecDTO;
 import com.il.sod.rest.dto.db.TaskDTO;
 
 public class ServiceDetailsDTO {
@@ -11,7 +12,7 @@ public class ServiceDetailsDTO {
 	private double price;
 	private int time;
 	private List<TaskDTO> tasks;
-	private List<SpecInfoDTO> specs;
+	private List<SpecDTO> specs;
 	
 	public int getIdServiceType() {
 		return idServiceType;
@@ -49,10 +50,10 @@ public class ServiceDetailsDTO {
 	public void setTasks(List<TaskDTO> tasks) {
 		this.tasks = tasks;
 	}
-	public List<SpecInfoDTO> getSpecs() {
+	public List<SpecDTO> getSpecs() {
 		return specs;
 	}
-	public void setSpecs(List<SpecInfoDTO> specs) {
+	public void setSpecs(List<SpecDTO> specs) {
 		this.specs = specs;
 	}
 }

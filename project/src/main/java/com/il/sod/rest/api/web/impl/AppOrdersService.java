@@ -1,5 +1,6 @@
 package com.il.sod.rest.api.web.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
@@ -14,16 +15,22 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.il.sod.converter.OrderDetailsConverter;
+import com.il.sod.db.model.entities.OrderType;
+import com.il.sod.db.model.entities.OrderTypeTask;
 import com.il.sod.db.model.repositories.AddressRepository;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.db.model.repositories.OrderRepository;
 import com.il.sod.db.model.repositories.OrderTypeRepository;
 import com.il.sod.exception.SODAPIException;
+import com.il.sod.mapper.TaskMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.AddressDTO;
+import com.il.sod.rest.dto.db.TaskDTO;
 import com.il.sod.rest.dto.web.NewOrderDTO;
 import com.il.sod.rest.dto.web.OrderDetailsDTO;
+import com.il.sod.rest.dto.web.ServiceDetailsDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -79,13 +86,34 @@ public class AppOrdersService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getOrderTypes() throws SODAPIException {
+		List<OrderDetailsDTO> result = new ArrayList<>();
 		
+		// get all orderTypes.. 
+		List<OrderType> orderTypeList = orderTypeRepository.findAll();
 		
+		for (OrderType ot : orderTypeList){
+			// order type details.. 
+			OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO(); 
+			OrderDetailsConverter.getOrderDetailFromOrderType(ot, orderDetailsDTO);
+
+			// set task for order 
+			List<TaskDTO> taskList = new ArrayList<>();
+			for (OrderTypeTask ott : ot.getOrderTypeTasks()){
+				taskList.add(TaskMapper.INSTANCE.map(ott.getTask()));
+			}
+			orderDetailsDTO.setTasks(taskList);
+			
+			// get services list.. 
+			List<ServiceDetailsDTO> services = new ArrayList<>();
+			OrderDetailsConverter.getServiceDtlListFromOrderType(ot);
+			orderDetailsDTO.setServices(services);
+			
+			result.add(orderDetailsDTO);
+		}
 		
-		List<OrderDetailsDTO> result = null;
-		throw new SODAPIException("not yet implemented!!");
+		return this.castEntityAsResponse(result);
 	}
-	
+
 	@POST
 	@Path("/create")
 	@ApiOperation(value = "Create new order", response = GeneralResponseMessage.class)
