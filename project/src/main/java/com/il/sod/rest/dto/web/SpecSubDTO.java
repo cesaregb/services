@@ -1,28 +1,31 @@
 package com.il.sod.rest.dto.web;
 
+import java.util.List;
+import java.util.Map;
+
 import com.il.sod.rest.dto.KeyValue;
 
 public class SpecSubDTO {
-	private int idSpec;
-    private String comments;
-    private KeyValue product;
+	private int idSpecs;
+    private String name;
+    private Map<String, List<KeyValue>> options;
     
-	public int getIdSpec() {
-		return idSpec;
+	public int getIdSpecs() {
+		return idSpecs;
 	}
-	public void setIdSpec(int idSpec) {
-		this.idSpec = idSpec;
+	public void setIdSpecs(int idSpecs) {
+		this.idSpecs = idSpecs;
 	}
-	public String getComments() {
-		return comments;
+	public String getName() {
+		return name;
 	}
-	public void setComments(String comments) {
-		this.comments = comments;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public KeyValue getProduct() {
-		return product;
+	public Map<String, List<KeyValue>> getOptions() {
+		return options;
 	}
-	public void setProduct(KeyValue product) {
-		this.product = product;
+	public void setOptions(Map<String, List<KeyValue>> options) {
+		this.options = options;
 	}
 }

@@ -24,7 +24,7 @@ public class SpecsValue implements IEntity<Integer> {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idSpecsValues;
 
-	private int idProduct;
+	private int idProductType;
 
 	private int type;
 
@@ -44,14 +44,6 @@ public class SpecsValue implements IEntity<Integer> {
 
 	public void setIdSpecsValues(int idSpecsValues) {
 		this.idSpecsValues = idSpecsValues;
-	}
-
-	public int getIdProduct() {
-		return this.idProduct;
-	}
-
-	public void setIdProduct(int idProduct) {
-		this.idProduct = idProduct;
 	}
 
 	public int getType() {
@@ -87,6 +79,14 @@ public class SpecsValue implements IEntity<Integer> {
 	public SpecsValue setId(Integer id) {
 		this.idSpecsValues = id;
 		return this;
+	}
+
+	public int getIdProductType() {
+		return idProductType;
+	}
+
+	public void setIdProductType(int idProductType) {
+		this.idProductType = idProductType;
 	}
 
 }

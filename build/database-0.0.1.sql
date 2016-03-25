@@ -745,9 +745,9 @@ DROP TABLE IF EXISTS `sod_db`.`SpecsValues` ;
 CREATE TABLE IF NOT EXISTS `sod_db`.`SpecsValues` (
   `idSpecsValues` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idSpecs` INT UNSIGNED NOT NULL,
-  `type` INT NULL DEFAULT '1',
+  `type` INT NULL DEFAULT 1,
   `value` VARCHAR(45) NULL,
-  `idProduct` INT NULL DEFAULT 0,
+  `idProductType` INT NULL DEFAULT 0,
   PRIMARY KEY (`idSpecsValues`),
   INDEX `fk_SpecsValues_Specs1_idx` (`idSpecs` ASC),
   CONSTRAINT `fk_SpecsValues_Specs1`
@@ -777,13 +777,45 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
+-- Data for table `sod_db`.`Clients`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`Clients` (`idClient`, `email`, `password`, `name`, `lastName`, `twitter`, `created`, `updated`) VALUES (1, 'email@domain.com', 'aa', 'Name', 'Lastname', 'twitter', NULL, NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`PhoneNumber`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`PhoneNumber` (`idPhoneNumber`, `idClient`, `number`, `prefered`) VALUES (1, 1, '123456789', 1);
+INSERT INTO `sod_db`.`PhoneNumber` (`idPhoneNumber`, `idClient`, `number`, `prefered`) VALUES (2, 1, '987654321', 0);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`Address`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`Address` (`idAddress`, `idClient`, `country`, `state`, `zipcode`, `city`, `address`, `address2`, `comments`, `lat`, `long`) VALUES (1, 1, 'Mexico', 'Jalisco', '44540', 'Guadalajara', 'Peninsula', NULL, NULL, NULL, NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `sod_db`.`TaskType`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`) VALUES (DEFAULT, 'lavado', 'todo lo relevante a lavar ropa');
-INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`) VALUES (DEFAULT, 'planchado', 'todo lo relevante a planchado');
-INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`) VALUES (DEFAULT, 'transporte', 'recojer o entregar pedidos');
+INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`) VALUES (1, 'Servicios', 'utilizado como placeholder');
+INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`) VALUES (3, 'planchado', 'todo lo relevante a planchado');
+INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`) VALUES (4, 'transporte', 'recojer o entregar pedidos');
+INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`) VALUES (2, 'lavado', 'todo lo relevante a lavar ropa');
 
 COMMIT;
 
@@ -793,8 +825,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`EmployeeType` (`idEmployeeType`, `name`, `description`) VALUES (DEFAULT, 'admin', NULL);
-INSERT INTO `sod_db`.`EmployeeType` (`idEmployeeType`, `name`, `description`) VALUES (DEFAULT, 'general', NULL);
+INSERT INTO `sod_db`.`EmployeeType` (`idEmployeeType`, `name`, `description`) VALUES (1, 'admin', NULL);
+INSERT INTO `sod_db`.`EmployeeType` (`idEmployeeType`, `name`, `description`) VALUES (2, 'general', NULL);
 
 COMMIT;
 
@@ -804,9 +836,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`AssetType` (`idAssetType`, `name`, `description`) VALUES (DEFAULT, 'lavado', NULL);
-INSERT INTO `sod_db`.`AssetType` (`idAssetType`, `name`, `description`) VALUES (DEFAULT, 'planchado', NULL);
-INSERT INTO `sod_db`.`AssetType` (`idAssetType`, `name`, `description`) VALUES (DEFAULT, 'transporte', NULL);
+INSERT INTO `sod_db`.`AssetType` (`idAssetType`, `name`, `description`) VALUES (1, 'lavado', NULL);
+INSERT INTO `sod_db`.`AssetType` (`idAssetType`, `name`, `description`) VALUES (2, 'planchado', NULL);
+INSERT INTO `sod_db`.`AssetType` (`idAssetType`, `name`, `description`) VALUES (3, 'transporte', NULL);
 
 COMMIT;
 
@@ -816,10 +848,57 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`) VALUES (DEFAULT, 'none', NULL);
-INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`) VALUES (DEFAULT, 'detergente', NULL);
-INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`) VALUES (DEFAULT, 'blanqueador', NULL);
-INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`) VALUES (DEFAULT, 'suavisante', NULL);
+INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`) VALUES (1, 'detergente', NULL);
+INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`) VALUES (2, 'suavisante', NULL);
+INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`) VALUES (3, 'blanqueador', NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`Task`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`Task` (`idTask`, `idTaskType`, `name`, `description`) VALUES (1, 1, 'SERVICIOS', 'lavado de ropa general (mezclilla, etc)');
+INSERT INTO `sod_db`.`Task` (`idTask`, `idTaskType`, `name`, `description`) VALUES (2, 2, 'lavado general', 'lavado de ropa general');
+INSERT INTO `sod_db`.`Task` (`idTask`, `idTaskType`, `name`, `description`) VALUES (3, 4, 'recojer', 'recojer pedido');
+INSERT INTO `sod_db`.`Task` (`idTask`, `idTaskType`, `name`, `description`) VALUES (4, 4, 'entregar', 'entregar pedido');
+INSERT INTO `sod_db`.`Task` (`idTask`, `idTaskType`, `name`, `description`) VALUES (5, 2, 'doblar', 'doblado');
+INSERT INTO `sod_db`.`Task` (`idTask`, `idTaskType`, `name`, `description`) VALUES (6, 3, 'planchar', 'planchar');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`Employee`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`Employee` (`idEmployee`, `idEmployeeType`, `status`, `name`, `lastname`, `password`, `username`, `created`, `updated`) VALUES (1, 1, 1, 'user', 'user', NULL, 'user', NULL, NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`Asset`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`Asset` (`idAsset`, `idAssetType`, `status`, `name`, `description`) VALUES (1, 1, 1, 'lavadora 1', 'lavadora roja');
+INSERT INTO `sod_db`.`Asset` (`idAsset`, `idAssetType`, `status`, `name`, `description`) VALUES (2, 1, 1, 'lavadora 2', 'lavadora roja rota');
+INSERT INTO `sod_db`.`Asset` (`idAsset`, `idAssetType`, `status`, `name`, `description`) VALUES (3, 3, 1, 'moto1', 'moto roja placas aaabbb92');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`Product`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`Product` (`idProduct`, `idProductType`, `status`, `name`, `description`, `price`) VALUES (DEFAULT, 1, 1, 'Ariel', NULL, 100);
+INSERT INTO `sod_db`.`Product` (`idProduct`, `idProductType`, `status`, `name`, `description`, `price`) VALUES (DEFAULT, 1, 1, 'Otro', NULL, NULL);
 
 COMMIT;
 
@@ -829,10 +908,22 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (DEFAULT, 'Order 1', 'Pickup + service + deliver');
-INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (DEFAULT, 'Order 2', 'Pickup + service');
-INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (DEFAULT, 'Order 3', 'Service + deliver');
-INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (DEFAULT, 'Order 4', 'Service');
+INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (1, 'Order 1', 'Pickup + service + deliver');
+INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (2, 'Order 2', 'Pickup + service');
+INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (3, 'Order 3', 'Service + deliver');
+INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (4, 'Order 4', 'Service');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`OrderTypeTasks`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `description`, `time`) VALUES (1, 1, 3, 'recojer', 20);
+INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `description`, `time`) VALUES (2, 1, 1, 'Servicios', 100);
+INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `description`, `time`) VALUES (3, 1, 4, 'entrega', 20);
 
 COMMIT;
 
@@ -842,11 +933,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (DEFAULT, 'lavado', NULL, 100, 2);
-INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (DEFAULT, 'planchado', NULL, 100, 2);
-INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (DEFAULT, 'tintoreria', NULL, 100, 2);
-INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (DEFAULT, 'costura', NULL, 100, 2);
-INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (DEFAULT, 'lavado delicado', 'ropa interior', 100, 2);
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (1, 'lavado', NULL, 100, 2);
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (2, 'planchado', NULL, 100, 2);
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (3, 'tintoreria', NULL, 100, 2);
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (4, 'costura', NULL, 100, 2);
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`) VALUES (5, 'lavado delicado', 'ropa interior', 100, 2);
 
 COMMIT;
 
@@ -856,7 +947,63 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`) VALUES (DEFAULT, 'size', NULL);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`) VALUES (DEFAULT, 'tamanio', 'size of order');
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`) VALUES (DEFAULT, 'jabon', 'detergente a utilizarse');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`ServiceTypeSpecs`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`ServiceTypeSpecs` (`idServiceTypeSpecs`, `idServiceType`, `idSpecs`, `comments`) VALUES (1, 1, 1, 'tamanio');
+INSERT INTO `sod_db`.`ServiceTypeSpecs` (`idServiceTypeSpecs`, `idServiceType`, `idSpecs`, `comments`) VALUES (2, 1, 2, 'jabon');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`ServiceTypeTask`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `comments`) VALUES (1, 1, 2, 'lavado general');
+INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `comments`) VALUES (2, 1, 5, 'doblar');
+INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `comments`) VALUES (3, 2, 6, 'planchar');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`ServiceType_has_OrderType`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (1, 1);
+INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (2, 1);
+INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (3, 1);
+INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (4, 1);
+INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (5, 1);
+INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (1, 2);
+INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (2, 2);
+INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (3, 2);
+INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (4, 2);
+INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (5, 2);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`SpecsValues`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`) VALUES (DEFAULT, 1, 1, 'C', NULL);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`) VALUES (DEFAULT, 1, 1, 'M', NULL);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`) VALUES (DEFAULT, 1, 1, 'G', NULL);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`) VALUES (DEFAULT, 2, 2, NULL, 1);
 
 COMMIT;
 

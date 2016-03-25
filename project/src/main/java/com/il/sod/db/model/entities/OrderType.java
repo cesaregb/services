@@ -38,7 +38,7 @@ public class OrderType implements IEntity<Integer> {
 	private List<Order> orders;
 	
 	//bi-directional many-to-many association to ServiceType
-	@ManyToMany(mappedBy="orderTypes")
+	@ManyToMany(mappedBy="orderTypes", fetch=FetchType.EAGER)
 	private List<ServiceType> serviceTypes;
 
 	public OrderType() {

@@ -27,4 +27,8 @@ public class Constants {
 	public static final String ENV_APP_PROFILE = "APP_PROFILE";
 
 	public static final String DOCKER_ENV_FLAG = "DB_URL";
+	
+	public static final int SPEC_TYPE_PRODUCT = 2;
+	public static final int SPEC_TYPE_VALUES = 1;
+	
 }

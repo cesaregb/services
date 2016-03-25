@@ -4,7 +4,7 @@ public class SpecsValueDTO {
 	
 	private int idSpecsValues;
 
-	private int idProduct;
+	private int idProductType;
 
 	private int type;
 
@@ -21,14 +21,6 @@ public class SpecsValueDTO {
 
 	public void setIdSpecsValues(int idSpecsValues) {
 		this.idSpecsValues = idSpecsValues;
-	}
-
-	public int getIdProduct() {
-		return this.idProduct;
-	}
-
-	public void setIdProduct(int idProduct) {
-		this.idProduct = idProduct;
 	}
 
 	public int getType() {
@@ -53,5 +45,13 @@ public class SpecsValueDTO {
 
 	public void setSpec(Integer spec) {
 		this.spec = spec;
+	}
+
+	public int getIdProductType() {
+		return idProductType;
+	}
+
+	public void setIdProductType(int idProductType) {
+		this.idProductType = idProductType;
 	}
 }
