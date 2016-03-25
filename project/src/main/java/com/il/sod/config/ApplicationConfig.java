@@ -29,7 +29,7 @@ public class ApplicationConfig extends ResourceConfig {
 	public ApplicationConfig() {
         register(LoggingFilter.class);
         register(CORSResponseFilter.class);
-        register(AuthenticationFilter.class);
+//        register(AuthenticationFilter.class);
         register(CustomLoggingFilter.class);
         register(JacksonObjectMapperProvider.class);
         register(JacksonJaxbJsonProvider.class);

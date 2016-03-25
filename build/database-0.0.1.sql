@@ -308,6 +308,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTypeTasks` (
   `idTask` INT UNSIGNED NOT NULL,
   `description` VARCHAR(45) NULL,
   `time` INT NULL,
+  `order` INT NULL,
   PRIMARY KEY (`idOrderTypeTasks`),
   INDEX `fk_OrderTemplateTasks_Task1_idx` (`idTask` ASC),
   INDEX `fk_OrderTemplateTasks_OrderTemplate1_idx` (`idOrderType` ASC),
@@ -500,6 +501,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceTypeTask` (
   `idServiceType` INT UNSIGNED NOT NULL,
   `idTask` INT UNSIGNED NOT NULL,
   `comments` VARCHAR(250) NULL,
+  `order` INT NULL,
   PRIMARY KEY (`idServiceTypeTask`),
   INDEX `fk_ServiceTypeTask_Task1_idx` (`idTask` ASC),
   INDEX `fk_ServiceTypeTask_ServiceType1_idx` (`idServiceType` ASC),
@@ -921,9 +923,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `description`, `time`) VALUES (1, 1, 3, 'recojer', 20);
-INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `description`, `time`) VALUES (2, 1, 1, 'Servicios', 100);
-INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `description`, `time`) VALUES (3, 1, 4, 'entrega', 20);
+INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `description`, `time`, `order`) VALUES (1, 1, 3, 'recojer', 20, NULL);
+INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `description`, `time`, `order`) VALUES (2, 1, 1, 'Servicios', 100, NULL);
+INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `description`, `time`, `order`) VALUES (3, 1, 4, 'entrega', 20, NULL);
 
 COMMIT;
 
@@ -969,9 +971,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `comments`) VALUES (1, 1, 2, 'lavado general');
-INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `comments`) VALUES (2, 1, 5, 'doblar');
-INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `comments`) VALUES (3, 2, 6, 'planchar');
+INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `comments`, `order`) VALUES (1, 1, 2, 'lavado general', NULL);
+INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `comments`, `order`) VALUES (2, 1, 5, 'doblar', NULL);
+INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `comments`, `order`) VALUES (3, 2, 6, 'planchar', NULL);
 
 COMMIT;
 
