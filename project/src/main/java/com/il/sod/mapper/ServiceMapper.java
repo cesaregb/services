@@ -52,13 +52,13 @@ public enum ServiceMapper {
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceTypeSpecDTO.class, ServiceTypeSpec.class)
 			.field("serviceType", "serviceType.idServiceType")
-			.field("spec", "serviceType.idSpecs")
+			.field("spec", "spec.idSpecs")
 			.byDefault()
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceTypeTaskDTO.class, ServiceTypeTask.class)
 			.field("serviceType", "serviceType.idServiceType")
-			.field("task", "task.idSpecs")
+			.field("task", "task.idTask")
 			.byDefault()
 			.register();
 		

@@ -48,7 +48,7 @@ public class ServiceType implements IEntity<Integer> {
 	private List<ServiceTypeTask> serviceTypeTasks;
 	
 	//bi-directional many-to-many association to OrderType
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(
 		name="ServiceType_has_OrderType"
 		, joinColumns={
