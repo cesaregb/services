@@ -38,6 +38,8 @@ public class OrderTypeTask implements IEntity<Integer> {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idTask")
 	private Task task;
+	
+	private int sortingOrder;
 
 	public OrderTypeTask() {
 	}
@@ -90,5 +92,13 @@ public class OrderTypeTask implements IEntity<Integer> {
 	public OrderTypeTask setId(Integer id) {
 		this.idOrderTypeTasks = id;
 		return this;
+	}
+
+	public int getSortingOrder() {
+		return sortingOrder;
+	}
+
+	public void setSortingOrder(int sortingOrder) {
+		this.sortingOrder = sortingOrder;
 	}
 }

@@ -4,7 +4,7 @@ public class ServiceTypeSpecDTO {
 	private int idServiceTypeSpecs;
 	private String comments;
 	private Integer serviceType;
-	private Integer spec;
+	private SpecDTO spec;
 	public int getIdServiceTypeSpecs() {
 		return idServiceTypeSpecs;
 	}
@@ -23,10 +23,10 @@ public class ServiceTypeSpecDTO {
 	public void setServiceType(Integer serviceType) {
 		this.serviceType = serviceType;
 	}
-	public Integer getSpec() {
+	public SpecDTO getSpec() {
 		return spec;
 	}
-	public void setSpec(Integer spec) {
+	public void setSpec(SpecDTO spec) {
 		this.spec = spec;
 	}
 }

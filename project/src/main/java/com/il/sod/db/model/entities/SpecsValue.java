@@ -34,6 +34,8 @@ public class SpecsValue implements IEntity<Integer> {
 	@ManyToOne
 	@JoinColumn(name="idSpecs")
 	private Spec spec;
+	
+	private double price; 
 
 	public SpecsValue() {
 	}
@@ -87,6 +89,14 @@ public class SpecsValue implements IEntity<Integer> {
 
 	public void setIdProductType(int idProductType) {
 		this.idProductType = idProductType;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 }

@@ -2,6 +2,7 @@ package com.il.sod.test.model.entities;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.test.config.SpringTestConfiguration;
 
+@Ignore
 public class ClientDaoTest extends SpringTestConfiguration{
 	
 	@Autowired

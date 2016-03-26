@@ -3,15 +3,12 @@ package com.il.sod.rest.dto.db;
 public class SpecsValueDTO {
 	
 	private int idSpecsValues;
-
 	private int idProductType;
-
 	private int type;
-
 	private String value;
-
 	private Integer spec;
-
+	private double price; 
+	
 	public SpecsValueDTO() {
 	}
 
@@ -53,5 +50,13 @@ public class SpecsValueDTO {
 
 	public void setIdProductType(int idProductType) {
 		this.idProductType = idProductType;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 }

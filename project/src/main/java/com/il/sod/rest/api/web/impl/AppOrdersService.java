@@ -1,7 +1,7 @@
 package com.il.sod.rest.api.web.impl;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
@@ -13,21 +13,15 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.il.sod.converter.OrderDetailsConverter;
-import com.il.sod.db.model.entities.OrderType;
-import com.il.sod.db.model.entities.OrderTypeTask;
-import com.il.sod.db.model.repositories.AddressRepository;
-import com.il.sod.db.model.repositories.ClientRepository;
-import com.il.sod.db.model.repositories.OrderRepository;
+import com.il.sod.db.model.entities.ServiceCategory;
 import com.il.sod.db.model.repositories.OrderTypeRepository;
 import com.il.sod.db.model.repositories.ProductRepository;
+import com.il.sod.db.model.repositories.ServiceCategoryRepository;
 import com.il.sod.exception.SODAPIException;
-import com.il.sod.mapper.TaskMapper;
+import com.il.sod.mapper.SpecificObjectsMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
-import com.il.sod.rest.dto.db.TaskDTO;
-import com.il.sod.rest.dto.web.OrderDetailsDTO;
-import com.il.sod.rest.dto.web.ServiceDetailsDTO;
+import com.il.sod.rest.dto.web.WServiceCategoryDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,6 +40,9 @@ public class AppOrdersService extends AbstractServiceMutations {
 	
 	@Autowired
 	ProductRepository productRepository;
+	
+	@Autowired
+	ServiceCategoryRepository serviceCategoryRepository;
 	
 //	@GET
 //	@Path("/by-client/{clientId}")
@@ -69,39 +66,38 @@ public class AppOrdersService extends AbstractServiceMutations {
 	
 	@GET
 	@Path("/orderTypes")
-	@ApiOperation(value = "Get Address list", response = OrderDetailsDTO.class, responseContainer = "List")
+	@ApiOperation(value = "Get Address list", response = WServiceCategoryDTO.class, responseContainer = "List")
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getOrderTypes() throws SODAPIException {
-		List<OrderDetailsDTO> result = new ArrayList<>();
-		OrderDetailsConverter converter = new OrderDetailsConverter();
-		converter.setRepository(productRepository);
+		SpecificObjectsMapper.INSTANCE.setProductRepository(productRepository);
+		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
+		List<WServiceCategoryDTO> result = entities.stream().map(i -> SpecificObjectsMapper.INSTANCE.map(i)).collect(Collectors.toList());
 		
-		// get all orderTypes.. 
-		List<OrderType> orderTypeList = orderTypeRepository.findAll();
-		
-		for (OrderType ot : orderTypeList){
-			// order type details.. 
-			OrderDetailsDTO orderDetailsDTO = converter.getOrderDetailFromOrderType(ot);
-
-			// set task for order 
-			List<TaskDTO> taskList = new ArrayList<>();
-			for (OrderTypeTask ott : ot.getOrderTypeTasks()){
-				taskList.add(TaskMapper.INSTANCE.map(ott.getTask()));
-			}
-			orderDetailsDTO.setTasks(taskList);
-			
-			// get services list.. 
-			List<ServiceDetailsDTO> services = converter.getServiceDtlListFromOrderType(ot);
-			
-			
-			orderDetailsDTO.setServices(services);
-			
-			
-			
-			result.add(orderDetailsDTO);
-		}
+//		OrderDetailsConverter converter = new OrderDetailsConverter();
+//		converter.setRepository(productRepository);
+//		// get all orderTypes.. 
+//		List<OrderType> orderTypeList = orderTypeRepository.findAll();
+//		
+//		for (OrderType ot : orderTypeList){
+//			// order type details.. 
+//			OrderDetailsDTO orderDetailsDTO = converter.getOrderDetailFromOrderType(ot);
+//
+//			// set task for order 
+//			List<TaskDTO> taskList = new ArrayList<>();
+//			for (OrderTypeTask ott : ot.getOrderTypeTasks()){
+//				taskList.add(TaskMapper.INSTANCE.map(ott.getTask()));
+//			}
+//			orderDetailsDTO.setTasks(taskList);
+//			
+//			// get services list.. 
+//			List<ServiceDetailsDTO> services = converter.getServiceDtlListFromOrderType(ot);
+//			
+//			orderDetailsDTO.setServices(services);
+//			
+//			result.add(orderDetailsDTO);
+//		}
 		
 		return this.castEntityAsResponse(result);
 	}

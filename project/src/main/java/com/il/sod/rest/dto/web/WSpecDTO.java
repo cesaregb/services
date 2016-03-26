@@ -1,14 +1,18 @@
-package com.il.sod.rest.dto.db;
+package com.il.sod.rest.dto.web;
 
 import java.util.List;
+import java.util.Map;
 
-public class SpecDTO {
+import com.il.sod.rest.dto.KeyValue;
+
+public class WSpecDTO {
 	private int idSpecs;
 	private String description;
 	private String name;
-	private List<SpecsValueDTO> specsValues;
+	private Map<Integer, List<KeyValue>> options;
 	private int optional;
 	private int max_qty;
+	private double price;
 	
 	public int getIdSpecs() {
 		return idSpecs;
@@ -28,12 +32,6 @@ public class SpecDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<SpecsValueDTO> getSpecsValues() {
-		return specsValues;
-	}
-	public void setSpecsValues(List<SpecsValueDTO> specsValues) {
-		this.specsValues = specsValues;
-	}
 	public int getOptional() {
 		return optional;
 	}
@@ -45,5 +43,17 @@ public class SpecDTO {
 	}
 	public void setMax_qty(int max_qty) {
 		this.max_qty = max_qty;
+	}
+	public Map<Integer, List<KeyValue>> getOptions() {
+		return options;
+	}
+	public void setOptions(Map<Integer, List<KeyValue>> options) {
+		this.options = options;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
 	}
 }

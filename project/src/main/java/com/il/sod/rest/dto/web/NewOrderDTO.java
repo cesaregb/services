@@ -13,7 +13,6 @@ public class NewOrderDTO {
 	private String pickUpComments;
 	private Date deliveryDate;
 	private String deliveryComments;
-	private ServiceSubDTO service;
 	
 	public int getIdOrderType() {
 		return idOrderType;
@@ -75,12 +74,4 @@ public class NewOrderDTO {
 	public void setDeliveryComments(String deliveryComments) {
 		this.deliveryComments = deliveryComments;
 	}
-	public ServiceSubDTO getService() {
-		return service;
-	}
-	public void setService(ServiceSubDTO service) {
-		this.service = service;
-	}
-	
-	
 }

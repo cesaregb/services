@@ -9,7 +9,7 @@ public class ServiceTypeDTO {
 	private double price;
 	private int time;
 	private List<Integer> services;
-	private List<Integer> serviceTypeSpecs;
+	private List<ServiceTypeSpecDTO> serviceTypeSpecs;
 	private List<Integer> serviceTypeTasks;
 	private List<Integer> orderTypes;
 	
@@ -49,12 +49,6 @@ public class ServiceTypeDTO {
 	public void setServices(List<Integer> services) {
 		this.services = services;
 	}
-	public List<Integer> getServiceTypeSpecs() {
-		return serviceTypeSpecs;
-	}
-	public void setServiceTypeSpecs(List<Integer> serviceTypeSpecs) {
-		this.serviceTypeSpecs = serviceTypeSpecs;
-	}
 	public int getTime() {
 		return time;
 	}
@@ -66,5 +60,11 @@ public class ServiceTypeDTO {
 	}
 	public void setOrderTypes(List<Integer> orderTypes) {
 		this.orderTypes = orderTypes;
+	}
+	public List<ServiceTypeSpecDTO> getServiceTypeSpecs() {
+		return serviceTypeSpecs;
+	}
+	public void setServiceTypeSpecs(List<ServiceTypeSpecDTO> serviceTypeSpecs) {
+		this.serviceTypeSpecs = serviceTypeSpecs;
 	}
 }

@@ -6,6 +6,8 @@ public class OrderTypeTaskDTO {
 	private int time;
 	private Integer orderType;
 	private Integer task;
+	private int sortingOrder;
+	
 	public int getIdOrderTypeTasks() {
 		return idOrderTypeTasks;
 	}
@@ -35,6 +37,12 @@ public class OrderTypeTaskDTO {
 	}
 	public void setTask(Integer task) {
 		this.task = task;
+	}
+	public int getSortingOrder() {
+		return sortingOrder;
+	}
+	public void setSortingOrder(int sortingOrder) {
+		this.sortingOrder = sortingOrder;
 	}
 
 }

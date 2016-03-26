@@ -34,6 +34,8 @@ public class ServiceTypeTask implements IEntity<Integer> {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idTask")
 	private Task task;
+	
+	private int sortingOrder;
 
 	public ServiceTypeTask() {
 	}
@@ -78,5 +80,13 @@ public class ServiceTypeTask implements IEntity<Integer> {
 	public ServiceTypeTask setId(Integer id) {
 		this.idServiceTypeTask = id;
 		return this;
+	}
+
+	public int getSortingOrder() {
+		return sortingOrder;
+	}
+
+	public void setSortingOrder(int sortingOrder) {
+		this.sortingOrder = sortingOrder;
 	}
 }

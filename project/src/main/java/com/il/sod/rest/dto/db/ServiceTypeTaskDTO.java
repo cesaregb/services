@@ -5,6 +5,8 @@ public class ServiceTypeTaskDTO {
 	private String comments;
 	private Integer serviceType;
 	private Integer task;
+	private int sortingOrder;
+	
 	public int getIdServiceTypeTask() {
 		return idServiceTypeTask;
 	}
@@ -28,5 +30,11 @@ public class ServiceTypeTaskDTO {
 	}
 	public void setTask(Integer task) {
 		this.task = task;
+	}
+	public int getSortingOrder() {
+		return sortingOrder;
+	}
+	public void setSortingOrder(int sortingOrder) {
+		this.sortingOrder = sortingOrder;
 	}
 }

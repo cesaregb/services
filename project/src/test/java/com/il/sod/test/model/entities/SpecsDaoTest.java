@@ -3,6 +3,7 @@ package com.il.sod.test.model.entities;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,6 +13,7 @@ import com.il.sod.mapper.SpecsMapper;
 import com.il.sod.rest.dto.db.SpecDTO;
 import com.il.sod.test.config.SpringTestConfiguration;
 
+@Ignore
 public class SpecsDaoTest extends SpringTestConfiguration {
 
 	@Autowired

@@ -42,6 +42,10 @@ public class Spec implements IEntity<Integer> {
 	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER)
 	private List<SpecsValue> specsValues;
 
+	private int optional;
+	
+	private int max_qty;
+	
 	public Spec() {
 	}
 
@@ -144,5 +148,21 @@ public class Spec implements IEntity<Integer> {
 	public Spec setId(Integer id) {
 		this.idSpecs = id;
 		return this;
+	}
+
+	public int getOptional() {
+		return optional;
+	}
+
+	public void setOptional(int optional) {
+		this.optional = optional;
+	}
+
+	public int getMax_qty() {
+		return max_qty;
+	}
+
+	public void setMax_qty(int max_qty) {
+		this.max_qty = max_qty;
 	}
 }
