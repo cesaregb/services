@@ -6,17 +6,20 @@ import java.util.stream.Collectors;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.il.sod.db.model.entities.Client;
+import com.il.sod.db.model.entities.Order;
+import com.il.sod.db.model.repositories.*;
+import com.il.sod.mapper.OrderMapper;
+import com.il.sod.rest.dto.db.OrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.il.sod.db.model.entities.ServiceCategory;
-import com.il.sod.db.model.repositories.OrderTypeRepository;
-import com.il.sod.db.model.repositories.ProductRepository;
-import com.il.sod.db.model.repositories.ServiceCategoryRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.SpecificObjectsMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -37,32 +40,18 @@ public class AppOrdersService extends AbstractServiceMutations {
 	
 	@Autowired
 	OrderTypeRepository orderTypeRepository;
-	
+
+	@Autowired
+	ClientRepository clientRepository;
+
+	@Autowired
+	OrderRepository orderRepository;
+
 	@Autowired
 	ProductRepository productRepository;
 	
 	@Autowired
 	ServiceCategoryRepository serviceCategoryRepository;
-	
-//	@GET
-//	@Path("/by-client/{clientId}")
-//	@ApiOperation(value = "Get Address list", response = AddressDTO.class, responseContainer = "List")
-//	@ApiResponses(value = {
-//			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-//			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-//	public Response getOrderByClient(@PathParam("clientId") String clientId) throws SODAPIException {
-//		throw new SODAPIException("not yet implemented!!");
-//	}
-	
-//	@GET
-//	@Path("/{clientId}")
-//	@ApiOperation(value = "Get Address list", response = AddressDTO.class, responseContainer = "List")
-//	@ApiResponses(value = {
-//			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-//			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-//	public Response getOrderTypes(@PathParam("clientId") String clientId) throws SODAPIException {
-//		throw new SODAPIException("not yet implemented!!");
-//	}
 	
 	@GET
 	@Path("/orderTypes")
@@ -74,42 +63,23 @@ public class AppOrdersService extends AbstractServiceMutations {
 		SpecificObjectsMapper.INSTANCE.setProductRepository(productRepository);
 		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
 		List<WServiceCategoryDTO> result = entities.stream().map(i -> SpecificObjectsMapper.INSTANCE.map(i)).collect(Collectors.toList());
-		
-//		OrderDetailsConverter converter = new OrderDetailsConverter();
-//		converter.setRepository(productRepository);
-//		// get all orderTypes.. 
-//		List<OrderType> orderTypeList = orderTypeRepository.findAll();
-//		
-//		for (OrderType ot : orderTypeList){
-//			// order type details.. 
-//			OrderDetailsDTO orderDetailsDTO = converter.getOrderDetailFromOrderType(ot);
-//
-//			// set task for order 
-//			List<TaskDTO> taskList = new ArrayList<>();
-//			for (OrderTypeTask ott : ot.getOrderTypeTasks()){
-//				taskList.add(TaskMapper.INSTANCE.map(ott.getTask()));
-//			}
-//			orderDetailsDTO.setTasks(taskList);
-//			
-//			// get services list.. 
-//			List<ServiceDetailsDTO> services = converter.getServiceDtlListFromOrderType(ot);
-//			
-//			orderDetailsDTO.setServices(services);
-//			
-//			result.add(orderDetailsDTO);
-//		}
-		
 		return this.castEntityAsResponse(result);
 	}
 
-//	@POST
-//	@Path("/create")
-//	@ApiOperation(value = "Create new order", response = GeneralResponseMessage.class)
-//	@ApiResponses(value = {
-//			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-//			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-//	public Response createOrder(NewOrderDTO order) throws SODAPIException {
-//		throw new SODAPIException("not yet implemented!!");
-//	}
+	@GET
+	@Path("/orders/{idClient}")
+	@ApiOperation(value = "Get Client Orders list", response = OrderDTO.class, responseContainer = "List")
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getOrdersByClient(@PathParam("idClient") String idClient) throws SODAPIException {
+		Client client = this.getEntity(clientRepository, Integer.valueOf(idClient));
+		List<Order> rentityList = orderRepository.findByClient(client);
+		List<OrderDTO> list = rentityList.stream().map((i) -> {
+			OrderDTO dto = OrderMapper.INSTANCE.map(i);
+			return dto;
+		}).collect(Collectors.toList());
+		return castEntityAsResponse(list);
+	}
 
 }

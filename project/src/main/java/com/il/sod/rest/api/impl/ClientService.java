@@ -130,9 +130,13 @@ public class ClientService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getClientByEmail(@PathParam("email") String email) throws SODAPIException {
-		List<Client> lClients = clientDAO.findByEmail(email);
-		List<ClientDTO> lResult = lClients.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
-		return castEntityAsResponse(lResult, Response.Status.OK);
+		ClientDTO dto = new ClientDTO();
+		List<Client> clients = clientDAO.findByEmail(email);
+		if (clients != null && !clients.isEmpty()) {
+			Client client = clients.get(0);
+			dto = ClientMapper.INSTANCE.map(client);
+		}
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 	
 	@GET
