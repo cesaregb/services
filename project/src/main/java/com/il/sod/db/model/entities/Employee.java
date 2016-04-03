@@ -40,6 +40,8 @@ public class Employee implements IEntity<Integer> {
 	private int status;
 
 	private String username;
+	
+	private String email;
 
 	//bi-directional many-to-one association to EmployeeType
 	@ManyToOne
@@ -188,4 +190,13 @@ public class Employee implements IEntity<Integer> {
 	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 }

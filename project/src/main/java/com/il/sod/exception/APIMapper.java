@@ -41,19 +41,11 @@ public class APIMapper extends GeneralMapper implements ExceptionMapper<Exceptio
 		LOGGER.error(errorMessage);
 		
 		if (ex instanceof SODAPIException) {
-			if (((SODAPIException) ex).getCode() == SODAPIException.BAD_REQUEST_CODE){
-				return Response.
-						status(Response.Status.BAD_REQUEST).
-						entity(GeneralResponseMessage.getInstance().error().setMessage(ex.getMessage())).
-						type(MediaType.APPLICATION_JSON).
-						build();
-			}else{
-				return Response.
-						status(((SODAPIException) ex).getStatus()).
-						entity(GeneralResponseMessage.getInstance().error().setMessage(ex.getMessage())).
-						type(MediaType.APPLICATION_JSON).
-						build();
-			}
+			return Response.
+					status(((SODAPIException) ex).getStatus()).
+					entity(GeneralResponseMessage.getInstance().error().setMessage(ex.getMessage())).
+					type(MediaType.APPLICATION_JSON).
+					build();
 		}else if (ex instanceof JsonMappingException) {
         	return Response.
 					status(Response.Status.BAD_REQUEST).

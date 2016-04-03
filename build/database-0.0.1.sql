@@ -231,6 +231,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Employee` (
   `username` VARCHAR(45) NULL,
   `created` DATETIME NULL,
   `updated` DATETIME NULL,
+  `email` VARCHAR(100) NULL,
   PRIMARY KEY (`idEmployee`),
   INDEX `fk_Employee_EmployeeType1_idx` (`idEmployeeType` ASC),
   CONSTRAINT `fk_Employee_EmployeeType1`
@@ -902,7 +903,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Employee` (`idEmployee`, `idEmployeeType`, `status`, `name`, `lastname`, `password`, `username`, `created`, `updated`) VALUES (1, 1, 1, 'user', 'user', NULL, 'user', NULL, NULL);
+INSERT INTO `sod_db`.`Employee` (`idEmployee`, `idEmployeeType`, `status`, `name`, `lastname`, `password`, `username`, `created`, `updated`, `email`) VALUES (1, 1, 1, 'user', 'user', NULL, 'user', NULL, NULL, NULL);
 
 COMMIT;
 

@@ -135,6 +135,8 @@ public class ClientService extends AbstractServiceMutations {
 		if (clients != null && !clients.isEmpty()) {
 			Client client = clients.get(0);
 			dto = ClientMapper.INSTANCE.map(client);
+		}else{
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "No employee found");
 		}
 		return castEntityAsResponse(dto, Response.Status.OK);
 	}

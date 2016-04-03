@@ -99,7 +99,7 @@ public abstract class AbstractService{
 			if (json != null && json.trim().length() > 0) {
 				return mapper.readValue(json, entityClass);
 			} else {
-				throw new SODAPIException(204,
+				throw new SODAPIException(Response.Status.NO_CONTENT,
 						"No content to map to Object due to end of input. The JSON object provided is empty, it was expected an object.");
 			}
 		} catch (Exception e) {
@@ -114,7 +114,7 @@ public abstract class AbstractService{
 			
 			return result;
 		} catch (Exception e) {
-			throw new SODAPIException(403,"No valid authentication", e);
+			throw new SODAPIException(Response.Status.UNAUTHORIZED,"No valid authentication", e);
 		}
 	}
 	

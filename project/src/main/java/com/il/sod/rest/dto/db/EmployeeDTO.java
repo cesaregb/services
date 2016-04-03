@@ -10,6 +10,7 @@ public class EmployeeDTO {
 	private int status;
 	private String username;
 	private Integer employeeType;
+	private String email;
 	
 	private Date created;
 	private Date updated;
@@ -67,5 +68,11 @@ public class EmployeeDTO {
 	}
 	public void setUpdated(Date updated) {
 		this.updated = updated;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }
