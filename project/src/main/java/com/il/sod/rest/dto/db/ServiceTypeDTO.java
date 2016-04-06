@@ -1,6 +1,5 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.Date;
 import java.util.List;
 
 public class ServiceTypeDTO {
@@ -8,10 +7,12 @@ public class ServiceTypeDTO {
 	private String description;
 	private String name;
 	private double price;
-	private Date time;
+	private int time;
 	private List<Integer> services;
-	private List<Integer> serviceTypeSpecs;
+	private List<ServiceTypeSpecDTO> serviceTypeSpecs;
 	private List<Integer> serviceTypeTasks;
+	private List<Integer> orderTypes;
+	
 	public int getIdServiceType() {
 		return idServiceType;
 	}
@@ -36,12 +37,6 @@ public class ServiceTypeDTO {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public Date getTime() {
-		return time;
-	}
-	public void setTime(Date time) {
-		this.time = time;
-	}
 	public List<Integer> getServiceTypeTasks() {
 		return serviceTypeTasks;
 	}
@@ -54,10 +49,22 @@ public class ServiceTypeDTO {
 	public void setServices(List<Integer> services) {
 		this.services = services;
 	}
-	public List<Integer> getServiceTypeSpecs() {
+	public int getTime() {
+		return time;
+	}
+	public void setTime(int time) {
+		this.time = time;
+	}
+	public List<Integer> getOrderTypes() {
+		return orderTypes;
+	}
+	public void setOrderTypes(List<Integer> orderTypes) {
+		this.orderTypes = orderTypes;
+	}
+	public List<ServiceTypeSpecDTO> getServiceTypeSpecs() {
 		return serviceTypeSpecs;
 	}
-	public void setServiceTypeSpecs(List<Integer> serviceTypeSpecs) {
+	public void setServiceTypeSpecs(List<ServiceTypeSpecDTO> serviceTypeSpecs) {
 		this.serviceTypeSpecs = serviceTypeSpecs;
 	}
 }

@@ -2,12 +2,12 @@ package com.il.sod.test.model.entities;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.il.sod.db.dao.IClientDAO;
 import com.il.sod.db.dao.IDAO;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
@@ -20,18 +20,38 @@ public class ClientDaoTest extends SpringTestConfiguration{
 	IDAO<Client, Integer> genericDaoImpl;
 	
 	@Autowired
+	private IClientDAO clientDAO;
+	
+	@Autowired
 	ClientRepository clientRepository;
 	
     @Test
     public void test(){
     	try{
-    		genericDaoImpl.setRepository(clientRepository);
+//    		genericDaoImpl.setRepository(clientRepository);
 //    		Assert.assertTrue(create());
 //    		Assert.assertNotNull(SelfPublishKeyValues.INSTANCE.getProperty("selfpub.registration.api.port"));
-    		Assert.assertTrue(findAll());
+//    		Assert.assertTrue(findAll());
     	}catch(Exception e){
     		e.printStackTrace();
     	}
+    }
+    
+    @Test
+    public void test2(){
+//    	clientDao.findByEmail("cesareg.borjon@gmail.com");
+//    	List<Client> c = clientDao.findAll();
+//    	List<Client> c = clientReadsDAO.findByEmail("cesareg.borjon@gmail.com");
+    	List<Client> c = clientDAO.findByToken("abcd");
+//    	List<Client> c = clientDAO.findByToken2("abcd");
+    	System.out.println("*************************");
+    	System.out.println("*************************");
+    	for ( Client item : c ){
+    		System.out.println("email: " + item.getEmail());
+    		System.out.println("name: " + item.getName());
+    	}
+    	System.out.println("*************************");
+    	System.out.println("*************************");
     }
     
     public boolean create(){
@@ -39,7 +59,6 @@ public class ClientDaoTest extends SpringTestConfiguration{
     	entity.setEmail("email");
     	entity.setName("name");
     	entity.setLastName("last name");
-    	entity.setPhoneNumber("number");
     	entity.setTwitter("twiiter");
 		genericDaoImpl.create(entity);
     	return true;

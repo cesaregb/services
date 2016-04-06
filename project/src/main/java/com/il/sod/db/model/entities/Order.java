@@ -34,8 +34,13 @@ public class Order implements IEntity<Integer> {
 	private String comments;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date date;
+	private Date created;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updated;
 
+	private int time;
+	
 	private int idAddressDeliver;
 
 	private int idAddressPickup;
@@ -57,6 +62,14 @@ public class Order implements IEntity<Integer> {
 	@ManyToOne
 	@JoinColumn(name="idOrderType")
 	private OrderType orderType;
+	
+	//bi-directional many-to-one association to OrderPickNDeliver
+	@OneToMany(mappedBy="order")
+	private List<OrderPickNDeliver> orderPickNdelivers;
+	
+	//bi-directional many-to-one association to PaymentInfo
+	@OneToMany(mappedBy="order")
+	private List<PaymentInfo> paymentInfos;
 
 	public Order() {
 	}
@@ -76,14 +89,6 @@ public class Order implements IEntity<Integer> {
 
 	public void setComments(String comments) {
 		this.comments = comments;
-	}
-
-	public Date getDate() {
-		return this.date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	public int getIdAddressDeliver() {
@@ -164,5 +169,73 @@ public class Order implements IEntity<Integer> {
 	public Order setId(Integer id) {
 		this.idOrder = id;
 		return this;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public int getTime() {
+		return time;
+	}
+
+	public void setTime(int time) {
+		this.time = time;
+	}
+	
+	public List<OrderPickNDeliver> getOrderPickNdelivers() {
+		return this.orderPickNdelivers;
+	}
+
+	public void setOrderPickNdelivers(List<OrderPickNDeliver> orderPickNdelivers) {
+		this.orderPickNdelivers = orderPickNdelivers;
+	}
+
+	public OrderPickNDeliver addOrderPickNdeliver(OrderPickNDeliver orderPickNdeliver) {
+		getOrderPickNdelivers().add(orderPickNdeliver);
+		orderPickNdeliver.setOrder(this);
+
+		return orderPickNdeliver;
+	}
+
+	public OrderPickNDeliver removeOrderPickNdeliver(OrderPickNDeliver orderPickNdeliver) {
+		getOrderPickNdelivers().remove(orderPickNdeliver);
+		orderPickNdeliver.setOrder(null);
+
+		return orderPickNdeliver;
+	}
+	
+	public List<PaymentInfo> getPaymentInfos() {
+		return this.paymentInfos;
+	}
+
+	public void setPaymentInfos(List<PaymentInfo> paymentInfos) {
+		this.paymentInfos = paymentInfos;
+	}
+
+	public PaymentInfo addPaymentInfo(PaymentInfo paymentInfo) {
+		getPaymentInfos().add(paymentInfo);
+		paymentInfo.setOrder(this);
+
+		return paymentInfo;
+	}
+
+	public PaymentInfo removePaymentInfo(PaymentInfo paymentInfo) {
+		getPaymentInfos().remove(paymentInfo);
+		paymentInfo.setOrder(null);
+
+		return paymentInfo;
 	}
 }

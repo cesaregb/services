@@ -5,10 +5,11 @@ import java.util.stream.Collectors;
 
 import com.il.sod.db.model.entities.Address;
 import com.il.sod.db.model.entities.Client;
-import com.il.sod.db.model.entities.Order;
+import com.il.sod.db.model.entities.ClientPaymentInfo;
 import com.il.sod.db.model.entities.PhoneNumber;
 import com.il.sod.rest.dto.db.AddressDTO;
 import com.il.sod.rest.dto.db.ClientDTO;
+import com.il.sod.rest.dto.db.ClientPaymentInfoDTO;
 import com.il.sod.rest.dto.db.PhoneNumberDTO;
 
 import ma.glasnost.orika.MapperFacade;
@@ -35,20 +36,31 @@ public enum ClientMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(AddressDTO.class, Address.class)
-			.field("idClient", "client.idClient")
+			.field("client", "client.idClient")
+			.exclude("orderPickNdelivers")
 			.byDefault()
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(PhoneNumberDTO.class, PhoneNumber.class)
-			.field("idClient", "client.idClient")
+			.field("client", "client.idClient")
 			.byDefault()
 			.register();
-			
+		
+		BaseMapper.MAPPER_FACTORY.classMap(ClientPaymentInfoDTO.class, ClientPaymentInfo.class)
+			.field("client", "client.idClient")
+			.byDefault()
+			.register();
+		
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
 	}
 
 	public Client map(ClientDTO dto) {
 		return this.mapperFacade.map(dto, Client.class);
+	}
+	
+	public Client map(ClientDTO dto, Client entity) {
+		this.mapperFacade.map(dto, entity);
+		return entity;
 	}
 
 	public ClientDTO map(Client entity) {
@@ -63,6 +75,10 @@ public enum ClientMapper {
 		return this.mapperFacade.map(entity, AddressDTO.class);
 	}
 	
+	public List<AddressDTO> map(List<Address> source) {
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	}
+	
 	public PhoneNumber map(PhoneNumberDTO dto) {
 		return this.mapperFacade.map(dto, PhoneNumber.class);
 	}
@@ -70,17 +86,13 @@ public enum ClientMapper {
 	public PhoneNumberDTO map(PhoneNumber entity) {
 		return this.mapperFacade.map(entity, PhoneNumberDTO.class);
 	}
-}
-
-class OrderListConverter extends BidirectionalConverter<List<Order>, List<Integer>> {
-	@Override
-	public List<Order> convertFrom(List<Integer> source, Type<List<Order>> destT) {
-		return source.stream().map(p -> (new Order()).setIdOrder(p)).collect(Collectors.toList());
+	
+	public ClientPaymentInfo map(ClientPaymentInfoDTO dto) {
+		return this.mapperFacade.map(dto, ClientPaymentInfo.class);
 	}
-
-	@Override
-	public List<Integer> convertTo(List<Order> source, Type<List<Integer>> destT) {
-		return source.stream().map(p -> p.getIdOrder()).collect(Collectors.toList());
+	
+	public ClientPaymentInfoDTO map(ClientPaymentInfo entity) {
+		return this.mapperFacade.map(entity, ClientPaymentInfoDTO.class);
 	}
 }
 
@@ -107,3 +119,16 @@ class PhoneNumberDTOConverter extends BidirectionalConverter<List<PhoneNumber>, 
 		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
 	}
 }
+
+class ClientPaymentInfoConverter extends BidirectionalConverter<List<ClientPaymentInfo>, List<ClientPaymentInfoDTO>> {
+	@Override
+	public List<ClientPaymentInfo> convertFrom(List<ClientPaymentInfoDTO> source, Type<List<ClientPaymentInfo>> arg1) {
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<ClientPaymentInfoDTO> convertTo(List<ClientPaymentInfo> source, Type<List<ClientPaymentInfoDTO>> arg1) {
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	}
+}
+

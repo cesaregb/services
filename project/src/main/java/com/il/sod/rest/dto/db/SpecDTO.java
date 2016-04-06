@@ -6,9 +6,10 @@ public class SpecDTO {
 	private int idSpecs;
 	private String description;
 	private String name;
-	private List<ServiceSpecDTO> serviceSpecs;
-	private List<ServiceTypeSpecDTO> serviceTypeSpecs;
-	private ProductTypeDTO productType;
+	private List<SpecsValueDTO> specsValues;
+	private int optional;
+	private int max_qty;
+	
 	public int getIdSpecs() {
 		return idSpecs;
 	}
@@ -27,22 +28,22 @@ public class SpecDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<ServiceSpecDTO> getServiceSpecs() {
-		return serviceSpecs;
+	public List<SpecsValueDTO> getSpecsValues() {
+		return specsValues;
 	}
-	public void setServiceSpecs(List<ServiceSpecDTO> serviceSpecs) {
-		this.serviceSpecs = serviceSpecs;
+	public void setSpecsValues(List<SpecsValueDTO> specsValues) {
+		this.specsValues = specsValues;
 	}
-	public List<ServiceTypeSpecDTO> getServiceTypeSpecs() {
-		return serviceTypeSpecs;
+	public int getOptional() {
+		return optional;
 	}
-	public void setServiceTypeSpecs(List<ServiceTypeSpecDTO> serviceTypeSpecs) {
-		this.serviceTypeSpecs = serviceTypeSpecs;
+	public void setOptional(int optional) {
+		this.optional = optional;
 	}
-	public ProductTypeDTO getProductType() {
-		return productType;
+	public int getMax_qty() {
+		return max_qty;
 	}
-	public void setProductType(ProductTypeDTO productType) {
-		this.productType = productType;
+	public void setMax_qty(int max_qty) {
+		this.max_qty = max_qty;
 	}
 }

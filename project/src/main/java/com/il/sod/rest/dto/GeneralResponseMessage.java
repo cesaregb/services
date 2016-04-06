@@ -4,7 +4,6 @@ public class GeneralResponseMessage {
 	private static final String GENERIC_MESSAGE_SUCCES = "Success";
 	private static final String GENERIC_MESSAGE_ERROR = "Error";
 	
-	private int code; 
 	private String message; 
 	private boolean status;
 	
@@ -19,14 +18,12 @@ public class GeneralResponseMessage {
 	}
 	
 	public GeneralResponseMessage success(){
-		this.code = 200;
 		this.message = GENERIC_MESSAGE_SUCCES;
 		this.status = true;
 		return this;
 	}
 	
 	public GeneralResponseMessage error(){
-		this.code = 411;
 		this.message = GENERIC_MESSAGE_ERROR;
 		this.status = false;
 		return this;
@@ -46,15 +43,6 @@ public class GeneralResponseMessage {
 
 	public GeneralResponseMessage setStatus(boolean status) {
 		this.status = status;
-		return this;
-	}
-
-	public int getCode() {
-		return code;
-	}
-
-	public GeneralResponseMessage setCode(int code) {
-		this.code = code;
 		return this;
 	}
 }

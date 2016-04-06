@@ -9,8 +9,8 @@ public class OrderTaskDTO {
 	private Date time;
 	private List<AssetTaskOrderDTO> assetTaskOrders;
 	private List<EmployeeTaskOrderDTO> employeeTaskOrders;
-	private OrderDTO order;
-	private TaskDTO task;
+	private Integer order;
+	private Integer task;
 	public int getIdOrderTask() {
 		return idOrderTask;
 	}
@@ -41,16 +41,16 @@ public class OrderTaskDTO {
 	public void setEmployeeTaskOrders(List<EmployeeTaskOrderDTO> employeeTaskOrders) {
 		this.employeeTaskOrders = employeeTaskOrders;
 	}
-	public OrderDTO getOrder() {
+	public Integer getOrder() {
 		return order;
 	}
-	public void setOrder(OrderDTO order) {
+	public void setOrder(Integer order) {
 		this.order = order;
 	}
-	public TaskDTO getTask() {
+	public Integer getTask() {
 		return task;
 	}
-	public void setTask(TaskDTO task) {
+	public void setTask(Integer task) {
 		this.task = task;
 	}
 

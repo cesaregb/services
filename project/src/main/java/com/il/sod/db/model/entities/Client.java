@@ -1,5 +1,6 @@
 package com.il.sod.db.model.entities;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -37,8 +40,6 @@ public class Client implements IEntity<Integer> {
 
 	private String password;
 
-	private String phoneNumber;
-
 	private String twitter;
 
 	//bi-directional many-to-one association to AccessKey
@@ -58,6 +59,17 @@ public class Client implements IEntity<Integer> {
 	//bi-directional many-to-one association to Order
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	private List<Order> orders;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date created;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updated;
+	
+	//bi-directional many-to-one association to ClientPaymentInfo
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference
+	private List<ClientPaymentInfo> clientPaymentInfos;
 
 	public Client() {
 	}
@@ -100,14 +112,6 @@ public class Client implements IEntity<Integer> {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getPhoneNumber() {
-		return this.phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
 	}
 
 	public String getTwitter() {
@@ -214,5 +218,43 @@ public class Client implements IEntity<Integer> {
 	public Client setId(Integer id) {
 		this.idClient = id;
 		return this;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+	
+	public List<ClientPaymentInfo> getClientPaymentInfos() {
+		return this.clientPaymentInfos;
+	}
+
+	public void setClientPaymentInfos(List<ClientPaymentInfo> clientPaymentInfos) {
+		this.clientPaymentInfos = clientPaymentInfos;
+	}
+
+	public ClientPaymentInfo addClientPaymentInfo(ClientPaymentInfo clientPaymentInfo) {
+		getClientPaymentInfos().add(clientPaymentInfo);
+		clientPaymentInfo.setClient(this);
+
+		return clientPaymentInfo;
+	}
+
+	public ClientPaymentInfo removeClientPaymentInfo(ClientPaymentInfo clientPaymentInfo) {
+		getClientPaymentInfos().remove(clientPaymentInfo);
+		clientPaymentInfo.setClient(null);
+
+		return clientPaymentInfo;
 	}
 }

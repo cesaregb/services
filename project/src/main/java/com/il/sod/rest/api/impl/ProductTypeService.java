@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import com.il.sod.db.model.entities.ProductType;
 import com.il.sod.db.model.repositories.ProductTypeRepository;
 import com.il.sod.exception.SODAPIException;
+import com.il.sod.mapper.ProductMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ProductTypeDTO;
@@ -32,37 +33,38 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/product-type")
 @Produces(MediaType.APPLICATION_JSON)
-// @Api(value = "/product-type", tags = { "generic" })
+@Api(value = "/product-type", tags = { "products" })
 public class ProductTypeService extends AbstractServiceMutations {
+	
 	@Autowired
 	ProductTypeRepository productTypeRepository;
 
-	@PUT
+	@POST
 	@ApiOperation(value = "Create Product Type", response = ProductTypeDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveProductType(ProductTypeDTO dto) throws SODAPIException {
 		try {
-			ProductType entity = converter.map(dto, ProductType.class);
+			ProductType entity = ProductMapper.INSTANCE.map(dto);
 			this.saveEntity(productTypeRepository, entity);
-			dto = converter.map(entity, ProductTypeDTO.class);
+			dto = ProductMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}
 	}
 
-	@POST
+	@PUT
 	@ApiOperation(value = "Update Product Type", response = ProductTypeDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateProductType(ProductTypeDTO dto) throws SODAPIException {
 		try {
-			ProductType entity = converter.map(dto, ProductType.class);
+			ProductType entity = ProductMapper.INSTANCE.map(dto);
 			this.updateEntity(productTypeRepository, entity);
-			dto = converter.map(entity, ProductTypeDTO.class);
+			dto = ProductMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
@@ -76,7 +78,7 @@ public class ProductTypeService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteProductType(ProductTypeDTO dto) throws SODAPIException {
 		try {
-			ProductType entity = converter.map(dto, ProductType.class);
+			ProductType entity = ProductMapper.INSTANCE.map(dto);
 			this.deleteEntity(productTypeRepository, entity.getIdProductType());
 			return castEntityAsResponse(
 					GeneralResponseMessage.getInstance().success().setMessage("Product deleted"),
@@ -94,7 +96,7 @@ public class ProductTypeService extends AbstractServiceMutations {
 	public Response getProductTypeList() throws SODAPIException {
 		List<ProductType> rentityList = this.getEntityList(productTypeRepository);
 		List<ProductTypeDTO> list = rentityList.stream().map((i) -> {
-			ProductTypeDTO dto = converter.map(i, ProductTypeDTO.class);
+			ProductTypeDTO dto = ProductMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);

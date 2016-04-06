@@ -1,5 +1,7 @@
 package com.il.sod.rest.api.helper;
 
+import javax.ws.rs.core.Response;
+
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.exception.SODAPIException;
@@ -22,7 +24,7 @@ public class ServicesDBHelper {
 	public void validateClient(ClientRepository clientRepository, GenericDBDTO dto) throws SODAPIException {
 		Client c = mCallback.getEntity(clientRepository, dto.getParentId());
 		if (c == null){
-			throw new SODAPIException(SODAPIException.BAD_REQUEST_CODE, "Client not valid");
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not valid");
 		}
 	}
 

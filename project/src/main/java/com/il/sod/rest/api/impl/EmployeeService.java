@@ -9,6 +9,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.il.sod.db.dao.IEmployeeDAO;
 import com.il.sod.db.model.entities.Employee;
 import com.il.sod.db.model.repositories.EmployeeRepository;
 import com.il.sod.exception.SODAPIException;
@@ -37,8 +39,11 @@ import io.swagger.annotations.ApiResponses;
 public class EmployeeService extends AbstractServiceMutations {
 	@Autowired
 	EmployeeRepository employeeRepository;
+	
+	@Autowired
+	private IEmployeeDAO employeeDAO;
 
-	@PUT
+	@POST
 	@ApiOperation(value = "Create Employee", response = EmployeeDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -54,7 +59,7 @@ public class EmployeeService extends AbstractServiceMutations {
 		}
 	}
 
-	@POST
+	@PUT
 	@ApiOperation(value = "Update Employee", response = EmployeeDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -99,6 +104,41 @@ public class EmployeeService extends AbstractServiceMutations {
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
+	}
+	
+	@GET
+	@Path("/{idEmployee}")
+	@ApiOperation(value = "Get Employee list", response = EmployeeDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getEmployeeById(@PathParam("idEmployee") String idEmployee) throws SODAPIException {
+		Employee employee = this.getEntity(employeeRepository, Integer.valueOf(idEmployee));
+		if (employee == null ) {
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "No employee found");
+		}
+		EmployeeDTO dto = EmployeeMapper.INSTANCE.map(employee);
+		return castEntityAsResponse(dto);
+	}
+	
+	@GET
+	@Path("/email/{email}")
+	@ApiOperation(value = "Get Employee list", response = EmployeeDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getEmployeeByEmail(@PathParam("email") String email) throws SODAPIException {
+		
+		EmployeeDTO dto = new EmployeeDTO();
+		List<Employee> Employees = employeeDAO.findByEmail(email);
+		if (Employees != null && !Employees.isEmpty()) {
+			Employee Employee = Employees.get(0);
+			dto = EmployeeMapper.INSTANCE.map(Employee);
+		}else{
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "No employee found");
+		}
+		
+		return castEntityAsResponse(dto);
 	}
 
 

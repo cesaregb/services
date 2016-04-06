@@ -1,6 +1,5 @@
 package com.il.sod.db.model.entities;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -8,10 +7,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 
 /**
@@ -33,8 +34,7 @@ public class ServiceType implements IEntity<Integer> {
 
 	private double price;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date time;
+	private Integer time;
 
 	//bi-directional many-to-one association to Service
 	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
@@ -47,6 +47,24 @@ public class ServiceType implements IEntity<Integer> {
 	//bi-directional many-to-one association to ServiceTypeTask
 	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
 	private List<ServiceTypeTask> serviceTypeTasks;
+	
+	//bi-directional many-to-many association to OrderType
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+		name="ServiceType_has_OrderType"
+		, joinColumns={
+			@JoinColumn(name="ServiceType_idServiceType")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="OrderType_idOrderType")
+			}
+		)
+	private List<OrderType> orderTypes;
+	
+	//bi-directional many-to-one association to ServiceCategory
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="idServiceCategory")
+	private ServiceCategory serviceCategory;
 
 	public ServiceType() {
 	}
@@ -81,14 +99,6 @@ public class ServiceType implements IEntity<Integer> {
 
 	public void setPrice(double price) {
 		this.price = price;
-	}
-
-	public Date getTime() {
-		return this.time;
-	}
-
-	public void setTime(Date time) {
-		this.time = time;
 	}
 
 	public List<Service> getServices() {
@@ -156,6 +166,7 @@ public class ServiceType implements IEntity<Integer> {
 
 		return serviceTypeTask;
 	}
+	
 	@Override
 	public Integer getId() {
 		return this.idServiceType;
@@ -165,5 +176,29 @@ public class ServiceType implements IEntity<Integer> {
 	public ServiceType setId(Integer id) {
 		this.idServiceType = id;
 		return this;
+	}
+
+	public Integer getTime() {
+		return time;
+	}
+
+	public void setTime(Integer time) {
+		this.time = time;
+	}
+
+	public List<OrderType> getOrderTypes() {
+		return orderTypes;
+	}
+
+	public void setOrderTypes(List<OrderType> orderTypes) {
+		this.orderTypes = orderTypes;
+	}
+	
+	public ServiceCategory getServiceCategory() {
+		return this.serviceCategory;
+	}
+
+	public void setServiceCategory(ServiceCategory serviceCategory) {
+		this.serviceCategory = serviceCategory;
 	}
 }

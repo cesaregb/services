@@ -9,6 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
 import org.slf4j.Logger;
@@ -77,7 +78,7 @@ public class Health extends AbstractService {
 	@ApiOperation(value = "Validate API + MODEL Healt")
 	public GeneralResponseMessage throwException() throws SODAPIException{	
 		LOGGER.info("Testing throwing exception!");
-		throw new SODAPIException(511, "Expected Exception!");
+		throw new SODAPIException(Response.Status.BAD_REQUEST, "Expected Exception!");
 	}
 	
 	@RolesAllowed("ADMIN")

@@ -1,5 +1,6 @@
 package com.il.sod.db.model.entities;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -12,6 +13,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -37,6 +40,8 @@ public class Employee implements IEntity<Integer> {
 	private int status;
 
 	private String username;
+	
+	private String email;
 
 	//bi-directional many-to-one association to EmployeeType
 	@ManyToOne
@@ -50,6 +55,12 @@ public class Employee implements IEntity<Integer> {
 	//bi-directional many-to-one association to EmployeeTaskService
 	@OneToMany(mappedBy="employee", fetch=FetchType.EAGER)
 	private List<EmployeeTaskService> employeeTaskServices;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date created;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updated;
 
 	public Employee() {
 	}
@@ -163,4 +174,29 @@ public class Employee implements IEntity<Integer> {
 		this.idEmployee = id;
 		return this;
 	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 }

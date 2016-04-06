@@ -81,18 +81,10 @@
       }
 
       function addCustomAuth(){
-        // window.swaggerUi.api.clientAuthorizations.add("Authentication", new SwaggerClient.ApiKeyAuthorization("Authorization", "Basic user:user", "header"));
-        // window.swaggerUi.api.clientAuthorizations.add("key", new SwaggerClient.ApiKeyAuthorization("Authentication", "Basic user:user", "header"));
-
-        // window.swaggerUi.api.clientAuthorizations.add("Authorization", new SwaggerClient.ApiKeyAuthorization("Authorization", "Basic user:user", "header"));
-        // window.swaggerUi.api.clientAuthorizations.add("key", new SwaggerClient.ApiKeyAuthorization("Authorization", "Basic user:user", "header"));
-        var myAuth = "Basic " + btoa("user:user");
-        window.authorizations.add("key", new SwaggerClient.ApiKeyAuthorization("Authorization", myAuth, "header"));
-        // window.swaggerUi.api.clientAuthorizations.add("key", new SwaggerClient.ApiKeyAuthorization("Authorization", "Basic dXNlcjp1c2Vy", "header"));
-        // window.swaggerUi.api.clientAuthorizations.add("key", new SwaggerClient.ApiKeyAuthorization("Authorization", "Basic dXNlcjp1c2Vy", "header"));
-
-        console.log("a ver si asi entrando...")
+         var myAuth = "Basic " + btoa("user:user");
+         window.authorizations.add("key", new SwaggerClient.ApiKeyAuthorization("Authorization", myAuth, "header"));
       }
+
 
       $('#input_apiKey').change(addApiKeyAuthorization);
 

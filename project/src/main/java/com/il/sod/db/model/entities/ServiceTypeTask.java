@@ -1,6 +1,7 @@
 package com.il.sod.db.model.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,9 +31,11 @@ public class ServiceTypeTask implements IEntity<Integer> {
 	private ServiceType serviceType;
 
 	//bi-directional many-to-one association to Task
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idTask")
 	private Task task;
+	
+	private int sortingOrder;
 
 	public ServiceTypeTask() {
 	}
@@ -77,5 +80,13 @@ public class ServiceTypeTask implements IEntity<Integer> {
 	public ServiceTypeTask setId(Integer id) {
 		this.idServiceTypeTask = id;
 		return this;
+	}
+
+	public int getSortingOrder() {
+		return sortingOrder;
+	}
+
+	public void setSortingOrder(int sortingOrder) {
+		this.sortingOrder = sortingOrder;
 	}
 }

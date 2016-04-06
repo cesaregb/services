@@ -6,14 +6,20 @@ import java.util.List;
 public class OrderDTO {
 	private int idOrder;
 	private String comments;
-	private Date date;
 	private int idAddressDeliver;
 	private int idAddressPickup;
 	private double price;
 	private int status;
 	private ClientDTO client;
-	private OrderTypeDTO orderTemplate;
+	private Integer orderType;
 	private List<OrderTaskDTO> orderTasks;
+	private List<OrderPickNDeliverDTO> orderPickNdelivers;
+	private List<PaymentInfoDTO> paymentInfos;
+	
+	private Date created;
+	private Date updated;
+	private int time;
+	
 	public int getIdOrder() {
 		return idOrder;
 	}
@@ -25,12 +31,6 @@ public class OrderDTO {
 	}
 	public void setComments(String comments) {
 		this.comments = comments;
-	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
 	}
 	public int getIdAddressDeliver() {
 		return idAddressDeliver;
@@ -62,17 +62,47 @@ public class OrderDTO {
 	public void setClient(ClientDTO client) {
 		this.client = client;
 	}
-	public OrderTypeDTO getOrderTemplate() {
-		return orderTemplate;
-	}
-	public void setOrderTemplate(OrderTypeDTO orderTemplate) {
-		this.orderTemplate = orderTemplate;
-	}
 	public List<OrderTaskDTO> getOrderTasks() {
 		return orderTasks;
 	}
 	public void setOrderTasks(List<OrderTaskDTO> orderTasks) {
 		this.orderTasks = orderTasks;
+	}
+	public Integer getOrderType() {
+		return orderType;
+	}
+	public void setOrderType(Integer orderType) {
+		this.orderType = orderType;
+	}
+	public Date getCreated() {
+		return created;
+	}
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+	public Date getUpdated() {
+		return updated;
+	}
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+	public int getTime() {
+		return time;
+	}
+	public void setTime(int time) {
+		this.time = time;
+	}
+	public List<OrderPickNDeliverDTO> getOrderPickNdelivers() {
+		return orderPickNdelivers;
+	}
+	public void setOrderPickNdelivers(List<OrderPickNDeliverDTO> orderPickNdelivers) {
+		this.orderPickNdelivers = orderPickNdelivers;
+	}
+	public List<PaymentInfoDTO> getPaymentInfos() {
+		return paymentInfos;
+	}
+	public void setPaymentInfos(List<PaymentInfoDTO> paymentInfos) {
+		this.paymentInfos = paymentInfos;
 	}
 
 }

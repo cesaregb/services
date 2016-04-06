@@ -13,12 +13,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.il.sod.db.model.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.il.sod.db.model.entities.Order;
 import com.il.sod.db.model.repositories.OrderRepository;
 import com.il.sod.exception.SODAPIException;
+import com.il.sod.mapper.OrderMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderDTO;
@@ -32,37 +34,40 @@ import io.swagger.annotations.ApiResponses;
 @RolesAllowed("ADMIN")
 @Path("/order")
 @Produces(MediaType.APPLICATION_JSON)
-// @Api(value = "/order", tags = { "order" })
+@Api(value = "/order", tags = { "order" })
 public class OrderService extends AbstractServiceMutations {
 	@Autowired
 	OrderRepository orderRepository;
 
-	@PUT
+	@Autowired
+	private ClientRepository clientRepository;
+
+	@POST
 	@ApiOperation(value = "Create Order Type", response = OrderDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveOrder(OrderDTO dto) throws SODAPIException {
 		try {
-			Order entity = converter.map(dto, Order.class);
+			Order entity = OrderMapper.INSTANCE.map(dto);
 			this.saveEntity(orderRepository, entity);
-			dto = converter.map(entity, OrderDTO.class);
+			dto = OrderMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}
 	}
 
-	@POST
+	@PUT
 	@ApiOperation(value = "Update Order Type", response = OrderDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateOrder(OrderDTO dto) throws SODAPIException {
 		try {
-			Order entity = converter.map(dto, Order.class);
+			Order entity = OrderMapper.INSTANCE.map(dto);
 			this.updateEntity(orderRepository, entity);
-			dto = converter.map(entity, OrderDTO.class);
+			dto = OrderMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
@@ -76,7 +81,7 @@ public class OrderService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteOrder(OrderDTO dto) throws SODAPIException {
 		try {
-			Order entity = converter.map(dto, Order.class);
+			Order entity = OrderMapper.INSTANCE.map(dto);
 			this.deleteEntity(orderRepository, entity.getIdOrder());
 			return castEntityAsResponse(
 					GeneralResponseMessage.getInstance().success().setMessage("Order deleted"),
@@ -94,7 +99,7 @@ public class OrderService extends AbstractServiceMutations {
 	public Response getOrderList() throws SODAPIException {
 		List<Order> rentityList = this.getEntityList(orderRepository);
 		List<OrderDTO> list = rentityList.stream().map((i) -> {
-			OrderDTO dto = converter.map(i, OrderDTO.class);
+			OrderDTO dto = OrderMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);

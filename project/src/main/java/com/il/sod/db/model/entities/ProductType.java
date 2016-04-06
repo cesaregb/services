@@ -32,10 +32,6 @@ public class ProductType implements IEntity<Integer> {
 	@OneToMany(mappedBy="productType", fetch=FetchType.EAGER)
 	private List<Product> products;
 
-	//bi-directional many-to-one association to Spec
-	@OneToMany(mappedBy="productType", fetch=FetchType.EAGER)
-	private List<Spec> specs;
-
 	public ProductType() {
 	}
 
@@ -85,28 +81,6 @@ public class ProductType implements IEntity<Integer> {
 		return product;
 	}
 
-	public List<Spec> getSpecs() {
-		return this.specs;
-	}
-
-	public void setSpecs(List<Spec> specs) {
-		this.specs = specs;
-	}
-
-	public Spec addSpec(Spec spec) {
-		getSpecs().add(spec);
-		spec.setProductType(this);
-
-		return spec;
-	}
-
-	public Spec removeSpec(Spec spec) {
-		getSpecs().remove(spec);
-		spec.setProductType(null);
-
-		return spec;
-	}
-	@Override
 	public Integer getId() {
 		return this.idProductType;
 	}

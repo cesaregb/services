@@ -13,7 +13,7 @@ import com.il.sod.exception.SODAPIException;
 @Service
 public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID>{
 
-	private JpaRepository<T, ID> repository;
+	protected JpaRepository<T, ID> repository;
 
 	public GenericDaoImpl(){}
 

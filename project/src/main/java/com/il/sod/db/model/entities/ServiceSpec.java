@@ -35,6 +35,10 @@ public class ServiceSpec implements IEntity<Integer> {
 	@ManyToOne
 	@JoinColumn(name="idSpecs")
 	private Spec spec;
+	
+	private int quantity;
+	
+	private float price; 
 
 	public ServiceSpec() {
 	}
@@ -79,5 +83,21 @@ public class ServiceSpec implements IEntity<Integer> {
 	public ServiceSpec setId(Integer id) {
 		this.idServiceSpecs = id;
 		return this;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public float getPrice() {
+		return price;
+	}
+
+	public void setPrice(float price) {
+		this.price = price;
 	}
 }

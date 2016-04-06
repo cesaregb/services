@@ -29,14 +29,13 @@ public class ApplicationConfig extends ResourceConfig {
 	public ApplicationConfig() {
         register(LoggingFilter.class);
         register(CORSResponseFilter.class);
-        register(AuthenticationFilter.class);
+//        register(AuthenticationFilter.class);
         register(CustomLoggingFilter.class);
         register(JacksonObjectMapperProvider.class);
         register(JacksonJaxbJsonProvider.class);
         packages("io.swagger.jaxrs.listing,"
         		+ "com.il.sod.exception,"
         		+ "com.il.sod.rest.api");
-        
     }
 	
 	/* Swagger configuratoin */

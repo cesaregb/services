@@ -3,8 +3,9 @@ package com.il.sod.rest.dto.db;
 public class AssetTaskOrderDTO {
 	private int idAssetTaskOrder;
 	private String comments;
-	private AssetDTO asset;
-	private OrderTaskDTO orderTask;
+	private Integer asset;
+	private Integer orderTask;
+	
 	public int getIdAssetTaskOrder() {
 		return idAssetTaskOrder;
 	}
@@ -17,16 +18,16 @@ public class AssetTaskOrderDTO {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-	public AssetDTO getAsset() {
+	public Integer getAsset() {
 		return asset;
 	}
-	public void setAsset(AssetDTO asset) {
+	public void setAsset(Integer asset) {
 		this.asset = asset;
 	}
-	public OrderTaskDTO getOrderTask() {
+	public Integer getOrderTask() {
 		return orderTask;
 	}
-	public void setOrderTask(OrderTaskDTO orderTask) {
+	public void setOrderTask(Integer orderTask) {
 		this.orderTask = orderTask;
 	}
 

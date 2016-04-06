@@ -27,7 +27,12 @@ import ma.glasnost.orika.MapperFacade;
 
 @Component
 @SwaggerDefinition(tags = { @Tag(name = "clients", description = "Client Layer services"),
-		@Tag(name = "generic", description = "Generic Layer Services App specific"),
+		@Tag(name = "app-orders", description = "Services used by web-app"),
+		@Tag(name = "employee", description = "Employee services"),
+		@Tag(name = "specs", description = "Specs are the 'type of generics' that uses a service "),
+		@Tag(name = "asset", description = "Assets  - Business assets"),
+		@Tag(name = "products", description = "Products used for specs"),
+		@Tag(name = "task", description = "Task used in orders or services"),
 		@Tag(name = "order", description = "Order Layer Services"),
 		@Tag(name = "service", description = "Service Layer Services"),
 		@Tag(name = "health", description = "Validate API + MODEL Healt") })
@@ -94,7 +99,7 @@ public abstract class AbstractService{
 			if (json != null && json.trim().length() > 0) {
 				return mapper.readValue(json, entityClass);
 			} else {
-				throw new SODAPIException(204,
+				throw new SODAPIException(Response.Status.NO_CONTENT,
 						"No content to map to Object due to end of input. The JSON object provided is empty, it was expected an object.");
 			}
 		} catch (Exception e) {
@@ -109,7 +114,7 @@ public abstract class AbstractService{
 			
 			return result;
 		} catch (Exception e) {
-			throw new SODAPIException(403,"No valid authentication", e);
+			throw new SODAPIException(Response.Status.UNAUTHORIZED,"No valid authentication", e);
 		}
 	}
 	

@@ -36,7 +36,12 @@ public class Service implements IEntity<Integer> {
 	private double price;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date time;
+	private Date created;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updated;
+
+	private int time;
 
 	//bi-directional many-to-one association to ServiceType
 	@ManyToOne
@@ -84,14 +89,6 @@ public class Service implements IEntity<Integer> {
 
 	public void setPrice(double price) {
 		this.price = price;
-	}
-
-	public Date getTime() {
-		return this.time;
-	}
-
-	public void setTime(Date time) {
-		this.time = time;
 	}
 
 	public ServiceType getServiceType() {
@@ -154,5 +151,29 @@ public class Service implements IEntity<Integer> {
 	public Service setId(Integer id) {
 		this.idService = id;
 		return this;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public int getTime() {
+		return time;
+	}
+
+	public void setTime(int time) {
+		this.time = time;
 	}
 }

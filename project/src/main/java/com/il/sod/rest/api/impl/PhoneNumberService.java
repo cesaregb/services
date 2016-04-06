@@ -42,7 +42,7 @@ public class PhoneNumberService extends AbstractServiceMutations {
 	@Autowired
 	ClientRepository clientRepository;
 
-	@PUT
+	@POST
 	@ApiOperation(value = "Create Phone Number", response = PhoneNumberDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -56,7 +56,7 @@ public class PhoneNumberService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
-	@POST
+	@PUT
 	@ApiOperation(value = "Update Phone Number", response = PhoneNumberDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),

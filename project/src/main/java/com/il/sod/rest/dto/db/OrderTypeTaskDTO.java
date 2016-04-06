@@ -4,8 +4,10 @@ public class OrderTypeTaskDTO {
 	private int idOrderTypeTasks;
 	private String description;
 	private int time;
-	private OrderTypeDTO orderType;
-	private TaskDTO task;
+	private Integer orderType;
+	private Integer task;
+	private int sortingOrder;
+	
 	public int getIdOrderTypeTasks() {
 		return idOrderTypeTasks;
 	}
@@ -24,17 +26,23 @@ public class OrderTypeTaskDTO {
 	public void setTime(int time) {
 		this.time = time;
 	}
-	public OrderTypeDTO getOrderType() {
+	public Integer getOrderType() {
 		return orderType;
 	}
-	public void setOrderType(OrderTypeDTO orderType) {
+	public void setOrderType(Integer orderType) {
 		this.orderType = orderType;
 	}
-	public TaskDTO getTask() {
+	public Integer getTask() {
 		return task;
 	}
-	public void setTask(TaskDTO task) {
+	public void setTask(Integer task) {
 		this.task = task;
+	}
+	public int getSortingOrder() {
+		return sortingOrder;
+	}
+	public void setSortingOrder(int sortingOrder) {
+		this.sortingOrder = sortingOrder;
 	}
 
 }
