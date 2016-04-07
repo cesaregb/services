@@ -75,7 +75,7 @@ public class ClientService extends AbstractServiceMutations {
 		if (entity.getIdClient() == 0) {
 			return castEntityAsResponse(
 					GeneralResponseMessage.getInstance().error().setMessage("Client id cannot be null"),
-					Response.Status.BAD_REQUEST);
+					Response.Status.NO_CONTENT);
 		}
 		assignDependencyToChilds(entity);
 		this.updateEntity(clientRepository, entity);
@@ -93,7 +93,7 @@ public class ClientService extends AbstractServiceMutations {
 		if (entity.getIdClient() == 0) {
 			return castEntityAsResponse(
 					GeneralResponseMessage.getInstance().error().setMessage("Client id cannot be null"),
-					Response.Status.BAD_REQUEST);
+					Response.Status.NO_CONTENT);
 		}
 		assignDependencyToChilds(entity);
 		this.deleteEntity(clientRepository, entity.getIdClient());
@@ -136,7 +136,7 @@ public class ClientService extends AbstractServiceMutations {
 			Client client = clients.get(0);
 			dto = ClientMapper.INSTANCE.map(client);
 		}else{
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "No employee found");
+			throw new SODAPIException(Response.Status.NO_CONTENT, "No employee found");
 		}
 		return castEntityAsResponse(dto, Response.Status.OK);
 	}

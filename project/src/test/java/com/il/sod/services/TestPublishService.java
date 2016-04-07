@@ -57,7 +57,7 @@ public class TestPublishService extends TestServicesBase{
 			when(). 
 				post(baseUrl + "/v1/publish-batch").
 			then().log().all().
-				statusCode(Response.Status.BAD_REQUEST.getStatusCode());
+				statusCode(Response.Status.NO_CONTENT.getStatusCode());
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -78,7 +78,7 @@ public class TestPublishService extends TestServicesBase{
 			when(). 
 				post(baseUrl + "/v1/publish-batch").
 			then().log().all().
-				statusCode(Response.Status.BAD_REQUEST.getStatusCode());
+				statusCode(Response.Status.NO_CONTENT.getStatusCode());
 			
 		}catch(Exception e){
 			e.printStackTrace();
