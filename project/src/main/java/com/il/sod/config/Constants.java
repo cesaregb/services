@@ -31,4 +31,13 @@ public class Constants {
 	public static final int SPEC_TYPE_PRODUCT = 2;
 	public static final int SPEC_TYPE_VALUES = 1;
 	
+	
+	// order status 
+	public static final int ORDER_CREATED = 0; 
+	public static final int ORDER_PICKED_UP = 1; 
+	public static final int ORDER_STARTED = 2; 
+	public static final int ORDER_FINISHED = 3; 
+	public static final int ORDER_DELIVERED = 4; 
+	
+	
 }

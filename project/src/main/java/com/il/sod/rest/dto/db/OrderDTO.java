@@ -1,7 +1,7 @@
 package com.il.sod.rest.dto.db;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 public class OrderDTO {
 	private int idOrder;
@@ -12,13 +12,15 @@ public class OrderDTO {
 	private int status;
 	private ClientDTO client;
 	private Integer orderType;
-	private List<OrderTaskDTO> orderTasks;
-	private List<OrderPickNDeliverDTO> orderPickNdelivers;
-	private List<PaymentInfoDTO> paymentInfos;
-	
+	private Set<OrderTaskDTO> orderTasks;
+	private Set<OrderPickNDeliverDTO> orderPickNdelivers;
+	private Set<PaymentInfoDTO> paymentInfos;
 	private Date created;
 	private Date updated;
 	private int time;
+	private Date pickUpDate;
+	private Date deliverDate;
+	private Set<Integer> services;
 	
 	public int getIdOrder() {
 		return idOrder;
@@ -62,10 +64,10 @@ public class OrderDTO {
 	public void setClient(ClientDTO client) {
 		this.client = client;
 	}
-	public List<OrderTaskDTO> getOrderTasks() {
+	public Set<OrderTaskDTO> getOrderTasks() {
 		return orderTasks;
 	}
-	public void setOrderTasks(List<OrderTaskDTO> orderTasks) {
+	public void setOrderTasks(Set<OrderTaskDTO> orderTasks) {
 		this.orderTasks = orderTasks;
 	}
 	public Integer getOrderType() {
@@ -92,17 +94,34 @@ public class OrderDTO {
 	public void setTime(int time) {
 		this.time = time;
 	}
-	public List<OrderPickNDeliverDTO> getOrderPickNdelivers() {
+	public Set<OrderPickNDeliverDTO> getOrderPickNdelivers() {
 		return orderPickNdelivers;
 	}
-	public void setOrderPickNdelivers(List<OrderPickNDeliverDTO> orderPickNdelivers) {
+	public void setOrderPickNdelivers(Set<OrderPickNDeliverDTO> orderPickNdelivers) {
 		this.orderPickNdelivers = orderPickNdelivers;
 	}
-	public List<PaymentInfoDTO> getPaymentInfos() {
+	public Set<PaymentInfoDTO> getPaymentInfos() {
 		return paymentInfos;
 	}
-	public void setPaymentInfos(List<PaymentInfoDTO> paymentInfos) {
+	public void setPaymentInfos(Set<PaymentInfoDTO> paymentInfos) {
 		this.paymentInfos = paymentInfos;
 	}
-
+	public Date getPickUpDate() {
+		return pickUpDate;
+	}
+	public void setPickUpDate(Date pickUpDate) {
+		this.pickUpDate = pickUpDate;
+	}
+	public Date getDeliverDate() {
+		return deliverDate;
+	}
+	public void setDeliverDate(Date deliverDate) {
+		this.deliverDate = deliverDate;
+	}
+	public Set<Integer> getServices() {
+		return services;
+	}
+	public void setServices(Set<Integer> services) {
+		this.services = services;
+	}
 }

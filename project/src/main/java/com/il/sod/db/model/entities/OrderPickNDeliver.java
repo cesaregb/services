@@ -3,6 +3,7 @@ package com.il.sod.db.model.entities;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,12 +35,12 @@ public class OrderPickNDeliver implements IEntity<Integer> {
 	private int typeAction;
 
 	//bi-directional many-to-one association to Address
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idAddress")
 	private Address address;
 
 	//bi-directional many-to-one association to Order
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idOrder")
 	private Order order;
 

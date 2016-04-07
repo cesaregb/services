@@ -1,6 +1,6 @@
 package com.il.sod.db.model.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -42,7 +42,7 @@ public class AccessKey implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to SocialNetworkData
 	@OneToMany(mappedBy="accessKey", fetch=FetchType.EAGER)
-	private List<SocialNetworkData> socialNetworkData;
+	private Set<SocialNetworkData> socialNetworkData;
 
 	public AccessKey() {
 	}
@@ -87,11 +87,11 @@ public class AccessKey implements IEntity<Integer> {
 		this.socialNetwork = socialNetwork;
 	}
 
-	public List<SocialNetworkData> getSocialNetworkData() {
+	public Set<SocialNetworkData> getSocialNetworkData() {
 		return this.socialNetworkData;
 	}
 
-	public void setSocialNetworkData(List<SocialNetworkData> socialNetworkData) {
+	public void setSocialNetworkData(Set<SocialNetworkData> socialNetworkData) {
 		this.socialNetworkData = socialNetworkData;
 	}
 

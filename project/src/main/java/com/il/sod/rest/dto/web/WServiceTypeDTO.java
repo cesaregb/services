@@ -1,6 +1,6 @@
 package com.il.sod.rest.dto.web;
 
-import java.util.List;
+import java.util.Set;
 
 public class WServiceTypeDTO {
 	private int idServiceType;
@@ -8,7 +8,7 @@ public class WServiceTypeDTO {
 	private String name;
 	private double price;
 	private int time;
-	private List<WSpecDTO> specs;
+	private Set<WSpecDTO> specs;
 	public int getIdServiceType() {
 		return idServiceType;
 	}
@@ -39,10 +39,10 @@ public class WServiceTypeDTO {
 	public void setTime(int time) {
 		this.time = time;
 	}
-	public List<WSpecDTO> getSpecs() {
+	public Set<WSpecDTO> getSpecs() {
 		return specs;
 	}
-	public void setSpecs(List<WSpecDTO> specs) {
+	public void setSpecs(Set<WSpecDTO> specs) {
 		this.specs = specs;
 	}
 	

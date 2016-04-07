@@ -1,12 +1,12 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.List;
+import java.util.Set;
 
 public class SpecDTO {
 	private int idSpecs;
 	private String description;
 	private String name;
-	private List<SpecsValueDTO> specsValues;
+	private Set<SpecsValueDTO> specsValues;
 	private int optional;
 	private int max_qty;
 	
@@ -28,10 +28,10 @@ public class SpecDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<SpecsValueDTO> getSpecsValues() {
+	public Set<SpecsValueDTO> getSpecsValues() {
 		return specsValues;
 	}
-	public void setSpecsValues(List<SpecsValueDTO> specsValues) {
+	public void setSpecsValues(Set<SpecsValueDTO> specsValues) {
 		this.specsValues = specsValues;
 	}
 	public int getOptional() {

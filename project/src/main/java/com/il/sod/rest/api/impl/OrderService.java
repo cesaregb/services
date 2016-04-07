@@ -13,7 +13,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.il.sod.db.model.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,11 +35,9 @@ import io.swagger.annotations.ApiResponses;
 @Produces(MediaType.APPLICATION_JSON)
 @Api(value = "/order", tags = { "order" })
 public class OrderService extends AbstractServiceMutations {
+	
 	@Autowired
 	OrderRepository orderRepository;
-
-	@Autowired
-	private ClientRepository clientRepository;
 
 	@POST
 	@ApiOperation(value = "Create Order Type", response = OrderDTO.class)

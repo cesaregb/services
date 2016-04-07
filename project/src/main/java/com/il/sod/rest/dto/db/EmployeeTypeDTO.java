@@ -1,12 +1,12 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.List;
+import java.util.Set;
 
 public class EmployeeTypeDTO {
 	private int idEmployeeType;
 	private String description;
 	private String name;
-	private List<EmployeeDTO> employees;
+	private Set<EmployeeDTO> employees;
 	public int getIdEmployeeType() {
 		return idEmployeeType;
 	}
@@ -25,10 +25,10 @@ public class EmployeeTypeDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<EmployeeDTO> getEmployees() {
+	public Set<EmployeeDTO> getEmployees() {
 		return employees;
 	}
-	public void setEmployees(List<EmployeeDTO> employees) {
+	public void setEmployees(Set<EmployeeDTO> employees) {
 		this.employees = employees;
 	}
 }

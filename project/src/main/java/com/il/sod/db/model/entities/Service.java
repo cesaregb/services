@@ -1,8 +1,10 @@
 package com.il.sod.db.model.entities;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -49,12 +51,17 @@ public class Service implements IEntity<Integer> {
 	private ServiceType serviceType;
 
 	//bi-directional many-to-one association to ServiceSpec
-	@OneToMany(mappedBy="service", fetch=FetchType.EAGER)
-	private List<ServiceSpec> serviceSpecs;
+	@OneToMany(mappedBy="service", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private Set<ServiceSpec> serviceSpecs;
 
 	//bi-directional many-to-one association to ServiceTask
-	@OneToMany(mappedBy="service", fetch=FetchType.EAGER)
-	private List<ServiceTask> serviceTasks;
+	@OneToMany(mappedBy="service", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private Set<ServiceTask> serviceTasks;
+	
+	//bi-directional many-to-one association to Order
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="idOrder")
+	private Order order;
 
 	public Service() {
 	}
@@ -99,15 +106,18 @@ public class Service implements IEntity<Integer> {
 		this.serviceType = serviceType;
 	}
 
-	public List<ServiceSpec> getServiceSpecs() {
+	public Set<ServiceSpec> getServiceSpecs() {
 		return this.serviceSpecs;
 	}
 
-	public void setServiceSpecs(List<ServiceSpec> serviceSpecs) {
+	public void setServiceSpecs(Set<ServiceSpec> serviceSpecs) {
 		this.serviceSpecs = serviceSpecs;
 	}
 
 	public ServiceSpec addServiceSpec(ServiceSpec serviceSpec) {
+		if (serviceSpecs == null){
+			serviceSpecs = new HashSet<>();
+		}
 		getServiceSpecs().add(serviceSpec);
 		serviceSpec.setService(this);
 
@@ -121,15 +131,18 @@ public class Service implements IEntity<Integer> {
 		return serviceSpec;
 	}
 
-	public List<ServiceTask> getServiceTasks() {
+	public Set<ServiceTask> getServiceTasks() {
 		return this.serviceTasks;
 	}
 
-	public void setServiceTasks(List<ServiceTask> serviceTasks) {
+	public void setServiceTasks(Set<ServiceTask> serviceTasks) {
 		this.serviceTasks = serviceTasks;
 	}
 
 	public ServiceTask addServiceTask(ServiceTask serviceTask) {
+		if (serviceTasks == null){
+			serviceTasks = new HashSet<>();
+		}
 		getServiceTasks().add(serviceTask);
 		serviceTask.setService(this);
 
@@ -175,5 +188,13 @@ public class Service implements IEntity<Integer> {
 
 	public void setTime(int time) {
 		this.time = time;
+	}
+	
+	public Order getOrder() {
+		return this.order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 }

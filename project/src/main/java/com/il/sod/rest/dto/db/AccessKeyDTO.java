@@ -1,6 +1,6 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.List;
+import java.util.Set;
 
 public class AccessKeyDTO {
 	private int idAccessKey;
@@ -8,7 +8,7 @@ public class AccessKeyDTO {
 	private String tokenSecre;
 	private int clientId;
 	private SocialNetworkDTO socialNetwork;
-	private List<SocialNetworkDataDTO> socialNetworkData;
+	private Set<SocialNetworkDataDTO> socialNetworkData;
 	
 	public int getIdAccessKey() {
 		return idAccessKey;
@@ -34,10 +34,10 @@ public class AccessKeyDTO {
 	public void setSocialNetwork(SocialNetworkDTO socialNetwork) {
 		this.socialNetwork = socialNetwork;
 	}
-	public List<SocialNetworkDataDTO> getSocialNetworkData() {
+	public Set<SocialNetworkDataDTO> getSocialNetworkData() {
 		return socialNetworkData;
 	}
-	public void setSocialNetworkData(List<SocialNetworkDataDTO> socialNetworkData) {
+	public void setSocialNetworkData(Set<SocialNetworkDataDTO> socialNetworkData) {
 		this.socialNetworkData = socialNetworkData;
 	}
 	public int getClientId() {

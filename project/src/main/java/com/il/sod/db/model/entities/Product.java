@@ -26,7 +26,9 @@ public class Product implements IEntity<Integer> {
 
 	private String name;
 
-	private float price;
+	private double price;
+	
+	private double serviceIncrement;
 
 	private int status;
 
@@ -62,14 +64,6 @@ public class Product implements IEntity<Integer> {
 		this.name = name;
 	}
 
-	public float getPrice() {
-		return this.price;
-	}
-
-	public void setPrice(float price) {
-		this.price = price;
-	}
-
 	public int getStatus() {
 		return this.status;
 	}
@@ -94,5 +88,21 @@ public class Product implements IEntity<Integer> {
 	public Product setId(Integer id) {
 		this.idProduct = id;
 		return this;
+	}
+
+	public double getServiceIncrement() {
+		return serviceIncrement;
+	}
+
+	public void setServiceIncrement(double serviceIncrement) {
+		this.serviceIncrement = serviceIncrement;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 }

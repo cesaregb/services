@@ -1,7 +1,7 @@
 package com.il.sod.db.model.entities;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -44,21 +44,20 @@ public class Client implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to AccessKey
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
-	private List<AccessKey> accessKeys;
+	private Set<AccessKey> accessKeys;
 
 	//bi-directional many-to-one association to Address
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	@JsonManagedReference
-	private List<Address> addresses;
+	private Set<Address> addresses;
 
 	//bi-directional many-to-one association to PhoneNumber
-//	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
-	private List<PhoneNumber> phoneNumbers;
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+	private Set<PhoneNumber> phoneNumbers;
 
 	//bi-directional many-to-one association to Order
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
-	private List<Order> orders;
+	private Set<Order> orders;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created;
@@ -69,7 +68,7 @@ public class Client implements IEntity<Integer> {
 	//bi-directional many-to-one association to ClientPaymentInfo
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonManagedReference
-	private List<ClientPaymentInfo> clientPaymentInfos;
+	private Set<ClientPaymentInfo> clientPaymentInfos;
 
 	public Client() {
 	}
@@ -122,11 +121,11 @@ public class Client implements IEntity<Integer> {
 		this.twitter = twitter;
 	}
 
-	public List<AccessKey> getAccessKeys() {
+	public Set<AccessKey> getAccessKeys() {
 		return this.accessKeys;
 	}
 
-	public void setAccessKeys(List<AccessKey> accessKeys) {
+	public void setAccessKeys(Set<AccessKey> accessKeys) {
 		this.accessKeys = accessKeys;
 	}
 
@@ -144,11 +143,11 @@ public class Client implements IEntity<Integer> {
 		return accessKey;
 	}
 
-	public List<Address> getAddresses() {
+	public Set<Address> getAddresses() {
 		return this.addresses;
 	}
 
-	public void setAddresses(List<Address> addresses) {
+	public void setAddresses(Set<Address> addresses) {
 		this.addresses = addresses;
 	}
 
@@ -166,11 +165,11 @@ public class Client implements IEntity<Integer> {
 		return address;
 	}
 
-	public List<PhoneNumber> getPhoneNumbers() {
+	public Set<PhoneNumber> getPhoneNumbers() {
 		return this.phoneNumbers;
 	}
 
-	public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
+	public void setPhoneNumbers(Set<PhoneNumber> phoneNumbers) {
 		this.phoneNumbers = phoneNumbers;
 	}
 
@@ -188,11 +187,11 @@ public class Client implements IEntity<Integer> {
 		return phoneNumber;
 	}
 
-	public List<Order> getOrders() {
+	public Set<Order> getOrders() {
 		return this.orders;
 	}
 
-	public void setOrders(List<Order> orders) {
+	public void setOrders(Set<Order> orders) {
 		this.orders = orders;
 	}
 
@@ -236,11 +235,11 @@ public class Client implements IEntity<Integer> {
 		this.updated = updated;
 	}
 	
-	public List<ClientPaymentInfo> getClientPaymentInfos() {
+	public Set<ClientPaymentInfo> getClientPaymentInfos() {
 		return this.clientPaymentInfos;
 	}
 
-	public void setClientPaymentInfos(List<ClientPaymentInfo> clientPaymentInfos) {
+	public void setClientPaymentInfos(Set<ClientPaymentInfo> clientPaymentInfos) {
 		this.clientPaymentInfos = clientPaymentInfos;
 	}
 

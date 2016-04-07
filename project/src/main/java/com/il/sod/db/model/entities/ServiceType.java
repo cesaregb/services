@@ -1,6 +1,6 @@
 package com.il.sod.db.model.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,15 +38,15 @@ public class ServiceType implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to Service
 	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
-	private List<Service> services;
+	private Set<Service> services;
 
 	//bi-directional many-to-one association to ServiceTypeSpec
 	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
-	private List<ServiceTypeSpec> serviceTypeSpecs;
+	private Set<ServiceTypeSpec> serviceTypeSpecs;
 
 	//bi-directional many-to-one association to ServiceTypeTask
 	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
-	private List<ServiceTypeTask> serviceTypeTasks;
+	private Set<ServiceTypeTask> serviceTypeTasks;
 	
 	//bi-directional many-to-many association to OrderType
 	@ManyToMany(fetch=FetchType.EAGER)
@@ -59,7 +59,7 @@ public class ServiceType implements IEntity<Integer> {
 			@JoinColumn(name="OrderType_idOrderType")
 			}
 		)
-	private List<OrderType> orderTypes;
+	private Set<OrderType> orderTypes;
 	
 	//bi-directional many-to-one association to ServiceCategory
 	@ManyToOne(fetch=FetchType.EAGER)
@@ -101,11 +101,11 @@ public class ServiceType implements IEntity<Integer> {
 		this.price = price;
 	}
 
-	public List<Service> getServices() {
+	public Set<Service> getServices() {
 		return this.services;
 	}
 
-	public void setServices(List<Service> services) {
+	public void setServices(Set<Service> services) {
 		this.services = services;
 	}
 
@@ -123,11 +123,11 @@ public class ServiceType implements IEntity<Integer> {
 		return service;
 	}
 
-	public List<ServiceTypeSpec> getServiceTypeSpecs() {
+	public Set<ServiceTypeSpec> getServiceTypeSpecs() {
 		return this.serviceTypeSpecs;
 	}
 
-	public void setServiceTypeSpecs(List<ServiceTypeSpec> serviceTypeSpecs) {
+	public void setServiceTypeSpecs(Set<ServiceTypeSpec> serviceTypeSpecs) {
 		this.serviceTypeSpecs = serviceTypeSpecs;
 	}
 
@@ -145,11 +145,11 @@ public class ServiceType implements IEntity<Integer> {
 		return serviceTypeSpec;
 	}
 
-	public List<ServiceTypeTask> getServiceTypeTasks() {
+	public Set<ServiceTypeTask> getServiceTypeTasks() {
 		return this.serviceTypeTasks;
 	}
 
-	public void setServiceTypeTasks(List<ServiceTypeTask> serviceTypeTasks) {
+	public void setServiceTypeTasks(Set<ServiceTypeTask> serviceTypeTasks) {
 		this.serviceTypeTasks = serviceTypeTasks;
 	}
 
@@ -186,11 +186,11 @@ public class ServiceType implements IEntity<Integer> {
 		this.time = time;
 	}
 
-	public List<OrderType> getOrderTypes() {
+	public Set<OrderType> getOrderTypes() {
 		return orderTypes;
 	}
 
-	public void setOrderTypes(List<OrderType> orderTypes) {
+	public void setOrderTypes(Set<OrderType> orderTypes) {
 		this.orderTypes = orderTypes;
 	}
 	

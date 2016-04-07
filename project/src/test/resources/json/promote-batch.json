@@ -1,0 +1,64 @@
+{
+  "promote-big-data": {
+    "publication": {
+      "publication_id": 1041,
+      "basepath": "en/latest/GUID-9CCB26F6-48B5-4ED4-BCE5-D8A9FD75750F",
+      "rendered_content": "http://artifactory-slc.oraclecorp.com/artifactory/doceng-dev-local/selfpub.publication.content/en/latest/GUID-9CCB26F6-48B5-4ED4-BCE5-D8A9FD75750F/GUID-9CCB26F6-48B5-4ED4-BCE5-D8A9FD75750F/1-SNAPSHOT/GUID-9CCB26F6-48B5-4ED4-BCE5-D8A9FD75750F-1-SNAPSHOT.zip",
+      "create_date": null,
+      "modified_date": "2016-04-01 17:12 PM GMT",
+      "pub_type": "sdl",
+      "pub_guid": "GUID-9CCB26F6-48B5-4ED4-BCE5-D8A9FD75750F",
+      "pub_version": "1",
+      "title": "Linking Pub2",
+      "description": "",
+      "primary_author": "",
+      "metadata": {
+        "metadata_id": 1041,
+        "product_group": "",
+        "language": "en",
+        "category": null,
+        "suite": null,
+        "product": null,
+        "release": "latest",
+        "platform": "",
+        "component": "",
+        "pub_alias": "GUID-9CCB26F6-48B5-4ED4-BCE5-D8A9FD75750F",
+        "create_date": null,
+        "modified_date": "2016-04-01 17:12 PM GMT"
+      }
+    },
+    "params": {
+      "env_name": "docs-stage"
+    }
+  },
+  "success-sdl": {
+    "publication": {
+      "pub_type": "sdl",
+      "pub_guid": "GUID-C8E90D75-5E8C-4130-9EE6-6CE727CDDDFE",
+      "pub_version": "1"
+    },
+    "params": {
+      "env_name": "docs-stage"
+    }
+  },
+  "success-category": {
+    "publication": {
+      "pub_type": "category-page",
+      "pub_guid": "cloud",
+      "pub_version": "dev"
+    },
+    "params": {
+      "env_name": "docs-stage"
+    }
+  },
+  "failure-non-existing": {
+    "publication": {
+      "pub_type": "sdl",
+      "pub_guid": "Non-existing-guid",
+      "pub_version": "1"
+    },
+    "params": {
+      "env_name": "docs-stage"
+    }
+  }
+}

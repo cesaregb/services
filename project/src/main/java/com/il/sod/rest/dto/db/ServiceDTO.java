@@ -1,7 +1,7 @@
 package com.il.sod.rest.dto.db;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 public class ServiceDTO {
 	private int idService;
@@ -9,11 +9,12 @@ public class ServiceDTO {
 	private String name;
 	private double price;
 	private Integer serviceType;
-	private List<Integer> serviceSpecs;
-	private List<Integer> serviceTasks;
+	private Set<Integer> serviceSpecs;
+	private Set<Integer> serviceTasks;
 	private Date created;
 	private Date updated;
 	private int time;
+	private int order;
 	
 	public int getIdService() {
 		return idService;
@@ -39,16 +40,16 @@ public class ServiceDTO {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public List<Integer> getServiceSpecs() {
+	public Set<Integer> getServiceSpecs() {
 		return serviceSpecs;
 	}
-	public void setServiceSpecs(List<Integer> serviceSpecs) {
+	public void setServiceSpecs(Set<Integer> serviceSpecs) {
 		this.serviceSpecs = serviceSpecs;
 	}
-	public List<Integer> getServiceTasks() {
+	public Set<Integer> getServiceTasks() {
 		return serviceTasks;
 	}
-	public void setServiceTasks(List<Integer> serviceTasks) {
+	public void setServiceTasks(Set<Integer> serviceTasks) {
 		this.serviceTasks = serviceTasks;
 	}
 	public Integer getServiceType() {
@@ -74,6 +75,12 @@ public class ServiceDTO {
 	}
 	public int getTime() {
 		return time;
+	}
+	public int getOrder() {
+		return order;
+	}
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 }

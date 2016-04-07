@@ -4,7 +4,8 @@ public class ProductDTO {
 	private int idProduct;
 	private String description;
 	private String name;
-	private float price;
+	private double price;
+	private double serviceIncrement;
 	private int status;
 	private Integer productType;
 	
@@ -26,12 +27,6 @@ public class ProductDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public float getPrice() {
-		return price;
-	}
-	public void setPrice(float price) {
-		this.price = price;
-	}
 	public int getStatus() {
 		return status;
 	}
@@ -43,6 +38,18 @@ public class ProductDTO {
 	}
 	public void setProductType(Integer productType) {
 		this.productType = productType;
+	}
+	public double getServiceIncrement() {
+		return serviceIncrement;
+	}
+	public void setServiceIncrement(double serviceIncrement) {
+		this.serviceIncrement = serviceIncrement;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 }

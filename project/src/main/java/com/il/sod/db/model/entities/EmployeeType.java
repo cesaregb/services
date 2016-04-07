@@ -1,6 +1,6 @@
 package com.il.sod.db.model.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +30,7 @@ public class EmployeeType implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to Employee
 	@OneToMany(mappedBy="employeeType", fetch=FetchType.EAGER)
-	private List<Employee> employees;
+	private Set<Employee> employees;
 
 	public EmployeeType() {
 	}
@@ -59,11 +59,11 @@ public class EmployeeType implements IEntity<Integer> {
 		this.name = name;
 	}
 
-	public List<Employee> getEmployees() {
+	public Set<Employee> getEmployees() {
 		return this.employees;
 	}
 
-	public void setEmployees(List<Employee> employees) {
+	public void setEmployees(Set<Employee> employees) {
 		this.employees = employees;
 	}
 

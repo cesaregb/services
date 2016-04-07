@@ -5,6 +5,7 @@ public class ServiceSpecDTO {
 	private String comments;
 	private ServiceDTO service;
 	private SpecDTO spec;
+	private String selectedValue;
 	public int getIdServiceTypeSpecs() {
 		return idServiceTypeSpecs;
 	}
@@ -28,6 +29,12 @@ public class ServiceSpecDTO {
 	}
 	public void setSpec(SpecDTO spec) {
 		this.spec = spec;
+	}
+	public String getSelectedValue() {
+		return selectedValue;
+	}
+	public void setSelectedValue(String selectedValue) {
+		this.selectedValue = selectedValue;
 	}
 
 }

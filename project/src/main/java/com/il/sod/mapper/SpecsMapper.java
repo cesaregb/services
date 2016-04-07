@@ -1,6 +1,6 @@
 package com.il.sod.mapper;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.il.sod.db.model.entities.Spec;
@@ -52,14 +52,14 @@ public enum SpecsMapper {
 	}	
 }
 
-class SpecsValueConverter extends BidirectionalConverter<List<SpecsValue>, List<SpecsValueDTO>> {
+class SpecsValueConverter extends BidirectionalConverter<Set<SpecsValue>, Set<SpecsValueDTO>> {
 	@Override
-	public List<SpecsValue> convertFrom(List<SpecsValueDTO> source, Type<List<SpecsValue>> arg1) {
-		return source.stream().map(item -> SpecsMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	public Set<SpecsValue> convertFrom(Set<SpecsValueDTO> source, Type<Set<SpecsValue>> arg1) {
+		return source.stream().map(item -> SpecsMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 
 	@Override
-	public List<SpecsValueDTO> convertTo(List<SpecsValue> source, Type<List<SpecsValueDTO>> arg1) {
-		return source.stream().map(item -> SpecsMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	public Set<SpecsValueDTO> convertTo(Set<SpecsValue> source, Type<Set<SpecsValueDTO>> arg1) {
+		return source.stream().map(item -> SpecsMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }

@@ -1,6 +1,6 @@
 package com.il.sod.db.model.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,15 +31,15 @@ public class OrderType implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to OrderTypeTask
 	@OneToMany(mappedBy="orderType", fetch=FetchType.EAGER)
-	private List<OrderTypeTask> orderTypeTasks;
+	private Set<OrderTypeTask> orderTypeTasks;
 
 	//bi-directional many-to-one association to Order
 	@OneToMany(mappedBy="orderType", fetch=FetchType.EAGER)
-	private List<Order> orders;
+	private Set<Order> orders;
 	
 	//bi-directional many-to-many association to ServiceType
 	@ManyToMany(mappedBy="orderTypes", fetch=FetchType.EAGER)
-	private List<ServiceType> serviceTypes;
+	private Set<ServiceType> serviceTypes;
 
 	public OrderType() {
 	}
@@ -68,11 +68,11 @@ public class OrderType implements IEntity<Integer> {
 		this.name = name;
 	}
 
-	public List<OrderTypeTask> getOrderTypeTasks() {
+	public Set<OrderTypeTask> getOrderTypeTasks() {
 		return this.orderTypeTasks;
 	}
 
-	public void setOrderTypeTasks(List<OrderTypeTask> orderTypeTasks) {
+	public void setOrderTypeTasks(Set<OrderTypeTask> orderTypeTasks) {
 		this.orderTypeTasks = orderTypeTasks;
 	}
 
@@ -90,11 +90,11 @@ public class OrderType implements IEntity<Integer> {
 		return orderTypeTask;
 	}
 
-	public List<Order> getOrders() {
+	public Set<Order> getOrders() {
 		return this.orders;
 	}
 
-	public void setOrders(List<Order> orders) {
+	public void setOrders(Set<Order> orders) {
 		this.orders = orders;
 	}
 
@@ -122,11 +122,11 @@ public class OrderType implements IEntity<Integer> {
 		return this;
 	}
 	
-	public List<ServiceType> getServiceTypes() {
+	public Set<ServiceType> getServiceTypes() {
 		return this.serviceTypes;
 	}
 
-	public void setServiceTypes(List<ServiceType> serviceTypes) {
+	public void setServiceTypes(Set<ServiceType> serviceTypes) {
 		this.serviceTypes = serviceTypes;
 	}
 }

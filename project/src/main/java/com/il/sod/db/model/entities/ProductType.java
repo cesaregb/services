@@ -1,6 +1,6 @@
 package com.il.sod.db.model.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +30,7 @@ public class ProductType implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to Product
 	@OneToMany(mappedBy="productType", fetch=FetchType.EAGER)
-	private List<Product> products;
+	private Set<Product> products;
 
 	public ProductType() {
 	}
@@ -59,11 +59,11 @@ public class ProductType implements IEntity<Integer> {
 		this.name = name;
 	}
 
-	public List<Product> getProducts() {
+	public Set<Product> getProducts() {
 		return this.products;
 	}
 
-	public void setProducts(List<Product> products) {
+	public void setProducts(Set<Product> products) {
 		this.products = products;
 	}
 

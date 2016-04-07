@@ -274,7 +274,8 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Product` (
   `status` INT NOT NULL DEFAULT 0,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(250) NULL,
-  `price` FLOAT NULL DEFAULT 0,
+  `price` DOUBLE NULL DEFAULT 0,
+  `serviceIncrement` DOUBLE NULL DEFAULT 0,
   PRIMARY KEY (`idProduct`),
   INDEX `fk_Product_ProductType1_idx` (`idProductType` ASC),
   CONSTRAINT `fk_Product_ProductType1`
@@ -343,6 +344,8 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Orders` (
   `comments` VARCHAR(250) NULL,
   `created` DATETIME NULL,
   `updated` DATETIME NULL,
+  `pickUpDate` DATETIME NULL,
+  `deliverDate` DATETIME NULL,
   PRIMARY KEY (`idOrder`),
   INDEX `fk_Order_OrderTemplate1_idx` (`idOrderType` ASC),
   INDEX `fk_Order_Clients1_idx` (`idClient` ASC),
@@ -556,11 +559,18 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Service` (
   `created` DATETIME NULL,
   `updated` DATETIME NULL,
   `status` INT NULL,
+  `idOrder` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`idService`),
   INDEX `fk_Service_ServiceType1_idx` (`idServiceType` ASC),
+  INDEX `fk_Service_Orders1_idx` (`idOrder` ASC),
   CONSTRAINT `fk_Service_ServiceType1`
     FOREIGN KEY (`idServiceType`)
     REFERENCES `sod_db`.`ServiceType` (`idServiceType`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Service_Orders1`
+    FOREIGN KEY (`idOrder`)
+    REFERENCES `sod_db`.`Orders` (`idOrder`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -604,6 +614,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceSpecs` (
   `comments` VARCHAR(250) NULL,
   `quantity` INT NULL DEFAULT 0,
   `price` FLOAT NULL,
+  `selectedValue` VARCHAR(250) NULL,
   PRIMARY KEY (`idServiceSpecs`),
   INDEX `fk_ServiceSpecs_Specs1_idx` (`idSpecs` ASC),
   INDEX `fk_ServiceSpecs_Service1_idx` (`idService` ASC),
@@ -775,7 +786,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`SpecsValues` (
   `type` INT NULL DEFAULT 1,
   `value` VARCHAR(45) NULL,
   `idProductType` INT NULL DEFAULT 0,
-  `price` DOUBLE NULL DEFAULT 0,
+  `serviceIncrement` DOUBLE NULL DEFAULT 0,
   PRIMARY KEY (`idSpecsValues`),
   INDEX `fk_SpecsValues_Specs1_idx` (`idSpecs` ASC),
   CONSTRAINT `fk_SpecsValues_Specs1`
@@ -903,7 +914,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Employee` (`idEmployee`, `idEmployeeType`, `status`, `name`, `lastname`, `password`, `username`, `created`, `updated`, `email`) VALUES (1, 1, 1, 'user', 'user', NULL, 'user', NULL, NULL, NULL);
+INSERT INTO `sod_db`.`Employee` (`idEmployee`, `idEmployeeType`, `status`, `name`, `lastname`, `password`, `username`, `created`, `updated`, `email`) VALUES (1, 1, 1, 'user', 'user', NULL, 'user', NULL, NULL, 'email@domain.com');
 
 COMMIT;
 
@@ -925,8 +936,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Product` (`idProduct`, `idProductType`, `status`, `name`, `description`, `price`) VALUES (1, 1, 1, 'Ariel', NULL, 100);
-INSERT INTO `sod_db`.`Product` (`idProduct`, `idProductType`, `status`, `name`, `description`, `price`) VALUES (2, 1, 1, 'Otro', NULL, 120);
+INSERT INTO `sod_db`.`Product` (`idProduct`, `idProductType`, `status`, `name`, `description`, `price`, `serviceIncrement`) VALUES (1, 1, 1, 'Ariel', NULL, 100, 0);
+INSERT INTO `sod_db`.`Product` (`idProduct`, `idProductType`, `status`, `name`, `description`, `price`, `serviceIncrement`) VALUES (2, 1, 1, 'Otro', NULL, 120, 0.15);
 
 COMMIT;
 
@@ -1040,10 +1051,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `price`) VALUES (1, 1, 1, 'C', 0, 50);
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `price`) VALUES (2, 1, 1, 'M', 0, 50);
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `price`) VALUES (3, 1, 1, 'G', 0, 75);
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `price`) VALUES (4, 2, 2, NULL, 1, 0);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`) VALUES (1, 1, 1, 'C', 0, 0);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`) VALUES (2, 1, 1, 'M', 0, 0.20);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`) VALUES (3, 1, 1, 'G', 0, 0.30);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`) VALUES (4, 2, 2, NULL, 1, 0);
 
 COMMIT;
 

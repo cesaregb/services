@@ -1,9 +1,9 @@
 package com.il.sod.rest.dto.web;
 
 import java.util.Date;
+import java.util.List;
 
 public class NewOrderDTO {
-	private int idOrderType;
 	private int idClient;
 	private int idAddressPickup;
 	private int idAddressDeliver;
@@ -13,13 +13,8 @@ public class NewOrderDTO {
 	private String pickUpComments;
 	private Date deliveryDate;
 	private String deliveryComments;
+	private List<InpServiceDTO> services;
 	
-	public int getIdOrderType() {
-		return idOrderType;
-	}
-	public void setIdOrderType(int idOrderType) {
-		this.idOrderType = idOrderType;
-	}
 	public int getIdClient() {
 		return idClient;
 	}
@@ -73,5 +68,11 @@ public class NewOrderDTO {
 	}
 	public void setDeliveryComments(String deliveryComments) {
 		this.deliveryComments = deliveryComments;
+	}
+	public List<InpServiceDTO> getServices() {
+		return services;
+	}
+	public void setServices(List<InpServiceDTO> services) {
+		this.services = services;
 	}
 }

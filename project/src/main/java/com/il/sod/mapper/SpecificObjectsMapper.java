@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.il.sod.config.Constants;
@@ -39,16 +40,16 @@ public enum SpecificObjectsMapper {
 
 	private SpecificObjectsMapper() {
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
-		converterFactory.registerConverter("wServiceTypeListConverter", new WServiceTypeListConverter());
-		converterFactory.registerConverter("wSpecListConverter", new WSpecListConverter());
+		converterFactory.registerConverter("wServiceTypeSetConverter", new WServiceTypeSetConverter());
+		converterFactory.registerConverter("wSpecSetConverter", new WSpecSetConverter());
 		
 		BaseMapper.MAPPER_FACTORY.classMap(WServiceCategoryDTO.class, ServiceCategory.class)
-			.fieldMap("serviceTypes", "serviceTypes").converter("wServiceTypeListConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("serviceTypes", "serviceTypes").converter("wServiceTypeSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(WServiceTypeDTO.class, ServiceType.class)
-			.fieldMap("specs", "serviceTypeSpecs").converter("wSpecListConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("specs", "serviceTypeSpecs").converter("wSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 		
@@ -63,8 +64,6 @@ public enum SpecificObjectsMapper {
 				
 				@Override
 				public void mapBtoA(ServiceTypeSpec entity, WSpecDTO dto, MappingContext context) {
-					// super.mapBtoA(b, a, context);
-					
 					Map<Integer, List<KeyValue>> options = new HashMap<Integer, List<KeyValue>>();
 					Spec spec = entity.getSpec();
 					for (SpecsValue specValue : spec.getSpecsValues()){
@@ -73,14 +72,17 @@ public enum SpecificObjectsMapper {
 						}
 						KeyValue kv = new KeyValue();
 						if (specValue.getType() == Constants.SPEC_TYPE_PRODUCT){
+							// get all products  by product type....
 							List<Product> listProduct = productRepository.findByIdProductType(specValue.getIdProductType());
+							System.out.println("******************");
+							System.out.println("listProduct Size: " + listProduct.size());
+							
 							for (Product p : listProduct){
 								kv = new KeyValue();
 								kv.setKey(p.getId());
 								kv.setValue(p.getName());
 								options.get(specValue.getSpec().getId()).add(kv);
 							}
-							// get all products  by product type....
 						}else if (specValue.getType() == Constants.SPEC_TYPE_VALUES){
 							kv.setKey(0);
 							kv.setValue(specValue.getValue());
@@ -121,27 +123,28 @@ public enum SpecificObjectsMapper {
 	}
 }
 
-class WServiceTypeListConverter extends BidirectionalConverter<List<ServiceType>, List<WServiceTypeDTO>> {
+class WServiceTypeSetConverter extends BidirectionalConverter<Set<ServiceType>, Set<WServiceTypeDTO>> {
 	@Override
-	public List<ServiceType> convertFrom(List<WServiceTypeDTO> source, Type<List<ServiceType>> arg1) {
-		return source.stream().map(item -> SpecificObjectsMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	public Set<ServiceType> convertFrom(Set<WServiceTypeDTO> source, Type<Set<ServiceType>> arg1) {
+		return source.stream().map(item -> SpecificObjectsMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 
 	@Override
-	public List<WServiceTypeDTO> convertTo(List<ServiceType> source, Type<List<WServiceTypeDTO>> arg1) {
-		return source.stream().map(item -> SpecificObjectsMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	public Set<WServiceTypeDTO> convertTo(Set<ServiceType> source, Type<Set<WServiceTypeDTO>> arg1) {
+		System.out.println("****source: " + source.size());
+		return source.stream().map(item -> SpecificObjectsMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }
 
-class WSpecListConverter extends BidirectionalConverter<List<ServiceTypeSpec>, List<WSpecDTO>> {
+class WSpecSetConverter extends BidirectionalConverter<Set<ServiceTypeSpec>, Set<WSpecDTO>> {
 	@Override
-	public List<ServiceTypeSpec> convertFrom(List<WSpecDTO> source, Type<List<ServiceTypeSpec>> arg1) {
-		return source.stream().map(item -> SpecificObjectsMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	public Set<ServiceTypeSpec> convertFrom(Set<WSpecDTO> source, Type<Set<ServiceTypeSpec>> arg1) {
+		return source.stream().map(item -> SpecificObjectsMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 
 	@Override
-	public List<WSpecDTO> convertTo(List<ServiceTypeSpec> source, Type<List<WSpecDTO>> arg1) {
-		return source.stream().map(item -> SpecificObjectsMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	public Set<WSpecDTO> convertTo(Set<ServiceTypeSpec> source, Type<Set<WSpecDTO>> arg1) {
+		return source.stream().map(item -> SpecificObjectsMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 	
 }

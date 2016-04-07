@@ -1,6 +1,6 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.List;
+import java.util.Set;
 
 public class ServiceTypeDTO {
 	private int idServiceType;
@@ -8,10 +8,10 @@ public class ServiceTypeDTO {
 	private String name;
 	private double price;
 	private int time;
-	private List<Integer> services;
-	private List<ServiceTypeSpecDTO> serviceTypeSpecs;
-	private List<Integer> serviceTypeTasks;
-	private List<Integer> orderTypes;
+	private Set<Integer> services;
+	private Set<ServiceTypeSpecDTO> serviceTypeSpecs;
+	private Set<Integer> serviceTypeTasks;
+	private Set<Integer> orderTypes;
 	
 	public int getIdServiceType() {
 		return idServiceType;
@@ -37,16 +37,16 @@ public class ServiceTypeDTO {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public List<Integer> getServiceTypeTasks() {
+	public Set<Integer> getServiceTypeTasks() {
 		return serviceTypeTasks;
 	}
-	public void setServiceTypeTasks(List<Integer> serviceTypeTasks) {
+	public void setServiceTypeTasks(Set<Integer> serviceTypeTasks) {
 		this.serviceTypeTasks = serviceTypeTasks;
 	}
-	public List<Integer> getServices() {
+	public Set<Integer> getServices() {
 		return services;
 	}
-	public void setServices(List<Integer> services) {
+	public void setServices(Set<Integer> services) {
 		this.services = services;
 	}
 	public int getTime() {
@@ -55,16 +55,16 @@ public class ServiceTypeDTO {
 	public void setTime(int time) {
 		this.time = time;
 	}
-	public List<Integer> getOrderTypes() {
+	public Set<Integer> getOrderTypes() {
 		return orderTypes;
 	}
-	public void setOrderTypes(List<Integer> orderTypes) {
+	public void setOrderTypes(Set<Integer> orderTypes) {
 		this.orderTypes = orderTypes;
 	}
-	public List<ServiceTypeSpecDTO> getServiceTypeSpecs() {
+	public Set<ServiceTypeSpecDTO> getServiceTypeSpecs() {
 		return serviceTypeSpecs;
 	}
-	public void setServiceTypeSpecs(List<ServiceTypeSpecDTO> serviceTypeSpecs) {
+	public void setServiceTypeSpecs(Set<ServiceTypeSpecDTO> serviceTypeSpecs) {
 		this.serviceTypeSpecs = serviceTypeSpecs;
 	}
 }

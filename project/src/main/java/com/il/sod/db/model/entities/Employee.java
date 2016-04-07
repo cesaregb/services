@@ -1,7 +1,7 @@
 package com.il.sod.db.model.entities;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -50,11 +50,11 @@ public class Employee implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to EmployeeTaskOrder
 	@OneToMany(mappedBy="employee", fetch=FetchType.EAGER)
-	private List<EmployeeTaskOrder> employeeTaskOrders;
+	private Set<EmployeeTaskOrder> employeeTaskOrders;
 
 	//bi-directional many-to-one association to EmployeeTaskService
 	@OneToMany(mappedBy="employee", fetch=FetchType.EAGER)
-	private List<EmployeeTaskService> employeeTaskServices;
+	private Set<EmployeeTaskService> employeeTaskServices;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created;
@@ -121,11 +121,11 @@ public class Employee implements IEntity<Integer> {
 		this.employeeType = employeeType;
 	}
 
-	public List<EmployeeTaskOrder> getEmployeeTaskOrders() {
+	public Set<EmployeeTaskOrder> getEmployeeTaskOrders() {
 		return this.employeeTaskOrders;
 	}
 
-	public void setEmployeeTaskOrders(List<EmployeeTaskOrder> employeeTaskOrders) {
+	public void setEmployeeTaskOrders(Set<EmployeeTaskOrder> employeeTaskOrders) {
 		this.employeeTaskOrders = employeeTaskOrders;
 	}
 
@@ -143,11 +143,11 @@ public class Employee implements IEntity<Integer> {
 		return employeeTaskOrder;
 	}
 
-	public List<EmployeeTaskService> getEmployeeTaskServices() {
+	public Set<EmployeeTaskService> getEmployeeTaskServices() {
 		return this.employeeTaskServices;
 	}
 
-	public void setEmployeeTaskServices(List<EmployeeTaskService> employeeTaskServices) {
+	public void setEmployeeTaskServices(Set<EmployeeTaskService> employeeTaskServices) {
 		this.employeeTaskServices = employeeTaskServices;
 	}
 
