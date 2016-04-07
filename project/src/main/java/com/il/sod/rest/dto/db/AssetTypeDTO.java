@@ -1,12 +1,12 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.List;
+import java.util.Set;
 
 public class AssetTypeDTO {
 	private int idAssetType;
 	private String description;
 	private String name;
-	private List<AssetDTO> assets;
+	private Set<AssetDTO> assets;
 	public int getIdAssetType() {
 		return idAssetType;
 	}
@@ -25,10 +25,10 @@ public class AssetTypeDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<AssetDTO> getAssets() {
+	public Set<AssetDTO> getAssets() {
 		return assets;
 	}
-	public void setAssets(List<AssetDTO> assets) {
+	public void setAssets(Set<AssetDTO> assets) {
 		this.assets = assets;
 	}
 }

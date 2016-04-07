@@ -1,12 +1,12 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.List;
+import java.util.Set;
 
 public class ServiceCategoryDTO {
 	private int idServiceCategory;
 	private String description;
 	private String name;
-	private List<ServiceTypeDTO> serviceTypes;
+	private Set<ServiceTypeDTO> serviceTypes;
 
 	public ServiceCategoryDTO() {
 	}
@@ -35,11 +35,11 @@ public class ServiceCategoryDTO {
 		this.name = name;
 	}
 
-	public List<ServiceTypeDTO> getServiceTypes() {
+	public Set<ServiceTypeDTO> getServiceTypes() {
 		return this.serviceTypes;
 	}
 
-	public void setServiceTypes(List<ServiceTypeDTO> serviceTypes) {
+	public void setServiceTypes(Set<ServiceTypeDTO> serviceTypes) {
 		this.serviceTypes = serviceTypes;
 	}
 }

@@ -1,6 +1,7 @@
 package com.il.sod.mapper;
 
-import java.util.List;
+import java.util.Set;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.il.sod.db.model.entities.Address;
@@ -13,9 +14,7 @@ import com.il.sod.rest.dto.db.ClientPaymentInfoDTO;
 import com.il.sod.rest.dto.db.PhoneNumberDTO;
 
 import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.converter.ConverterFactory;
-import ma.glasnost.orika.metadata.Type;
 
 public enum ClientMapper {
 
@@ -24,12 +23,12 @@ public enum ClientMapper {
 
 	private ClientMapper() {
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
-		converterFactory.registerConverter("orderListConverter", new OrderListConverter());
+		converterFactory.registerConverter("orderSetConverter", new OrderSetConverter());
 		converterFactory.registerConverter("addressDTOConverter", new AddressDTOConverter());
 		converterFactory.registerConverter("phoneNumberDTOConverter", new PhoneNumberDTOConverter());
 
 		BaseMapper.MAPPER_FACTORY.classMap(ClientDTO.class, Client.class)
-			.fieldMap("orders", "orders").converter("orderListConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("orders", "orders").converter("orderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("addresses", "addresses").converter("addressDTOConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("phoneNumbers", "phoneNumbers").converter("phoneNumberDTOConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
@@ -75,8 +74,8 @@ public enum ClientMapper {
 		return this.mapperFacade.map(entity, AddressDTO.class);
 	}
 	
-	public List<AddressDTO> map(List<Address> source) {
-		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
+	public Set<AddressDTO> map(Set<Address> source) {
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 	
 	public PhoneNumber map(PhoneNumberDTO dto) {
@@ -96,39 +95,5 @@ public enum ClientMapper {
 	}
 }
 
-class AddressDTOConverter extends BidirectionalConverter<List<Address>, List<AddressDTO>> {
-	@Override
-	public List<Address> convertFrom(List<AddressDTO> source, Type<List<Address>> arg1) {
-		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
-	}
 
-	@Override
-	public List<AddressDTO> convertTo(List<Address> source, Type<List<AddressDTO>> arg1) {
-		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
-	}
-}
-
-class PhoneNumberDTOConverter extends BidirectionalConverter<List<PhoneNumber>, List<PhoneNumberDTO>> {
-	@Override
-	public List<PhoneNumber> convertFrom(List<PhoneNumberDTO> source, Type<List<PhoneNumber>> arg1) {
-		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
-	}
-
-	@Override
-	public List<PhoneNumberDTO> convertTo(List<PhoneNumber> source, Type<List<PhoneNumberDTO>> arg1) {
-		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
-	}
-}
-
-class ClientPaymentInfoConverter extends BidirectionalConverter<List<ClientPaymentInfo>, List<ClientPaymentInfoDTO>> {
-	@Override
-	public List<ClientPaymentInfo> convertFrom(List<ClientPaymentInfoDTO> source, Type<List<ClientPaymentInfo>> arg1) {
-		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
-	}
-
-	@Override
-	public List<ClientPaymentInfoDTO> convertTo(List<ClientPaymentInfo> source, Type<List<ClientPaymentInfoDTO>> arg1) {
-		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
-	}
-}
 

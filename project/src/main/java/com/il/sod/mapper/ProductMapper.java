@@ -1,6 +1,6 @@
 package com.il.sod.mapper;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.il.sod.db.model.entities.Product;
@@ -21,7 +21,7 @@ public enum ProductMapper {
 	private ProductMapper() {
 		
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
-		converterFactory.registerConverter("productListConverter", new ProductListConverter());
+		converterFactory.registerConverter("productSetConverter", new ProductSetConverter());
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ProductDTO.class, Product.class)
 			.field("productTypeId", "productType.idProductType")
@@ -29,7 +29,7 @@ public enum ProductMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ProductTypeDTO.class, ProductType.class)
-			.fieldMap("products", "products").converter("productListConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("products", "products").converter("productSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 		
@@ -53,18 +53,18 @@ public enum ProductMapper {
 	}
 }
 
-class ProductListConverter extends BidirectionalConverter<List<ProductDTO>, List<Product>> {
+class ProductSetConverter extends BidirectionalConverter<Set<ProductDTO>, Set<Product>> {
 	@Override
-	public List<ProductDTO> convertFrom(List<Product> source, Type<List<ProductDTO>> arg1) {
+	public Set<ProductDTO> convertFrom(Set<Product> source, Type<Set<ProductDTO>> arg1) {
 		return source.stream()
 				.map(item -> ProductMapper.INSTANCE.map(item))
-				.collect(Collectors.toList());
+				.collect(Collectors.toSet());
 	}
 
 	@Override
-	public List<Product> convertTo(List<ProductDTO> source, Type<List<Product>> arg1) {
+	public Set<Product> convertTo(Set<ProductDTO> source, Type<Set<Product>> arg1) {
 		return source.stream()
 				.map(item -> ProductMapper.INSTANCE.map(item))
-				.collect(Collectors.toList());
+				.collect(Collectors.toSet());
 	}
 }

@@ -1,6 +1,7 @@
 package com.il.sod.db.model.entities;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,15 +33,15 @@ public class Spec implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to ServiceSpec
 	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER)
-	private List<ServiceSpec> serviceSpecs;
+	private Set<ServiceSpec> serviceSpecs;
 
 	//bi-directional many-to-one association to ServiceTypeSpec
 	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER)
-	private List<ServiceTypeSpec> serviceTypeSpecs;
+	private Set<ServiceTypeSpec> serviceTypeSpecs;
 	
 	//bi-directional many-to-one association to SpecsValue
 	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER)
-	private List<SpecsValue> specsValues;
+	private Set<SpecsValue> specsValues;
 
 	private int optional;
 	
@@ -73,15 +74,18 @@ public class Spec implements IEntity<Integer> {
 		this.name = name;
 	}
 
-	public List<ServiceSpec> getServiceSpecs() {
+	public Set<ServiceSpec> getServiceSpecs() {
 		return this.serviceSpecs;
 	}
 
-	public void setServiceSpecs(List<ServiceSpec> serviceSpecs) {
+	public void setServiceSpecs(Set<ServiceSpec> serviceSpecs) {
 		this.serviceSpecs = serviceSpecs;
 	}
 
 	public ServiceSpec addServiceSpec(ServiceSpec serviceSpec) {
+		if (serviceSpecs == null){
+			serviceSpecs = new HashSet<>();
+		}
 		getServiceSpecs().add(serviceSpec);
 		serviceSpec.setSpec(this);
 
@@ -95,15 +99,18 @@ public class Spec implements IEntity<Integer> {
 		return serviceSpec;
 	}
 
-	public List<ServiceTypeSpec> getServiceTypeSpecs() {
+	public Set<ServiceTypeSpec> getServiceTypeSpecs() {
 		return this.serviceTypeSpecs;
 	}
 
-	public void setServiceTypeSpecs(List<ServiceTypeSpec> serviceTypeSpecs) {
+	public void setServiceTypeSpecs(Set<ServiceTypeSpec> serviceTypeSpecs) {
 		this.serviceTypeSpecs = serviceTypeSpecs;
 	}
 
 	public ServiceTypeSpec addServiceTypeSpec(ServiceTypeSpec serviceTypeSpec) {
+		if (serviceTypeSpecs == null){
+			serviceTypeSpecs = new HashSet<>();
+		}
 		getServiceTypeSpecs().add(serviceTypeSpec);
 		serviceTypeSpec.setSpec(this);
 
@@ -117,11 +124,11 @@ public class Spec implements IEntity<Integer> {
 		return serviceTypeSpec;
 	}
 	
-	public List<SpecsValue> getSpecsValues() {
+	public Set<SpecsValue> getSpecsValues() {
 		return this.specsValues;
 	}
 
-	public void setSpecsValues(List<SpecsValue> specsValues) {
+	public void setSpecsValues(Set<SpecsValue> specsValues) {
 		this.specsValues = specsValues;
 	}
 

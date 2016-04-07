@@ -1,6 +1,6 @@
 package com.il.sod.db.model.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,7 +47,7 @@ public class Address implements IEntity<Integer> {
 	
 	//bi-directional many-to-one association to OrderPickNDeliver
 	@OneToMany(mappedBy="address")
-	private List<OrderPickNDeliver> orderPickNdelivers;
+	private Set<OrderPickNDeliver> orderPickNdelivers;
 
 
 	public Address() {
@@ -127,11 +127,11 @@ public class Address implements IEntity<Integer> {
 		this.zipcode = zipcode;
 	}
 	
-	public List<OrderPickNDeliver> getOrderPickNdelivers() {
+	public Set<OrderPickNDeliver> getOrderPickNdelivers() {
 		return this.orderPickNdelivers;
 	}
 
-	public void setOrderPickNdelivers(List<OrderPickNDeliver> orderPickNdelivers) {
+	public void setOrderPickNdelivers(Set<OrderPickNDeliver> orderPickNdelivers) {
 		this.orderPickNdelivers = orderPickNdelivers;
 	}
 

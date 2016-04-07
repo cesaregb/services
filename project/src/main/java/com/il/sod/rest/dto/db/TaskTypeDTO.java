@@ -1,6 +1,6 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -10,7 +10,7 @@ public class TaskTypeDTO {
 	private int idTaskType;
 	private String description;
 	private String name;
-	private List<TaskDTO> tasks;
+	private Set<TaskDTO> tasks;
 	
 	public int getIdTaskType() {
 		return idTaskType;
@@ -30,10 +30,10 @@ public class TaskTypeDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<TaskDTO> getTasks() {
+	public Set<TaskDTO> getTasks() {
 		return tasks;
 	}
-	public void setTasks(List<TaskDTO> tasks) {
+	public void setTasks(Set<TaskDTO> tasks) {
 		this.tasks = tasks;
 	}
 }

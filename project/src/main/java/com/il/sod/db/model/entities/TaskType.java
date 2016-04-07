@@ -1,6 +1,6 @@
 package com.il.sod.db.model.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +30,7 @@ public class TaskType implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to Task
 	@OneToMany(mappedBy="taskType", fetch=FetchType.EAGER)
-	private List<Task> tasks;
+	private Set<Task> tasks;
 
 	public TaskType() {
 	}
@@ -59,11 +59,11 @@ public class TaskType implements IEntity<Integer> {
 		this.name = name;
 	}
 
-	public List<Task> getTasks() {
+	public Set<Task> getTasks() {
 		return this.tasks;
 	}
 
-	public void setTasks(List<Task> tasks) {
+	public void setTasks(Set<Task> tasks) {
 		this.tasks = tasks;
 	}
 

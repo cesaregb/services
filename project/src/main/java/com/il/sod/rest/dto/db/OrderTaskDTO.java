@@ -1,14 +1,14 @@
 package com.il.sod.rest.dto.db;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 public class OrderTaskDTO {	
 	private int idOrderTask;
 	private String comments;
 	private Date time;
-	private List<AssetTaskOrderDTO> assetTaskOrders;
-	private List<EmployeeTaskOrderDTO> employeeTaskOrders;
+	private Set<AssetTaskOrderDTO> assetTaskOrders;
+	private Set<EmployeeTaskOrderDTO> employeeTaskOrders;
 	private Integer order;
 	private Integer task;
 	public int getIdOrderTask() {
@@ -29,16 +29,16 @@ public class OrderTaskDTO {
 	public void setTime(Date time) {
 		this.time = time;
 	}
-	public List<AssetTaskOrderDTO> getAssetTaskOrders() {
+	public Set<AssetTaskOrderDTO> getAssetTaskOrders() {
 		return assetTaskOrders;
 	}
-	public void setAssetTaskOrders(List<AssetTaskOrderDTO> assetTaskOrders) {
+	public void setAssetTaskOrders(Set<AssetTaskOrderDTO> assetTaskOrders) {
 		this.assetTaskOrders = assetTaskOrders;
 	}
-	public List<EmployeeTaskOrderDTO> getEmployeeTaskOrders() {
+	public Set<EmployeeTaskOrderDTO> getEmployeeTaskOrders() {
 		return employeeTaskOrders;
 	}
-	public void setEmployeeTaskOrders(List<EmployeeTaskOrderDTO> employeeTaskOrders) {
+	public void setEmployeeTaskOrders(Set<EmployeeTaskOrderDTO> employeeTaskOrders) {
 		this.employeeTaskOrders = employeeTaskOrders;
 	}
 	public Integer getOrder() {

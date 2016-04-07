@@ -1,6 +1,6 @@
 package com.il.sod.db.model.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,19 +32,19 @@ public class Task implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to OrderTask
 	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
-	private List<OrderTask> orderTasks;
+	private Set<OrderTask> orderTasks;
 
 	//bi-directional many-to-one association to OrderTemplateTask
 	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
-	private List<OrderTypeTask> orderTemplateTasks;
+	private Set<OrderTypeTask> orderTemplateTasks;
 
 	//bi-directional many-to-one association to ServiceTask
 	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
-	private List<ServiceTask> serviceTasks;
+	private Set<ServiceTask> serviceTasks;
 
 	//bi-directional many-to-one association to ServiceTypeTask
 	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
-	private List<ServiceTypeTask> serviceTypeTasks;
+	private Set<ServiceTypeTask> serviceTypeTasks;
 
 	//bi-directional many-to-one association to TaskType
 	@ManyToOne
@@ -78,11 +78,11 @@ public class Task implements IEntity<Integer> {
 		this.name = name;
 	}
 
-	public List<OrderTask> getOrderTasks() {
+	public Set<OrderTask> getOrderTasks() {
 		return this.orderTasks;
 	}
 
-	public void setOrderTasks(List<OrderTask> orderTasks) {
+	public void setOrderTasks(Set<OrderTask> orderTasks) {
 		this.orderTasks = orderTasks;
 	}
 
@@ -100,11 +100,11 @@ public class Task implements IEntity<Integer> {
 		return orderTask;
 	}
 
-	public List<OrderTypeTask> getOrderTemplateTasks() {
+	public Set<OrderTypeTask> getOrderTemplateTasks() {
 		return this.orderTemplateTasks;
 	}
 
-	public void setOrderTemplateTasks(List<OrderTypeTask> orderTemplateTasks) {
+	public void setOrderTemplateTasks(Set<OrderTypeTask> orderTemplateTasks) {
 		this.orderTemplateTasks = orderTemplateTasks;
 	}
 
@@ -122,11 +122,11 @@ public class Task implements IEntity<Integer> {
 		return orderTemplateTask;
 	}
 
-	public List<ServiceTask> getServiceTasks() {
+	public Set<ServiceTask> getServiceTasks() {
 		return this.serviceTasks;
 	}
 
-	public void setServiceTasks(List<ServiceTask> serviceTasks) {
+	public void setServiceTasks(Set<ServiceTask> serviceTasks) {
 		this.serviceTasks = serviceTasks;
 	}
 
@@ -144,11 +144,11 @@ public class Task implements IEntity<Integer> {
 		return serviceTask;
 	}
 
-	public List<ServiceTypeTask> getServiceTypeTasks() {
+	public Set<ServiceTypeTask> getServiceTypeTasks() {
 		return this.serviceTypeTasks;
 	}
 
-	public void setServiceTypeTasks(List<ServiceTypeTask> serviceTypeTasks) {
+	public void setServiceTypeTasks(Set<ServiceTypeTask> serviceTypeTasks) {
 		this.serviceTypeTasks = serviceTypeTasks;
 	}
 

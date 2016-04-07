@@ -1,7 +1,7 @@
 package com.il.sod.rest.dto.db;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 public class ClientDTO {
 	private int idClient;
@@ -10,18 +10,18 @@ public class ClientDTO {
 	private String name;
 	private String password;
 	private String twitter;
-	private List<Integer> orders;
+	private Set<Integer> orders;
 	// key value  
 	// key = id 
 	// value = map {"name"}
-//	private List<AccessKeyDTO> accessKeys;
-	private List<AddressDTO> addresses;
-	private List<PhoneNumberDTO> phoneNumbers;
+//	private Set<AccessKeyDTO> accessKeys;
+	private Set<AddressDTO> addresses;
+	private Set<PhoneNumberDTO> phoneNumbers;
 	
 	private Date created;
 	private Date updated;
 	
-	private List<ClientPaymentInfoDTO> clientPaymentInfos;
+	private Set<ClientPaymentInfoDTO> clientPaymentInfos;
 	
 	
 	public int getIdClient() {
@@ -60,22 +60,22 @@ public class ClientDTO {
 	public void setTwitter(String twitter) {
 		this.twitter = twitter;
 	}
-	public List<Integer> getOrders() {
+	public Set<Integer> getOrders() {
 		return orders;
 	}
-	public void setOrders(List<Integer> orders) {
+	public void setOrders(Set<Integer> orders) {
 		this.orders = orders;
 	}
-	public List<AddressDTO> getAddresses() {
+	public Set<AddressDTO> getAddresses() {
 		return addresses;
 	}
-	public void setAddresses(List<AddressDTO> addresses) {
+	public void setAddresses(Set<AddressDTO> addresses) {
 		this.addresses = addresses;
 	}
-	public List<PhoneNumberDTO> getPhoneNumbers() {
+	public Set<PhoneNumberDTO> getPhoneNumbers() {
 		return phoneNumbers;
 	}
-	public void setPhoneNumbers(List<PhoneNumberDTO> phoneNumbers) {
+	public void setPhoneNumbers(Set<PhoneNumberDTO> phoneNumbers) {
 		this.phoneNumbers = phoneNumbers;
 	}
 	public Date getCreated() {
@@ -90,10 +90,10 @@ public class ClientDTO {
 	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
-	public List<ClientPaymentInfoDTO> getClientPaymentInfos() {
+	public Set<ClientPaymentInfoDTO> getClientPaymentInfos() {
 		return clientPaymentInfos;
 	}
-	public void setClientPaymentInfos(List<ClientPaymentInfoDTO> clientPaymentInfos) {
+	public void setClientPaymentInfos(Set<ClientPaymentInfoDTO> clientPaymentInfos) {
 		this.clientPaymentInfos = clientPaymentInfos;
 	}
 }

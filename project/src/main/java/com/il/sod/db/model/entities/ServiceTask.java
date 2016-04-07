@@ -1,6 +1,6 @@
 package com.il.sod.db.model.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,11 +30,11 @@ public class ServiceTask implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to AssetTaskService
 	@OneToMany(mappedBy="serviceTask", fetch=FetchType.EAGER)
-	private List<AssetTaskService> assetTaskServices;
+	private Set<AssetTaskService> assetTaskServices;
 
 	//bi-directional many-to-one association to EmployeeTaskService
 	@OneToMany(mappedBy="serviceTask", fetch=FetchType.EAGER)
-	private List<EmployeeTaskService> employeeTaskServices;
+	private Set<EmployeeTaskService> employeeTaskServices;
 
 	//bi-directional many-to-one association to Service
 	@ManyToOne
@@ -65,11 +65,11 @@ public class ServiceTask implements IEntity<Integer> {
 		this.comments = comments;
 	}
 
-	public List<AssetTaskService> getAssetTaskServices() {
+	public Set<AssetTaskService> getAssetTaskServices() {
 		return this.assetTaskServices;
 	}
 
-	public void setAssetTaskServices(List<AssetTaskService> assetTaskServices) {
+	public void setAssetTaskServices(Set<AssetTaskService> assetTaskServices) {
 		this.assetTaskServices = assetTaskServices;
 	}
 
@@ -87,11 +87,11 @@ public class ServiceTask implements IEntity<Integer> {
 		return assetTaskService;
 	}
 
-	public List<EmployeeTaskService> getEmployeeTaskServices() {
+	public Set<EmployeeTaskService> getEmployeeTaskServices() {
 		return this.employeeTaskServices;
 	}
 
-	public void setEmployeeTaskServices(List<EmployeeTaskService> employeeTaskServices) {
+	public void setEmployeeTaskServices(Set<EmployeeTaskService> employeeTaskServices) {
 		this.employeeTaskServices = employeeTaskServices;
 	}
 

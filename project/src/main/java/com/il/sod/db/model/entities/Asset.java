@@ -1,6 +1,6 @@
 package com.il.sod.db.model.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,11 +39,11 @@ public class Asset implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to AssetTaskOrder
 	@OneToMany(mappedBy="asset", fetch=FetchType.EAGER)
-	private List<AssetTaskOrder> assetTaskOrders;
+	private Set<AssetTaskOrder> assetTaskOrders;
 
 	//bi-directional many-to-one association to AssetTaskService
 	@OneToMany(mappedBy="asset", fetch=FetchType.EAGER)
-	private List<AssetTaskService> assetTaskServices;
+	private Set<AssetTaskService> assetTaskServices;
 
 	public Asset() {
 	}
@@ -88,11 +88,11 @@ public class Asset implements IEntity<Integer> {
 		this.assetType = assetType;
 	}
 
-	public List<AssetTaskOrder> getAssetTaskOrders() {
+	public Set<AssetTaskOrder> getAssetTaskOrders() {
 		return this.assetTaskOrders;
 	}
 
-	public void setAssetTaskOrders(List<AssetTaskOrder> assetTaskOrders) {
+	public void setAssetTaskOrders(Set<AssetTaskOrder> assetTaskOrders) {
 		this.assetTaskOrders = assetTaskOrders;
 	}
 
@@ -110,11 +110,11 @@ public class Asset implements IEntity<Integer> {
 		return assetTaskOrder;
 	}
 
-	public List<AssetTaskService> getAssetTaskServices() {
+	public Set<AssetTaskService> getAssetTaskServices() {
 		return this.assetTaskServices;
 	}
 
-	public void setAssetTaskServices(List<AssetTaskService> assetTaskServices) {
+	public void setAssetTaskServices(Set<AssetTaskService> assetTaskServices) {
 		this.assetTaskServices = assetTaskServices;
 	}
 

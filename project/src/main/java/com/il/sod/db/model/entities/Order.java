@@ -1,8 +1,10 @@
 package com.il.sod.db.model.entities;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -51,7 +53,7 @@ public class Order implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to OrderTask
 	@OneToMany(mappedBy="order", fetch=FetchType.EAGER)
-	private List<OrderTask> orderTasks;
+	private Set<OrderTask> orderTasks;
 
 	//bi-directional many-to-one association to Client
 	@ManyToOne
@@ -59,17 +61,24 @@ public class Order implements IEntity<Integer> {
 	private Client client;
 
 	//bi-directional many-to-one association to OrderType
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idOrderType")
 	private OrderType orderType;
 	
 	//bi-directional many-to-one association to OrderPickNDeliver
-	@OneToMany(mappedBy="order")
-	private List<OrderPickNDeliver> orderPickNdelivers;
+	@OneToMany(mappedBy="order", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private Set<OrderPickNDeliver> orderPickNdelivers;
 	
 	//bi-directional many-to-one association to PaymentInfo
-	@OneToMany(mappedBy="order")
-	private List<PaymentInfo> paymentInfos;
+	@OneToMany(mappedBy="order", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private Set<PaymentInfo> paymentInfos;
+	
+	private Date pickUpDate;
+	private Date deliverDate;
+	
+	//bi-directional many-to-one association to Service
+	@OneToMany(mappedBy="order", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private Set<Service> services;
 
 	public Order() {
 	}
@@ -123,11 +132,11 @@ public class Order implements IEntity<Integer> {
 		this.status = status;
 	}
 
-	public List<OrderTask> getOrderTasks() {
+	public Set<OrderTask> getOrderTasks() {
 		return this.orderTasks;
 	}
 
-	public void setOrderTasks(List<OrderTask> orderTasks) {
+	public void setOrderTasks(Set<OrderTask> orderTasks) {
 		this.orderTasks = orderTasks;
 	}
 
@@ -195,11 +204,11 @@ public class Order implements IEntity<Integer> {
 		this.time = time;
 	}
 	
-	public List<OrderPickNDeliver> getOrderPickNdelivers() {
+	public Set<OrderPickNDeliver> getOrderPickNdelivers() {
 		return this.orderPickNdelivers;
 	}
 
-	public void setOrderPickNdelivers(List<OrderPickNDeliver> orderPickNdelivers) {
+	public void setOrderPickNdelivers(Set<OrderPickNDeliver> orderPickNdelivers) {
 		this.orderPickNdelivers = orderPickNdelivers;
 	}
 
@@ -217,11 +226,11 @@ public class Order implements IEntity<Integer> {
 		return orderPickNdeliver;
 	}
 	
-	public List<PaymentInfo> getPaymentInfos() {
+	public Set<PaymentInfo> getPaymentInfos() {
 		return this.paymentInfos;
 	}
 
-	public void setPaymentInfos(List<PaymentInfo> paymentInfos) {
+	public void setPaymentInfos(Set<PaymentInfo> paymentInfos) {
 		this.paymentInfos = paymentInfos;
 	}
 
@@ -237,5 +246,43 @@ public class Order implements IEntity<Integer> {
 		paymentInfo.setOrder(null);
 
 		return paymentInfo;
+	}
+	
+	public Date getPickUpDate() {
+		return pickUpDate;
+	}
+	public void setPickUpDate(Date pickUpDate) {
+		this.pickUpDate = pickUpDate;
+	}
+	public Date getDeliverDate() {
+		return deliverDate;
+	}
+	public void setDeliverDate(Date deliverDate) {
+		this.deliverDate = deliverDate;
+	}
+	
+	public Set<Service> getServices() {
+		return this.services;
+	}
+
+	public void setServices(Set<Service> services) {
+		this.services = services;
+	}
+
+	public Service addService(Service service) {
+		if (services == null){
+			services = new HashSet<>();
+		}
+		getServices().add(service);
+		service.setOrder(this);
+
+		return service;
+	}
+
+	public Service removeService(Service service) {
+		getServices().remove(service);
+		service.setOrder(null);
+
+		return service;
 	}
 }

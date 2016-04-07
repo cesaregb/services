@@ -22,27 +22,28 @@ public enum ServiceMapper {
 	private ServiceMapper() {
 		
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
-		converterFactory.registerConverter("serviceListConverter", new ServiceListConverter());
-		converterFactory.registerConverter("serviceTypeSpecListConverter", new ServiceTypeSpecListConverter());
-		converterFactory.registerConverter("serviceTypeTaskListConverter", new ServiceTypeTaskListConverter());
-		converterFactory.registerConverter("serviceSpecListConverter", new ServiceSpecListConverter());
-		converterFactory.registerConverter("serviceTaskListConverter", new ServiceTaskListConverter());
-		converterFactory.registerConverter("orderTypeListConverter", new OrderTypeListConverter());
-		converterFactory.registerConverter("serviceTypeListConverter", new ServiceTypeListConverter());
+		converterFactory.registerConverter("serviceSetConverter", new ServiceSetConverter());
+		converterFactory.registerConverter("serviceTypeSpecSetConverter", new ServiceTypeSpecSetConverter());
+		converterFactory.registerConverter("serviceTypeTaskSetConverter", new ServiceTypeTaskSetConverter());
+		converterFactory.registerConverter("serviceSpecSetConverter", new ServiceSpecSetConverter());
+		converterFactory.registerConverter("serviceTaskSetConverter", new ServiceTaskSetConverter());
+		converterFactory.registerConverter("orderTypeSetConverter", new OrderTypeSetConverter());
+		converterFactory.registerConverter("serviceTypeSetConverter", new ServiceTypeSetConverter());
 		converterFactory.registerConverter("specConverter", new SpecConverter());
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceDTO.class, Service.class)
-			.fieldMap("serviceSpecs", "serviceSpecs").converter("serviceSpecListConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.fieldMap("serviceTasks", "serviceTasks").converter("serviceTaskListConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("serviceSpecs", "serviceSpecs").converter("serviceSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("serviceTasks", "serviceTasks").converter("serviceTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.field("serviceType", "serviceType.idServiceType")
+			.field("order", "order.idOrder")
 			.byDefault()
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceTypeDTO.class, ServiceType.class)
-			.fieldMap("services", "services").converter("serviceListConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.fieldMap("serviceTypeSpecs", "serviceTypeSpecs").converter("serviceTypeSpecListConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.fieldMap("serviceTypeTasks", "serviceTypeTasks").converter("serviceTypeTaskListConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.fieldMap("orderTypes", "orderTypes").converter("orderTypeListConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("services", "services").converter("serviceSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("serviceTypeSpecs", "serviceTypeSpecs").converter("serviceTypeSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("serviceTypeTasks", "serviceTypeTasks").converter("serviceTypeTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("orderTypes", "orderTypes").converter("orderTypeSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 		
@@ -59,7 +60,7 @@ public enum ServiceMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceCategoryDTO.class, ServiceCategory.class)
-			.fieldMap("serviceTypes", "serviceTypes").converter("serviceTypeListConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("serviceTypes", "serviceTypes").converter("serviceTypeSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 		

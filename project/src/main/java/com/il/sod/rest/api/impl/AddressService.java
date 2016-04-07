@@ -1,6 +1,7 @@
 package com.il.sod.rest.api.impl;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.security.RolesAllowed;
@@ -109,7 +110,7 @@ public class AddressService extends AbstractServiceMutations {
 	public Response getAddressListByClient(@PathParam("clientId") String clientId) throws SODAPIException {
 
 		Client client = this.getEntity(clientRepository, Integer.valueOf(clientId));
-		List<AddressDTO> result = ClientMapper.INSTANCE.map(client.getAddresses());
+		Set<AddressDTO> result = ClientMapper.INSTANCE.map(client.getAddresses());
 		return castEntityAsResponse(result);
 	}
 

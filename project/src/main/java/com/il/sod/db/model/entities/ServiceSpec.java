@@ -39,6 +39,8 @@ public class ServiceSpec implements IEntity<Integer> {
 	private int quantity;
 	
 	private float price; 
+	
+	private String selectedValue;
 
 	public ServiceSpec() {
 	}
@@ -100,4 +102,13 @@ public class ServiceSpec implements IEntity<Integer> {
 	public void setPrice(float price) {
 		this.price = price;
 	}
+
+	public String getSelectedValue() {
+		return selectedValue;
+	}
+
+	public void setSelectedValue(String selectedValue) {
+		this.selectedValue = selectedValue;
+	}
+
 }

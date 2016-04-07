@@ -1,7 +1,7 @@
 package com.il.sod.db.model.entities;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,11 +36,11 @@ public class OrderTask implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to AssetTaskOrder
 	@OneToMany(mappedBy="orderTask", fetch=FetchType.EAGER)
-	private List<AssetTaskOrder> assetTaskOrders;
+	private Set<AssetTaskOrder> assetTaskOrders;
 
 	//bi-directional many-to-one association to EmployeeTaskOrder
 	@OneToMany(mappedBy="orderTask", fetch=FetchType.EAGER)
-	private List<EmployeeTaskOrder> employeeTaskOrders;
+	private Set<EmployeeTaskOrder> employeeTaskOrders;
 
 	//bi-directional many-to-one association to Task
 	@ManyToOne
@@ -79,11 +79,11 @@ public class OrderTask implements IEntity<Integer> {
 		this.time = time;
 	}
 
-	public List<AssetTaskOrder> getAssetTaskOrders() {
+	public Set<AssetTaskOrder> getAssetTaskOrders() {
 		return this.assetTaskOrders;
 	}
 
-	public void setAssetTaskOrders(List<AssetTaskOrder> assetTaskOrders) {
+	public void setAssetTaskOrders(Set<AssetTaskOrder> assetTaskOrders) {
 		this.assetTaskOrders = assetTaskOrders;
 	}
 
@@ -101,11 +101,11 @@ public class OrderTask implements IEntity<Integer> {
 		return assetTaskOrder;
 	}
 
-	public List<EmployeeTaskOrder> getEmployeeTaskOrders() {
+	public Set<EmployeeTaskOrder> getEmployeeTaskOrders() {
 		return this.employeeTaskOrders;
 	}
 
-	public void setEmployeeTaskOrders(List<EmployeeTaskOrder> employeeTaskOrders) {
+	public void setEmployeeTaskOrders(Set<EmployeeTaskOrder> employeeTaskOrders) {
 		this.employeeTaskOrders = employeeTaskOrders;
 	}
 

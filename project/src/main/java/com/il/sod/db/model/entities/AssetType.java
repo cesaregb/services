@@ -1,6 +1,6 @@
 package com.il.sod.db.model.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +30,7 @@ public class AssetType implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to Asset
 	@OneToMany(mappedBy="assetType", fetch=FetchType.EAGER)
-	private List<Asset> assets;
+	private Set<Asset> assets;
 
 	public AssetType() {
 	}
@@ -59,11 +59,11 @@ public class AssetType implements IEntity<Integer> {
 		this.name = name;
 	}
 
-	public List<Asset> getAssets() {
+	public Set<Asset> getAssets() {
 		return this.assets;
 	}
 
-	public void setAssets(List<Asset> assets) {
+	public void setAssets(Set<Asset> assets) {
 		this.assets = assets;
 	}
 

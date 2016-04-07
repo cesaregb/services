@@ -1,6 +1,6 @@
 package com.il.sod.db.model.entities;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +30,7 @@ public class ServiceCategory implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to ServiceType
 	@OneToMany(mappedBy="serviceCategory", fetch=FetchType.EAGER)
-	private List<ServiceType> serviceTypes;
+	private Set<ServiceType> serviceTypes;
 
 	public ServiceCategory() {
 	}
@@ -59,11 +59,11 @@ public class ServiceCategory implements IEntity<Integer> {
 		this.name = name;
 	}
 
-	public List<ServiceType> getServiceTypes() {
+	public Set<ServiceType> getServiceTypes() {
 		return this.serviceTypes;
 	}
 
-	public void setServiceTypes(List<ServiceType> serviceTypes) {
+	public void setServiceTypes(Set<ServiceType> serviceTypes) {
 		this.serviceTypes = serviceTypes;
 	}
 

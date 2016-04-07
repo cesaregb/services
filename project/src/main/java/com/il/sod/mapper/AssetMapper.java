@@ -1,6 +1,6 @@
 package com.il.sod.mapper;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.il.sod.db.model.entities.Asset;
@@ -21,7 +21,7 @@ public enum AssetMapper {
 	private AssetMapper() {
 		
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
-		converterFactory.registerConverter("assetListConverter", new AssetListConverter());
+		converterFactory.registerConverter("assetSetConverter", new AssetSetConverter());
 		
 		BaseMapper.MAPPER_FACTORY.classMap(AssetDTO.class, Asset.class)
 			.field("assetType", "assetType.idAssetType")
@@ -29,7 +29,7 @@ public enum AssetMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(AssetTypeDTO.class, AssetType.class)
-			.fieldMap("assets", "assets").converter("assetListConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("assets", "assets").converter("assetSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 		
@@ -53,18 +53,18 @@ public enum AssetMapper {
 	}
 }
 
-class AssetListConverter extends BidirectionalConverter<List<AssetDTO>, List<Asset>> {
+class AssetSetConverter extends BidirectionalConverter<Set<AssetDTO>, Set<Asset>> {
 	@Override
-	public List<AssetDTO> convertFrom(List<Asset> source, Type<List<AssetDTO>> arg1) {
+	public Set<AssetDTO> convertFrom(Set<Asset> source, Type<Set<AssetDTO>> arg1) {
 		return source.stream()
 				.map(item -> AssetMapper.INSTANCE.map(item))
-				.collect(Collectors.toList());
+				.collect(Collectors.toSet());
 	}
 
 	@Override
-	public List<Asset> convertTo(List<AssetDTO> source, Type<List<Asset>> arg1) {
+	public Set<Asset> convertTo(Set<AssetDTO> source, Type<Set<Asset>> arg1) {
 		return source.stream()
 				.map(item -> AssetMapper.INSTANCE.map(item))
-				.collect(Collectors.toList());
+				.collect(Collectors.toSet());
 	}
 }

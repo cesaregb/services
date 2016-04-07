@@ -1,14 +1,14 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.List;
+import java.util.Set;
 
 public class OrderTypeDTO {
 	private int idOrderType;
 	private String description;
 	private String name;
-	private List<Integer> orders;
-	private List<OrderTypeTaskDTO> orderTypeTasks;
-	private List<ServiceTypeDTO> serviceTypes;
+	private Set<Integer> orders;
+	private Set<OrderTypeTaskDTO> orderTypeTasks;
+	private Set<ServiceTypeDTO> serviceTypes;
 	public int getIdOrderType() {
 		return idOrderType;
 	}
@@ -27,22 +27,22 @@ public class OrderTypeDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<Integer> getOrders() {
+	public Set<Integer> getOrders() {
 		return orders;
 	}
-	public void setOrders(List<Integer> orders) {
+	public void setOrders(Set<Integer> orders) {
 		this.orders = orders;
 	}
-	public List<OrderTypeTaskDTO> getOrderTypeTasks() {
+	public Set<OrderTypeTaskDTO> getOrderTypeTasks() {
 		return orderTypeTasks;
 	}
-	public void setOrderTypeTasks(List<OrderTypeTaskDTO> orderTypeTasks) {
+	public void setOrderTypeTasks(Set<OrderTypeTaskDTO> orderTypeTasks) {
 		this.orderTypeTasks = orderTypeTasks;
 	}
-	public List<ServiceTypeDTO> getServiceTypes() {
+	public Set<ServiceTypeDTO> getServiceTypes() {
 		return serviceTypes;
 	}
-	public void setServiceTypes(List<ServiceTypeDTO> serviceTypes) {
+	public void setServiceTypes(Set<ServiceTypeDTO> serviceTypes) {
 		this.serviceTypes = serviceTypes;
 	}
 

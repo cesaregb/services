@@ -1,6 +1,6 @@
 package com.il.sod.mapper;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.il.sod.db.model.entities.Employee;
@@ -21,7 +21,7 @@ public enum EmployeeMapper {
 	private EmployeeMapper() {
 		
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
-		converterFactory.registerConverter("employeeListConverter", new EmployeeListConverter());
+		converterFactory.registerConverter("employeeSetConverter", new EmployeeSetConverter());
 		
 		BaseMapper.MAPPER_FACTORY.classMap(EmployeeDTO.class, Employee.class)
 			.field("employeeType", "employeeType.idEmployeeType")
@@ -29,7 +29,7 @@ public enum EmployeeMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(EmployeeTypeDTO.class, EmployeeType.class)
-			.fieldMap("employees", "employees").converter("employeeListConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("employees", "employees").converter("employeeSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 		
@@ -53,18 +53,18 @@ public enum EmployeeMapper {
 	}
 }
 
-class EmployeeListConverter extends BidirectionalConverter<List<EmployeeDTO>, List<Employee>> {
+class EmployeeSetConverter extends BidirectionalConverter<Set<EmployeeDTO>, Set<Employee>> {
 	@Override
-	public List<EmployeeDTO> convertFrom(List<Employee> source, Type<List<EmployeeDTO>> arg1) {
+	public Set<EmployeeDTO> convertFrom(Set<Employee> source, Type<Set<EmployeeDTO>> arg1) {
 		return source.stream()
 				.map(item -> EmployeeMapper.INSTANCE.map(item))
-				.collect(Collectors.toList());
+				.collect(Collectors.toSet());
 	}
 
 	@Override
-	public List<Employee> convertTo(List<EmployeeDTO> source, Type<List<Employee>> arg1) {
+	public Set<Employee> convertTo(Set<EmployeeDTO> source, Type<Set<Employee>> arg1) {
 		return source.stream()
 				.map(item -> EmployeeMapper.INSTANCE.map(item))
-				.collect(Collectors.toList());
+				.collect(Collectors.toSet());
 	}
 }

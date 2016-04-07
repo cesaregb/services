@@ -1,12 +1,12 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.List;
+import java.util.Set;
 
 public class ServiceTaskDTO {
 	private int idServiceTask;
 	private String comments;
-	private List<AssetTaskServiceDTO> assetTaskServices;
-	private List<EmployeeTaskServiceDTO> employeeTaskServices;
+	private Set<AssetTaskServiceDTO> assetTaskServices;
+	private Set<EmployeeTaskServiceDTO> employeeTaskServices;
 	private ServiceDTO service;
 	private TaskDTO task;
 	public int getIdServiceTask() {
@@ -21,16 +21,16 @@ public class ServiceTaskDTO {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-	public List<AssetTaskServiceDTO> getAssetTaskServices() {
+	public Set<AssetTaskServiceDTO> getAssetTaskServices() {
 		return assetTaskServices;
 	}
-	public void setAssetTaskServices(List<AssetTaskServiceDTO> assetTaskServices) {
+	public void setAssetTaskServices(Set<AssetTaskServiceDTO> assetTaskServices) {
 		this.assetTaskServices = assetTaskServices;
 	}
-	public List<EmployeeTaskServiceDTO> getEmployeeTaskServices() {
+	public Set<EmployeeTaskServiceDTO> getEmployeeTaskServices() {
 		return employeeTaskServices;
 	}
-	public void setEmployeeTaskServices(List<EmployeeTaskServiceDTO> employeeTaskServices) {
+	public void setEmployeeTaskServices(Set<EmployeeTaskServiceDTO> employeeTaskServices) {
 		this.employeeTaskServices = employeeTaskServices;
 	}
 	public ServiceDTO getService() {

@@ -7,7 +7,7 @@ public class SpecsValueDTO {
 	private int type;
 	private String value;
 	private Integer spec;
-	private double price; 
+	private double serviceIncrement; 
 	
 	public SpecsValueDTO() {
 	}
@@ -52,11 +52,12 @@ public class SpecsValueDTO {
 		this.idProductType = idProductType;
 	}
 
-	public double getPrice() {
-		return price;
+	public double getServiceIncrement() {
+		return serviceIncrement;
 	}
 
-	public void setPrice(double price) {
-		this.price = price;
+	public void setServiceIncrement(double serviceIncrement) {
+		this.serviceIncrement = serviceIncrement;
 	}
+
 }

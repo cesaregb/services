@@ -1,12 +1,12 @@
 package com.il.sod.rest.dto.web;
 
-import java.util.List;
+import java.util.Set;
 
 public class WServiceCategoryDTO {
 	private int idServiceCategory;
 	private String description;
 	private String name;
-	private List<WServiceTypeDTO> serviceTypes;
+	private Set<WServiceTypeDTO> serviceTypes;
 
 	public WServiceCategoryDTO() {
 	}
@@ -35,11 +35,11 @@ public class WServiceCategoryDTO {
 		this.name = name;
 	}
 
-	public List<WServiceTypeDTO> getServiceTypes() {
+	public Set<WServiceTypeDTO> getServiceTypes() {
 		return this.serviceTypes;
 	}
 
-	public void setServiceTypes(List<WServiceTypeDTO> serviceTypes) {
+	public void setServiceTypes(Set<WServiceTypeDTO> serviceTypes) {
 		this.serviceTypes = serviceTypes;
 	}
 }
