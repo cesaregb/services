@@ -33,7 +33,7 @@ public class UnrecognizedPropertyExceptionMapper extends GeneralMapper implement
 		String errorMessage = buildErrorMessage(request, error);
 		LOGGER.error(errorMessage);
 		return Response.
-				status(Response.Status.BAD_REQUEST).
+				status(Response.Status.NO_CONTENT).
 				entity(GeneralResponseMessage.getInstance().error().setMessage("Server error, we are working on this sorry!")).
 				type(MediaType.APPLICATION_JSON).
 				build();

@@ -3,8 +3,8 @@ package com.il.sod.rest.dto.db;
 public class EmployeeTaskOrderDTO {
 	private int idEmployeeTaskOrder;
 	private String comments;
-	private Integer employee;
-	private Integer orderTask;
+	private int idEmployee;
+	private int idOrderTask;
 	
 	public int getIdEmployeeTaskOrder() {
 		return idEmployeeTaskOrder;
@@ -18,17 +18,17 @@ public class EmployeeTaskOrderDTO {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-	public Integer getEmployee() {
-		return employee;
+	public int getIdEmployee() {
+		return idEmployee;
 	}
-	public void setEmployee(Integer employee) {
-		this.employee = employee;
+	public void setIdEmployee(int idEmployee) {
+		this.idEmployee = idEmployee;
 	}
-	public Integer getOrderTask() {
-		return orderTask;
+	public int getIdOrderTask() {
+		return idOrderTask;
 	}
-	public void setOrderTask(Integer orderTask) {
-		this.orderTask = orderTask;
+	public void setIdOrderTask(int idOrderTask) {
+		this.idOrderTask = idOrderTask;
 	}
 
 }

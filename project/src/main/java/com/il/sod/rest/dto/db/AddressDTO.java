@@ -1,7 +1,5 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.il.sod.rest.dto.GenericDBDTO;
 
@@ -13,8 +11,7 @@ public class AddressDTO implements GenericDBDTO{
 	private String country;
 	private String zipcode;
 	private String state;
-	private int client;
-	private Set<OrderPickNDeliverDTO> orderPickNdelivers;
+	private int idClient;
 	
 	public int getIdAddress() {
 		return idAddress;
@@ -56,7 +53,7 @@ public class AddressDTO implements GenericDBDTO{
 	@Override
 	@JsonIgnore
 	public Integer getParentId() {
-		return this.client;
+		return this.idClient;
 	}
 	public String getZipcode() {
 		return zipcode;
@@ -64,16 +61,10 @@ public class AddressDTO implements GenericDBDTO{
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
 	}
-	public Set<OrderPickNDeliverDTO> getOrderPickNdelivers() {
-		return orderPickNdelivers;
+	public int getIdClient() {
+		return idClient;
 	}
-	public void setOrderPickNdelivers(Set<OrderPickNDeliverDTO> orderPickNdelivers) {
-		this.orderPickNdelivers = orderPickNdelivers;
-	}
-	public int getClient() {
-		return client;
-	}
-	public void setClient(int client) {
-		this.client = client;
+	public void setIdClient(int idClient) {
+		this.idClient = idClient;
 	}
 }

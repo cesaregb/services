@@ -24,7 +24,7 @@ public enum AssetMapper {
 		converterFactory.registerConverter("assetSetConverter", new AssetSetConverter());
 		
 		BaseMapper.MAPPER_FACTORY.classMap(AssetDTO.class, Asset.class)
-			.field("assetType", "assetType.idAssetType")
+			.field("idAssetType", "assetType.idAssetType")
 			.byDefault()
 			.register();
 		

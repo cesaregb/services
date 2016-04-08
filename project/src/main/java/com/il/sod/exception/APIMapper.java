@@ -48,19 +48,19 @@ public class APIMapper extends GeneralMapper implements ExceptionMapper<Exceptio
 					build();
 		}else if (ex instanceof JsonMappingException) {
         	return Response.
-					status(Response.Status.BAD_REQUEST).
+					status(Response.Status.NO_CONTENT).
 					entity(GeneralResponseMessage.getInstance().error().setMessage("Error parsing json")).
 					type(MediaType.APPLICATION_JSON).
 					build();
         }else if(ex instanceof JsonParseException){
         	return Response.
-					status(Response.Status.BAD_REQUEST).
+					status(Response.Status.NO_CONTENT).
 					entity(GeneralResponseMessage.getInstance().error().setMessage("Error parsing json")).
 					type(MediaType.APPLICATION_JSON).
 					build();
         }else if(ex instanceof MessageBodyProviderNotFoundException){
         	return Response.
-        			status(Response.Status.BAD_REQUEST).
+        			status(Response.Status.NO_CONTENT).
         			entity(GeneralResponseMessage.getInstance().error().setMessage("Error parsing json")).
         			type(MediaType.APPLICATION_JSON).
         			build();
@@ -72,7 +72,7 @@ public class APIMapper extends GeneralMapper implements ExceptionMapper<Exceptio
         			build();
         }else if (ex instanceof UnrecognizedPropertyException) {
         	return Response.
-        			status(Response.Status.BAD_REQUEST).
+        			status(Response.Status.NO_CONTENT).
         			entity(GeneralResponseMessage.getInstance().error().setMessage("Error parsing json")).
         			type(MediaType.APPLICATION_JSON).
         			build();

@@ -5,7 +5,7 @@ public class AssetDTO {
 	private String description;
 	private String name;
 	private int status;
-	private Integer assetType;
+	private int idAssetType;
 	public int getIdAsset() {
 		return idAsset;
 	}
@@ -30,10 +30,10 @@ public class AssetDTO {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public Integer getAssetType() {
-		return assetType;
+	public int getIdAssetType() {
+		return idAssetType;
 	}
-	public void setAssetType(Integer assetType) {
-		this.assetType = assetType;
+	public void setIdAssetType(int idAssetType) {
+		this.idAssetType = idAssetType;
 	}
 }

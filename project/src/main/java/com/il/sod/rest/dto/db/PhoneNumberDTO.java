@@ -7,7 +7,7 @@ public class PhoneNumberDTO implements GenericDBDTO{
 	private int idPhoneNumber;
 	private String number;
 	private int prefered;
-	private int client;
+	private int idClient;
 	
 	public int getIdPhoneNumber() {
 		return idPhoneNumber;
@@ -25,7 +25,7 @@ public class PhoneNumberDTO implements GenericDBDTO{
 	@Override
 	@JsonIgnore
 	public Integer getParentId() {
-		return client;
+		return idClient;
 	}
 	public int getPrefered() {
 		return prefered;
@@ -33,11 +33,11 @@ public class PhoneNumberDTO implements GenericDBDTO{
 	public void setPrefered(int prefered) {
 		this.prefered = prefered;
 	}
-	public int getClient() {
-		return client;
+	public int getIdClient() {
+		return idClient;
 	}
-	public void setClient(int client) {
-		this.client = client;
+	public void setIdClient(int idClient) {
+		this.idClient = idClient;
 	}
 	
 }

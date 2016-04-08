@@ -78,7 +78,7 @@ public class Health extends AbstractService {
 	@ApiOperation(value = "Validate API + MODEL Healt")
 	public GeneralResponseMessage throwException() throws SODAPIException{	
 		LOGGER.info("Testing throwing exception!");
-		throw new SODAPIException(Response.Status.BAD_REQUEST, "Expected Exception!");
+		throw new SODAPIException(Response.Status.NO_CONTENT, "Expected Exception!");
 	}
 	
 	@RolesAllowed("ADMIN")

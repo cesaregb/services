@@ -115,7 +115,7 @@ public class EmployeeService extends AbstractServiceMutations {
 	public Response getEmployeeById(@PathParam("idEmployee") String idEmployee) throws SODAPIException {
 		Employee employee = this.getEntity(employeeRepository, Integer.valueOf(idEmployee));
 		if (employee == null ) {
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "No employee found");
+			throw new SODAPIException(Response.Status.NO_CONTENT, "No employee found");
 		}
 		EmployeeDTO dto = EmployeeMapper.INSTANCE.map(employee);
 		return castEntityAsResponse(dto);
@@ -135,7 +135,7 @@ public class EmployeeService extends AbstractServiceMutations {
 			Employee Employee = Employees.get(0);
 			dto = EmployeeMapper.INSTANCE.map(Employee);
 		}else{
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "No employee found");
+			throw new SODAPIException(Response.Status.NO_CONTENT, "No employee found");
 		}
 		
 		return castEntityAsResponse(dto);

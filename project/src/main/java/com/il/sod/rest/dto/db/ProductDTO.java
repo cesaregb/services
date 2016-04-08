@@ -7,7 +7,7 @@ public class ProductDTO {
 	private double price;
 	private double serviceIncrement;
 	private int status;
-	private Integer productType;
+	private int idProductType;
 	
 	public int getIdProduct() {
 		return idProduct;
@@ -33,12 +33,6 @@ public class ProductDTO {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public Integer getProductType() {
-		return productType;
-	}
-	public void setProductType(Integer productType) {
-		this.productType = productType;
-	}
 	public double getServiceIncrement() {
 		return serviceIncrement;
 	}
@@ -50,6 +44,12 @@ public class ProductDTO {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public int getIdProductType() {
+		return idProductType;
+	}
+	public void setIdProductType(int idProductType) {
+		this.idProductType = idProductType;
 	}
 
 }
