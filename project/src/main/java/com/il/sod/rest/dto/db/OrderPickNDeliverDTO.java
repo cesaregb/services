@@ -6,16 +6,11 @@ import java.util.Date;
 public class OrderPickNDeliverDTO {
 
 	private int idOrderPickNDeliver;
-
 	private String comments;
-
 	private Date time;
-
 	private int typeAction;
-
-	private int address;
-
-	private int order;
+	private int idAddress;
+	private int idOrder;
 
 	public OrderPickNDeliverDTO() {
 	}
@@ -52,20 +47,19 @@ public class OrderPickNDeliverDTO {
 		this.typeAction = typeAction;
 	}
 
-	public int getAddress() {
-		return address;
+	public int getIdAddress() {
+		return idAddress;
 	}
 
-	public void setAddress(int address) {
-		this.address = address;
+	public void setIdAddress(int idAddress) {
+		this.idAddress = idAddress;
 	}
 
-	public int getOrder() {
-		return order;
+	public int getIdOrder() {
+		return idOrder;
 	}
 
-	public void setOrder(int order) {
-		this.order = order;
+	public void setIdOrder(int idOrder) {
+		this.idOrder = idOrder;
 	}
-
 }

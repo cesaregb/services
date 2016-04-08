@@ -56,29 +56,33 @@ public enum OrderMapper {
 				.fieldMap("orderPickNdelivers", "orderPickNdelivers").converter("orderPickNDeliverSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("paymentInfos", "paymentInfos").converter("paymentInfoSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("services", "services").converter("serviceSet2IntConverter").mapNulls(true).mapNullsInReverse(true).add()
-				.field("orderType", "orderType.idOrderType")
+				.field("idOrderType", "orderType.idOrderType")
 				.byDefault().register();
 
 		BaseMapper.MAPPER_FACTORY.classMap(OrderTaskDTO.class, OrderTask.class)
 				.fieldMap("assetTaskOrders", "assetTaskOrders").converter("assetTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("employeeTaskOrders", "employeeTaskOrders").converter("employeeTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-				.field("order", "order.idOrder").field("task", "task.idTask").byDefault().register();
+				.field("idOrder", "order.idOrder")
+				.field("idTask", "task.idTask").byDefault().register();
 
 		BaseMapper.MAPPER_FACTORY.classMap(AssetTaskOrderDTO.class, AssetTaskOrder.class)
-				.field("asset", "asset.idAsset").field("orderTask", "orderTask.idOrderTask")
+				.field("idAsset", "asset.idAsset")
+				.field("idOrderTask", "orderTask.idOrderTask")
 				.byDefault().register();
 
 		BaseMapper.MAPPER_FACTORY.classMap(EmployeeTaskOrderDTO.class, EmployeeTaskOrder.class)
-				.field("orderTask", "orderTask.idOrderTask").field("employee", "employee.idEmployee")
+				.field("idOrderTask", "orderTask.idOrderTask")
+				.field("idEmployee", "employee.idEmployee")
 				.byDefault()
 				.register();
 
 		BaseMapper.MAPPER_FACTORY.classMap(OrderPickNDeliverDTO.class, OrderPickNDeliver.class)
-				.field("order", "order.idOrder").field("address", "address.idAddress")
+				.field("idOrder", "order.idOrder")
+				.field("idAddress", "address.idAddress")
 				.byDefault().register();
 
 		BaseMapper.MAPPER_FACTORY.classMap(PaymentInfoDTO.class, PaymentInfo.class)
-				.field("order", "order.idOrder")
+				.field("idOrder", "order.idOrder")
 				.byDefault().register();
 
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();

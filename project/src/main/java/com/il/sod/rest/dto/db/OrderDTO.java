@@ -11,7 +11,7 @@ public class OrderDTO {
 	private double price;
 	private int status;
 	private ClientDTO client;
-	private Integer orderType;
+	private int idOrderType;
 	private Set<OrderTaskDTO> orderTasks;
 	private Set<OrderPickNDeliverDTO> orderPickNdelivers;
 	private Set<PaymentInfoDTO> paymentInfos;
@@ -70,12 +70,6 @@ public class OrderDTO {
 	public void setOrderTasks(Set<OrderTaskDTO> orderTasks) {
 		this.orderTasks = orderTasks;
 	}
-	public Integer getOrderType() {
-		return orderType;
-	}
-	public void setOrderType(Integer orderType) {
-		this.orderType = orderType;
-	}
 	public Date getCreated() {
 		return created;
 	}
@@ -123,5 +117,11 @@ public class OrderDTO {
 	}
 	public void setServices(Set<Integer> services) {
 		this.services = services;
+	}
+	public int getIdOrderType() {
+		return idOrderType;
+	}
+	public void setIdOrderType(int idOrderType) {
+		this.idOrderType = idOrderType;
 	}
 }

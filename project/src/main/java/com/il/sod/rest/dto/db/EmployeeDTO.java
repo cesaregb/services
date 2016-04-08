@@ -9,7 +9,7 @@ public class EmployeeDTO {
 	private String password;
 	private int status;
 	private String username;
-	private Integer employeeType;
+	private int idEmployeeType;
 	private String email;
 	
 	private Date created;
@@ -51,12 +51,6 @@ public class EmployeeDTO {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public Integer getEmployeeType() {
-		return employeeType;
-	}
-	public void setEmployeeType(Integer employeeType) {
-		this.employeeType = employeeType;
-	}
 	public Date getCreated() {
 		return created;
 	}
@@ -74,5 +68,11 @@ public class EmployeeDTO {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public int getIdEmployeeType() {
+		return idEmployeeType;
+	}
+	public void setIdEmployeeType(int idEmployeeType) {
+		this.idEmployeeType = idEmployeeType;
 	}
 }

@@ -28,7 +28,7 @@ public enum SpecsMapper {
 			.register();
 
 		BaseMapper.MAPPER_FACTORY.classMap(SpecsValueDTO.class, SpecsValue.class)
-			.field("spec", "spec.idSpecs")
+			.field("idSpecs", "spec.idSpecs")
 			.byDefault()
 			.register();
 		

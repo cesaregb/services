@@ -1,7 +1,6 @@
 package com.il.sod.mapper;
 
 import java.util.Set;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.il.sod.db.model.entities.Address;
@@ -35,18 +34,17 @@ public enum ClientMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(AddressDTO.class, Address.class)
-			.field("client", "client.idClient")
-			.exclude("orderPickNdelivers")
+			.field("idClient", "client.idClient")
 			.byDefault()
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(PhoneNumberDTO.class, PhoneNumber.class)
-			.field("client", "client.idClient")
+			.field("idClient", "client.idClient")
 			.byDefault()
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ClientPaymentInfoDTO.class, ClientPaymentInfo.class)
-			.field("client", "client.idClient")
+			.field("idClient", "client.idClient")
 			.byDefault()
 			.register();
 		

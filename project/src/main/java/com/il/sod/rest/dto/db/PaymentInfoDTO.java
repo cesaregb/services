@@ -3,13 +3,9 @@ package com.il.sod.rest.dto.db;
 public class PaymentInfoDTO {
 
 	private int idPaymentInfo;
-
 	private String transactionInfo;
-
 	private int type;
-
-	private Integer order;
-
+	private int idOrder;
 	public PaymentInfoDTO() {
 	}
 
@@ -37,11 +33,12 @@ public class PaymentInfoDTO {
 		this.type = type;
 	}
 
-	public Integer getOrder() {
-		return order;
+	public int getIdOrder() {
+		return idOrder;
 	}
 
-	public void setOrder(Integer order) {
-		this.order = order;
+	public void setIdOrder(int idOrder) {
+		this.idOrder = idOrder;
 	}
+
 }

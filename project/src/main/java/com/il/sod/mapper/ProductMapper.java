@@ -24,7 +24,7 @@ public enum ProductMapper {
 		converterFactory.registerConverter("productSetConverter", new ProductSetConverter());
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ProductDTO.class, Product.class)
-			.field("productTypeId", "productType.idProductType")
+			.field("idProductType", "productType.idProductType")
 			.byDefault()
 			.register();
 		

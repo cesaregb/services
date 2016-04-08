@@ -6,7 +6,7 @@ public class SpecsValueDTO {
 	private int idProductType;
 	private int type;
 	private String value;
-	private Integer spec;
+	private int idSpecs;
 	private double serviceIncrement; 
 	
 	public SpecsValueDTO() {
@@ -36,14 +36,6 @@ public class SpecsValueDTO {
 		this.value = value;
 	}
 
-	public Integer getSpec() {
-		return spec;
-	}
-
-	public void setSpec(Integer spec) {
-		this.spec = spec;
-	}
-
 	public int getIdProductType() {
 		return idProductType;
 	}
@@ -58,6 +50,14 @@ public class SpecsValueDTO {
 
 	public void setServiceIncrement(double serviceIncrement) {
 		this.serviceIncrement = serviceIncrement;
+	}
+
+	public int getIdSpecs() {
+		return idSpecs;
+	}
+
+	public void setIdSpecs(int idSpecs) {
+		this.idSpecs = idSpecs;
 	}
 
 }
