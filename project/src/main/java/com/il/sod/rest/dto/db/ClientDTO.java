@@ -11,10 +11,6 @@ public class ClientDTO {
 	private String password;
 	private String twitter;
 	private Set<Integer> orders;
-	// key value  
-	// key = id 
-	// value = map {"name"}
-//	private Set<AccessKeyDTO> accessKeys;
 	private Set<AddressDTO> addresses;
 	private Set<PhoneNumberDTO> phoneNumbers;
 	
