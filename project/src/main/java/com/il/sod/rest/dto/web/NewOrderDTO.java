@@ -14,6 +14,7 @@ public class NewOrderDTO {
 	private Date deliveryDate;
 	private String deliveryComments;
 	private List<InpServiceDTO> services;
+	private WPaymentInfoDTO paymentInfo; 
 	
 	public int getIdClient() {
 		return idClient;
@@ -74,5 +75,11 @@ public class NewOrderDTO {
 	}
 	public void setServices(List<InpServiceDTO> services) {
 		this.services = services;
+	}
+	public WPaymentInfoDTO getPaymentInfo() {
+		return paymentInfo;
+	}
+	public void setPaymentInfo(WPaymentInfoDTO paymentInfo) {
+		this.paymentInfo = paymentInfo;
 	}
 }

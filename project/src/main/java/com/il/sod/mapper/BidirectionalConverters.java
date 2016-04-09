@@ -1,7 +1,6 @@
 package com.il.sod.mapper;
 
 import java.util.Set;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.il.sod.db.model.entities.Address;
@@ -134,12 +133,12 @@ class OrderPickNDeliverSetConverter
 class PaymentInfoSetConverter extends BidirectionalConverter<Set<PaymentInfo>, Set<PaymentInfoDTO>> {
 	@Override
 	public Set<PaymentInfo> convertFrom(Set<PaymentInfoDTO> source, Type<Set<PaymentInfo>> arg1) {
-		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 
 	@Override
 	public Set<PaymentInfoDTO> convertTo(Set<PaymentInfo> source, Type<Set<PaymentInfoDTO>> arg1) {
-		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }
 
@@ -290,5 +289,17 @@ class ClientPaymentInfoConverter extends BidirectionalConverter<Set<ClientPaymen
 	@Override
 	public Set<ClientPaymentInfoDTO> convertTo(Set<ClientPaymentInfo> source, Type<Set<ClientPaymentInfoDTO>> arg1) {
 		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+}
+
+class ClientPaymentInfoSetConverter extends BidirectionalConverter<Set<ClientPaymentInfo>, Set<ClientPaymentInfoDTO>> {
+	@Override
+	public Set<ClientPaymentInfo> convertFrom(Set<ClientPaymentInfoDTO> source, Type<Set<ClientPaymentInfo>> arg1) {
+		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<ClientPaymentInfoDTO> convertTo(Set<ClientPaymentInfo> source, Type<Set<ClientPaymentInfoDTO>> arg1) {
+		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }
