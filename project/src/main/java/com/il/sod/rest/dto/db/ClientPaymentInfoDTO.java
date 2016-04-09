@@ -10,11 +10,11 @@ public class ClientPaymentInfoDTO {
 	public ClientPaymentInfoDTO() {
 	}
 
-	public int getidClientPaymentInfo() {
+	public int getIdClientPaymentInfo() {
 		return this.idClientPaymentInfo;
 	}
 
-	public void setidClientPaymentInfo(int idClientPaymentInfo) {
+	public void setIdClientPaymentInfo(int idClientPaymentInfo) {
 		this.idClientPaymentInfo = idClientPaymentInfo;
 	}
 
