@@ -25,11 +25,13 @@ public enum ClientMapper {
 		converterFactory.registerConverter("orderSetConverter", new OrderSetConverter());
 		converterFactory.registerConverter("addressDTOConverter", new AddressDTOConverter());
 		converterFactory.registerConverter("phoneNumberDTOConverter", new PhoneNumberDTOConverter());
+		converterFactory.registerConverter("clientPaymentInfoSetConverter", new ClientPaymentInfoSetConverter());
 
 		BaseMapper.MAPPER_FACTORY.classMap(ClientDTO.class, Client.class)
 			.fieldMap("orders", "orders").converter("orderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("addresses", "addresses").converter("addressDTOConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("phoneNumbers", "phoneNumbers").converter("phoneNumberDTOConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("clientPaymentInfos", "clientPaymentInfos").converter("clientPaymentInfoSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 		

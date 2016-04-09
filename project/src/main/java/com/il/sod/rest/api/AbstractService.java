@@ -35,6 +35,7 @@ import ma.glasnost.orika.MapperFacade;
 		@Tag(name = "task", description = "Task used in orders or services"),
 		@Tag(name = "order", description = "Order Layer Services"),
 		@Tag(name = "service", description = "Service Layer Services"),
+		@Tag(name = "payment", description = "Payment Services Client and Orders"),
 		@Tag(name = "health", description = "Validate API + MODEL Healt") })
 @Path("/v1")
 public abstract class AbstractService{

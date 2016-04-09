@@ -21,6 +21,7 @@ import com.il.sod.config.Constants;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.entities.Order;
 import com.il.sod.db.model.entities.OrderType;
+import com.il.sod.db.model.entities.PaymentInfo;
 import com.il.sod.db.model.entities.Service;
 import com.il.sod.db.model.entities.ServiceCategory;
 import com.il.sod.db.model.entities.ServiceSpec;
@@ -138,6 +139,14 @@ public class AppOrdersService extends AbstractServiceMutations {
 		// get order type 
 		OrderType ot = this.getEntity(orderTypeRepository, orderType);
 		orderEntity.setOrderType(ot);
+		
+		// adding payment info in case of existing 
+		if (orderInputDto.getPaymentInfo() != null && orderInputDto.getPaymentInfo().getTransactionInfo() != null ){
+			PaymentInfo pi = new PaymentInfo();
+			pi.setTransactionInfo(orderInputDto.getPaymentInfo().getTransactionInfo());
+			pi.setType(orderInputDto.getPaymentInfo().getType());
+			orderEntity.addPaymentInfo(pi);
+		}
 		
 		for (InpServiceDTO servInput : orderInputDto.getServices()){
 			Service service = new Service();

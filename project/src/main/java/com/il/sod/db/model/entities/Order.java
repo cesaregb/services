@@ -235,6 +235,9 @@ public class Order implements IEntity<Integer> {
 	}
 
 	public PaymentInfo addPaymentInfo(PaymentInfo paymentInfo) {
+		if (paymentInfos == null){
+			paymentInfos = new HashSet<>();
+		}
 		getPaymentInfos().add(paymentInfo);
 		paymentInfo.setOrder(this);
 

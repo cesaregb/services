@@ -7,7 +7,6 @@ import com.il.sod.db.model.entities.OrderPickNDeliver;
 import com.il.sod.db.model.entities.OrderTask;
 import com.il.sod.db.model.entities.OrderType;
 import com.il.sod.db.model.entities.OrderTypeTask;
-import com.il.sod.db.model.entities.PaymentInfo;
 import com.il.sod.rest.dto.db.AssetTaskOrderDTO;
 import com.il.sod.rest.dto.db.EmployeeTaskOrderDTO;
 import com.il.sod.rest.dto.db.OrderDTO;
@@ -15,7 +14,6 @@ import com.il.sod.rest.dto.db.OrderPickNDeliverDTO;
 import com.il.sod.rest.dto.db.OrderTaskDTO;
 import com.il.sod.rest.dto.db.OrderTypeDTO;
 import com.il.sod.rest.dto.db.OrderTypeTaskDTO;
-import com.il.sod.rest.dto.db.PaymentInfoDTO;
 
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.converter.ConverterFactory;
@@ -81,10 +79,6 @@ public enum OrderMapper {
 				.field("idAddress", "address.idAddress")
 				.byDefault().register();
 
-		BaseMapper.MAPPER_FACTORY.classMap(PaymentInfoDTO.class, PaymentInfo.class)
-				.field("idOrder", "order.idOrder")
-				.byDefault().register();
-
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
 	}
 
@@ -143,13 +137,4 @@ public enum OrderMapper {
 	public OrderPickNDeliverDTO map(OrderPickNDeliver entity) {
 		return this.mapperFacade.map(entity, OrderPickNDeliverDTO.class);
 	}
-
-	public PaymentInfo map(PaymentInfoDTO dto) {
-		return this.mapperFacade.map(dto, PaymentInfo.class);
-	}
-
-	public PaymentInfoDTO map(PaymentInfo entity) {
-		return this.mapperFacade.map(entity, PaymentInfoDTO.class);
-	}
-
 }
