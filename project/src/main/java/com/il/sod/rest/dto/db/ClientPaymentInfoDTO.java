@@ -2,7 +2,7 @@ package com.il.sod.rest.dto.db;
 
 public class ClientPaymentInfoDTO {
 
-	private int idClientDTOPaymentInfo;
+	private int idClientPaymentInfo;
 	private String token;
 	private int type;
 	private int idClient;
@@ -10,12 +10,12 @@ public class ClientPaymentInfoDTO {
 	public ClientPaymentInfoDTO() {
 	}
 
-	public int getIdClientDTOPaymentInfo() {
-		return this.idClientDTOPaymentInfo;
+	public int getidClientPaymentInfo() {
+		return this.idClientPaymentInfo;
 	}
 
-	public void setIdClientDTOPaymentInfo(int idClientDTOPaymentInfo) {
-		this.idClientDTOPaymentInfo = idClientDTOPaymentInfo;
+	public void setidClientPaymentInfo(int idClientPaymentInfo) {
+		this.idClientPaymentInfo = idClientPaymentInfo;
 	}
 
 	public String getToken() {
