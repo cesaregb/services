@@ -17,7 +17,7 @@ public class ClientPaymentInfoDTO implements GenericDBDTO {
 		return this.idClientPaymentInfo;
 	}
 
-	public void setidClientPaymentInfo(int idClientPaymentInfo) {
+	public void setIdClientPaymentInfo(int idClientPaymentInfo) {
 		this.idClientPaymentInfo = idClientPaymentInfo;
 	}
 
