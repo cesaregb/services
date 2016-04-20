@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
-import com.il.sod.config.jersey.AuthenticationFilter;
 import com.il.sod.config.jersey.CORSResponseFilter;
 import com.il.sod.config.jersey.CustomLoggingFilter;
 import com.il.sod.config.jersey.JacksonObjectMapperProvider;
@@ -19,9 +18,11 @@ import io.swagger.jaxrs.config.BeanConfig;
 
 @ApplicationPath("/api") 
 public class ApplicationConfig extends ResourceConfig {
+	private static final String SERVICES_PACKAGE = "com.il.sod.rest.api";
+
 	final static Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
 	
-	public static final String PARAM_API_HOST = "swagger.config.api.host"; // localhost
+	public static final String PARAM_API_HOST = "rest.api.host"; // localhost
 	public static final String PARAM_API_BASEPATH = "rest.api.basepath"; // /api
 	public static final String PARAM_VERSION = "rest.api.version";
 	public static final String PARAM_PORT = "rest.api.port"; // 8080
@@ -35,7 +36,7 @@ public class ApplicationConfig extends ResourceConfig {
         register(JacksonJaxbJsonProvider.class);
         packages("io.swagger.jaxrs.listing,"
         		+ "com.il.sod.exception,"
-        		+ "com.il.sod.rest.api");
+        		+ SERVICES_PACKAGE);
     }
 	
 	/* Swagger configuratoin */
@@ -52,7 +53,7 @@ public class ApplicationConfig extends ResourceConfig {
 		beanConfig.setVersion(PropertyHandler.getInstance().getValue(PARAM_VERSION));
 		beanConfig.setTitle("SOD Services");
 		beanConfig.setDescription("Information");
-		beanConfig.setResourcePackage("com.il.sod.rest.api");
+		beanConfig.setResourcePackage(SERVICES_PACKAGE);
 		beanConfig.setScan(true);
 		
 //		Json.mapper().setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);

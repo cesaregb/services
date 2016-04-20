@@ -63,7 +63,27 @@ public enum ClientMapper {
 	}
 
 	public ClientDTO map(Client entity) {
-		return this.mapperFacade.map(entity, ClientDTO.class);
+		ClientDTO result = this.mapperFacade.map(entity, ClientDTO.class);
+		
+		try{
+			PhoneNumberDTO defPhone = null;
+			defPhone = result.getPhoneNumbers().stream().filter(pn->pn.isPrefered()).collect(Collectors.toList()).get(0);
+			result.setDefaultPhone(defPhone.getNumber());
+		}catch(Exception e){ /* do nothing just assign null*/ }
+		
+		try{
+			AddressDTO defAddress = null;
+			defAddress = result.getAddresses().stream().filter(pn->pn.isPrefered()).collect(Collectors.toList()).get(0);
+			result.setDefaultAddress(defAddress.toString());
+		}catch(Exception e){ /* do nothing just assign null*/ }
+		
+		try{
+			ClientPaymentInfoDTO defPayment = null;
+			defPayment = result.getClientPaymentInfos().stream().filter(pn->pn.isPrefered()).collect(Collectors.toList()).get(0);
+			result.setDefaultPayment(defPayment.toString());
+		}catch(Exception e){ /* do nothing just assign null*/ }
+		
+		return result;
 	}
 	
 	public Address map(AddressDTO dto) {

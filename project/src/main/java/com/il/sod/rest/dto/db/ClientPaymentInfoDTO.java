@@ -1,16 +1,19 @@
 package com.il.sod.rest.dto.db;
 
-public class ClientPaymentInfoDTO {
+import com.il.sod.rest.dto.GenericDBDTO;
+
+public class ClientPaymentInfoDTO implements GenericDBDTO {
 
 	private int idClientPaymentInfo;
 	private String token;
 	private int type;
 	private int idClient;
+	private boolean prefered;
 
 	public ClientPaymentInfoDTO() {
 	}
 
-	public int getidClientPaymentInfo() {
+	public int getIdClientPaymentInfo() {
 		return this.idClientPaymentInfo;
 	}
 
@@ -40,5 +43,18 @@ public class ClientPaymentInfoDTO {
 
 	public void setIdClient(int idClient) {
 		this.idClient = idClient;
+	}
+
+	public boolean isPrefered() {
+		return prefered;
+	}
+
+	public void setPrefered(boolean prefered) {
+		this.prefered = prefered;
+	}
+
+	@Override
+	public Integer getParentId() {
+		return this.idClient;
 	}
 }

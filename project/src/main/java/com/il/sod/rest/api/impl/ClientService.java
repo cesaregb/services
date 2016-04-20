@@ -24,7 +24,6 @@ import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ClientMapper;
-import com.il.sod.rest.api.AbstractService;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ClientDTO;
@@ -40,7 +39,7 @@ import io.swagger.annotations.ApiResponses;
 @Produces(MediaType.APPLICATION_JSON)
 @Api(value = "clients", tags = { "clients" })
 public class ClientService extends AbstractServiceMutations {
-	final static Logger LOGGER = LoggerFactory.getLogger(AbstractService.class);
+	final static Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 
 	@Autowired
 	private ClientRepository clientRepository;
@@ -66,35 +65,47 @@ public class ClientService extends AbstractServiceMutations {
 	}
 
 	@PUT
+	@Path("{clientId}")
 	@ApiOperation(value = "Update Client", response = ClientDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateClient(ClientDTO dto) throws SODAPIException {
-		Client entity = ClientMapper.INSTANCE.map(dto);
-		if (entity.getIdClient() == 0) {
-			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().error().setMessage("Client id cannot be null"),
-					Response.Status.NO_CONTENT);
+	public Response updateClient(@PathParam("clientId") String clientId, ClientDTO dto) throws SODAPIException {
+		
+		System.out.println("******************");
+		System.out.println("dto: " + this.castEntityAsString(dto));
+		System.out.println("******************");
+		
+		if (dto.getIdClient() != Integer.valueOf(clientId) || dto.getIdClient() == 0){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client id should match with object and should be different than 0 ");
 		}
+		
+		Client entity = clientRepository.findOne(Integer.valueOf(clientId));
+		entity = ClientMapper.INSTANCE.map(dto, entity);
+		
+		System.out.println("******************");
+		System.out.println("entity: " + this.castEntityAsString(entity));
+		System.out.println("******************");
 		assignDependencyToChilds(entity);
 		this.updateEntity(clientRepository, entity);
 		dto = ClientMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
+	@Path("{clientId}")
 	@ApiOperation(value = "Delete Client", response = GeneralResponseMessage.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteClient(ClientDTO dto) throws SODAPIException {
-		Client entity = ClientMapper.INSTANCE.map(dto);
-		if (entity.getIdClient() == 0) {
-			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().error().setMessage("Client id cannot be null"),
-					Response.Status.NO_CONTENT);
+	public Response deleteClient(@PathParam("clientId") String clientId, ClientDTO dto) throws SODAPIException {
+		
+		if (dto.getIdClient() != Integer.valueOf(clientId) || dto.getIdClient() == 0){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client id should match with object and should be different than 0 ");
 		}
+		Client entity = clientRepository.findOne(Integer.valueOf(clientId));
+		entity = ClientMapper.INSTANCE.map(dto, entity);
+		
 		assignDependencyToChilds(entity);
 		this.deleteEntity(clientRepository, entity.getIdClient());
 		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Client deleted"),
@@ -162,5 +173,7 @@ public class ClientService extends AbstractServiceMutations {
 			entity.getPhoneNumbers().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
 		if (entity.getOrders() != null)
 			entity.getOrders().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
+		if (entity.getClientPaymentInfos() != null)
+			entity.getClientPaymentInfos().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
 	}
 }

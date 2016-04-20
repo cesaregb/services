@@ -38,6 +38,8 @@ public class Address implements IEntity<Integer> {
 	private String state;
 	
 	private String zipcode;
+	
+	private boolean prefered;
 
 	//bi-directional many-to-one association to Client
 	@ManyToOne
@@ -147,5 +149,12 @@ public class Address implements IEntity<Integer> {
 		orderPickNdeliver.setAddress(null);
 
 		return orderPickNdeliver;
+	}
+
+	public boolean isPrefered() {
+		return prefered;
+	}
+	public void setPrefered(boolean prefered) {
+		this.prefered = prefered;
 	}
 }

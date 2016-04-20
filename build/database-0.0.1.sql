@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`PhoneNumber` (
   `idPhoneNumber` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idClient` INT UNSIGNED NOT NULL,
   `number` VARCHAR(45) NULL,
-  `prefered` INT NULL DEFAULT 0,
+  `prefered` TINYINT(1) NULL DEFAULT 0,
   PRIMARY KEY (`idPhoneNumber`),
   INDEX `fk_PhoneNumber_Clients1_idx` (`idClient` ASC),
   CONSTRAINT `fk_PhoneNumber_Clients1`
@@ -134,6 +134,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Address` (
   `comments` VARCHAR(255) NULL,
   `lat` FLOAT NULL,
   `long` FLOAT NULL,
+  `prefered` TINYINT(1) NULL DEFAULT 0,
   PRIMARY KEY (`idAddress`),
   INDEX `fk_Address_Clients1_idx` (`idClient` ASC),
   CONSTRAINT `fk_Address_Clients1`
@@ -586,6 +587,8 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceTask` (
   `idService` INT UNSIGNED NOT NULL,
   `idTask` INT UNSIGNED NOT NULL,
   `comments` VARCHAR(250) NULL,
+  `started` DATETIME NULL,
+  `ended` DATETIME NULL,
   PRIMARY KEY (`idServiceTask`),
   INDEX `fk_ServiceTask_Task1_idx` (`idTask` ASC),
   INDEX `fk_ServiceTask_Service1_idx` (`idService` ASC),
@@ -765,6 +768,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`ClientPaymentInfo` (
   `type` INT NULL DEFAULT 0 COMMENT '0=stripe',
   `token` VARCHAR(250) NULL,
   `idClient` INT UNSIGNED NOT NULL,
+  `prefered` TINYINT(1) NULL DEFAULT 0,
   PRIMARY KEY (`idClientPaymentInfo`),
   INDEX `fk_ClientPaymentInfo_Clients1_idx` (`idClient` ASC),
   CONSTRAINT `fk_ClientPaymentInfo_Clients1`
@@ -810,6 +814,83 @@ DROP VIEW IF EXISTS `sod_db`.`view1` ;
 DROP TABLE IF EXISTS `sod_db`.`view1`;
 USE `sod_db`;
 
+USE `sod_db`;
+
+DELIMITER $$
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Clients_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Clients_BEFORE_INSERT` BEFORE INSERT ON `Clients` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Clients_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Clients_BEFORE_UPDATE` BEFORE UPDATE ON `Clients` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Employee_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Employee_BEFORE_INSERT` BEFORE INSERT ON `Employee` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Employee_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Employee_BEFORE_UPDATE` BEFORE UPDATE ON `Employee` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Orders_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Orders_BEFORE_INSERT` BEFORE INSERT ON `Orders` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Orders_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Orders_BEFORE_UPDATE` BEFORE UPDATE ON `Orders` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Service_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Service_BEFORE_INSERT` BEFORE INSERT ON `Service` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Service_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Service_BEFORE_UPDATE` BEFORE UPDATE ON `Service` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -841,7 +922,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Address` (`idAddress`, `idClient`, `country`, `state`, `zipcode`, `city`, `address`, `address2`, `comments`, `lat`, `long`) VALUES (1, 1, 'Mexico', 'Jalisco', '44540', 'Guadalajara', 'Peninsula', NULL, NULL, NULL, NULL);
+INSERT INTO `sod_db`.`Address` (`idAddress`, `idClient`, `country`, `state`, `zipcode`, `city`, `address`, `address2`, `comments`, `lat`, `long`, `prefered`) VALUES (1, 1, 'Mexico', 'Jalisco', '44540', 'Guadalajara', 'Peninsula', NULL, NULL, NULL, NULL, true);
 
 COMMIT;
 
@@ -998,8 +1079,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`) VALUES (DEFAULT, 'tamanio', 'size of order', 0, 1);
-INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`) VALUES (DEFAULT, 'jabon', 'detergente a utilizarse', 0, 4);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`) VALUES (1, 'tamanio', 'size of order', 0, 1);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`) VALUES (2, 'jabon', 'detergente a utilizarse', 0, 4);
 
 COMMIT;
 

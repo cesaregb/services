@@ -3,6 +3,11 @@ package com.il.sod.rest.dto.db;
 import java.util.Date;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
+import io.swagger.annotations.ApiModelProperty;
+
 public class ClientDTO {
 	private int idClient;
 	private String email;
@@ -10,6 +15,18 @@ public class ClientDTO {
 	private String name;
 	private String password;
 	private String twitter;
+	
+	@ApiModelProperty(hidden=true)
+	@JsonProperty(access = Access.READ_ONLY)
+	private String defaultPhone;
+	
+	@ApiModelProperty(hidden=true)
+	@JsonProperty(access = Access.READ_ONLY)
+	private String defaultAddress;
+
+	@ApiModelProperty(hidden=true)
+	@JsonProperty(access = Access.READ_ONLY)
+	private String defaultPayment;
 	private Set<Integer> orders;
 	private Set<AddressDTO> addresses;
 	private Set<PhoneNumberDTO> phoneNumbers;
@@ -91,5 +108,23 @@ public class ClientDTO {
 	}
 	public void setClientPaymentInfos(Set<ClientPaymentInfoDTO> clientPaymentInfos) {
 		this.clientPaymentInfos = clientPaymentInfos;
+	}
+	public String getDefaultPhone() {
+		return defaultPhone;
+	}
+	public void setDefaultPhone(String defaultPhone) {
+		this.defaultPhone = defaultPhone;
+	}
+	public String getDefaultAddress() {
+		return defaultAddress;
+	}
+	public void setDefaultAddress(String defaultAddress) {
+		this.defaultAddress = defaultAddress;
+	}
+	public String getDefaultPayment() {
+		return defaultPayment;
+	}
+	public void setDefaultPayment(String defaultPayment) {
+		this.defaultPayment = defaultPayment;
 	}
 }

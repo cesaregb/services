@@ -12,6 +12,8 @@ public class AddressDTO implements GenericDBDTO{
 	private String zipcode;
 	private String state;
 	private int idClient;
+	private boolean prefered;
+	
 	
 	public int getIdAddress() {
 		return idAddress;
@@ -66,5 +68,18 @@ public class AddressDTO implements GenericDBDTO{
 	}
 	public void setIdClient(int idClient) {
 		this.idClient = idClient;
+	}
+	
+	@Override
+	public String toString(){
+		return this.getAddress() 
+				+ " " + this.getAddress2()
+				+ " " + this.getZipcode();
+	}
+	public boolean isPrefered() {
+		return prefered;
+	}
+	public void setPrefered(boolean prefered) {
+		this.prefered = prefered;
 	}
 }

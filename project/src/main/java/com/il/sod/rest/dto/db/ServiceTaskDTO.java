@@ -1,5 +1,6 @@
 package com.il.sod.rest.dto.db;
 
+import java.util.Date;
 import java.util.Set;
 
 public class ServiceTaskDTO {
@@ -9,6 +10,9 @@ public class ServiceTaskDTO {
 	private Set<EmployeeTaskServiceDTO> employeeTaskServices;
 	private ServiceDTO service;
 	private TaskDTO task;
+	private Date started;
+	private Date ended;
+	
 	public int getIdServiceTask() {
 		return idServiceTask;
 	}
@@ -44,5 +48,17 @@ public class ServiceTaskDTO {
 	}
 	public void setTask(TaskDTO task) {
 		this.task = task;
+	}
+	public Date getStarted() {
+		return started;
+	}
+	public void setStarted(Date started) {
+		this.started = started;
+	}
+	public Date getEnded() {
+		return ended;
+	}
+	public void setEnded(Date ended) {
+		this.ended = ended;
 	}
 }

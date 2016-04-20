@@ -1,6 +1,8 @@
 package com.il.sod.rest.dto.db;
 
-public class PaymentInfoDTO {
+import com.il.sod.rest.dto.GenericDBDTO;
+
+public class PaymentInfoDTO implements GenericDBDTO{
 
 	private int idPaymentInfo;
 	private String transactionInfo;
@@ -39,6 +41,11 @@ public class PaymentInfoDTO {
 
 	public void setIdOrder(int idOrder) {
 		this.idOrder = idOrder;
+	}
+
+	@Override
+	public Integer getParentId() {
+		return this.idOrder;
 	}
 
 }

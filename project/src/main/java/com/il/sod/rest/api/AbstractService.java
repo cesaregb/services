@@ -8,6 +8,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ import com.il.sod.db.dao.IDAO;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.BaseMapper;
 import com.il.sod.rest.api.helper.ServicesDBHelper;
+import com.il.sod.rest.api.impl.ClientService;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.util.RestUtil;
 
@@ -39,6 +42,8 @@ import ma.glasnost.orika.MapperFacade;
 		@Tag(name = "health", description = "Validate API + MODEL Healt") })
 @Path("/v1")
 public abstract class AbstractService{
+	
+	final static Logger ABS_LOGGER = LoggerFactory.getLogger(AbstractService.class);
 	
 	protected ObjectMapper mapper;
 	protected ServicesDBHelper serviceDbHelper;

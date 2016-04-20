@@ -7,6 +7,7 @@ import com.il.sod.exception.SODAPIException;
 
 public abstract class AbstractServiceMutations extends AbstractService{
 	
+	
 	@SuppressWarnings("unchecked")
 	protected <T> T saveEntity(JpaRepository<T, Integer> repository, T entity){
 		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
@@ -25,6 +26,7 @@ public abstract class AbstractServiceMutations extends AbstractService{
 	
 	@SuppressWarnings("unchecked")
 	protected <T> T updateEntity(JpaRepository<T, Integer> repository, T entity) throws SODAPIException{
+		ABS_LOGGER.info("*** Updating ");
 		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
 		gDao.setRepository(repository);
 		gDao.update(entity);

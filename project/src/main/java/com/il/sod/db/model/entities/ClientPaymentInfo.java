@@ -27,6 +27,7 @@ public class ClientPaymentInfo implements IEntity<Integer> {
 	private String token;
 
 	private int type;
+	private boolean prefered;
 
 	//bi-directional many-to-one association to Client
 	@ManyToOne
@@ -78,6 +79,13 @@ public class ClientPaymentInfo implements IEntity<Integer> {
 	public ClientPaymentInfo setId(Integer id) {
 		this.idClientPaymentInfo = id;
 		return this;
+	}
+
+	public boolean isPrefered() {
+		return prefered;
+	}
+	public void setPrefered(boolean prefered) {
+		this.prefered = prefered;
 	}
 
 }

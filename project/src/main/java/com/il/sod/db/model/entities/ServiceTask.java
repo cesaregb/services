@@ -1,5 +1,6 @@
 package com.il.sod.db.model.entities;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -45,6 +46,10 @@ public class ServiceTask implements IEntity<Integer> {
 	@ManyToOne
 	@JoinColumn(name="idTask")
 	private Task task;
+	
+	private Date started;
+	
+	private Date ended;
 
 	public ServiceTask() {
 	}
@@ -133,5 +138,21 @@ public class ServiceTask implements IEntity<Integer> {
 	public ServiceTask setId(Integer id) {
 		this.idServiceTask = id;
 		return this;
+	}
+
+	public Date getStarted() {
+		return started;
+	}
+
+	public void setStarted(Date started) {
+		this.started = started;
+	}
+
+	public Date getEnded() {
+		return ended;
+	}
+
+	public void setEnded(Date ended) {
+		this.ended = ended;
 	}
 }

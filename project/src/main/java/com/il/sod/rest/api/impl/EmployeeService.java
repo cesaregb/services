@@ -37,6 +37,7 @@ import io.swagger.annotations.ApiResponses;
 @Produces(MediaType.APPLICATION_JSON)
 @Api(value = "/employee", tags = { "employee" })
 public class EmployeeService extends AbstractServiceMutations {
+	
 	@Autowired
 	EmployeeRepository employeeRepository;
 	

@@ -12,15 +12,11 @@ public class Constants {
     public static final String SPRING_PROFILE_CLOUD = "cloud";
     public static final String SYSTEM_ACCOUNT = "system";
     
-    
     public static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
 
     public static final String PROPERTY_NAME_DB_URL = "DB_URL";
     public static final String PROPERTY_NAME_DB_USER = "DB_USER";
     public static final String PROPERTY_NAME_DB_PASSWORD = "DB_PASSWORD";
-//    public static final String PROPERTY_NAME_DATABASE_PASSWORD = "db.password";
-//    public static final String PROPERTY_NAME_DATABASE_URL = "db.url";
-//    public static final String PROPERTY_NAME_DATABASE_USERNAME = "db.username";
 
 	public static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "com.il.sod.db.model.entities";
 	

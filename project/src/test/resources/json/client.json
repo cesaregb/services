@@ -1,0 +1,37 @@
+{
+    "insert": {
+      "email": "test_insert1",
+      "lastName": "test_insert1",
+      "name": "test_insert1",
+      "password": "test_insert1",
+      "twitter": "test_insert1",
+      "addresses": [
+        {
+          "address": "test_insert1",
+          "address2": "test_insert1",
+          "city": "test_insert1",
+          "country": "test_insert1",
+          "zipcode": "test_insert1",
+          "state": "test_insert1",
+          "prefered": true
+        }
+      ],
+      "phoneNumbers": [
+        {
+          "number": "00000",
+          "prefered": true
+        }
+      ],
+      "clientPaymentInfos": [
+        {
+          "getidClientPaymentInfo": 0,
+          "token": "code-1",
+          "type": 0,
+          "prefered": true
+        }
+      ]
+    },
+  "update": {},
+  "add_phone": {},
+  "fail_insert": {}
+}

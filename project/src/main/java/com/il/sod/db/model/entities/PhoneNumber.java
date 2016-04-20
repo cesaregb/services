@@ -23,7 +23,7 @@ public class PhoneNumber implements IEntity<Integer> {
 
 	private String number;
 	
-	private int prefered;
+	private boolean prefered;
 
 	//bi-directional many-to-one association to Client
 	@ManyToOne
@@ -67,11 +67,10 @@ public class PhoneNumber implements IEntity<Integer> {
 		return this;
 	}
 
-	public int getPrefered() {
+	public boolean isPrefered() {
 		return prefered;
 	}
-
-	public void setPrefered(int prefered) {
+	public void setPrefered(boolean prefered) {
 		this.prefered = prefered;
 	}
 }
