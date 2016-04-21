@@ -7,7 +7,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
+import javax.ws.rs.PUT; import javax.ws.rs.PathParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -54,12 +54,30 @@ public class OrderTypeService extends AbstractServiceMutations {
 		}
 	}
 
+	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Order Type", response = OrderTypeDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateOrderType(OrderTypeDTO dto) throws SODAPIException {
+		try {
+			OrderType entity = OrderMapper.INSTANCE.map(dto);
+			this.updateEntity(orderTypeRepository, entity);
+			dto = OrderMapper.INSTANCE.map(entity);
+			return castEntityAsResponse(dto, Response.Status.CREATED);
+		} catch (Exception e) {
+			throw new SODAPIException(e);
+		}
+	}
+
+	@PUT
+	@Path("/{id}")
+	@ApiOperation(value = "Update Order Type", response = OrderTypeDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response updateOrderTypeById(@PathParam("id") String id, OrderTypeDTO dto) throws SODAPIException {
 		try {
 			OrderType entity = OrderMapper.INSTANCE.map(dto);
 			this.updateEntity(orderTypeRepository, entity);

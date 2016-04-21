@@ -7,7 +7,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
+import javax.ws.rs.PUT; import javax.ws.rs.PathParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -51,11 +51,25 @@ public class ServiceTypeService extends AbstractServiceMutations {
 	}
 
 	@PUT
+	@Deprecated
 	@ApiOperation(value = "Update Service Type", response = ServiceTypeDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateServiceType(ServiceTypeDTO dto) throws SODAPIException {
+		ServiceType entity = ServiceMapper.INSTANCE.map(dto);
+		this.updateEntity(serviceTypeRepository, entity);
+		dto = converter.map(entity, ServiceTypeDTO.class);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
+	}
+
+	@PUT
+	@Path("/{id}")
+	@ApiOperation(value = "Update Service Type", response = ServiceTypeDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response updateServiceTypeById(@PathParam("id") String id, ServiceTypeDTO dto) throws SODAPIException {
 		ServiceType entity = ServiceMapper.INSTANCE.map(dto);
 		this.updateEntity(serviceTypeRepository, entity);
 		dto = converter.map(entity, ServiceTypeDTO.class);

@@ -8,7 +8,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
+import javax.ws.rs.PUT; import javax.ws.rs.PathParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -60,12 +60,28 @@ public class AddressService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
+	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Address", response = AddressDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateAddress(AddressDTO dto) throws SODAPIException {
+		serviceDbHelper.validateClient(clientRepository, dto);
+
+		Address entity = ClientMapper.INSTANCE.map(dto);
+		this.updateEntity(addressRepository, entity);
+		dto = ClientMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
+	}
+
+	@PUT
+	@Path("/{id}")
+	@ApiOperation(value = "Update Address", response = AddressDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response updateAddressById(@PathParam("id") String id, AddressDTO dto) throws SODAPIException {
 		serviceDbHelper.validateClient(clientRepository, dto);
 
 		Address entity = ClientMapper.INSTANCE.map(dto);
