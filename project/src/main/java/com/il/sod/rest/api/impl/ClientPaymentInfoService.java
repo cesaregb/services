@@ -13,16 +13,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.il.sod.db.model.entities.ClientPaymentInfo;
+import com.il.sod.db.model.entities.PaymentInfo;
 import com.il.sod.db.model.repositories.ClientPaymentInfoRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.PaymentMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ClientPaymentInfoDTO;
+import com.il.sod.rest.dto.db.PaymentInfoDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -117,6 +120,21 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
+	}
+	
+	@GET
+	@Path("/{idClientPaymentInfo}")
+	@ApiOperation(value = "Get Payment Info list", response = ClientPaymentInfoDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getPaymentInfoById(@PathParam("idClientPaymentInfo") String idClientPaymentInfo) throws SODAPIException {
+		if (!NumberUtils.isDigits(idClientPaymentInfo)){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Not a valid id " + idClientPaymentInfo);
+		}
+		ClientPaymentInfo pi = this.getEntity(clientPaymentInfoRepository, Integer.valueOf(idClientPaymentInfo));
+		ClientPaymentInfoDTO piDto = PaymentMapper.INSTANCE.map(pi);
+		return castEntityAsResponse(piDto);
 	}
 
 }
