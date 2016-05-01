@@ -7,12 +7,14 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT; import javax.ws.rs.PathParam;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -117,6 +119,21 @@ public class PaymentInfoService extends AbstractServiceMutations {
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
+	}
+	
+	@GET
+	@Path("/{idPaymentInfo}")
+	@ApiOperation(value = "Get Payment Info list", response = PaymentInfoDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getPaymentInfoById(@PathParam("idPaymentInfo") String idPaymentInfo) throws SODAPIException {
+		if (!NumberUtils.isDigits(idPaymentInfo)){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Not a valid id " + idPaymentInfo);
+		}
+		PaymentInfo pi = this.getEntity(paymentInfoRepository, Integer.valueOf(idPaymentInfo));
+		PaymentInfoDTO piDto = PaymentMapper.INSTANCE.map(pi);
+		return castEntityAsResponse(piDto);
 	}
 
 }
