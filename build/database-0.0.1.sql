@@ -132,8 +132,8 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Address` (
   `address` VARCHAR(250) NULL,
   `address2` VARCHAR(250) NULL,
   `comments` VARCHAR(255) NULL,
-  `lat` FLOAT NULL,
-  `long` FLOAT NULL,
+  `lat` DECIMAL(10,8) NULL,
+  `lng` DECIMAL(11,8) NULL,
   `prefered` TINYINT(1) NULL DEFAULT 0,
   PRIMARY KEY (`idAddress`),
   INDEX `fk_Address_Clients1_idx` (`idClient` ASC),
@@ -765,7 +765,7 @@ DROP TABLE IF EXISTS `sod_db`.`ClientPaymentInfo` ;
 
 CREATE TABLE IF NOT EXISTS `sod_db`.`ClientPaymentInfo` (
   `idClientPaymentInfo` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `type` INT NULL DEFAULT 0 COMMENT '0=stripe',
+  `type` INT NULL DEFAULT 0 COMMENT 'CASH = 0; \nCC = 1; // credit card \nPAYPAL = 2;  \nOTHER = 4; // NOT DEFINED \nSTRIPE = 3; ',
   `token` VARCHAR(250) NULL,
   `idClient` INT UNSIGNED NOT NULL,
   `prefered` TINYINT(1) NULL DEFAULT 0,
@@ -922,7 +922,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Address` (`idAddress`, `idClient`, `country`, `state`, `zipcode`, `city`, `address`, `address2`, `comments`, `lat`, `long`, `prefered`) VALUES (1, 1, 'Mexico', 'Jalisco', '44540', 'Guadalajara', 'Peninsula', NULL, NULL, NULL, NULL, true);
+INSERT INTO `sod_db`.`Address` (`idAddress`, `idClient`, `country`, `state`, `zipcode`, `city`, `address`, `address2`, `comments`, `lat`, `lng`, `prefered`) VALUES (1, 1, 'Mexico', 'Jalisco', '44540', 'Guadalajara', 'Peninsula', NULL, NULL, 20.646374, -103.389056, true);
 
 COMMIT;
 
@@ -1123,6 +1123,16 @@ INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `
 INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (3, 2);
 INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (4, 2);
 INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (5, 2);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`ClientPaymentInfo`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`ClientPaymentInfo` (`idClientPaymentInfo`, `type`, `token`, `idClient`, `prefered`) VALUES (1, 1, '01234', 1, 1);
 
 COMMIT;
 

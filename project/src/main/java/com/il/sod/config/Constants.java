@@ -35,5 +35,12 @@ public class Constants {
 	public static final int ORDER_FINISHED = 3; 
 	public static final int ORDER_DELIVERED = 4; 
 	
+	// ClientPaymentInfo type values. 
+	public static final int CLIENT_PAYMENT_CASH = 0; 
+	public static final int CLIENT_PAYMENT_STRIPE = 3; 
+	public static final int CLIENT_PAYMENT_CC = 1; // credit card 
+	public static final int CLIENT_PAYMENT_PAYPAL = 2;  
+	public static final int CLIENT_PAYMENT_OTHER = 4; // NOT DEFINED 
+	
 	
 }

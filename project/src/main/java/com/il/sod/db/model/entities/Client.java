@@ -43,11 +43,11 @@ public class Client implements IEntity<Integer> {
 	private String twitter;
 
 	//bi-directional many-to-one association to AccessKey
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
 	private Set<AccessKey> accessKeys;
 
 	//bi-directional many-to-one association to Address
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
 	@JsonManagedReference
 	private Set<Address> addresses;
 
