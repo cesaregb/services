@@ -9,6 +9,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -52,12 +53,30 @@ public class AccessKeyService extends AbstractServiceMutations {
 		}
 	}
 
+	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Service Type", response = AccessKeyDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateAccessKey(AccessKeyDTO dto) throws SODAPIException {
+		try {
+			AccessKey entity = converter.map(dto, AccessKey.class);
+			this.updateEntity(accessKeyRepository, entity);
+			dto = converter.map(entity, AccessKeyDTO.class);
+			return castEntityAsResponse(dto, Response.Status.CREATED);
+		} catch (Exception e) {
+			throw new SODAPIException(e);
+		}
+	}
+
+	@PUT
+	@Path("/{id}")
+	@ApiOperation(value = "Update Service Type", response = AccessKeyDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response updateAccessKeyById(@PathParam("id") String id, AccessKeyDTO dto) throws SODAPIException {
 		try {
 			AccessKey entity = converter.map(dto, AccessKey.class);
 			this.updateEntity(accessKeyRepository, entity);

@@ -24,7 +24,7 @@
 	</root>
 	
 	
-	<appender name="SQLROLLINGFILE">
+	<!-- <appender name="SQLROLLINGFILE">
 		<File>/tmp/sql.log</File>
 		<rollingPolicy>
 			<FileNamePattern>logFile.%d{yyyy-MM-dd}.log</FileNamePattern>
@@ -42,6 +42,6 @@
 	<logger name="org.hibernate.type" additivity="false">
 		<level value="TRACE" />
 		<appender-ref ref="SQLROLLINGFILE" />
-	</logger>
+	</logger> -->
 	
 </configuration>

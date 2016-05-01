@@ -7,7 +7,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
+import javax.ws.rs.PUT; import javax.ws.rs.PathParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -53,12 +53,30 @@ public class SocialNetworkDataService extends AbstractServiceMutations {
 		}
 	}
 
+	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Service Type", response = SocialNetworkDataDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateSocialNetworkData(SocialNetworkDataDTO dto) throws SODAPIException {
+		try {
+			SocialNetworkData entity = converter.map(dto, SocialNetworkData.class);
+			this.updateEntity(socialNetworkDataRepository, entity);
+			dto = converter.map(entity, SocialNetworkDataDTO.class);
+			return castEntityAsResponse(dto, Response.Status.CREATED);
+		} catch (Exception e) {
+			throw new SODAPIException(e);
+		}
+	}
+
+	@PUT
+	@Path("/{id}")
+	@ApiOperation(value = "Update Service Type", response = SocialNetworkDataDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response updateSocialNetworkDataById(@PathParam("id") String id, SocialNetworkDataDTO dto) throws SODAPIException {
 		try {
 			SocialNetworkData entity = converter.map(dto, SocialNetworkData.class);
 			this.updateEntity(socialNetworkDataRepository, entity);

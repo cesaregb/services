@@ -1,5 +1,6 @@
 package com.il.sod.rest.dto.db;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.il.sod.rest.dto.GenericDBDTO;
 
 public class ClientPaymentInfoDTO implements GenericDBDTO {
@@ -54,6 +55,7 @@ public class ClientPaymentInfoDTO implements GenericDBDTO {
 	}
 
 	@Override
+	@JsonIgnore
 	public Integer getParentId() {
 		return this.idClient;
 	}

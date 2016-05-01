@@ -1,5 +1,7 @@
 package com.il.sod.rest.dto.db;
 
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.il.sod.rest.dto.GenericDBDTO;
 
@@ -13,7 +15,8 @@ public class AddressDTO implements GenericDBDTO{
 	private String state;
 	private int idClient;
 	private boolean prefered;
-	
+	private BigDecimal lat;
+	private BigDecimal lng;
 	
 	public int getIdAddress() {
 		return idAddress;
@@ -81,5 +84,17 @@ public class AddressDTO implements GenericDBDTO{
 	}
 	public void setPrefered(boolean prefered) {
 		this.prefered = prefered;
+	}
+	public BigDecimal getLat() {
+		return lat;
+	}
+	public void setLat(BigDecimal lat) {
+		this.lat = lat;
+	}
+	public BigDecimal getLng() {
+		return lng;
+	}
+	public void setLng(BigDecimal lng) {
+		this.lng = lng;
 	}
 }

@@ -72,10 +72,6 @@ public class ClientService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateClient(@PathParam("clientId") String clientId, ClientDTO dto) throws SODAPIException {
 		
-		System.out.println("******************");
-		System.out.println("dto: " + this.castEntityAsString(dto));
-		System.out.println("******************");
-		
 		if (dto.getIdClient() != Integer.valueOf(clientId) || dto.getIdClient() == 0){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client id should match with object and should be different than 0 ");
 		}
@@ -83,9 +79,30 @@ public class ClientService extends AbstractServiceMutations {
 		Client entity = clientRepository.findOne(Integer.valueOf(clientId));
 		entity = ClientMapper.INSTANCE.map(dto, entity);
 		
-		System.out.println("******************");
-		System.out.println("entity: " + this.castEntityAsString(entity));
-		System.out.println("******************");
+		LOGGER.info("******************");
+		LOGGER.info("entity: " + this.castEntityAsString(entity));
+		LOGGER.info("******************");
+		assignDependencyToChilds(entity);
+		this.updateEntity(clientRepository, entity);
+		dto = ClientMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.OK);
+	}
+	
+	@Deprecated
+	@PUT
+	@ApiOperation(value = "Update Client", response = ClientDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response updateClient(ClientDTO dto) throws SODAPIException {
+		
+		if (dto.getIdClient() == 0){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client id should match with object and should be different than 0 ");
+		}
+		
+		Client entity = clientRepository.findOne(dto.getIdClient());
+		entity = ClientMapper.INSTANCE.map(dto, entity);
+		
 		assignDependencyToChilds(entity);
 		this.updateEntity(clientRepository, entity);
 		dto = ClientMapper.INSTANCE.map(entity);

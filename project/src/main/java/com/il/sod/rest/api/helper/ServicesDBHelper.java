@@ -12,6 +12,10 @@ public class ServicesDBHelper {
 	
 	AbstractService mCallback;
 	
+	public static int TYPE_ADDRESS = 0;
+	public static int TYPE_PHONE = 1;
+	public static int TYPE_PAYMENT_METHOD = 2;
+	
 //	public interface CallbackHelper {
 //		public <T> T getEntity(JpaRepository<T, Integer> repository, Integer id);
 //    }
@@ -26,6 +30,23 @@ public class ServicesDBHelper {
 		if (c == null){
 			throw new SODAPIException(Response.Status.NO_CONTENT, "Client not valid");
 		}
+	}
+	
+	// **** Client helper methods. 
+	public boolean isFirstItem(ClientRepository clientRepository, GenericDBDTO dto, int type) throws SODAPIException {
+		Client c = mCallback.getEntity(clientRepository, dto.getParentId());
+		if (c != null){
+			if (type == TYPE_ADDRESS){ // address 
+				return (c.getAddresses().size() == 0);
+			}
+			if (type == TYPE_PHONE){ // phoneNumner 
+				return (c.getPhoneNumbers().size() == 0);
+			}
+			if (type == TYPE_PAYMENT_METHOD){ // phoneNumner 
+				return (c.getClientPaymentInfos().size() == 0);
+			}
+		}
+		return true;
 	}
 
 	
