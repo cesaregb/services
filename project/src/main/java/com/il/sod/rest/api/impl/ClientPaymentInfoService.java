@@ -7,8 +7,9 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT; import javax.ws.rs.PathParam;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -17,15 +18,14 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.il.sod.db.dao.IClientPaymentInfoDAO;
 import com.il.sod.db.model.entities.ClientPaymentInfo;
-import com.il.sod.db.model.entities.PaymentInfo;
 import com.il.sod.db.model.repositories.ClientPaymentInfoRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.PaymentMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ClientPaymentInfoDTO;
-import com.il.sod.rest.dto.db.PaymentInfoDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,6 +42,9 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 	@Autowired
 	ClientPaymentInfoRepository clientPaymentInfoRepository;
 
+	@Autowired
+	IClientPaymentInfoDAO clientPaymentInfoDAO;
+	
 	@POST
 	@ApiOperation(value = "Create Payment Info", response = ClientPaymentInfoDTO.class)
 	@ApiResponses(value = {
@@ -114,8 +117,8 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getClientPaymentInfoList() throws SODAPIException {
-		List<ClientPaymentInfo> rentityList = this.getEntityList(clientPaymentInfoRepository);
-		List<ClientPaymentInfoDTO> list = rentityList.stream().map((i) -> {
+		List<ClientPaymentInfo> entityList = this.getEntityList(clientPaymentInfoRepository);
+		List<ClientPaymentInfoDTO> list = entityList.stream().map((i) -> {
 			ClientPaymentInfoDTO dto = PaymentMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
@@ -135,6 +138,24 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 		ClientPaymentInfo pi = this.getEntity(clientPaymentInfoRepository, Integer.valueOf(idClientPaymentInfo));
 		ClientPaymentInfoDTO piDto = PaymentMapper.INSTANCE.map(pi);
 		return castEntityAsResponse(piDto);
+	}
+	
+	@GET
+	@Path("/client/{idClient}")
+	@ApiOperation(value = "Get Payment Info list", response = ClientPaymentInfoDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getPaymentInfoByClientId(@PathParam("idClient") String idClient) throws SODAPIException {
+		if (!NumberUtils.isDigits(idClient)){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Not a valid id " + idClient);
+		}
+		List<ClientPaymentInfo> entityList = clientPaymentInfoDAO.findByIdClient(Integer.valueOf(idClient));
+		List<ClientPaymentInfoDTO> list = entityList.stream().map((i) -> {
+			ClientPaymentInfoDTO dto = PaymentMapper.INSTANCE.map(i);
+			return dto;
+		}).collect(Collectors.toList());
+		return castEntityAsResponse(list);
 	}
 
 }
