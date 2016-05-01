@@ -15,9 +15,6 @@ public class ClientDAO implements IClientDAO{
 	@Autowired
 	ClientRepository clientRepository;
 	
-//	@PersistenceContext
-//    private EntityManager em;
-	
 	public List<Client> findByEmail(String email){
 		return clientRepository.findByEmail(email);
 	}
@@ -26,13 +23,4 @@ public class ClientDAO implements IClientDAO{
 	public List<Client> findByToken(String token) {
 		return clientRepository.findByToken(token);
 	}
-	
-//	public List<Client> findByToken2(String token) {
-//		TypedQuery<Client> query = em.createQuery("SELECT c FROM Client c join c.clientPaymentInfos cpi WHERE cpi.token=?1", Client.class);
-//		query.setParameter(1, token);
-//	    query.setFirstResult(page * pageSize);
-//	    query.setMaxResults(pageSize);
-//	    return query.getResultList();
-//	}
-
 }
