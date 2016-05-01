@@ -7,7 +7,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
+import javax.ws.rs.PUT; import javax.ws.rs.PathParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -54,12 +54,26 @@ public class EmployeeTypeService extends AbstractServiceMutations {
 		}
 	}
 
+	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Employee Type", response = EmployeeTypeDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateEmployeeType(EmployeeTypeDTO dto) throws SODAPIException {
+		EmployeeType entity = EmployeeMapper.INSTANCE.map(dto);
+		this.updateEntity(employeeTypeRepository, entity);
+		dto = EmployeeMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
+	}
+
+	@PUT
+	@Path("/{id}")
+	@ApiOperation(value = "Update Employee Type", response = EmployeeTypeDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response updateEmployeeTypeById(@PathParam("id") String id, EmployeeTypeDTO dto) throws SODAPIException {
 		EmployeeType entity = EmployeeMapper.INSTANCE.map(dto);
 		this.updateEntity(employeeTypeRepository, entity);
 		dto = EmployeeMapper.INSTANCE.map(entity);

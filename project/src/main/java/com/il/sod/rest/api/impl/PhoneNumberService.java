@@ -7,7 +7,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
+import javax.ws.rs.PUT; import javax.ws.rs.PathParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -56,12 +56,28 @@ public class PhoneNumberService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
+	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Phone Number", response = PhoneNumberDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updatePhoneNumber(PhoneNumberDTO dto) throws SODAPIException {
+		serviceDbHelper.validateClient(clientRepository, dto);
+
+		PhoneNumber entity = ClientMapper.INSTANCE.map(dto);
+		this.updateEntity(phoneNumberRepository, entity);
+		dto = ClientMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
+	}
+
+	@PUT
+	@Path("/{id}")
+	@ApiOperation(value = "Update Phone Number", response = PhoneNumberDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response updatePhoneNumberById(@PathParam("id") String id, PhoneNumberDTO dto) throws SODAPIException {
 		serviceDbHelper.validateClient(clientRepository, dto);
 
 		PhoneNumber entity = ClientMapper.INSTANCE.map(dto);

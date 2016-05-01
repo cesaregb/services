@@ -1,5 +1,6 @@
 package com.il.sod.db.model.entities;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -40,6 +41,10 @@ public class Address implements IEntity<Integer> {
 	private String zipcode;
 	
 	private boolean prefered;
+	
+	private BigDecimal lat;
+	
+	private BigDecimal lng;
 
 	//bi-directional many-to-one association to Client
 	@ManyToOne
@@ -157,4 +162,21 @@ public class Address implements IEntity<Integer> {
 	public void setPrefered(boolean prefered) {
 		this.prefered = prefered;
 	}
+
+	public BigDecimal getLat() {
+		return lat;
+	}
+
+	public void setLat(BigDecimal lat) {
+		this.lat = lat;
+	}
+
+	public BigDecimal getLng() {
+		return lng;
+	}
+
+	public void setLng(BigDecimal lng) {
+		this.lng = lng;
+	}
+
 }
