@@ -1,13 +1,13 @@
 # To build:
-# docker build -t cesaregb/sod-service:v1 -f Dockerfile .
+# docker build -t cesaregb/services:v1 -f Dockerfile .
 #
 # To publish:
   # docker logn
-  # docker push cesaregb/sod-service:v1
-# docker run -p 8080:8080 -it cesaregb/sod-service:v1
+  # docker push cesaregb/services:v1
+# docker run -p 8080:8080 -it cesaregb/services:v1
 #
 # To run:
-# docker run -p 8080:8080 -it cesaregb/sod-service:v1
+# docker run -p 8080:8080 -it cesaregb/services:v1
 FROM centos:6
 MAINTAINER cesareg.borjon@gmail.com
 
