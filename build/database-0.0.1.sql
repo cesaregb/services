@@ -800,6 +800,72 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`SpecsValues` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `sod_db`.`Routes`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Routes` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`Routes` (
+  `idRoutes` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(105) NULL,
+  `description` VARCHAR(200) NULL,
+  `category` INT NULL DEFAULT 1 COMMENT '1 = departamentos\n2 = offices\n3 = cliente\n',
+  PRIMARY KEY (`idRoutes`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sod_db`.`AddressRoutes`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`AddressRoutes` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`AddressRoutes` (
+  `idAddressRoute` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `country` VARCHAR(45) NULL,
+  `state` VARCHAR(45) NULL,
+  `zipcode` VARCHAR(45) NULL,
+  `city` VARCHAR(45) NULL,
+  `address` VARCHAR(250) NULL,
+  `address2` VARCHAR(250) NULL,
+  `comments` VARCHAR(255) NULL,
+  `lat` DECIMAL(10,8) NULL,
+  `lng` DECIMAL(11,8) NULL,
+  `prefered` TINYINT(1) NULL DEFAULT 0,
+  PRIMARY KEY (`idAddressRoute`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sod_db`.`Stops`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Stops` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`Stops` (
+  `idStops` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `description` VARCHAR(45) NULL,
+  `time` INT NULL DEFAULT 10,
+  `arrive` INT NULL DEFAULT 7,
+  `day` INT NULL DEFAULT 1 COMMENT '1 = Lunes \n… \n7 = Domingo',
+  `stop_action` INT NULL DEFAULT 1 COMMENT '1 = pickup\n2 = deliver',
+  `idRoutes` INT NOT NULL,
+  `idAddressRoute` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`idStops`),
+  INDEX `fk_Stops_Routes1_idx` (`idRoutes` ASC),
+  INDEX `fk_Stops_AddressRoutes1_idx` (`idAddressRoute` ASC),
+  CONSTRAINT `fk_Stops_Routes1`
+    FOREIGN KEY (`idRoutes`)
+    REFERENCES `sod_db`.`Routes` (`idRoutes`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Stops_AddressRoutes1`
+    FOREIGN KEY (`idAddressRoute`)
+    REFERENCES `sod_db`.`AddressRoutes` (`idAddressRoute`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 USE `sod_db` ;
 
 -- -----------------------------------------------------
@@ -922,7 +988,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Address` (`idAddress`, `idClient`, `country`, `state`, `zipcode`, `city`, `address`, `address2`, `comments`, `lat`, `lng`, `prefered`) VALUES (1, 1, 'Mexico', 'Jalisco', '44540', 'Guadalajara', 'Peninsula', NULL, NULL, 20.646374, -103.389056, true);
+INSERT INTO `sod_db`.`Address` (`idAddress`, `idClient`, `country`, `state`, `zipcode`, `city`, `address`, `address2`, `comments`, `lat`, `lng`, `prefered`) VALUES (1, 1, 'Mexico', 'Jalisco', '44540', 'Guadalajara', 'Peninsula', NULL, NULL, NULL, NULL, true);
 
 COMMIT;
 
