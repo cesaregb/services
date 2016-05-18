@@ -1,14 +1,14 @@
 package com.il.sod.db.model.entities;
 
 import java.math.BigDecimal;
-import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -45,9 +45,8 @@ public class AddressRoute implements IEntity<Integer> {
 
 	private String zipcode;
 
-	//bi-directional many-to-one association to Stop
-	@OneToMany(mappedBy="addressRoute")
-	private Set<Stop> stops;
+	@OneToOne(mappedBy="addressRoute", fetch=FetchType.EAGER)
+	private Stop stop;
 
 	public AddressRoute() {
 	}
@@ -140,28 +139,6 @@ public class AddressRoute implements IEntity<Integer> {
 		this.zipcode = zipcode;
 	}
 
-	public Set<Stop> getStops() {
-		return this.stops;
-	}
-
-	public void setStops(Set<Stop> stops) {
-		this.stops = stops;
-	}
-
-	public Stop addStop(Stop stop) {
-		getStops().add(stop);
-		stop.setAddressRoute(this);
-
-		return stop;
-	}
-
-	public Stop removeStop(Stop stop) {
-		getStops().remove(stop);
-		stop.setAddressRoute(null);
-
-		return stop;
-	}
-
 	@Override
 	public Integer getId() {
 		return this.idAddressRoute;
@@ -171,5 +148,13 @@ public class AddressRoute implements IEntity<Integer> {
 	public AddressRoute setId(Integer id) {
 		this.idAddressRoute = id;
 		return this;
+	}
+
+	public Stop getStop() {
+		return stop;
+	}
+
+	public void setStop(Stop stop) {
+		this.stop = stop;
 	}
 }

@@ -8,19 +8,4 @@
  
 	<context:component-scan base-package="com.il.sod.config" />
 	
-	
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-	  <property name="location">
-	    <list>
-	      <value>/path/to/config.properties</value>
-	    </list>
-	  </property>
-	  <property name="ignoreUnresolvablePlaceholders" value="true"/>
-	</bean>
-	
-	<bean id="myBean" class="...">
-	    <property name="username" value="{usernameFromExternalPropFile}" />
-	    <property name="password" value="{passwordFromExternalPropFile}" />
-	</bean>
-	
 </beans>

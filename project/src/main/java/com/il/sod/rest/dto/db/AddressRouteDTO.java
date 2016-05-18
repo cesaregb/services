@@ -1,7 +1,6 @@
 package com.il.sod.rest.dto.db;
 
 import java.math.BigDecimal;
-import java.util.Set;
 
 public class AddressRouteDTO{
 
@@ -16,7 +15,7 @@ public class AddressRouteDTO{
 	private byte prefered;
 	private String state;
 	private String zipcode;
-	private Set<Integer> stops;
+	private int idStops;
 	
 	public int getIdAddressRoute() {
 		return idAddressRoute;
@@ -84,10 +83,10 @@ public class AddressRouteDTO{
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
 	}
-	public Set<Integer> getStops() {
-		return stops;
+	public int getIdStops() {
+		return idStops;
 	}
-	public void setStops(Set<Integer> stops) {
-		this.stops = stops;
+	public void setIdStops(int idStops) {
+		this.idStops = idStops;
 	}
 }
