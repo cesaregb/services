@@ -34,7 +34,7 @@ import io.swagger.annotations.ApiResponses;
 //@Api(value="healt", tags={"healt"})
 @Produces(MediaType.APPLICATION_JSON)
 public class Health extends AbstractService {
-	final static Logger LOGGER = LoggerFactory.getLogger(AbstractService.class);
+	final static Logger LOGGER = LoggerFactory.getLogger(Health.class);
 	
 	@Autowired
     private Environment env;

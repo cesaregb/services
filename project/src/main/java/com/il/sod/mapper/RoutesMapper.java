@@ -56,8 +56,8 @@ public enum RoutesMapper {
 		return entity;
 	}
 	
-	public Route map(AddressRouteDTO dto) {
-		return this.mapperFacade.map(dto, Route.class);
+	public AddressRoute map(AddressRouteDTO dto) {
+		return this.mapperFacade.map(dto, AddressRoute.class);
 	}
 	
 	public AddressRouteDTO map(AddressRoute entity) {
@@ -65,6 +65,19 @@ public enum RoutesMapper {
 	}
 	
 	public AddressRoute map(AddressRouteDTO dto, AddressRoute entity) {
+		this.mapperFacade.map(dto, entity);
+		return entity;
+	}
+	
+	public Stop map(StopDTO dto) {
+		return this.mapperFacade.map(dto, Stop.class);
+	}
+	
+	public StopDTO map(Stop entity) {
+		return this.mapperFacade.map(entity, StopDTO.class);
+	}
+	
+	public Stop map(StopDTO dto, Stop entity) {
 		this.mapperFacade.map(dto, entity);
 		return entity;
 	}

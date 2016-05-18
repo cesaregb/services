@@ -17,4 +17,10 @@ public class SocialNetworkDataDTO {
 	public void setData(String data) {
 		this.data = data;
 	}
+	public int getAccessKeyId() {
+		return accessKeyId;
+	}
+	public void setAccessKeyId(int accessKeyId) {
+		this.accessKeyId = accessKeyId;
+	}
 }
