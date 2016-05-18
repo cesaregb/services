@@ -32,9 +32,9 @@ import io.swagger.annotations.ApiResponses;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/routes")
+@Path("/stops")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/routes", tags = { "routes" })
+@Api(value = "/stops", tags = { "routes" })
 public class StopsService extends AbstractServiceMutations {
 
 	@Autowired

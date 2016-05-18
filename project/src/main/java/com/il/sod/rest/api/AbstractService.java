@@ -20,7 +20,6 @@ import com.il.sod.db.dao.IDAO;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.BaseMapper;
 import com.il.sod.rest.api.helper.ServicesDBHelper;
-import com.il.sod.rest.api.impl.ClientService;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.util.RestUtil;
 
@@ -39,8 +38,10 @@ import ma.glasnost.orika.MapperFacade;
 		@Tag(name = "order", description = "Order Layer Services"),
 		@Tag(name = "service", description = "Service Layer Services"),
 		@Tag(name = "payment", description = "Payment Services Client and Orders"),
+		@Tag(name = "routes", description = "Route Information,... not user related..."),
 		@Tag(name = "health", description = "Validate API + MODEL Healt") })
 @Path("/v1")
+@SuppressWarnings("all")
 public abstract class AbstractService{
 	
 	final static Logger ABS_LOGGER = LoggerFactory.getLogger(AbstractService.class);

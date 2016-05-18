@@ -2,27 +2,28 @@ package com.il.sod.db.model.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 
 /**
  * The persistent class for the Stops database table.
  * 
  */
 @Entity
-@Table(name="Stops")
-@NamedQuery(name="Stop.findAll", query="SELECT s FROM Stop s")
+@Table(name = "Stops")
+@NamedQuery(name = "Stop.findAll", query = "SELECT s FROM Stop s")
 public class Stop implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idStops;
 
 	private int arrive;
@@ -33,19 +34,19 @@ public class Stop implements IEntity<Integer> {
 
 	private String name;
 
-	@Column(name="stop_action")
+	@Column(name = "stop_action")
 	private int stopAction;
 
 	private int time;
 
-	//bi-directional many-to-one association to AddressRoute
-	@ManyToOne
-	@JoinColumn(name="idAddressRoute")
+	// bi-directional many-to-one association to AddressRoute
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "idAddressRoute")
 	private AddressRoute addressRoute;
 
-	//bi-directional many-to-one association to Route
+	// bi-directional many-to-one association to Route
 	@ManyToOne
-	@JoinColumn(name="idRoutes")
+	@JoinColumn(name = "idRoutes")
 	private Route route;
 
 	public Stop() {

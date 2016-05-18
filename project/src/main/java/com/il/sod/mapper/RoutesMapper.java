@@ -23,7 +23,6 @@ public enum RoutesMapper {
 	private RoutesMapper() {
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
 		converterFactory.registerConverter("stopsSetConverter", new StopSetConverter());
-		converterFactory.registerConverter("stopsSetConverter", new StopSetConverter());
 
 		BaseMapper.MAPPER_FACTORY.classMap(RouteDTO.class, Route.class)
 			.fieldMap("stops", "stops").converter("stopsSetConverter").mapNulls(true).mapNullsInReverse(true).add()
@@ -31,7 +30,7 @@ public enum RoutesMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(AddressRouteDTO.class, AddressRoute.class)
-			.fieldMap("stops", "stops").converter("stopsSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.field("idStops", "stop.idStops")
 			.byDefault()
 			.register();
 		
@@ -83,14 +82,14 @@ public enum RoutesMapper {
 	}
 }
 
-class StopSetConverter extends BidirectionalConverter<Set<Stop>, Set<Integer>> {
+class StopSetConverter extends BidirectionalConverter<Set<Stop>, Set<StopDTO>> {
 	@Override
-	public Set<Stop> convertFrom(Set<Integer> source, Type<Set<Stop>> destT) {
-		return source.stream().map(p -> (new Stop()).setId(p)).collect(Collectors.toSet());
+	public Set<Stop> convertFrom(Set<StopDTO> source, Type<Set<Stop>> destT) {
+		return source.stream().map(item -> RoutesMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 
 	@Override
-	public Set<Integer> convertTo(Set<Stop> source, Type<Set<Integer>> destT) {
-		return source.stream().map(p -> p.getId()).collect(Collectors.toSet());
+	public Set<StopDTO> convertTo(Set<Stop> source, Type<Set<StopDTO>> destT) {
+		return source.stream().map(item -> RoutesMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }
