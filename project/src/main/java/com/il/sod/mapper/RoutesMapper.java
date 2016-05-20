@@ -4,9 +4,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.il.sod.db.model.entities.AddressRoute;
+import com.il.sod.db.model.entities.CalendarRoute;
 import com.il.sod.db.model.entities.Route;
 import com.il.sod.db.model.entities.Stop;
 import com.il.sod.rest.dto.db.AddressRouteDTO;
+import com.il.sod.rest.dto.db.CalendarRouteDTO;
 import com.il.sod.rest.dto.db.RouteDTO;
 import com.il.sod.rest.dto.db.StopDTO;
 
@@ -23,9 +25,11 @@ public enum RoutesMapper {
 	private RoutesMapper() {
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
 		converterFactory.registerConverter("stopsSetConverter", new StopSetConverter());
+		converterFactory.registerConverter("calendarRouteSetConverter", new CalendarRouteSetConverter());
 
 		BaseMapper.MAPPER_FACTORY.classMap(RouteDTO.class, Route.class)
 			.fieldMap("stops", "stops").converter("stopsSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("calendarRoutes", "calendarRoutes").converter("calendarRouteSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 		
@@ -35,6 +39,11 @@ public enum RoutesMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(StopDTO.class, Stop.class)
+			.field("idRoutes", "route.idRoutes")
+			.byDefault()
+			.register();
+		
+		BaseMapper.MAPPER_FACTORY.classMap(CalendarRouteDTO.class, CalendarRoute.class)
 			.field("idRoutes", "route.idRoutes")
 			.byDefault()
 			.register();
@@ -80,6 +89,19 @@ public enum RoutesMapper {
 		this.mapperFacade.map(dto, entity);
 		return entity;
 	}
+	
+	public CalendarRoute map(CalendarRouteDTO dto) {
+		return this.mapperFacade.map(dto, CalendarRoute.class);
+	}
+	
+	public CalendarRouteDTO map(CalendarRoute entity) {
+		return this.mapperFacade.map(entity, CalendarRouteDTO.class);
+	}
+	
+	public CalendarRoute map(CalendarRouteDTO dto, CalendarRoute entity) {
+		this.mapperFacade.map(dto, entity);
+		return entity;
+	}
 }
 
 class StopSetConverter extends BidirectionalConverter<Set<Stop>, Set<StopDTO>> {
@@ -90,6 +112,18 @@ class StopSetConverter extends BidirectionalConverter<Set<Stop>, Set<StopDTO>> {
 
 	@Override
 	public Set<StopDTO> convertTo(Set<Stop> source, Type<Set<StopDTO>> destT) {
+		return source.stream().map(item -> RoutesMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+}
+
+class CalendarRouteSetConverter extends BidirectionalConverter<Set<CalendarRoute>, Set<CalendarRouteDTO>> {
+	@Override
+	public Set<CalendarRoute> convertFrom(Set<CalendarRouteDTO> source, Type<Set<CalendarRoute>> arg1) {
+		return source.stream().map(item -> RoutesMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<CalendarRouteDTO> convertTo(Set<CalendarRoute> source, Type<Set<CalendarRouteDTO>> arg1) {
 		return source.stream().map(item -> RoutesMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }

@@ -2,7 +2,9 @@ package com.il.sod.db.model.entities;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,8 +33,12 @@ public class Route implements IEntity<Integer> {
 	private String name;
 
 	//bi-directional many-to-one association to Stop
-	@OneToMany(mappedBy="route")
+	@OneToMany(mappedBy="route", fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
 	private Set<Stop> stops;
+	
+	//bi-directional many-to-one association to CalendarRoute
+	@OneToMany(mappedBy="route", fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+	private Set<CalendarRoute> calendarRoutes;
 
 	public Route() {
 	}
@@ -100,6 +106,28 @@ public class Route implements IEntity<Integer> {
 	public Route setId(Integer id) {
 		this.idRoutes = id;
 		return this;
+	}
+	
+	public Set<CalendarRoute> getCalendarRoutes() {
+		return this.calendarRoutes;
+	}
+
+	public void setCalendarRoutes(Set<CalendarRoute> calendarRoutes) {
+		this.calendarRoutes = calendarRoutes;
+	}
+
+	public CalendarRoute addCalendarRoute(CalendarRoute calendarRoute) {
+		getCalendarRoutes().add(calendarRoute);
+		calendarRoute.setRoute(this);
+
+		return calendarRoute;
+	}
+
+	public CalendarRoute removeCalendarRoute(CalendarRoute calendarRoute) {
+		getCalendarRoutes().remove(calendarRoute);
+		calendarRoute.setRoute(null);
+
+		return calendarRoute;
 	}
 
 }

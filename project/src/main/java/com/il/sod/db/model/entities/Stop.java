@@ -1,6 +1,5 @@
 package com.il.sod.db.model.entities;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,15 +25,12 @@ public class Stop implements IEntity<Integer> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idStops;
 
-	private int arrive;
-
-	private int day;
+	private int arriveAt;
 
 	private String description;
 
 	private String name;
 
-	@Column(name = "stop_action")
 	private int stopAction;
 
 	private int time;
@@ -58,22 +54,6 @@ public class Stop implements IEntity<Integer> {
 
 	public void setIdStops(int idStops) {
 		this.idStops = idStops;
-	}
-
-	public int getArrive() {
-		return this.arrive;
-	}
-
-	public void setArrive(int arrive) {
-		this.arrive = arrive;
-	}
-
-	public int getDay() {
-		return this.day;
-	}
-
-	public void setDay(int day) {
-		this.day = day;
 	}
 
 	public String getDescription() {
@@ -133,5 +113,13 @@ public class Stop implements IEntity<Integer> {
 	public Stop setId(Integer id) {
 		this.idStops = id;
 		return this;
+	}
+
+	public int getArriveAt() {
+		return arriveAt;
+	}
+
+	public void setArriveAt(int arriveAt) {
+		this.arriveAt = arriveAt;
 	}
 }

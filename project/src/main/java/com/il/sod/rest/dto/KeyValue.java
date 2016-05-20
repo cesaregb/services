@@ -1,18 +1,18 @@
 package com.il.sod.rest.dto;
 
-public class KeyValue {
-	private Integer key;
-	private String value;
-	public String getValue() {
+public class KeyValue<K, V> {
+	private K key;
+	private V value;
+	public V getValue() {
 		return value;
 	}
-	public void setValue(String value) {
+	public void setValue(V value) {
 		this.value = value;
 	}
-	public Integer getKey() {
+	public K getKey() {
 		return key;
 	}
-	public void setKey(Integer key) {
+	public void setKey(K key) {
 		this.key = key;
 	}
 }

@@ -64,21 +64,18 @@ public enum SpecificObjectsMapper {
 				
 				@Override
 				public void mapBtoA(ServiceTypeSpec entity, WSpecDTO dto, MappingContext context) {
-					Map<Integer, List<KeyValue>> options = new HashMap<Integer, List<KeyValue>>();
+					Map<Integer, List<KeyValue<Integer, String>>> options = new HashMap<Integer, List<KeyValue<Integer, String>>>();
 					Spec spec = entity.getSpec();
 					for (SpecsValue specValue : spec.getSpecsValues()){
 						if (options.get(specValue.getSpec().getId()) == null){
 							options.put(specValue.getSpec().getId(), new ArrayList<>());
 						}
-						KeyValue kv = new KeyValue();
+						KeyValue<Integer, String> kv = new KeyValue<Integer, String>();
 						if (specValue.getType() == Constants.SPEC_TYPE_PRODUCT){
 							// get all products  by product type....
 							List<Product> listProduct = productRepository.findByIdProductType(specValue.getIdProductType());
-							System.out.println("******************");
-							System.out.println("listProduct Size: " + listProduct.size());
-							
 							for (Product p : listProduct){
-								kv = new KeyValue();
+								kv = new KeyValue<Integer, String>();
 								kv.setKey(p.getId());
 								kv.setValue(p.getName());
 								options.get(specValue.getSpec().getId()).add(kv);

@@ -1,5 +1,6 @@
 package com.il.sod.rest.api.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,10 +23,14 @@ import org.springframework.stereotype.Component;
 import com.il.sod.db.dao.IClientDAO;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
+import com.il.sod.db.model.repositories.ClientSpecification;
+import com.il.sod.db.model.repositories.SearchCriteria;
+import com.il.sod.db.model.repositories.SpecificationsBuilder;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ClientMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
+import com.il.sod.rest.dto.KeyValue;
 import com.il.sod.rest.dto.db.ClientDTO;
 
 import io.swagger.annotations.Api;
@@ -167,6 +172,33 @@ public class ClientService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.NO_CONTENT, "No employee found");
 		}
 		return castEntityAsResponse(dto, Response.Status.OK);
+	}
+	
+	@POST
+	@Path("/byFilters")
+	@ApiOperation(value = "Get Client list by filter", response = ClientDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getClientsByFilter(List<KeyValue<String, String>> list) throws SODAPIException {
+		if (list == null || list.size() == 0){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Filters cannot be empty");
+		}
+		
+		List<ClientSpecification> filterList = new ArrayList<>();
+		for (KeyValue<String, String> kv : list){
+			ClientSpecification spec = new ClientSpecification(new SearchCriteria(kv.getKey(), ":", kv.getValue()));
+			filterList.add(spec);
+		}
+		
+		SpecificationsBuilder<Client, ClientSpecification> builder = new SpecificationsBuilder<>(filterList);		
+		
+		List<Client> entities = clientRepository.findAll(builder.build());
+		List<ClientDTO> result = entities.stream().map( (client) -> {
+				return ClientMapper.INSTANCE.map(client);
+			}).collect(Collectors.toList());
+		
+		return castEntityAsResponse(result, Response.Status.OK);
 	}
 	
 	@GET

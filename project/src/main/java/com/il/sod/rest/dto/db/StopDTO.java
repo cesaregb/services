@@ -2,8 +2,7 @@ package com.il.sod.rest.dto.db;
 
 public class StopDTO{
 	private int idStops;
-	private int arrive;
-	private int day;
+	private int arriveAt;
 	private String description;
 	private String name;
 	private int stopAction;
@@ -16,18 +15,6 @@ public class StopDTO{
 	}
 	public void setIdStops(int idStops) {
 		this.idStops = idStops;
-	}
-	public int getArrive() {
-		return arrive;
-	}
-	public void setArrive(int arrive) {
-		this.arrive = arrive;
-	}
-	public int getDay() {
-		return day;
-	}
-	public void setDay(int day) {
-		this.day = day;
 	}
 	public String getDescription() {
 		return description;
@@ -64,6 +51,12 @@ public class StopDTO{
 	}
 	public void setIdRoutes(int idRoutes) {
 		this.idRoutes = idRoutes;
+	}
+	public int getArriveAt() {
+		return arriveAt;
+	}
+	public void setArriveAt(int arriveAt) {
+		this.arriveAt = arriveAt;
 	}
 
 }
