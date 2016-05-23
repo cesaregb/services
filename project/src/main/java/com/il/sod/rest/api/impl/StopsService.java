@@ -55,7 +55,7 @@ public class StopsService extends AbstractServiceMutations {
 		if ( dto.getType() == 1 ){
 			AddressRoute addressEntity = RoutesMapper.INSTANCE.map(dto.getAddress());
 			this.saveEntity(addressRouteRepository, addressEntity);
-			dto.setIdAddreess(addressEntity.getIdAddressRoute());
+			dto.setIdAddress(addressEntity.getIdAddressRoute());
 		}
 		
 		Stop entity = RoutesMapper.INSTANCE.map(dto);
