@@ -816,6 +816,31 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `sod_db`.`Stops`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Stops` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`Stops` (
+  `idStops` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `description` VARCHAR(45) NULL,
+  `time` INT NULL DEFAULT 10,
+  `arriveAt` VARCHAR(50) NULL DEFAULT 7,
+  `stopAction` INT NULL DEFAULT 1 COMMENT '1 = pickup\n2 = deliver',
+  `idRoutes` INT NOT NULL,
+  `type` INT NULL DEFAULT 0 COMMENT '0 = address\n1 = client',
+  `idAddress` INT NULL,
+  PRIMARY KEY (`idStops`),
+  INDEX `fk_Stops_Routes1_idx` (`idRoutes` ASC),
+  CONSTRAINT `fk_Stops_Routes1`
+    FOREIGN KEY (`idRoutes`)
+    REFERENCES `sod_db`.`Routes` (`idRoutes`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `sod_db`.`AddressRoutes`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `sod_db`.`AddressRoutes` ;
@@ -831,38 +856,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`AddressRoutes` (
   `comments` VARCHAR(255) NULL,
   `lat` DECIMAL(10,8) NULL,
   `lng` DECIMAL(11,8) NULL,
-  `prefered` TINYINT(1) NULL DEFAULT 0,
   PRIMARY KEY (`idAddressRoute`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sod_db`.`Stops`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`Stops` ;
-
-CREATE TABLE IF NOT EXISTS `sod_db`.`Stops` (
-  `idStops` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NULL,
-  `description` VARCHAR(45) NULL,
-  `time` INT NULL DEFAULT 10,
-  `arriveAt` INT NULL DEFAULT 7,
-  `stopAction` INT NULL DEFAULT 1 COMMENT '1 = pickup\n2 = deliver',
-  `idRoutes` INT NOT NULL,
-  `idAddressRoute` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`idStops`),
-  INDEX `fk_Stops_Routes1_idx` (`idRoutes` ASC),
-  INDEX `fk_Stops_AddressRoutes1_idx` (`idAddressRoute` ASC),
-  CONSTRAINT `fk_Stops_Routes1`
-    FOREIGN KEY (`idRoutes`)
-    REFERENCES `sod_db`.`Routes` (`idRoutes`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Stops_AddressRoutes1`
-    FOREIGN KEY (`idAddressRoute`)
-    REFERENCES `sod_db`.`AddressRoutes` (`idAddressRoute`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -872,11 +866,11 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `sod_db`.`CalendarRoute` ;
 
 CREATE TABLE IF NOT EXISTS `sod_db`.`CalendarRoute` (
-  `idCalendarCalendarRoute` INT NOT NULL,
+  `idCalendarRoute` INT NOT NULL AUTO_INCREMENT,
   `day` INT NULL DEFAULT 1,
-  `time` TIME NULL DEFAULT 0,
+  `time` VARCHAR(50) NULL DEFAULT '8:00',
   `idRoutes` INT NOT NULL,
-  PRIMARY KEY (`idCalendarCalendarRoute`),
+  PRIMARY KEY (`idCalendarRoute`),
   INDEX `fk_Calendar_Routes1_idx` (`idRoutes` ASC),
   CONSTRAINT `fk_Calendar_Routes1`
     FOREIGN KEY (`idRoutes`)
@@ -1246,11 +1240,31 @@ COMMIT;
 
 
 -- -----------------------------------------------------
+-- Data for table `sod_db`.`Stops`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`Stops` (`idStops`, `name`, `description`, `time`, `arriveAt`, `stopAction`, `idRoutes`, `type`, `idAddress`) VALUES (1, 'stop 1', 'stop 1 description', 20, '9:30', 1, 1, NULL, NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`AddressRoutes`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`AddressRoutes` (`idAddressRoute`, `country`, `state`, `zipcode`, `city`, `address`, `address2`, `comments`, `lat`, `lng`) VALUES (1, 'Mexico', 'Jalisco', '44540', 'Guadalajara', 'Calle', 'Colonia', 'no tiene timbre... ', NULL, NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `sod_db`.`CalendarRoute`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`CalendarRoute` (`idCalendarCalendarRoute`, `day`, `time`, `idRoutes`) VALUES (1, 1, '9:30', 1);
+INSERT INTO `sod_db`.`CalendarRoute` (`idCalendarRoute`, `day`, `time`, `idRoutes`) VALUES (1, 1, '9:30', 1);
 
 COMMIT;
 

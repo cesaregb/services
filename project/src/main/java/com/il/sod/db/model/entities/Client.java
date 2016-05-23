@@ -69,7 +69,7 @@ public class Client implements IEntity<Integer> {
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonManagedReference
 	private Set<ClientPaymentInfo> clientPaymentInfos;
-
+	
 	public Client() {
 	}
 

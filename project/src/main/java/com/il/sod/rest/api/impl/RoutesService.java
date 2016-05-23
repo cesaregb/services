@@ -105,4 +105,15 @@ public class RoutesService extends AbstractServiceMutations {
 		return castEntityAsResponse(list);
 
 	}
+	
+	@GET
+	@Path("/{id}")
+	@ApiOperation(value = "Get Route by id", response = RouteDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getRouteById(@PathParam("id") String id) throws SODAPIException {
+		RouteDTO dto = RoutesMapper.INSTANCE.map(this.getEntity(routesRepository, Integer.valueOf(id)));
+		return castEntityAsResponse(dto, Response.Status.OK);
+	}
 }

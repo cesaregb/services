@@ -7,6 +7,7 @@ import com.il.sod.db.model.entities.AddressRoute;
 import com.il.sod.db.model.entities.CalendarRoute;
 import com.il.sod.db.model.entities.Route;
 import com.il.sod.db.model.entities.Stop;
+import com.il.sod.rest.dto.db.AddressGenericDTO;
 import com.il.sod.rest.dto.db.AddressRouteDTO;
 import com.il.sod.rest.dto.db.CalendarRouteDTO;
 import com.il.sod.rest.dto.db.RouteDTO;
@@ -34,7 +35,6 @@ public enum RoutesMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(AddressRouteDTO.class, AddressRoute.class)
-			.field("idStops", "stop.idStops")
 			.byDefault()
 			.register();
 		
@@ -75,6 +75,10 @@ public enum RoutesMapper {
 	public AddressRoute map(AddressRouteDTO dto, AddressRoute entity) {
 		this.mapperFacade.map(dto, entity);
 		return entity;
+	}
+	
+	public AddressRoute map(AddressGenericDTO dto) {
+		return this.mapperFacade.map(dto, AddressRoute.class);
 	}
 	
 	public Stop map(StopDTO dto) {

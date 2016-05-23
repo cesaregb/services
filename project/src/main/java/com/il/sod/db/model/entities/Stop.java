@@ -1,15 +1,15 @@
 package com.il.sod.db.model.entities;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * The persistent class for the Stops database table.
@@ -25,7 +25,7 @@ public class Stop implements IEntity<Integer> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idStops;
 
-	private int arriveAt;
+	private String arriveAt;
 
 	private String description;
 
@@ -34,17 +34,17 @@ public class Stop implements IEntity<Integer> {
 	private int stopAction;
 
 	private int time;
-
-	// bi-directional many-to-one association to AddressRoute
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "idAddressRoute")
-	private AddressRoute addressRoute;
+	
+	private int idAddress;
 
 	// bi-directional many-to-one association to Route
 	@ManyToOne
 	@JoinColumn(name = "idRoutes")
+	@JsonBackReference
 	private Route route;
-
+	
+	private int type;
+	
 	public Stop() {
 	}
 
@@ -88,14 +88,6 @@ public class Stop implements IEntity<Integer> {
 		this.time = time;
 	}
 
-	public AddressRoute getAddressRoute() {
-		return this.addressRoute;
-	}
-
-	public void setAddressRoute(AddressRoute addressRoute) {
-		this.addressRoute = addressRoute;
-	}
-
 	public Route getRoute() {
 		return this.route;
 	}
@@ -115,11 +107,27 @@ public class Stop implements IEntity<Integer> {
 		return this;
 	}
 
-	public int getArriveAt() {
+	public String getArriveAt() {
 		return arriveAt;
 	}
 
-	public void setArriveAt(int arriveAt) {
+	public void setArriveAt(String arriveAt) {
 		this.arriveAt = arriveAt;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public int getIdAddress() {
+		return idAddress;
+	}
+
+	public void setIdAddress(int idAddress) {
+		this.idAddress = idAddress;
 	}
 }

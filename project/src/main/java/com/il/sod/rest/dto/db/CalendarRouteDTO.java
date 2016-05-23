@@ -1,19 +1,17 @@
 package com.il.sod.rest.dto.db;
 
-import java.sql.Time;
-
 public class CalendarRouteDTO{
 	
-	private int idCalendarCalendarRoute;
+	private int idCalendarRoute;
 	private int day;
-	private Time time;
+	private String time;
 	private int idRoutes;
 	
-	public int getIdCalendarCalendarRoute() {
-		return idCalendarCalendarRoute;
+	public int getIdCalendarRoute() {
+		return idCalendarRoute;
 	}
-	public void setIdCalendarCalendarRoute(int idCalendarCalendarRoute) {
-		this.idCalendarCalendarRoute = idCalendarCalendarRoute;
+	public void setIdCalendarRoute(int idCalendarRoute) {
+		this.idCalendarRoute = idCalendarRoute;
 	}
 	public int getDay() {
 		return day;
@@ -21,16 +19,16 @@ public class CalendarRouteDTO{
 	public void setDay(int day) {
 		this.day = day;
 	}
-	public Time getTime() {
-		return time;
-	}
-	public void setTime(Time time) {
-		this.time = time;
-	}
 	public int getIdRoutes() {
 		return idRoutes;
 	}
 	public void setIdRoutes(int idRoutes) {
 		this.idRoutes = idRoutes;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
 	}
 }

@@ -1,15 +1,19 @@
 package com.il.sod.rest.dto.db;
 
-public class StopDTO{
+public class StopDTO {
+	
 	private int idStops;
-	private int arriveAt;
+	private String arriveAt;
 	private String description;
 	private String name;
 	private int stopAction;
 	private int time;
-	private AddressRouteDTO addressRoute;
 	private int idRoutes;
+	private int type;
+	private int idAddress;
 	
+	private AddressGenericDTO address;
+
 	public int getIdStops() {
 		return idStops;
 	}
@@ -40,23 +44,35 @@ public class StopDTO{
 	public void setTime(int time) {
 		this.time = time;
 	}
-	public AddressRouteDTO getAddressRoute() {
-		return addressRoute;
-	}
-	public void setAddressRoute(AddressRouteDTO addressRoute) {
-		this.addressRoute = addressRoute;
-	}
 	public int getIdRoutes() {
 		return idRoutes;
 	}
 	public void setIdRoutes(int idRoutes) {
 		this.idRoutes = idRoutes;
 	}
-	public int getArriveAt() {
+	public String getArriveAt() {
 		return arriveAt;
 	}
-	public void setArriveAt(int arriveAt) {
+	public void setArriveAt(String arriveAt) {
 		this.arriveAt = arriveAt;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+	public AddressGenericDTO getAddress() {
+		return address;
+	}
+	public void setAddress(AddressGenericDTO address) {
+		this.address = address;
+	}
+	public int getIdAddress() {
+		return idAddress;
+	}
+	public void setIdAddress(int idAddress) {
+		this.idAddress = idAddress;
 	}
 
 }

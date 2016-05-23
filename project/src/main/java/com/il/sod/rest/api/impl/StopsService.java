@@ -17,7 +17,9 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.il.sod.db.model.entities.AddressRoute;
 import com.il.sod.db.model.entities.Stop;
+import com.il.sod.db.model.repositories.AddressRouteRepository;
 import com.il.sod.db.model.repositories.StopRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.RoutesMapper;
@@ -39,6 +41,9 @@ public class StopsService extends AbstractServiceMutations {
 
 	@Autowired
 	StopRepository stopRepository;
+	
+	@Autowired
+	AddressRouteRepository addressRouteRepository;
 
 	@POST
 	@ApiOperation(value = "Create Stop", response = StopDTO.class)
@@ -47,7 +52,14 @@ public class StopsService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveStop(StopDTO dto) throws SODAPIException {
 		
+		if ( dto.getType() == 1 ){
+			AddressRoute addressEntity = RoutesMapper.INSTANCE.map(dto.getAddress());
+			this.saveEntity(addressRouteRepository, addressEntity);
+			dto.setIdAddreess(addressEntity.getIdAddressRoute());
+		}
+		
 		Stop entity = RoutesMapper.INSTANCE.map(dto);
+		assignDependencyToChilds(entity);
 		this.saveEntity(stopRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.CREATED);
@@ -104,5 +116,11 @@ public class StopsService extends AbstractServiceMutations {
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 
+	}
+	
+	private void assignDependencyToChilds(Stop entity) {
+		if (entity.getRoute() != null){
+			entity.getRoute().addStop(entity);
+		}
 	}
 }

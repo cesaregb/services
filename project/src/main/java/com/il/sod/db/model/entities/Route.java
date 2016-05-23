@@ -1,5 +1,6 @@
 package com.il.sod.db.model.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * The persistent class for the Routes database table.
@@ -34,10 +37,12 @@ public class Route implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to Stop
 	@OneToMany(mappedBy="route", fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+	@JsonManagedReference
 	private Set<Stop> stops;
 	
 	//bi-directional many-to-one association to CalendarRoute
 	@OneToMany(mappedBy="route", fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+	@JsonManagedReference
 	private Set<CalendarRoute> calendarRoutes;
 
 	public Route() {
@@ -84,6 +89,9 @@ public class Route implements IEntity<Integer> {
 	}
 
 	public Stop addStop(Stop stop) {
+		if (this.stops == null){
+			this.stops = new HashSet<>();
+		}
 		getStops().add(stop);
 		stop.setRoute(this);
 

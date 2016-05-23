@@ -3,12 +3,10 @@ package com.il.sod.db.model.entities;
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -39,14 +37,9 @@ public class AddressRoute implements IEntity<Integer> {
 
 	private BigDecimal lng;
 
-	private byte prefered;
-
 	private String state;
 
 	private String zipcode;
-
-	@OneToOne(mappedBy="addressRoute", fetch=FetchType.EAGER)
-	private Stop stop;
 
 	public AddressRoute() {
 	}
@@ -115,14 +108,6 @@ public class AddressRoute implements IEntity<Integer> {
 		this.lng = lng;
 	}
 
-	public byte getPrefered() {
-		return this.prefered;
-	}
-
-	public void setPrefered(byte prefered) {
-		this.prefered = prefered;
-	}
-
 	public String getState() {
 		return this.state;
 	}
@@ -150,11 +135,4 @@ public class AddressRoute implements IEntity<Integer> {
 		return this;
 	}
 
-	public Stop getStop() {
-		return stop;
-	}
-
-	public void setStop(Stop stop) {
-		this.stop = stop;
-	}
 }
