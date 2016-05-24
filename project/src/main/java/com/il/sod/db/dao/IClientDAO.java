@@ -10,4 +10,6 @@ public interface IClientDAO {
 	
 	public abstract List<Client> findByToken(String token);
 	
+	public abstract List<Client> findByAddress(Integer idAddress);
+	
 }

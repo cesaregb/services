@@ -24,6 +24,7 @@ import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.RoutesMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
+import com.il.sod.rest.dto.db.AddressDTO;
 import com.il.sod.rest.dto.db.AddressRouteDTO;
 
 import io.swagger.annotations.Api;
@@ -109,7 +110,18 @@ public class AddressRouteService extends AbstractServiceMutations {
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
-
+	}
+	
+	@GET
+	@Path("/{id}")
+	@ApiOperation(value = "Get Stop by id", response = AddressDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getById(@PathParam("id") String id) throws SODAPIException {
+		AddressRoute entity = this.getEntity(addressRouteRepository, Integer.valueOf(id));
+		AddressRouteDTO dto = RoutesMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto);
 	}
 
 }

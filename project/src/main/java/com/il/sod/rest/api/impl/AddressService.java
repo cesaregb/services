@@ -129,5 +129,17 @@ public class AddressService extends AbstractServiceMutations {
 		Set<AddressDTO> result = ClientMapper.INSTANCE.map(client.getAddresses());
 		return castEntityAsResponse(result);
 	}
+	
+	@GET
+	@Path("/byId/{id}")
+	@ApiOperation(value = "Get Stop by id", response = AddressDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getById(@PathParam("id") String id) throws SODAPIException {
+		Address entity = this.getEntity(addressRepository, Integer.valueOf(id));
+		AddressDTO dto = ClientMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto);
+	}
 
 }

@@ -11,6 +11,7 @@ public class AddressGenericDTO{
 	private String state;
 	private BigDecimal lat;
 	private BigDecimal lng;
+	private String comments;
 	
 	public String getAddress() {
 		return address;
@@ -67,5 +68,11 @@ public class AddressGenericDTO{
 	}
 	public void setLng(BigDecimal lng) {
 		this.lng = lng;
+	}
+	public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 }

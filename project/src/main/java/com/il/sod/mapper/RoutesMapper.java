@@ -76,6 +76,10 @@ public enum RoutesMapper {
 		this.mapperFacade.map(dto, entity);
 		return entity;
 	}
+	public AddressRoute map(AddressGenericDTO dto, AddressRoute entity) {
+		this.mapperFacade.map(dto, entity);
+		return entity;
+	}
 	
 	public AddressRoute map(AddressGenericDTO dto) {
 		return this.mapperFacade.map(dto, AddressRoute.class);
