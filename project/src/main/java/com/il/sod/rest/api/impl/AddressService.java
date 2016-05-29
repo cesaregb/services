@@ -91,14 +91,20 @@ public class AddressService extends AbstractServiceMutations {
 	}
 
 	@DELETE
-	@ApiOperation(value = "Create Address", response = AddressDTO.class)
+	@Path("/{id}")
+	@ApiOperation(value = "Delete Address", response = GeneralResponseMessage.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteAddress(AddressDTO dto) throws SODAPIException {
-		Address entity = ClientMapper.INSTANCE.map(dto);
-		this.deleteEntity(addressRepository, entity.getIdAddress());
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
+	public Response deleteEntityC(@PathParam("id") String id) throws SODAPIException {
+		Address entity = addressRepository.findOne(Integer.valueOf(id));
+		if (entity == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Address not found");
+		}
+		Client cEntity = entity.getClient();
+		cEntity.removeAddress(entity);
+		this.saveEntity(clientRepository, cEntity);
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Address deleted"),
 				Response.Status.OK);
 	}
 

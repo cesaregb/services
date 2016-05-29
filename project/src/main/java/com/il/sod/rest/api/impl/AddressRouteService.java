@@ -97,6 +97,23 @@ public class AddressRouteService extends AbstractServiceMutations {
 		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
 				Response.Status.OK);
 	}
+	
+	@DELETE
+	@Path("/{id}")
+	@ApiOperation(value = "Delete AddressRoute", response = GeneralResponseMessage.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response deleteEntity(@PathParam("id") String id) throws SODAPIException {
+		
+		AddressRoute entity = addressRouteRepository.findOne(Integer.valueOf(id));
+		if (entity == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "AddressRoute not found");
+		}
+		this.deleteEntity(addressRouteRepository, Integer.valueOf(id));
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("AddressRoute deleted"),
+				Response.Status.OK);
+	}
 
 	@GET
 	@ApiOperation(value = "Get AddressRoute list", response = AddressRouteDTO.class, responseContainer = "List")

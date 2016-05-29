@@ -36,12 +36,12 @@ public class Route implements IEntity<Integer> {
 	private String name;
 
 	//bi-directional many-to-one association to Stop
-	@OneToMany(mappedBy="route", fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="route", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	@JsonManagedReference
 	private Set<Stop> stops;
 	
 	//bi-directional many-to-one association to CalendarRoute
-	@OneToMany(mappedBy="route", fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="route", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	@JsonManagedReference
 	private Set<CalendarRoute> calendarRoutes;
 

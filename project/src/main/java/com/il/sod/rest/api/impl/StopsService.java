@@ -20,9 +20,11 @@ import org.springframework.stereotype.Component;
 import com.il.sod.config.Constants;
 import com.il.sod.db.model.entities.Address;
 import com.il.sod.db.model.entities.AddressRoute;
+import com.il.sod.db.model.entities.Route;
 import com.il.sod.db.model.entities.Stop;
 import com.il.sod.db.model.repositories.AddressRepository;
 import com.il.sod.db.model.repositories.AddressRouteRepository;
+import com.il.sod.db.model.repositories.RoutesRepository;
 import com.il.sod.db.model.repositories.StopRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ClientMapper;
@@ -54,6 +56,9 @@ public class StopsService extends AbstractServiceMutations {
 	
 	@Autowired
 	AddressRepository addressRepository;
+	
+	@Autowired
+	RoutesRepository routesRepository;
 
 	@POST
 	@ApiOperation(value = "Create Stop", response = StopDTO.class)
@@ -82,44 +87,39 @@ public class StopsService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateStop(StopDTO dto) throws SODAPIException {
+		Stop entity = this.getEntity(stopRepository, dto.getIdStops());
 		
 		if ( dto.getType() == Constants.ADDRESS_ROUTE_TYPE ){
 			AddressRoute addressEntity = this.getEntity(addressRouteRepository, Integer.valueOf(dto.getIdAddress()));
-			addressEntity = RoutesMapper.INSTANCE.map(dto.getAddress(), addressEntity);
-			System.out.println("***********************");
-			System.out.println(this.castEntityAsString(addressEntity));
-			System.out.println("***********************");
+			if(addressEntity != null){
+				addressEntity = RoutesMapper.INSTANCE.map(dto.getAddress(), addressEntity);
+			}else{
+				addressEntity = RoutesMapper.INSTANCE.map(dto.getAddress());
+			}
 			this.saveEntity(addressRouteRepository, addressEntity);
+			entity.setIdAddress(addressEntity.getId());
 		}
 		
-		Stop entity = RoutesMapper.INSTANCE.map(dto);
-		this.updateEntity(stopRepository, entity);
-		dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
-	}
-
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Stop", response = StopDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateStopById(@PathParam("id") String id, StopDTO dto) throws SODAPIException {
-		Stop entity = RoutesMapper.INSTANCE.map(dto);
 		this.updateEntity(stopRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@DELETE
-	@ApiOperation(value = "Create Stop", response = StopDTO.class)
+	@Path("/{id}")
+	@ApiOperation(value = "Delete Stop", response = GeneralResponseMessage.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteStop(StopDTO dto) throws SODAPIException {
-		Stop entity = RoutesMapper.INSTANCE.map(dto);
-		this.deleteEntity(stopRepository, entity.getIdStops());
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
+	public Response deleteEntity(@PathParam("id") String id) throws SODAPIException {
+		Stop entity = stopRepository.findOne(Integer.valueOf(id));
+		if (entity == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Stop not found");
+		}
+		Route route = entity.getRoute();
+		route.removeStop(entity);
+		this.saveEntity(routesRepository, route);
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Stop deleted"),
 				Response.Status.OK);
 	}
 

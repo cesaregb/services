@@ -7,8 +7,9 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT; import javax.ws.rs.PathParam;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.entities.PhoneNumber;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.db.model.repositories.PhoneNumberRepository;
@@ -86,15 +88,22 @@ public class PhoneNumberService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
+	
 	@DELETE
-	@ApiOperation(value = "Create Phone Number", response = PhoneNumberDTO.class)
+	@Path("/{id}")
+	@ApiOperation(value = "Delete PhoneNumber", response = GeneralResponseMessage.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deletePhoneNumber(PhoneNumberDTO dto) throws SODAPIException {
-		PhoneNumber entity = ClientMapper.INSTANCE.map(dto);
-		this.deleteEntity(phoneNumberRepository, entity.getIdPhoneNumber());
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
+	public Response deleteEntity(@PathParam("id") String id) throws SODAPIException {
+		PhoneNumber entity = phoneNumberRepository.findOne(Integer.valueOf(id));
+		if (entity == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "PhoneNumber not found");
+		}
+		Client cEntity = entity.getClient();
+		cEntity.removePhoneNumber(entity);
+		this.saveEntity(clientRepository, cEntity);
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("PhoneNumber deleted"),
 				Response.Status.OK);
 	}
 

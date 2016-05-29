@@ -80,13 +80,8 @@ public class ClientService extends AbstractServiceMutations {
 		if (dto.getIdClient() != Integer.valueOf(clientId) || dto.getIdClient() == 0){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client id should match with object and should be different than 0 ");
 		}
-		
 		Client entity = clientRepository.findOne(Integer.valueOf(clientId));
 		entity = ClientMapper.INSTANCE.map(dto, entity);
-		
-		LOGGER.info("******************");
-		LOGGER.info("entity: " + this.castEntityAsString(entity));
-		LOGGER.info("******************");
 		assignDependencyToChilds(entity);
 		this.updateEntity(clientRepository, entity);
 		dto = ClientMapper.INSTANCE.map(entity);
@@ -115,20 +110,16 @@ public class ClientService extends AbstractServiceMutations {
 	}
 
 	@DELETE
-	@Path("{clientId}")
+	@Path("/{id}")
 	@ApiOperation(value = "Delete Client", response = GeneralResponseMessage.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteClient(@PathParam("clientId") String clientId, ClientDTO dto) throws SODAPIException {
-		
-		if (dto.getIdClient() != Integer.valueOf(clientId) || dto.getIdClient() == 0){
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client id should match with object and should be different than 0 ");
-		}
+	public Response deleteClient(@PathParam("id") String clientId) throws SODAPIException {
 		Client entity = clientRepository.findOne(Integer.valueOf(clientId));
-		entity = ClientMapper.INSTANCE.map(dto, entity);
-		
-		assignDependencyToChilds(entity);
+		if (entity == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not found");
+		}
 		this.deleteEntity(clientRepository, entity.getIdClient());
 		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Client deleted"),
 				Response.Status.OK);
