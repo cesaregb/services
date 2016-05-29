@@ -28,7 +28,7 @@ public class ServicesDBHelper {
 	public void validateClient(ClientRepository clientRepository, GenericDBDTO dto) throws SODAPIException {
 		Client c = mCallback.getEntity(clientRepository, dto.getParentId());
 		if (c == null){
-			throw new SODAPIException(Response.Status.NO_CONTENT, "Client not valid");
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not valid");
 		}
 	}
 	

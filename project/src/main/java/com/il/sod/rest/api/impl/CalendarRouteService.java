@@ -17,15 +17,15 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.il.sod.db.model.entities.Client;
-import com.il.sod.db.model.entities.PhoneNumber;
-import com.il.sod.db.model.repositories.ClientRepository;
-import com.il.sod.db.model.repositories.PhoneNumberRepository;
+import com.il.sod.db.model.entities.CalendarRoute;
+import com.il.sod.db.model.entities.Route;
+import com.il.sod.db.model.repositories.CalendarRouteRepository;
+import com.il.sod.db.model.repositories.RoutesRepository;
 import com.il.sod.exception.SODAPIException;
-import com.il.sod.mapper.ClientMapper;
+import com.il.sod.mapper.RoutesMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
-import com.il.sod.rest.dto.db.PhoneNumberDTO;
+import com.il.sod.rest.dto.db.CalendarRouteDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,91 +34,86 @@ import io.swagger.annotations.ApiResponses;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/phone-number")
+@Path("/calendarRoutes")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/phone-number", tags = { "clients" })
-public class PhoneNumberService extends AbstractServiceMutations {
-	@Autowired
-	PhoneNumberRepository phoneNumberRepository;
+@Api(value = "/calendarRoutes", tags = { "routes" })
+public class CalendarRouteService extends AbstractServiceMutations {
 
 	@Autowired
-	ClientRepository clientRepository;
+	CalendarRouteRepository calendarRouteRepository;
+	
+	@Autowired
+	RoutesRepository routesRepository;
 
 	@POST
-	@ApiOperation(value = "Create Phone Number", response = PhoneNumberDTO.class)
+	@ApiOperation(value = "Create CalendarRoute", response = CalendarRouteDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response savePhoneNumber(PhoneNumberDTO dto) throws SODAPIException {
-		serviceDbHelper.validateClient(clientRepository, dto);
-
-		PhoneNumber entity = ClientMapper.INSTANCE.map(dto);
-		this.saveEntity(phoneNumberRepository, entity);
-		dto = ClientMapper.INSTANCE.map(entity);
+	public Response saveCalendarRoute(CalendarRouteDTO dto) throws SODAPIException {
+		
+		CalendarRoute entity = RoutesMapper.INSTANCE.map(dto);
+		this.saveEntity(calendarRouteRepository, entity);
+		dto = RoutesMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@Deprecated
 	@PUT
-	@ApiOperation(value = "Update Phone Number", response = PhoneNumberDTO.class)
+	@ApiOperation(value = "Update CalendarRoute", response = CalendarRouteDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updatePhoneNumber(PhoneNumberDTO dto) throws SODAPIException {
-		serviceDbHelper.validateClient(clientRepository, dto);
-
-		PhoneNumber entity = ClientMapper.INSTANCE.map(dto);
-		this.updateEntity(phoneNumberRepository, entity);
-		dto = ClientMapper.INSTANCE.map(entity);
+	public Response updateCalendarRoute(CalendarRouteDTO dto) throws SODAPIException {
+		CalendarRoute entity = RoutesMapper.INSTANCE.map(dto);
+		this.updateEntity(calendarRouteRepository, entity);
+		dto = RoutesMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
 	@Path("/{id}")
-	@ApiOperation(value = "Update Phone Number", response = PhoneNumberDTO.class)
+	@ApiOperation(value = "Update CalendarRoute", response = CalendarRouteDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updatePhoneNumberById(@PathParam("id") String id, PhoneNumberDTO dto) throws SODAPIException {
-		serviceDbHelper.validateClient(clientRepository, dto);
-
-		PhoneNumber entity = ClientMapper.INSTANCE.map(dto);
-		this.updateEntity(phoneNumberRepository, entity);
-		dto = ClientMapper.INSTANCE.map(entity);
+	public Response updateCalendarRouteById(@PathParam("id") String id, CalendarRouteDTO dto) throws SODAPIException {
+		CalendarRoute entity = RoutesMapper.INSTANCE.map(dto);
+		this.updateEntity(calendarRouteRepository, entity);
+		dto = RoutesMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
-	
 	@DELETE
 	@Path("/{id}")
-	@ApiOperation(value = "Delete PhoneNumber", response = GeneralResponseMessage.class)
+	@ApiOperation(value = "Delete CalendarRoute", response = GeneralResponseMessage.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteEntity(@PathParam("id") String id) throws SODAPIException {
-		PhoneNumber entity = phoneNumberRepository.findOne(Integer.valueOf(id));
+		CalendarRoute entity = calendarRouteRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "PhoneNumber not found");
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "CalendarRoute not found");
 		}
-		Client cEntity = entity.getClient();
-		cEntity.removePhoneNumber(entity);
-		this.saveEntity(clientRepository, cEntity);
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("PhoneNumber deleted"),
+		Route route = entity.getRoute();
+		route.removeCalendarRoute(entity);
+		this.saveEntity(routesRepository, route);
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("CalendarRoute deleted"),
 				Response.Status.OK);
 	}
 
 	@GET
-	@ApiOperation(value = "Get Phone Number list", response = PhoneNumberDTO.class, responseContainer = "List")
+	@ApiOperation(value = "Get CalendarRoute list", response = CalendarRouteDTO.class, responseContainer = "List")
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response getPhoneNumberList() throws SODAPIException {
-		List<PhoneNumber> rentityList = this.getEntityList(phoneNumberRepository);
-		List<PhoneNumberDTO> list = rentityList.stream().map((i) -> {
-			PhoneNumberDTO dto = ClientMapper.INSTANCE.map(i);
+	public Response getCalendarRouteList() throws SODAPIException {
+		List<CalendarRoute> rentityList = this.getEntityList(calendarRouteRepository);
+		List<CalendarRouteDTO> list = rentityList.stream().map((i) -> {
+			CalendarRouteDTO dto = RoutesMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
-	}
 
+	}
 }

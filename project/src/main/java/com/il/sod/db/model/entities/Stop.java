@@ -1,16 +1,15 @@
 package com.il.sod.db.model.entities;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * The persistent class for the Stops database table.
@@ -26,29 +25,26 @@ public class Stop implements IEntity<Integer> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idStops;
 
-	private int arrive;
-
-	private int day;
+	private String arriveAt;
 
 	private String description;
 
 	private String name;
 
-	@Column(name = "stop_action")
 	private int stopAction;
 
 	private int time;
-
-	// bi-directional many-to-one association to AddressRoute
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "idAddressRoute")
-	private AddressRoute addressRoute;
+	
+	private int idAddress;
 
 	// bi-directional many-to-one association to Route
 	@ManyToOne
 	@JoinColumn(name = "idRoutes")
+	@JsonBackReference
 	private Route route;
-
+	
+	private int type;
+	
 	public Stop() {
 	}
 
@@ -58,22 +54,6 @@ public class Stop implements IEntity<Integer> {
 
 	public void setIdStops(int idStops) {
 		this.idStops = idStops;
-	}
-
-	public int getArrive() {
-		return this.arrive;
-	}
-
-	public void setArrive(int arrive) {
-		this.arrive = arrive;
-	}
-
-	public int getDay() {
-		return this.day;
-	}
-
-	public void setDay(int day) {
-		this.day = day;
 	}
 
 	public String getDescription() {
@@ -108,14 +88,6 @@ public class Stop implements IEntity<Integer> {
 		this.time = time;
 	}
 
-	public AddressRoute getAddressRoute() {
-		return this.addressRoute;
-	}
-
-	public void setAddressRoute(AddressRoute addressRoute) {
-		this.addressRoute = addressRoute;
-	}
-
 	public Route getRoute() {
 		return this.route;
 	}
@@ -133,5 +105,29 @@ public class Stop implements IEntity<Integer> {
 	public Stop setId(Integer id) {
 		this.idStops = id;
 		return this;
+	}
+
+	public String getArriveAt() {
+		return arriveAt;
+	}
+
+	public void setArriveAt(String arriveAt) {
+		this.arriveAt = arriveAt;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public int getIdAddress() {
+		return idAddress;
+	}
+
+	public void setIdAddress(int idAddress) {
+		this.idAddress = idAddress;
 	}
 }

@@ -1,5 +1,6 @@
 package com.il.sod.rest.api.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,10 +23,14 @@ import org.springframework.stereotype.Component;
 import com.il.sod.db.dao.IClientDAO;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
+import com.il.sod.db.model.repositories.ClientSpecification;
+import com.il.sod.db.model.repositories.SearchCriteria;
+import com.il.sod.db.model.repositories.SpecificationsBuilder;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ClientMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
+import com.il.sod.rest.dto.KeyValue;
 import com.il.sod.rest.dto.db.ClientDTO;
 
 import io.swagger.annotations.Api;
@@ -75,13 +80,8 @@ public class ClientService extends AbstractServiceMutations {
 		if (dto.getIdClient() != Integer.valueOf(clientId) || dto.getIdClient() == 0){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client id should match with object and should be different than 0 ");
 		}
-		
 		Client entity = clientRepository.findOne(Integer.valueOf(clientId));
 		entity = ClientMapper.INSTANCE.map(dto, entity);
-		
-		LOGGER.info("******************");
-		LOGGER.info("entity: " + this.castEntityAsString(entity));
-		LOGGER.info("******************");
 		assignDependencyToChilds(entity);
 		this.updateEntity(clientRepository, entity);
 		dto = ClientMapper.INSTANCE.map(entity);
@@ -110,20 +110,16 @@ public class ClientService extends AbstractServiceMutations {
 	}
 
 	@DELETE
-	@Path("{clientId}")
+	@Path("/{id}")
 	@ApiOperation(value = "Delete Client", response = GeneralResponseMessage.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteClient(@PathParam("clientId") String clientId, ClientDTO dto) throws SODAPIException {
-		
-		if (dto.getIdClient() != Integer.valueOf(clientId) || dto.getIdClient() == 0){
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client id should match with object and should be different than 0 ");
-		}
+	public Response deleteClient(@PathParam("id") String clientId) throws SODAPIException {
 		Client entity = clientRepository.findOne(Integer.valueOf(clientId));
-		entity = ClientMapper.INSTANCE.map(dto, entity);
-		
-		assignDependencyToChilds(entity);
+		if (entity == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not found");
+		}
 		this.deleteEntity(clientRepository, entity.getIdClient());
 		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Client deleted"),
 				Response.Status.OK);
@@ -169,6 +165,33 @@ public class ClientService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 	
+	@POST
+	@Path("/byFilters")
+	@ApiOperation(value = "Get Client list by filter", response = ClientDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getClientsByFilter(List<KeyValue<String, String>> list) throws SODAPIException {
+		if (list == null || list.size() == 0){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Filters cannot be empty");
+		}
+		
+		List<ClientSpecification> filterList = new ArrayList<>();
+		for (KeyValue<String, String> kv : list){
+			ClientSpecification spec = new ClientSpecification(new SearchCriteria(kv.getKey(), ":", kv.getValue()));
+			filterList.add(spec);
+		}
+		
+		SpecificationsBuilder<Client, ClientSpecification> builder = new SpecificationsBuilder<>(filterList);		
+		
+		List<Client> entities = clientRepository.findAll(builder.build());
+		List<ClientDTO> result = entities.stream().map( (client) -> {
+				return ClientMapper.INSTANCE.map(client);
+			}).collect(Collectors.toList());
+		
+		return castEntityAsResponse(result, Response.Status.OK);
+	}
+	
 	@GET
 	@Path("/token/{payment-token}")
 	@ApiOperation(value = "Get Client list by payment token", response = ClientDTO.class)
@@ -177,6 +200,18 @@ public class ClientService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getClientByToken(@PathParam("payment-token") String token) throws SODAPIException {
 		List<Client> lClients = clientDAO.findByToken(token);
+		List<ClientDTO> lResult = lClients.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
+		return castEntityAsResponse(lResult, Response.Status.OK);
+	}
+	
+	@GET
+	@Path("/addressId/{idAddress}")
+	@ApiOperation(value = "Get Client list by payment token", response = ClientDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getClientByAddress(@PathParam("idAddress") String idAddress) throws SODAPIException {
+		List<Client> lClients = clientDAO.findByAddress(Integer.valueOf(idAddress));
 		List<ClientDTO> lResult = lClients.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
 		return castEntityAsResponse(lResult, Response.Status.OK);
 	}
