@@ -43,20 +43,20 @@ public class Client implements IEntity<Integer> {
 	private String twitter;
 
 	//bi-directional many-to-one association to AccessKey
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	private Set<AccessKey> accessKeys;
 
 	//bi-directional many-to-one association to Address
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	@JsonManagedReference
 	private Set<Address> addresses;
 
 	//bi-directional many-to-one association to PhoneNumber
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	private Set<PhoneNumber> phoneNumbers;
 
 	//bi-directional many-to-one association to Order
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, orphanRemoval=true)
 	private Set<Order> orders;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -66,10 +66,10 @@ public class Client implements IEntity<Integer> {
 	private Date updated;
 	
 	//bi-directional many-to-one association to ClientPaymentInfo
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	@JsonManagedReference
 	private Set<ClientPaymentInfo> clientPaymentInfos;
-
+	
 	public Client() {
 	}
 

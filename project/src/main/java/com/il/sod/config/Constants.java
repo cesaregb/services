@@ -43,4 +43,8 @@ public class Constants {
 	public static final int CLIENT_PAYMENT_OTHER = 4; // NOT DEFINED 
 	
 	
+	// Stops Type 
+	public static final int ADDRESS_ROUTE_TYPE = 0; 
+	public static final int ADDRESS_CLIENT_TYPE = 1; 
+	
 }

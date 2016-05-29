@@ -19,8 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.il.sod.db.dao.IClientPaymentInfoDAO;
+import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.entities.ClientPaymentInfo;
 import com.il.sod.db.model.repositories.ClientPaymentInfoRepository;
+import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.PaymentMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -41,6 +43,9 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 
 	@Autowired
 	ClientPaymentInfoRepository clientPaymentInfoRepository;
+	
+	@Autowired
+	ClientRepository clientRepository;
 
 	@Autowired
 	IClientPaymentInfoDAO clientPaymentInfoDAO;
@@ -109,6 +114,25 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}
+	}
+	
+	
+	@DELETE
+	@Path("/{id}")
+	@ApiOperation(value = "Delete ClientPaymentInfo", response = GeneralResponseMessage.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response deleteEntity(@PathParam("id") String id) throws SODAPIException {
+		ClientPaymentInfo entity = clientPaymentInfoRepository.findOne(Integer.valueOf(id));
+		if (entity == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "ClientPaymentInfo not found");
+		}
+		Client cEntity = entity.getClient();
+		cEntity.removeClientPaymentInfo(entity);
+		this.saveEntity(clientRepository, cEntity);
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("ClientPaymentInfo deleted"),
+				Response.Status.OK);
 	}
 
 	@GET

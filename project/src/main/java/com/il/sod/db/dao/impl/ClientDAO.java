@@ -23,4 +23,9 @@ public class ClientDAO implements IClientDAO{
 	public List<Client> findByToken(String token) {
 		return clientRepository.findByToken(token);
 	}
+	
+	@Override
+	public List<Client> findByAddress(Integer idAddress) {
+		return clientRepository.findByAddress(idAddress);
+	}
 }

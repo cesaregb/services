@@ -1,19 +1,25 @@
 package com.il.sod.test.model.entities;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.il.sod.db.dao.IClientDAO;
 import com.il.sod.db.dao.IDAO;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
+import com.il.sod.db.model.repositories.ClientSpecification;
+import com.il.sod.db.model.repositories.SearchCriteria;
 import com.il.sod.test.config.SpringTestConfiguration;
 
-@Ignore
 public class ClientDaoTest extends SpringTestConfiguration{
 	
 	@Autowired
@@ -25,6 +31,7 @@ public class ClientDaoTest extends SpringTestConfiguration{
 	@Autowired
 	ClientRepository clientRepository;
 	
+    @Ignore
     @Test
     public void test(){
     	try{
@@ -38,20 +45,43 @@ public class ClientDaoTest extends SpringTestConfiguration{
     }
     
     @Test
-    public void test2(){
+    public void testCustomQuery(){
 //    	clientDao.findByEmail("cesareg.borjon@gmail.com");
 //    	List<Client> c = clientDao.findAll();
 //    	List<Client> c = clientReadsDAO.findByEmail("cesareg.borjon@gmail.com");
     	List<Client> c = clientDAO.findByToken("abcd");
 //    	List<Client> c = clientDAO.findByToken2("abcd");
     	System.out.println("*************************");
-    	System.out.println("*************************");
     	for ( Client item : c ){
+    		assertNotNull(item.getEmail());
     		System.out.println("email: " + item.getEmail());
     		System.out.println("name: " + item.getName());
     	}
     	System.out.println("*************************");
-    	System.out.println("*************************");
+    }
+    
+    @Test
+    public void testSimpleQuery(){
+    	ClientSpecification spec = new ClientSpecification(new SearchCriteria("name", ":", "Name"));
+		List<Client> results = clientRepository.findAll(spec);
+		for (Client c : results){
+			System.out.println("c: " + c.getName() + " " + c.getLastName());
+			assertEquals("name not valid", "Name", c.getName());
+		}
+		
+    }
+    
+    @Test
+    public void testMultipleQuery(){
+    	ClientSpecification spec = new ClientSpecification(new SearchCriteria("name", ":", "Name"));
+    	ClientSpecification spec2 = new ClientSpecification(new SearchCriteria("email", ":", "email@domain.com.mx"));
+    	List<Client> results = clientRepository.findAll(Specifications.where(spec).and(spec2));
+    	assertNotNull("No results!!", results);
+    	assertTrue("No results!!", (results.size() > 0) );
+    	for (Client c : results){
+    		System.out.println("c: " + c.getName() + " " + c.getLastName());
+    		assertEquals("name not valid", "Name", c.getName());
+    	}
     }
     
     public boolean create(){
@@ -74,5 +104,4 @@ public class ClientDaoTest extends SpringTestConfiguration{
     	}
     	return true;
     }
-    
 }

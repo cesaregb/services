@@ -816,6 +816,31 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `sod_db`.`Stops`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Stops` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`Stops` (
+  `idStops` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `description` VARCHAR(45) NULL,
+  `time` INT NULL DEFAULT 10,
+  `arriveAt` VARCHAR(50) NULL DEFAULT 7,
+  `stopAction` INT NULL DEFAULT 1 COMMENT '1 = pickup\n2 = deliver',
+  `idRoutes` INT NOT NULL,
+  `type` INT NULL DEFAULT 0 COMMENT '0 = address\n1 = client',
+  `idAddress` INT NULL,
+  PRIMARY KEY (`idStops`),
+  INDEX `fk_Stops_Routes1_idx` (`idRoutes` ASC),
+  CONSTRAINT `fk_Stops_Routes1`
+    FOREIGN KEY (`idRoutes`)
+    REFERENCES `sod_db`.`Routes` (`idRoutes`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `sod_db`.`AddressRoutes`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `sod_db`.`AddressRoutes` ;
@@ -831,37 +856,25 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`AddressRoutes` (
   `comments` VARCHAR(255) NULL,
   `lat` DECIMAL(10,8) NULL,
   `lng` DECIMAL(11,8) NULL,
-  `prefered` TINYINT(1) NULL DEFAULT 0,
   PRIMARY KEY (`idAddressRoute`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`Stops`
+-- Table `sod_db`.`CalendarRoute`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`Stops` ;
+DROP TABLE IF EXISTS `sod_db`.`CalendarRoute` ;
 
-CREATE TABLE IF NOT EXISTS `sod_db`.`Stops` (
-  `idStops` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NULL,
-  `description` VARCHAR(45) NULL,
-  `time` INT NULL DEFAULT 10,
-  `arrive` INT NULL DEFAULT 7,
-  `day` INT NULL DEFAULT 1 COMMENT '1 = Lunes \n… \n7 = Domingo',
-  `stop_action` INT NULL DEFAULT 1 COMMENT '1 = pickup\n2 = deliver',
+CREATE TABLE IF NOT EXISTS `sod_db`.`CalendarRoute` (
+  `idCalendarRoute` INT NOT NULL AUTO_INCREMENT,
+  `day` INT NULL DEFAULT 1,
+  `time` VARCHAR(50) NULL DEFAULT '8:00',
   `idRoutes` INT NOT NULL,
-  `idAddressRoute` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`idStops`),
-  INDEX `fk_Stops_Routes1_idx` (`idRoutes` ASC),
-  INDEX `fk_Stops_AddressRoutes1_idx` (`idAddressRoute` ASC),
-  CONSTRAINT `fk_Stops_Routes1`
+  PRIMARY KEY (`idCalendarRoute`),
+  INDEX `fk_Calendar_Routes1_idx` (`idRoutes` ASC),
+  CONSTRAINT `fk_Calendar_Routes1`
     FOREIGN KEY (`idRoutes`)
     REFERENCES `sod_db`.`Routes` (`idRoutes`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Stops_AddressRoutes1`
-    FOREIGN KEY (`idAddressRoute`)
-    REFERENCES `sod_db`.`AddressRoutes` (`idAddressRoute`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -880,6 +893,83 @@ DROP VIEW IF EXISTS `sod_db`.`view1` ;
 DROP TABLE IF EXISTS `sod_db`.`view1`;
 USE `sod_db`;
 
+USE `sod_db`;
+
+DELIMITER $$
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Clients_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Clients_BEFORE_INSERT` BEFORE INSERT ON `Clients` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Clients_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Clients_BEFORE_UPDATE` BEFORE UPDATE ON `Clients` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Employee_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Employee_BEFORE_INSERT` BEFORE INSERT ON `Employee` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Employee_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Employee_BEFORE_UPDATE` BEFORE UPDATE ON `Employee` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Orders_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Orders_BEFORE_INSERT` BEFORE INSERT ON `Orders` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Orders_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Orders_BEFORE_UPDATE` BEFORE UPDATE ON `Orders` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Service_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Service_BEFORE_INSERT` BEFORE INSERT ON `Service` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Service_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Service_BEFORE_UPDATE` BEFORE UPDATE ON `Service` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -911,7 +1001,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Address` (`idAddress`, `idClient`, `country`, `state`, `zipcode`, `city`, `address`, `address2`, `comments`, `lat`, `lng`, `prefered`) VALUES (1, 1, 'Mexico', 'Jalisco', '44540', 'Guadalajara', 'Peninsula', NULL, NULL, NULL, NULL, true);
+INSERT INTO `sod_db`.`Address` (`idAddress`, `idClient`, `country`, `state`, `zipcode`, `city`, `address`, `address2`, `comments`, `lat`, `lng`, `prefered`) VALUES (1, 1, 'Mexico', 'Jalisco', '44540', 'Guadalajara', 'Peninsula', NULL, NULL, 20.64551528, -103.39244127, 1);
 
 COMMIT;
 
@@ -1148,80 +1238,33 @@ INSERT INTO `sod_db`.`Routes` (`idRoutes`, `name`, `description`, `category`) VA
 
 COMMIT;
 
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`Stops`
+-- -----------------------------------------------------
+START TRANSACTION;
 USE `sod_db`;
+INSERT INTO `sod_db`.`Stops` (`idStops`, `name`, `description`, `time`, `arriveAt`, `stopAction`, `idRoutes`, `type`, `idAddress`) VALUES (1, 'stop 1', 'stop 1 description', 20, '9:30', 1, 1, 1, 1);
 
-DELIMITER $$
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Clients_BEFORE_INSERT` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Clients_BEFORE_INSERT` BEFORE INSERT ON `Clients` FOR EACH ROW
-BEGIN
-SET NEW.created = NOW();
-END$$
+COMMIT;
 
 
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Clients_BEFORE_UPDATE` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Clients_BEFORE_UPDATE` BEFORE UPDATE ON `Clients` FOR EACH ROW
-BEGIN
-SET NEW.updated = NOW();
-END$$
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`AddressRoutes`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`AddressRoutes` (`idAddressRoute`, `country`, `state`, `zipcode`, `city`, `address`, `address2`, `comments`, `lat`, `lng`) VALUES (1, 'Mexico', 'Jalisco', '44540', 'Guadalajara', 'Calle', 'Colonia', 'no tiene timbre... ', NULL, NULL);
+
+COMMIT;
 
 
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Employee_BEFORE_INSERT` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Employee_BEFORE_INSERT` BEFORE INSERT ON `Employee` FOR EACH ROW
-BEGIN
-SET NEW.created = NOW();
-END$$
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`CalendarRoute`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`CalendarRoute` (`idCalendarRoute`, `day`, `time`, `idRoutes`) VALUES (1, 1, '9:30', 1);
 
+COMMIT;
 
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Employee_BEFORE_UPDATE` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Employee_BEFORE_UPDATE` BEFORE UPDATE ON `Employee` FOR EACH ROW
-BEGIN
-SET NEW.updated = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Orders_BEFORE_INSERT` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Orders_BEFORE_INSERT` BEFORE INSERT ON `Orders` FOR EACH ROW
-BEGIN
-SET NEW.created = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Orders_BEFORE_UPDATE` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Orders_BEFORE_UPDATE` BEFORE UPDATE ON `Orders` FOR EACH ROW
-BEGIN
-SET NEW.updated = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Service_BEFORE_INSERT` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Service_BEFORE_INSERT` BEFORE INSERT ON `Service` FOR EACH ROW
-BEGIN
-SET NEW.created = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Service_BEFORE_UPDATE` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Service_BEFORE_UPDATE` BEFORE UPDATE ON `Service` FOR EACH ROW
-BEGIN
-SET NEW.updated = NOW();
-END$$
-
-
-DELIMITER ;

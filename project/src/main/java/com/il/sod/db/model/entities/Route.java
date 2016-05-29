@@ -1,14 +1,19 @@
 package com.il.sod.db.model.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * The persistent class for the Routes database table.
@@ -31,8 +36,14 @@ public class Route implements IEntity<Integer> {
 	private String name;
 
 	//bi-directional many-to-one association to Stop
-	@OneToMany(mappedBy="route")
+	@OneToMany(mappedBy="route", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
+	@JsonManagedReference
 	private Set<Stop> stops;
+	
+	//bi-directional many-to-one association to CalendarRoute
+	@OneToMany(mappedBy="route", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
+	@JsonManagedReference
+	private Set<CalendarRoute> calendarRoutes;
 
 	public Route() {
 	}
@@ -78,6 +89,9 @@ public class Route implements IEntity<Integer> {
 	}
 
 	public Stop addStop(Stop stop) {
+		if (this.stops == null){
+			this.stops = new HashSet<>();
+		}
 		getStops().add(stop);
 		stop.setRoute(this);
 
@@ -100,6 +114,28 @@ public class Route implements IEntity<Integer> {
 	public Route setId(Integer id) {
 		this.idRoutes = id;
 		return this;
+	}
+	
+	public Set<CalendarRoute> getCalendarRoutes() {
+		return this.calendarRoutes;
+	}
+
+	public void setCalendarRoutes(Set<CalendarRoute> calendarRoutes) {
+		this.calendarRoutes = calendarRoutes;
+	}
+
+	public CalendarRoute addCalendarRoute(CalendarRoute calendarRoute) {
+		getCalendarRoutes().add(calendarRoute);
+		calendarRoute.setRoute(this);
+
+		return calendarRoute;
+	}
+
+	public CalendarRoute removeCalendarRoute(CalendarRoute calendarRoute) {
+		getCalendarRoutes().remove(calendarRoute);
+		calendarRoute.setRoute(null);
+
+		return calendarRoute;
 	}
 
 }

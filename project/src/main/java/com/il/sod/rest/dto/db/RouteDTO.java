@@ -8,6 +8,7 @@ public class RouteDTO{
 	private String description;
 	private String name;
 	private Set<StopDTO> stops;
+	private Set<CalendarRouteDTO> calendarRoutes;
 	
 	public int getIdRoutes() {
 		return idRoutes;
@@ -38,6 +39,12 @@ public class RouteDTO{
 	}
 	public void setStops(Set<StopDTO> stops) {
 		this.stops = stops;
+	}
+	public Set<CalendarRouteDTO> getCalendarRoutes() {
+		return calendarRoutes;
+	}
+	public void setCalendarRoutes(Set<CalendarRouteDTO> calendarRoutes) {
+		this.calendarRoutes = calendarRoutes;
 	}
 
 }
