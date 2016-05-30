@@ -78,11 +78,13 @@ public enum SpecificObjectsMapper {
 								kv = new KeyValue<Integer, String>();
 								kv.setKey(p.getId());
 								kv.setValue(p.getName());
+								kv.setServiceIncrement(p.getServiceIncrement());
 								options.get(specValue.getSpec().getId()).add(kv);
 							}
 						}else if (specValue.getType() == Constants.SPEC_TYPE_VALUES){
 							kv.setKey(0);
 							kv.setValue(specValue.getValue());
+							kv.setServiceIncrement(specValue.getServiceIncrement());
 							options.get(specValue.getSpec().getId()).add(kv);
 						}
 					}
