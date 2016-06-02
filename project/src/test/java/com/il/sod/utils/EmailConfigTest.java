@@ -15,6 +15,7 @@ public class EmailConfigTest extends SpringTestConfiguration{
     @Test
     public void test(){
     	Client client = new Client();
+    	client.setName("Cesar");
     	client.setEmail("cesareg.borjon@gmail.com");
 		emailService.send(client);
     }

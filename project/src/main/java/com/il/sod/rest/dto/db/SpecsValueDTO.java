@@ -8,6 +8,7 @@ public class SpecsValueDTO {
 	private String value;
 	private int idSpecs;
 	private double serviceIncrement; 
+	private int prefered;
 	
 	public SpecsValueDTO() {
 	}
@@ -58,6 +59,14 @@ public class SpecsValueDTO {
 
 	public void setIdSpecs(int idSpecs) {
 		this.idSpecs = idSpecs;
+	}
+
+	public int getPrefered() {
+		return prefered;
+	}
+
+	public void setPrefered(int prefered) {
+		this.prefered = prefered;
 	}
 
 }

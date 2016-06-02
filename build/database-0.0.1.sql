@@ -791,6 +791,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`SpecsValues` (
   `value` VARCHAR(45) NULL,
   `idProductType` INT NULL DEFAULT 0,
   `serviceIncrement` DOUBLE NULL DEFAULT 0,
+  `prefered` INT NULL DEFAULT 0,
   PRIMARY KEY (`idSpecsValues`),
   INDEX `fk_SpecsValues_Specs1_idx` (`idSpecs` ASC),
   CONSTRAINT `fk_SpecsValues_Specs1`
@@ -1221,10 +1222,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`) VALUES (1, 1, 1, 'C', 0, 0);
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`) VALUES (2, 1, 1, 'M', 0, 0.20);
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`) VALUES (3, 1, 1, 'G', 0, 0.30);
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`) VALUES (4, 2, 2, NULL, 1, 0);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (1, 1, 1, 'C', 0, 0, NULL);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (2, 1, 1, 'M', 0, 0.20, NULL);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (3, 1, 1, 'G', 0, 0.30, NULL);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (4, 2, 2, NULL, 1, 0, NULL);
 
 COMMIT;
 
