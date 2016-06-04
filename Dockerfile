@@ -75,4 +75,5 @@ RUN mvn clean install package
 
 #When this image is run as a container, start the jetty server. It will be listening on the ${REGISTRATION_API_PORT}
 # ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "target/sod_project-1.0.jar"]
-ENTRYPOINT ["mvn", "clean", "compile", "-Dspring.profiles.active=dev", "exec:java"]
+# ENTRYPOINT ["mvn", "clean", "compile", "-Dspring.profiles.active=dev", "exec:java"]
+ENTRYPOINT ["mvn", "clean", "compile", "-Dspring.profiles.active=dev", "exec:java", "-Dhttps.protocols=TLSv1,SSLv3"]

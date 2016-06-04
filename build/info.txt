@@ -12,20 +12,13 @@ http://tecadmin.net/install-java-8-on-centos-rhel-and-fedora/
 
 #API Info
 
-@SwaggerDefinition(tags = { @Tag(name = "clients", description = "Client Layer services"),
-		@Tag(name = "asset", description = "Assets Services ADMIN"),
-		@Tag(name = "employee", description = "Employee Services ADMIN"),
-		@Tag(name = "task", description = "Task Services ADMIN"),
-		@Tag(name = "order", description = "Order Layer Services"),
-		@Tag(name = "service", description = "Service Layer Services"),
-		@Tag(name = "health", description = "Validate API + MODEL Healt") })
 		
 #docker
 export NODE_ENV=dev
 export VAULT='{"auth":{"facebook":{"clientId":"881601445289245","clientSecret":"8b3671fe28e22dd57b525d8cb864a2c9"}},"password":"wx8(rOqJIA^yok4aBv!(l25GjwHTP0g&","api":{"user":"user","password":"user"},"stripe":"sk_test_m1f9mBO7U4X1lDnerfKhTyK9"}'
 
-{}'
-
 #email credentils: 
 SMTP Username:AKIAIWA5TJM5EFT47FOA
 SMTP Password:AnJXL5HlMUdsy0COy1aSAj/cmXjos/sSQ11XE+12O7sC
+
+# Publish configuration... 
