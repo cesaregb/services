@@ -4,6 +4,9 @@ Amazon
 	sod_user/Welcome1
 	db_name: sod_db
 	
+	
+	
+	
 #WEB
 http://ec2-52-37-88-203.us-west-2.compute.amazonaws.com:8080/swagger-ui/
 
@@ -22,3 +25,17 @@ SMTP Username:AKIAIWA5TJM5EFT47FOA
 SMTP Password:AnJXL5HlMUdsy0COy1aSAj/cmXjos/sSQ11XE+12O7sC
 
 # Publish configuration... 
+
+
+#DB Backup 
+/Users/cesaregb/dev/dumps/Dump20160604
+	
+#autodeploy- part 2
+https://blog.gopheracademy.com/advent-2014/easy-deployment/
+	-> https://github.com/bketelsen/captainhook
+		-> https://gist.github.com/diegopacheco/9bed0827e434abae73c4
+		
+		
+nohup captainhook -listen-addr 0.0.0.0:8081 -configdir ~/captainhook & 
+
+

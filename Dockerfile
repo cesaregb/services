@@ -3,8 +3,10 @@
 #
 # To publish:
   # docker logn
-  # docker push interactivelabs/services:v1
-# docker run -p 8080:8080 -it interactivelabs/services:v1
+  # docker push interactivelabs/services
+# docker run -p 8080:8080 -it interactivelabs/services
+# docker run -p 8080:8080 -d interactivelabs/services
+# docker run -p 8080:8080 -it  --entrypoint bash interactivelabs/services
 #
 # To run:
 # docker run -p 8080:8080 -it interactivelabs/services:v1
