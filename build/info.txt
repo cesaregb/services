@@ -1,19 +1,27 @@
 # DB 
-db.url=jdbc:mysql://lavanderia.cbipceqbp2ux.us-west-2.rds.amazonaws.com:3306/sod_db
-Amazon 
-	sod_user/Welcome1
-	db_name: sod_db
+	PROD
+		db.url=jdbc:mysql://soddb.ca6bb5j2bui8.us-east-1.rds.amazonaws.com:3306/sod_db
+		Amazon 
+			sod_user/Welcome1
+			db_name: sod_db
+
+	DEV: 
+		db.url=jdbc:mysql://soddbtest.ca6bb5j2bui8.us-east-1.rds.amazonaws.com:3306/sod_db
+			sod_user/Welcome1
+			db_name: sod_db
 	
-	
-	
-	
+# SERVIES:
+	PROD:
+		http://52.7.139.88:8080
+	DEV:  
+		http://52.6.82.228:8080
+
+
 #WEB
 http://ec2-52-37-88-203.us-west-2.compute.amazonaws.com:8080/swagger-ui/
 
 #Install java in EC2
 http://tecadmin.net/install-java-8-on-centos-rhel-and-fedora/
-
-#API Info
 
 		
 #docker
