@@ -8,8 +8,12 @@ if [ $1 = "deploy_services" ]; then
 	echo "Deploying interactivelabs/services"
 	IMAGE="interactivelabs/services"
 	docker ps | grep $IMAGE | awk '{print $1}' | xargs docker stop
-	docker pull $IMAGE
-	docker run -p 8080:8080 -d $IMAGE
+	# docker pull $IMAGE
+	if [ $2 = "dev" ]; then
+		docker run -p 8080:8080 -e "APP_PROFILE=dev" -d $IMAGE
+	else
+		docker run -p 8080:8080 -e "APP_PROFILE=prod" -d $IMAGE
+	fi
 elif [ $1 = "deploy_web" ]; then
 	echo "Deploying interactivelabs/laundry-web"
 	IMAGE="interactivelabs/laundry-web"

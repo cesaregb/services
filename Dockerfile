@@ -1,11 +1,11 @@
 # To build:
-# docker build -t interactivelabs/services:v1 -f Dockerfile .
+# docker build -t interactivelabs/services -f Dockerfile .
 #
 # To publish:
   # docker logn
   # docker push interactivelabs/services
-# docker run -p 8080:8080 -it interactivelabs/services
-# docker run -p 8080:8080 -d interactivelabs/services
+# docker run -p 8080:8080 -e "APP_PROFILE=dev" -it interactivelabs/services
+# docker run -p 8080:8080 -e "spring.profiles.active=dev" -d interactivelabs/services
 # docker run -p 8080:8080 -it  --entrypoint bash interactivelabs/services
 #
 # To run:
@@ -78,4 +78,4 @@ RUN mvn clean install package
 #When this image is run as a container, start the jetty server. It will be listening on the ${REGISTRATION_API_PORT}
 # ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "target/sod_project-1.0.jar"]
 # ENTRYPOINT ["mvn", "clean", "compile", "-Dspring.profiles.active=dev", "exec:java"]
-ENTRYPOINT ["mvn", "clean", "compile", "-Dspring.profiles.active=dev", "exec:java", "-Dhttps.protocols=TLSv1,SSLv3"]
+ENTRYPOINT ["mvn", "clean", "compile", "exec:java"]
