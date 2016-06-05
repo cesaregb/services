@@ -19,23 +19,20 @@ elif [ $1 = "deploy_web" ]; then
 	IMAGE="interactivelabs/laundry-web"
 	docker ps | grep $IMAGE | awk '{print $1}' | xargs docker stop
 	docker pull $IMAGE
-	docker run -p 8080:8080 -d $IMAGE
+	docker run -p 3000:3000 -d $IMAGE
 elif [ $1 = "deploy_admin" ]; then
 	echo "Deploying interactivelabs/process-admin"
 	IMAGE="interactivelabs/process-admin"
+	# this may fail but required to start it again...
+	docker ps | grep mongo | awk '{print $1}' | xargs docker stop
+	docker rm mongo-admin
+	docker run -p 27017:27017 --name mongo-admin -d mongo
 	docker ps | grep $IMAGE | awk '{print $1}' | xargs docker stop
 	docker pull $IMAGE
-	docker run -p 8080:8080 -d $IMAGE
+	docker run -p 9000:9000 --link mongo-admin:mongo -d $IMAGE
 else
 	echo "Argument not valid"
 	exit 1;
 fi
 
 exit 0;
-
-
-# how to run this with docker
-# docker pull bketelsen/captainhook
-# mkdir /some/local/config
-# $EDITOR /some/local/config/myhook.json
-# docker run -d -v /some/local/config:/config bketelsen/captainhook
