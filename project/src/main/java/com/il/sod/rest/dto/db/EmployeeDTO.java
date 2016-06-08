@@ -11,6 +11,7 @@ public class EmployeeDTO {
 	private String username;
 	private int idEmployeeType;
 	private String email;
+	private String employeeTypeName;
 	
 	private Date created;
 	private Date updated;
@@ -74,5 +75,11 @@ public class EmployeeDTO {
 	}
 	public void setIdEmployeeType(int idEmployeeType) {
 		this.idEmployeeType = idEmployeeType;
+	}
+	public String getEmployeeTypeName() {
+		return employeeTypeName;
+	}
+	public void setEmployeeTypeName(String employeeTypeName) {
+		this.employeeTypeName = employeeTypeName;
 	}
 }

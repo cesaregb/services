@@ -25,6 +25,7 @@ public enum TaskMapper {
 		
 		BaseMapper.MAPPER_FACTORY.classMap(TaskDTO.class, Task.class)
 			.field("idTaskType", "taskType.idTaskType")
+			.field("taskTypeName", "taskType.name")
 			.byDefault()
 			.register();
 		

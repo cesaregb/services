@@ -8,14 +8,14 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- Schema sod_db
 -- -----------------------------------------------------
 -- This is the initial_scheema for the service on demand application
---
+-- 
 DROP SCHEMA IF EXISTS `sod_db` ;
 
 -- -----------------------------------------------------
 -- Schema sod_db
 --
 -- This is the initial_scheema for the service on demand application
---
+-- 
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `sod_db` DEFAULT CHARACTER SET utf8 ;
 USE `sod_db` ;
@@ -880,6 +880,21 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`CalendarRoute` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `sod_db`.`Menu`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Menu` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`Menu` (
+  `idMenu` INT NOT NULL AUTO_INCREMENT,
+  `state` VARCHAR(45) NULL,
+  `name` VARCHAR(45) NULL,
+  `accessLevel` INT NULL DEFAULT 1,
+  `order` INT NULL,
+  PRIMARY KEY (`idMenu`))
+ENGINE = InnoDB;
+
 USE `sod_db` ;
 
 -- -----------------------------------------------------
@@ -1222,10 +1237,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (1, 1, 1, 'C', 0, 0, NULL);
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (2, 1, 1, 'M', 0, 0.20, NULL);
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (3, 1, 1, 'G', 0, 0.30, NULL);
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (4, 2, 2, NULL, 1, 0, NULL);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (1, 1, 1, 'C', 0, 0, 1);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (2, 1, 1, 'M', 0, 0.20, 0);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (3, 1, 1, 'G', 0, 0.30, 0);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (4, 2, 2, NULL, 1, 0, 0);
 
 COMMIT;
 
@@ -1268,3 +1283,17 @@ USE `sod_db`;
 INSERT INTO `sod_db`.`CalendarRoute` (`idCalendarRoute`, `day`, `time`, `idRoutes`) VALUES (1, 1, '9:30', 1);
 
 COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`Menu`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (1, 'client.all', 'Clients', 1, 1);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (2, 'routes.all', 'Routes', 1, 2);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (3, 'task.all', 'Tasks', 1, 3);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (4, 'specs', 'Specs', 1, 4);
+
+COMMIT;
+

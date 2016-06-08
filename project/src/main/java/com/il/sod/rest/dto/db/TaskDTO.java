@@ -5,6 +5,7 @@ public class TaskDTO {
 	private String description;
 	private String name;
 	private int idTaskType;
+	private String taskTypeName;
 	
 	public int getIdTask() {
 		return idTask;
@@ -29,5 +30,11 @@ public class TaskDTO {
 	}
 	public void setIdTaskType(int idTaskType) {
 		this.idTaskType = idTaskType;
+	}
+	public String getTaskTypeName() {
+		return taskTypeName;
+	}
+	public void setTaskTypeName(String taskTypeName) {
+		this.taskTypeName = taskTypeName;
 	}
 }

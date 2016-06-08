@@ -1,3 +1,26 @@
+
+Mirna Yaneli Ramirez Carranz
+
+http://tersuslavanderia.com
+
+Tersus Lavanderia
+
+Gerente comercial
+
+mirna@tersuslavanderia.com
+
+3315464388
+
+Av del pinar 1840, Pinar de la calma, Zapopan, Jal
+
+
+*******************************
+Fonts:
+Gentona ExtraBold DEMO
+DIN Alternate Bold
+Gentona ExtraBold DEMO
+*******************************
+
 # DB 
 	PROD
 		db.url=jdbc:mysql://soddb.ca6bb5j2bui8.us-east-1.rds.amazonaws.com:3306/sod_db

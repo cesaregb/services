@@ -25,6 +25,7 @@ public enum ProductMapper {
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ProductDTO.class, Product.class)
 			.field("idProductType", "productType.idProductType")
+			.field("productTypeName", "productType.name")
 			.byDefault()
 			.register();
 		
