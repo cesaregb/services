@@ -1,0 +1,10 @@
+{
+    "scripts": [
+        {
+            "command": "/home/ec2-user/deployer.sh",
+            "args": [
+                "deploy_services"
+            ]
+        }
+    ]
+}

@@ -29,6 +29,8 @@ public class SpecsValue implements IEntity<Integer> {
 	private int type;
 
 	private String value;
+	
+	private int prefered;
 
 	//bi-directional many-to-one association to Spec
 	@ManyToOne
@@ -97,5 +99,13 @@ public class SpecsValue implements IEntity<Integer> {
 
 	public void setServiceIncrement(double serviceIncrement) {
 		this.serviceIncrement = serviceIncrement;
+	}
+
+	public int getPrefered() {
+		return prefered;
+	}
+
+	public void setPrefered(int prefered) {
+		this.prefered = prefered;
 	}
 }

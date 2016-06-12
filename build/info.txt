@@ -1,31 +1,72 @@
+
+Mirna Yaneli Ramirez Carranz
+
+http://tersuslavanderia.com
+
+Tersus Lavanderia
+
+Gerente comercial
+
+mirna@tersuslavanderia.com
+
+3315464388
+
+Av del pinar 1840, Pinar de la calma, Zapopan, Jal
+
+
+*******************************
+Fonts:
+Gentona ExtraBold DEMO
+DIN Alternate Bold
+Gentona ExtraBold DEMO
+*******************************
+
 # DB 
-db.url=jdbc:mysql://lavanderia.cbipceqbp2ux.us-west-2.rds.amazonaws.com:3306/sod_db
-Amazon 
-	sod_user/Welcome1
-	db_name: sod_db
+	PROD
+		db.url=jdbc:mysql://soddb.ca6bb5j2bui8.us-east-1.rds.amazonaws.com:3306/sod_db
+		Amazon 
+			sod_user/Welcome1
+			db_name: sod_db
+
+	DEV: 
+		db.url=jdbc:mysql://soddbtest.ca6bb5j2bui8.us-east-1.rds.amazonaws.com:3306/sod_db
+			sod_user/Welcome1
+			db_name: sod_db
 	
+# SERVIES:
+	PROD:
+		http://52.7.139.88:8080
+	DEV:  
+		http://52.6.82.228:8080
+
+
 #WEB
 http://ec2-52-37-88-203.us-west-2.compute.amazonaws.com:8080/swagger-ui/
 
 #Install java in EC2
 http://tecadmin.net/install-java-8-on-centos-rhel-and-fedora/
 
-#API Info
-
-@SwaggerDefinition(tags = { @Tag(name = "clients", description = "Client Layer services"),
-		@Tag(name = "asset", description = "Assets Services ADMIN"),
-		@Tag(name = "employee", description = "Employee Services ADMIN"),
-		@Tag(name = "task", description = "Task Services ADMIN"),
-		@Tag(name = "order", description = "Order Layer Services"),
-		@Tag(name = "service", description = "Service Layer Services"),
-		@Tag(name = "health", description = "Validate API + MODEL Healt") })
 		
 #docker
 export NODE_ENV=dev
 export VAULT='{"auth":{"facebook":{"clientId":"881601445289245","clientSecret":"8b3671fe28e22dd57b525d8cb864a2c9"}},"password":"wx8(rOqJIA^yok4aBv!(l25GjwHTP0g&","api":{"user":"user","password":"user"},"stripe":"sk_test_m1f9mBO7U4X1lDnerfKhTyK9"}'
 
-{}'
-
 #email credentils: 
 SMTP Username:AKIAIWA5TJM5EFT47FOA
 SMTP Password:AnJXL5HlMUdsy0COy1aSAj/cmXjos/sSQ11XE+12O7sC
+
+# Publish configuration... 
+
+
+#DB Backup 
+/Users/cesaregb/dev/dumps/Dump20160604
+	
+#autodeploy- part 2
+https://blog.gopheracademy.com/advent-2014/easy-deployment/
+	-> https://github.com/bketelsen/captainhook
+		-> https://gist.github.com/diegopacheco/9bed0827e434abae73c4
+		
+		
+nohup captainhook -listen-addr 0.0.0.0:8081 -configdir ~/captainhook & 
+
+

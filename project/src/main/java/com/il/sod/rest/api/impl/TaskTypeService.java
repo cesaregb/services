@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.entities.TaskType;
 import com.il.sod.db.model.repositories.TaskTypeRepository;
 import com.il.sod.exception.SODAPIException;
@@ -87,22 +88,21 @@ public class TaskTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
-
+	
 	@DELETE
-	@ApiOperation(value = "Create Task Type", response = TaskTypeDTO.class)
+	@Path("/{id}")
+	@ApiOperation(value = "Delete Task Type", response = GeneralResponseMessage.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteTaskType(TaskTypeDTO dto) throws SODAPIException {
-		try {
-			TaskType entity = TaskMapper.INSTANCE.map(dto);
-			this.deleteEntity(taskTypeRepository, entity.getIdTaskType());
-			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Task deleted"),
-					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
+	public Response deleteClient(@PathParam("id") String id) throws SODAPIException {
+		TaskType entity = taskTypeRepository.findOne(Integer.valueOf(id));
+		if (entity == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
+		this.deleteEntity(taskTypeRepository, entity.getId());
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Item deleted"),
+				Response.Status.OK);
 	}
 
 	@GET

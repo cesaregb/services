@@ -8,6 +8,7 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.il.sod.config.Constants;
 import com.il.sod.exception.SODAPIException;
 
 public class PropertyHandler {
@@ -25,6 +26,8 @@ public class PropertyHandler {
 			String fileEnvName = FILE_ENV_NAME;
 			if (System.getProperty("spring.profiles.active") != null){
 				fileEnvName += System.getProperty("spring.profiles.active") + ".properties";
+			}else if(System.getenv(Constants.ENV_APP_PROFILE) != null){
+				fileEnvName += System.getenv(Constants.ENV_APP_PROFILE) + ".properties";
 			}else{
 				fileEnvName += "local.properties";
 			}

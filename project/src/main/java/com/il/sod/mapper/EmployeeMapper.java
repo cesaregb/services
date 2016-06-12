@@ -25,6 +25,7 @@ public enum EmployeeMapper {
 		
 		BaseMapper.MAPPER_FACTORY.classMap(EmployeeDTO.class, Employee.class)
 			.field("idEmployeeType", "employeeType.idEmployeeType")
+			.field("employeeTypeName", "employeeType.name")
 			.byDefault()
 			.register();
 		

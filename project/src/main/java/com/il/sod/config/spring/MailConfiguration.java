@@ -10,22 +10,33 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.ui.velocity.VelocityEngineFactoryBean;
+import org.springframework.ui.velocity.VelocityEngineFactory;
 
 @Configuration
 public class MailConfiguration {
+	
 	@Bean
-	public VelocityEngine velocityEngine() throws VelocityException, IOException{
-		VelocityEngineFactoryBean factory = new VelocityEngineFactoryBean();
-		Properties props = new Properties();
-		props.put("resource.loader", "class");
-		props.put("class.resource.loader.class", 
-				  "org.apache.velocity.runtime.resource.loader." + 
-				  "ClasspathResourceLoader");
-		factory.setVelocityProperties(props);
-		
-		return factory.createVelocityEngine();
-	}
+    public VelocityEngine velocityEngine() throws VelocityException, IOException{
+        VelocityEngineFactory factory = new VelocityEngineFactory();
+        Properties props = new Properties();
+        props.put("resource.loader", "class");
+        props.put("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+        factory.setVelocityProperties(props);
+        return factory.createVelocityEngine();      
+    }
+//	
+//	@Bean
+//	public VelocityEngine velocityEngine() throws VelocityException, IOException{
+//		VelocityEngineFactoryBean factory = new VelocityEngineFactoryBean();
+//		Properties props = new Properties();
+//		props.put("resource.loader", "class");
+//		props.put("class.resource.loader.class", 
+//				  "org.apache.velocity.runtime.resource.loader." + 
+//				  "ClasspathResourceLoader");
+//		factory.setVelocityProperties(props);
+//		
+//		return factory.createVelocityEngine();
+//	}
 	
 	@Value("${email.host}")
     private String host;

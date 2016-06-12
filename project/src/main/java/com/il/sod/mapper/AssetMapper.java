@@ -25,6 +25,7 @@ public enum AssetMapper {
 		
 		BaseMapper.MAPPER_FACTORY.classMap(AssetDTO.class, Asset.class)
 			.field("idAssetType", "assetType.idAssetType")
+			.field("assetTypeName", "assetType.name")
 			.byDefault()
 			.register();
 		

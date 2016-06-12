@@ -8,6 +8,7 @@ public class ProductDTO {
 	private double serviceIncrement;
 	private int status;
 	private int idProductType;
+	private String productTypeName;
 	
 	public int getIdProduct() {
 		return idProduct;
@@ -50,6 +51,12 @@ public class ProductDTO {
 	}
 	public void setIdProductType(int idProductType) {
 		this.idProductType = idProductType;
+	}
+	public String getProductTypeName() {
+		return productTypeName;
+	}
+	public void setProductTypeName(String productTypeName) {
+		this.productTypeName = productTypeName;
 	}
 
 }

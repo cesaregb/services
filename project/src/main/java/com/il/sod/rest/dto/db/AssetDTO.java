@@ -6,6 +6,8 @@ public class AssetDTO {
 	private String name;
 	private int status;
 	private int idAssetType;
+	private String assetTypeName;
+	
 	public int getIdAsset() {
 		return idAsset;
 	}
@@ -35,5 +37,11 @@ public class AssetDTO {
 	}
 	public void setIdAssetType(int idAssetType) {
 		this.idAssetType = idAssetType;
+	}
+	public String getAssetTypeName() {
+		return assetTypeName;
+	}
+	public void setAssetTypeName(String assetTypeName) {
+		this.assetTypeName = assetTypeName;
 	}
 }

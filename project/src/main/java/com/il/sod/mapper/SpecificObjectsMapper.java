@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.il.sod.config.Constants;
+import com.il.sod.db.model.entities.Menu;
 import com.il.sod.db.model.entities.Product;
 import com.il.sod.db.model.entities.ServiceCategory;
 import com.il.sod.db.model.entities.ServiceType;
@@ -16,6 +17,7 @@ import com.il.sod.db.model.entities.Spec;
 import com.il.sod.db.model.entities.SpecsValue;
 import com.il.sod.db.model.repositories.ProductRepository;
 import com.il.sod.rest.dto.KeyValue;
+import com.il.sod.rest.dto.db.MenuDTO;
 import com.il.sod.rest.dto.web.WServiceCategoryDTO;
 import com.il.sod.rest.dto.web.WServiceTypeDTO;
 import com.il.sod.rest.dto.web.WSpecDTO;
@@ -119,6 +121,14 @@ public enum SpecificObjectsMapper {
 	
 	public WSpecDTO map(ServiceTypeSpec entity) {
 		return this.mapperFacade.map(entity, WSpecDTO.class);
+	}
+	
+	public MenuDTO map(Menu entity){
+		return this.mapperFacade.map(entity, MenuDTO.class);
+	}
+	
+	public Menu map(MenuDTO dto){
+		return this.mapperFacade.map(dto, Menu.class);
 	}
 }
 

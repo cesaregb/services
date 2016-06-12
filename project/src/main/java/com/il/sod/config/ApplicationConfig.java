@@ -47,12 +47,11 @@ public class ApplicationConfig extends ResourceConfig {
 		
 		String host = PropertyHandler.getInstance().getValue(PARAM_API_HOST) + ":"
 				+ PropertyHandler.getInstance().getValue(PARAM_PORT);
-		
 		beanConfig.setHost(host);
 		beanConfig.setBasePath(PropertyHandler.getInstance().getValue(PARAM_API_BASEPATH));
-		beanConfig.setVersion(PropertyHandler.getInstance().getValue(PARAM_VERSION));
+		beanConfig.setVersion(PropertyHandler.getInstance().getValue(PARAM_VERSION) + " Profile: " + App.getProfile());
 		beanConfig.setTitle("SOD Services");
-		beanConfig.setDescription("Information");
+		beanConfig.setDescription("Services for handlign the be");
 		beanConfig.setResourcePackage(SERVICES_PACKAGE);
 		beanConfig.setScan(true);
 		

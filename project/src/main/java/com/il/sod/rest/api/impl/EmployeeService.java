@@ -7,7 +7,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT; import javax.ws.rs.PathParam;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -95,20 +95,19 @@ public class EmployeeService extends AbstractServiceMutations {
 	}
 
 	@DELETE
-	@ApiOperation(value = "Create Employee", response = EmployeeDTO.class)
+	@Path("/{id}")
+	@ApiOperation(value = "Delete Task Type", response = GeneralResponseMessage.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteEmployee(EmployeeDTO dto) throws SODAPIException {
-		try {
-			Employee entity = EmployeeMapper.INSTANCE.map(dto);
-			this.deleteEntity(employeeRepository, entity.getIdEmployee());
-			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Employee deleted"),
-					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
+	public Response deleteClient(@PathParam("id") String id) throws SODAPIException {
+		Employee entity = employeeRepository.findOne(Integer.valueOf(id));
+		if (entity == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
+		this.deleteEntity(employeeRepository, entity.getId());
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Item deleted"),
+				Response.Status.OK);
 	}
 
 	@GET
