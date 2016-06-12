@@ -15,6 +15,7 @@ public class ClientDTO {
 	private String name;
 	private String password;
 	private String twitter;
+	private String loginID;
 	
 	@ApiModelProperty(hidden=true)
 	@JsonProperty(access = Access.READ_ONLY)
@@ -126,5 +127,11 @@ public class ClientDTO {
 	}
 	public void setDefaultPayment(String defaultPayment) {
 		this.defaultPayment = defaultPayment;
+	}
+	public String getLoginID() {
+		return loginID;
+	}
+	public void setLoginID(String loginID) {
+		this.loginID = loginID;
 	}
 }

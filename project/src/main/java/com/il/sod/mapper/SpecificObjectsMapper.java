@@ -81,12 +81,17 @@ public enum SpecificObjectsMapper {
 								kv.setKey(p.getId());
 								kv.setValue(p.getName());
 								kv.setServiceIncrement(p.getServiceIncrement());
+								kv.setServiceIncrement(p.getServiceIncrement());
+								kv.setSpecPrice(0d); // if we come from product we dont assign price to a product... 
+								kv.setCostType(0);
 								options.get(specValue.getSpec().getId()).add(kv);
 							}
 						}else if (specValue.getType() == Constants.SPEC_TYPE_VALUES){
-							kv.setKey(0);
+							kv.setKey(specValue.getId());
 							kv.setValue(specValue.getValue());
 							kv.setServiceIncrement(specValue.getServiceIncrement());
+							kv.setSpecPrice(specValue.getSpecPrice());
+							kv.setCostType(specValue.getCostType());
 							options.get(specValue.getSpec().getId()).add(kv);
 						}
 					}

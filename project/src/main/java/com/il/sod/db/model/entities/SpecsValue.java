@@ -37,7 +37,11 @@ public class SpecsValue implements IEntity<Integer> {
 	@JoinColumn(name="idSpecs")
 	private Spec spec;
 	
-	private double serviceIncrement; 
+	private double serviceIncrement;
+	
+	private double specPrice;
+	
+	private int costType;
 
 	public SpecsValue() {
 	}
@@ -107,5 +111,21 @@ public class SpecsValue implements IEntity<Integer> {
 
 	public void setPrefered(int prefered) {
 		this.prefered = prefered;
+	}
+
+	public double getSpecPrice() {
+		return specPrice;
+	}
+
+	public void setSpecPrice(double specPrice) {
+		this.specPrice = specPrice;
+	}
+
+	public int getCostType() {
+		return costType;
+	}
+
+	public void setCostType(int costType) {
+		this.costType = costType;
 	}
 }

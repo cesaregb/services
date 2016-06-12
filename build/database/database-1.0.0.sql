@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Clients` (
   `twitter` VARCHAR(250) NULL,
   `created` DATETIME NULL,
   `updated` DATETIME NULL,
+  `loginID` VARCHAR(50) NULL,
   PRIMARY KEY (`idClient`))
 ENGINE = InnoDB;
 
@@ -487,7 +488,8 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Specs` (
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(45) NULL,
   `optional` INT NULL DEFAULT 0,
-  `max_qty` INT NULL DEFAULT 1,
+  `max_qty` INT NULL DEFAULT 0,
+  `Specscol` VARCHAR(45) NULL,
   PRIMARY KEY (`idSpecs`))
 ENGINE = InnoDB;
 
@@ -616,8 +618,9 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceSpecs` (
   `idSpecs` INT UNSIGNED NOT NULL,
   `comments` VARCHAR(250) NULL,
   `quantity` INT NULL DEFAULT 0,
-  `price` FLOAT NULL,
+  `specPrice` DOUBLE NULL DEFAULT 0,
   `selectedValue` VARCHAR(250) NULL,
+  `serviceIncrement` DOUBLE NULL DEFAULT 0,
   PRIMARY KEY (`idServiceSpecs`),
   INDEX `fk_ServiceSpecs_Specs1_idx` (`idSpecs` ASC),
   INDEX `fk_ServiceSpecs_Service1_idx` (`idService` ASC),
@@ -792,6 +795,8 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`SpecsValues` (
   `idProductType` INT NULL DEFAULT 0,
   `serviceIncrement` DOUBLE NULL DEFAULT 0,
   `prefered` INT NULL DEFAULT 0,
+  `specPrice` DOUBLE NULL DEFAULT 0,
+  `costType` INT NULL DEFAULT 0 COMMENT '0 = increment\n1 = specPrice',
   PRIMARY KEY (`idSpecsValues`),
   INDEX `fk_SpecsValues_Specs1_idx` (`idSpecs` ASC),
   CONSTRAINT `fk_SpecsValues_Specs1`
@@ -996,7 +1001,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Clients` (`idClient`, `email`, `password`, `name`, `lastName`, `twitter`, `created`, `updated`) VALUES (1, 'email@domain.com', 'aa', 'Name', 'Lastname', 'twitter', NULL, NULL);
+INSERT INTO `sod_db`.`Clients` (`idClient`, `email`, `password`, `name`, `lastName`, `twitter`, `created`, `updated`, `loginID`) VALUES (1, 'email@domain.com', 'aa', 'Name', 'Lastname', 'twitter', NULL, NULL, '123');
 
 COMMIT;
 
@@ -1160,11 +1165,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`, `idServiceCategory`) VALUES (1, 'lavado general', NULL, 100, 2, 1);
-INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`, `idServiceCategory`) VALUES (2, 'planchado 1', NULL, 100, 2, 2);
-INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`, `idServiceCategory`) VALUES (3, 'tintoreria', NULL, 100, 2, 3);
-INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`, `idServiceCategory`) VALUES (4, 'costura', NULL, 100, 2, 3);
-INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`, `idServiceCategory`) VALUES (5, 'lavado delicado', 'ropa interior', 100, 2, 1);
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`, `idServiceCategory`) VALUES (1, 'lavado general', NULL, 20, 2, 1);
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`, `idServiceCategory`) VALUES (2, 'planchado 1', NULL, 0, 2, 2);
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`, `idServiceCategory`) VALUES (3, 'tintoreria', NULL, 0, 8, 3);
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`, `idServiceCategory`) VALUES (4, 'costura', NULL, 0, 24, 3);
+INSERT INTO `sod_db`.`ServiceType` (`idServiceType`, `name`, `description`, `price`, `time`, `idServiceCategory`) VALUES (5, 'lavado delicado', 'ropa interior', 20, 2, 1);
 
 COMMIT;
 
@@ -1174,8 +1179,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`) VALUES (1, 'tamanio', 'size of order', 0, 1);
-INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`) VALUES (2, 'jabon', 'detergente a utilizarse', 0, 4);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `Specscol`) VALUES (1, ' Tamanio Carga', 'size of order', 0, 5, NULL);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `Specscol`) VALUES (2, 'jabon', 'detergente a utilizarse', 0, 4, NULL);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `Specscol`) VALUES (3, 'Tamanio Kg', NULL, 0, 20, NULL);
 
 COMMIT;
 
@@ -1237,10 +1243,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (1, 1, 1, 'C', 0, 0, 1);
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (2, 1, 1, 'M', 0, 0.20, 0);
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (3, 1, 1, 'G', 0, 0.30, 0);
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`) VALUES (4, 2, 2, NULL, 1, 0, 0);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`, `specPrice`, `costType`) VALUES (1, 1, 1, 'Carga', 0, 0, 1, 60, 0);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`, `specPrice`, `costType`) VALUES (2, 1, 1, 'Kg', 0, 0, 0, 15, 0);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`, `specPrice`, `costType`) VALUES (3, 2, 2, NULL, 1, 0, 0, 0, 0);
 
 COMMIT;
 
@@ -1292,8 +1297,12 @@ START TRANSACTION;
 USE `sod_db`;
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (1, 'client.all', 'Clients', 1, 1);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (2, 'routes.all', 'Routes', 1, 2);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (3, 'task.all', 'Tasks', 1, 3);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (4, 'specs', 'Specs', 1, 4);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (3, 'tasks.taskMenu', 'Tasks', 1, 3);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (4, 'specs.specMenu', 'Specs', 1, 4);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (5, 'employees.employeeMenu', 'Employees', 1, 5);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (6, 'assets.assetMenu', 'Assets', 1, 6);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (7, 'products.productMenu', 'Products', 1, 7);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (8, 'services.serviceMenu', 'Service', 1, 8);
 
 COMMIT;
 

@@ -6,6 +6,9 @@ public class ServiceSpecDTO {
 	private ServiceDTO service;
 	private SpecDTO spec;
 	private String selectedValue;
+	private float specPrice; 
+	private float serviceIncrement;
+	
 	public int getIdServiceTypeSpecs() {
 		return idServiceTypeSpecs;
 	}
@@ -35,6 +38,18 @@ public class ServiceSpecDTO {
 	}
 	public void setSelectedValue(String selectedValue) {
 		this.selectedValue = selectedValue;
+	}
+	public float getSpecPrice() {
+		return specPrice;
+	}
+	public void setSpecPrice(float specPrice) {
+		this.specPrice = specPrice;
+	}
+	public float getServiceIncrement() {
+		return serviceIncrement;
+	}
+	public void setServiceIncrement(float serviceIncrement) {
+		this.serviceIncrement = serviceIncrement;
 	}
 
 }

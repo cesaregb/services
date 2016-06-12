@@ -44,6 +44,8 @@ public enum ServiceMapper {
 			.fieldMap("serviceTypeSpecs", "serviceTypeSpecs").converter("serviceTypeSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("serviceTypeTasks", "serviceTypeTasks").converter("serviceTypeTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("orderTypes", "orderTypes").converter("orderTypeSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.field("serviceTypeTypeName", "serviceCategory.name")
+			.field("idServiceCategory", "serviceCategory.idServiceCategory")
 			.byDefault()
 			.register();
 		
@@ -54,7 +56,7 @@ public enum ServiceMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceTypeTaskDTO.class, ServiceTypeTask.class)
-			.field("serviceType", "serviceType.idServiceType")
+			.field("idServiceType", "serviceType.idServiceType")
 			.field("idTask", "task.idTask")
 			.byDefault()
 			.register();

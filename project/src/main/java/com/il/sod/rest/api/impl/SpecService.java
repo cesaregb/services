@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.il.sod.db.model.entities.Spec;
+import com.il.sod.db.model.entities.SpecsValue;
 import com.il.sod.db.model.repositories.SpecRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.SpecsMapper;
@@ -90,20 +91,19 @@ public class SpecService extends AbstractServiceMutations {
 	}
 
 	@DELETE
-	@ApiOperation(value = "Create Spec", response = SpecDTO.class)
+	@Path("/{id}")
+	@ApiOperation(value = "Delete", response = GeneralResponseMessage.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteSpec(SpecDTO dto) throws SODAPIException {
-		try {
-			Spec entity = SpecsMapper.INSTANCE.map(dto);
-			this.deleteEntity(specRepository, entity.getIdSpecs());
-			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Spec deleted"),
-					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
+	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
+		Spec entity = specRepository.findOne(Integer.valueOf(id));
+		if (entity == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
+		this.deleteEntity(specRepository, entity.getId());
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Item deleted"),
+				Response.Status.OK);
 	}
 
 	@GET

@@ -9,6 +9,8 @@ public class SpecsValueDTO {
 	private int idSpecs;
 	private double serviceIncrement; 
 	private int prefered;
+	private double specPrice;
+	private int costType;
 	
 	public SpecsValueDTO() {
 	}
@@ -67,6 +69,22 @@ public class SpecsValueDTO {
 
 	public void setPrefered(int prefered) {
 		this.prefered = prefered;
+	}
+
+	public double getSpecPrice() {
+		return specPrice;
+	}
+
+	public void setSpecPrice(double specPrice) {
+		this.specPrice = specPrice;
+	}
+
+	public int getCostType() {
+		return costType;
+	}
+
+	public void setCostType(int costType) {
+		this.costType = costType;
 	}
 
 }

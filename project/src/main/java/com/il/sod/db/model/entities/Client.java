@@ -41,6 +41,8 @@ public class Client implements IEntity<Integer> {
 	private String password;
 
 	private String twitter;
+	
+	private String loginID;
 
 	//bi-directional many-to-one association to AccessKey
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
@@ -255,5 +257,13 @@ public class Client implements IEntity<Integer> {
 		clientPaymentInfo.setClient(null);
 
 		return clientPaymentInfo;
+	}
+
+	public String getLoginID() {
+		return loginID;
+	}
+
+	public void setLoginID(String loginID) {
+		this.loginID = loginID;
 	}
 }
