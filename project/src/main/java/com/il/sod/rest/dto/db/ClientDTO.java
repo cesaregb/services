@@ -16,6 +16,8 @@ public class ClientDTO {
 	private String password;
 	private String twitter;
 	private String loginID;
+	private String rfc; 
+	private String razonSocial;
 	
 	@ApiModelProperty(hidden=true)
 	@JsonProperty(access = Access.READ_ONLY)
@@ -133,5 +135,17 @@ public class ClientDTO {
 	}
 	public void setLoginID(String loginID) {
 		this.loginID = loginID;
+	}
+	public String getRfc() {
+		return rfc;
+	}
+	public void setRfc(String rfc) {
+		this.rfc = rfc;
+	}
+	public String getRazonSocial() {
+		return razonSocial;
+	}
+	public void setRazonSocial(String razonSocial) {
+		this.razonSocial = razonSocial;
 	}
 }

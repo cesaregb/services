@@ -6,6 +6,7 @@ public class CalendarRouteDTO{
 	private int day;
 	private String time;
 	private int idRoutes;
+	private int action;
 	
 	public int getIdCalendarRoute() {
 		return idCalendarRoute;
@@ -30,5 +31,11 @@ public class CalendarRouteDTO{
 	}
 	public void setTime(String time) {
 		this.time = time;
+	}
+	public int getAction() {
+		return action;
+	}
+	public void setAction(int action) {
+		this.action = action;
 	}
 }

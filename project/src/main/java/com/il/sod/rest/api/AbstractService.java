@@ -134,6 +134,7 @@ public abstract class AbstractService{
 	
 	@SuppressWarnings("unchecked")
 	protected <T> List<T> getEntityList(JpaRepository<T, Integer> repository){	
+		System.out.println("CLASSS! === > "  + repository.getClass());
 		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
 		gDao.setRepository(repository);
 		return gDao.findAll();

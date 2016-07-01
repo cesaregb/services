@@ -5,10 +5,14 @@ import java.util.stream.Collectors;
 
 import com.il.sod.db.model.entities.Spec;
 import com.il.sod.db.model.entities.SpecsValue;
+import com.il.sod.db.model.repositories.ProductRepository;
+import com.il.sod.db.model.repositories.ProductTypeRepository;
 import com.il.sod.rest.dto.db.SpecDTO;
 import com.il.sod.rest.dto.db.SpecsValueDTO;
 
+import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.converter.ConverterFactory;
 import ma.glasnost.orika.metadata.Type;
@@ -17,6 +21,8 @@ public enum SpecsMapper {
 
 	INSTANCE;
 	private final MapperFacade mapperFacade;
+	
+	private ProductTypeRepository productTypeRepository;
 
 	private SpecsMapper() {
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
@@ -29,7 +35,20 @@ public enum SpecsMapper {
 
 		BaseMapper.MAPPER_FACTORY.classMap(SpecsValueDTO.class, SpecsValue.class)
 			.field("idSpecs", "spec.idSpecs")
+			.field("specName", "spec.name")
 			.byDefault()
+			.customize(new CustomMapper<SpecsValueDTO, SpecsValue>() {
+				
+				@Override
+				public void mapBtoA(SpecsValue entity, SpecsValueDTO dto, MappingContext context) {
+					if (productTypeRepository != null){
+						if (entity.getType() == 2){
+							String productName = productTypeRepository.findOne(entity.getIdProductType()).getName();
+							dto.setProductName(productName);
+						}
+					}
+				}
+			})
 			.register();
 		
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
@@ -49,6 +68,10 @@ public enum SpecsMapper {
 	
 	public SpecsValueDTO map(SpecsValue entity) {
 		return this.mapperFacade.map(entity, SpecsValueDTO.class);
+	}
+
+	public void setProductTypeRepository(ProductTypeRepository productTypeRepository) {
+		this.productTypeRepository = productTypeRepository;
 	}	
 }
 

@@ -42,6 +42,8 @@ public class Address implements IEntity<Integer> {
 	
 	private boolean prefered;
 	
+	private boolean factura;
+	
 	private BigDecimal lat;
 	
 	private BigDecimal lng;
@@ -177,6 +179,14 @@ public class Address implements IEntity<Integer> {
 
 	public void setLng(BigDecimal lng) {
 		this.lng = lng;
+	}
+
+	public boolean isFactura() {
+		return factura;
+	}
+
+	public void setFactura(boolean factura) {
+		this.factura = factura;
 	}
 
 }

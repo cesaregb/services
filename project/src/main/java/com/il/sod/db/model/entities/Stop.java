@@ -31,8 +31,6 @@ public class Stop implements IEntity<Integer> {
 
 	private String name;
 
-	private int stopAction;
-
 	private int time;
 	
 	private int idAddress;
@@ -70,14 +68,6 @@ public class Stop implements IEntity<Integer> {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public int getStopAction() {
-		return this.stopAction;
-	}
-
-	public void setStopAction(int stopAction) {
-		this.stopAction = stopAction;
 	}
 
 	public int getTime() {

@@ -12,6 +12,5 @@ public class SocialNetworkGenericDaoImpl extends GenericDaoImpl<SocialNetwork, I
 	@Autowired
 	public SocialNetworkGenericDaoImpl(SocialNetworkRepository sRepository){
 		super (sRepository);
-		System.out.println("instantiating the CORRET service!!!");
 	}
 }

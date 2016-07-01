@@ -6,7 +6,6 @@ public class StopDTO {
 	private String arriveAt;
 	private String description;
 	private String name;
-	private int stopAction;
 	private int time;
 	private int idRoutes;
 	private int type;
@@ -31,12 +30,6 @@ public class StopDTO {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public int getStopAction() {
-		return stopAction;
-	}
-	public void setStopAction(int stopAction) {
-		this.stopAction = stopAction;
 	}
 	public int getTime() {
 		return time;

@@ -17,7 +17,9 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.il.sod.db.dao.impl.SpecsValueDAO;
 import com.il.sod.db.model.entities.SpecsValue;
+import com.il.sod.db.model.repositories.ProductTypeRepository;
 import com.il.sod.db.model.repositories.SpecRepository;
 import com.il.sod.db.model.repositories.SpecsValueRepository;
 import com.il.sod.exception.SODAPIException;
@@ -37,11 +39,18 @@ import io.swagger.annotations.ApiResponses;
 @Produces(MediaType.APPLICATION_JSON)
 @Api(value = "/specs-value", tags = { "specs" })
 public class SpecsValueService extends AbstractServiceMutations {
+	
 	@Autowired
 	SpecsValueRepository specsValueRepository;
 
 	@Autowired
 	SpecRepository specRepository;
+	
+	@Autowired
+	ProductTypeRepository productTypeRepository;
+	
+	@Autowired
+	private SpecsValueDAO specsValueDAO;
 
 	@POST
 	@ApiOperation(value = "Create SpecsValue", response = SpecsValueDTO.class)
@@ -115,7 +124,24 @@ public class SpecsValueService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getSpecsValueList() throws SODAPIException {
+		SpecsMapper.INSTANCE.setProductTypeRepository(productTypeRepository);
 		List<SpecsValue> entityList = this.getEntityList(specsValueRepository);
+		List<SpecsValueDTO> list = entityList.stream().map((i) -> {
+			SpecsValueDTO dto = SpecsMapper.INSTANCE.map(i);
+			return dto;
+		}).collect(Collectors.toList());
+		return castEntityAsResponse(list);
+	}
+	
+	@GET
+	@Path("/spec/{idSpecs}")
+	@ApiOperation(value = "Get Specs Value list by idSpec", response = SpecsValueDTO.class, responseContainer = "List")
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getSpecsValuesById(@PathParam("idSpecs") String idSpecs) throws SODAPIException {
+		SpecsMapper.INSTANCE.setProductTypeRepository(productTypeRepository);
+		List<SpecsValue> entityList = specsValueDAO.findBySpec(Integer.valueOf(idSpecs));
 		List<SpecsValueDTO> list = entityList.stream().map((i) -> {
 			SpecsValueDTO dto = SpecsMapper.INSTANCE.map(i);
 			return dto;

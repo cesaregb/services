@@ -11,6 +11,8 @@ public class SpecsValueDTO {
 	private int prefered;
 	private double specPrice;
 	private int costType;
+	private String specName;
+	private String productName;
 	
 	public SpecsValueDTO() {
 	}
@@ -85,6 +87,22 @@ public class SpecsValueDTO {
 
 	public void setCostType(int costType) {
 		this.costType = costType;
+	}
+
+	public String getSpecName() {
+		return specName;
+	}
+
+	public void setSpecName(String specName) {
+		this.specName = specName;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
 }

@@ -7,6 +7,7 @@ public class AddressDTO extends AddressGenericDTO implements GenericDBDTO{
 	private int idAddress;
 	private int idClient;
 	private boolean prefered;
+	private boolean factura;
 	
 	public int getIdAddress() {
 		return idAddress;
@@ -41,5 +42,13 @@ public class AddressDTO extends AddressGenericDTO implements GenericDBDTO{
 	}
 	public void setPrefered(boolean prefered) {
 		this.prefered = prefered;
+	}
+
+	public boolean isFactura() {
+		return factura;
+	}
+
+	public void setFactura(boolean factura) {
+		this.factura = factura;
 	}
 }
