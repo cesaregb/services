@@ -160,7 +160,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 				ServiceSpec serviceSpec = new ServiceSpec();
 				serviceSpec.setQuantity(specInput.getQuantity());
 				serviceSpec.setService(service);
-				Spec spec = specRepository.findOne(specInput.getIdSpec());
+				Spec spec = specRepository.findOne(specInput.getIdSpecs());
 				serviceSpec.setSpec(spec);
 				serviceSpec.setSelectedValue(specInput.getValue());
 				// adding service spec

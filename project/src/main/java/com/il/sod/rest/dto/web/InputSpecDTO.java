@@ -1,16 +1,10 @@
 package com.il.sod.rest.dto.web;
 
 public class InputSpecDTO {
-	private int idSpec;
+	private int idSpecs;
 	private String value; 
 	private int quantity;
 	
-	public int getIdSpec() {
-		return idSpec;
-	}
-	public void setIdSpec(int idSpec) {
-		this.idSpec = idSpec;
-	}
 	public String getValue() {
 		return value;
 	}
@@ -22,5 +16,11 @@ public class InputSpecDTO {
 	}
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+	public int getIdSpecs() {
+		return idSpecs;
+	}
+	public void setIdSpecs(int idSpecs) {
+		this.idSpecs = idSpecs;
 	}
 }
