@@ -3,8 +3,9 @@ package com.il.sod.rest.dto.db;
 public class EmployeeTaskServiceDTO {
 	private int idEmployeeTaskService;
 	private String comments;
-	private EmployeeDTO employee;
-	private ServiceTaskDTO serviceTask;
+	private int idEmployee;
+	private int idServiceTask;
+	
 	public int getIdEmployeeTaskService() {
 		return idEmployeeTaskService;
 	}
@@ -17,17 +18,16 @@ public class EmployeeTaskServiceDTO {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-	public EmployeeDTO getEmployee() {
-		return employee;
+	public int getIdEmployee() {
+		return idEmployee;
 	}
-	public void setEmployee(EmployeeDTO employee) {
-		this.employee = employee;
+	public void setIdEmployee(int idEmployee) {
+		this.idEmployee = idEmployee;
 	}
-	public ServiceTaskDTO getServiceTask() {
-		return serviceTask;
+	public int getIdServiceTask() {
+		return idServiceTask;
 	}
-	public void setServiceTask(ServiceTaskDTO serviceTask) {
-		this.serviceTask = serviceTask;
+	public void setIdServiceTask(int idServiceTask) {
+		this.idServiceTask = idServiceTask;
 	}
-
 }

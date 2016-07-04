@@ -1,6 +1,5 @@
 package com.il.sod.db.model.entities;
 
-import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -12,8 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 /**
@@ -31,8 +30,11 @@ public class OrderTask implements IEntity<Integer> {
 
 	private String comments;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date time;
+	private int time;
+	
+	private int status;
+	
+	private int sortingOrder;
 
 	//bi-directional many-to-one association to AssetTaskOrder
 	@OneToMany(mappedBy="orderTask", fetch=FetchType.EAGER)
@@ -45,11 +47,13 @@ public class OrderTask implements IEntity<Integer> {
 	//bi-directional many-to-one association to Task
 	@ManyToOne
 	@JoinColumn(name="idTask")
+	@JsonBackReference
 	private Task task;
 
 	//bi-directional many-to-one association to Order
 	@ManyToOne
 	@JoinColumn(name="idOrder")
+	@JsonBackReference
 	private Order order;
 
 	public OrderTask() {
@@ -69,14 +73,6 @@ public class OrderTask implements IEntity<Integer> {
 
 	public void setComments(String comments) {
 		this.comments = comments;
-	}
-
-	public Date getTime() {
-		return this.time;
-	}
-
-	public void setTime(Date time) {
-		this.time = time;
 	}
 
 	public Set<AssetTaskOrder> getAssetTaskOrders() {
@@ -147,5 +143,29 @@ public class OrderTask implements IEntity<Integer> {
 	public OrderTask setId(Integer id) {
 		this.idOrderTask = id;
 		return this;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public int getSortingOrder() {
+		return sortingOrder;
+	}
+
+	public void setSortingOrder(int sortingOrder) {
+		this.sortingOrder = sortingOrder;
+	}
+
+	public int getTime() {
+		return time;
+	}
+
+	public void setTime(int time) {
+		this.time = time;
 	}
 }

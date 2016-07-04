@@ -23,8 +23,6 @@ public class ServiceTypeTask implements IEntity<Integer> {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idServiceTypeTask;
 
-	private String comments;
-
 	//bi-directional many-to-one association to ServiceType
 	@ManyToOne
 	@JoinColumn(name="idServiceType")
@@ -36,6 +34,8 @@ public class ServiceTypeTask implements IEntity<Integer> {
 	private Task task;
 	
 	private int sortingOrder;
+	
+	private int time;
 
 	public ServiceTypeTask() {
 	}
@@ -46,14 +46,6 @@ public class ServiceTypeTask implements IEntity<Integer> {
 
 	public void setIdServiceTypeTask(int idServiceTypeTask) {
 		this.idServiceTypeTask = idServiceTypeTask;
-	}
-
-	public String getComments() {
-		return this.comments;
-	}
-
-	public void setComments(String comments) {
-		this.comments = comments;
 	}
 
 	public ServiceType getServiceType() {
@@ -88,5 +80,13 @@ public class ServiceTypeTask implements IEntity<Integer> {
 
 	public void setSortingOrder(int sortingOrder) {
 		this.sortingOrder = sortingOrder;
+	}
+
+	public int getTime() {
+		return time;
+	}
+
+	public void setTime(int time) {
+		this.time = time;
 	}
 }

@@ -17,6 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 /**
  * The persistent class for the Service database table.
@@ -52,15 +55,18 @@ public class Service implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to ServiceSpec
 	@OneToMany(mappedBy="service", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference
 	private Set<ServiceSpec> serviceSpecs;
 
 	//bi-directional many-to-one association to ServiceTask
 	@OneToMany(mappedBy="service", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference
 	private Set<ServiceTask> serviceTasks;
 	
 	//bi-directional many-to-one association to Order
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idOrder")
+	@JsonBackReference
 	private Order order;
 
 	public Service() {

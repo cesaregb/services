@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 /**
  * The persistent class for the OrderTypeTasks database table.
@@ -25,18 +27,18 @@ public class OrderTypeTask implements IEntity<Integer> {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idOrderTypeTasks;
 
-	private String description;
-
 	private int time;
 
 	//bi-directional many-to-one association to OrderType
 	@ManyToOne
 	@JoinColumn(name="idOrderType")
+	@JsonBackReference
 	private OrderType orderType;
 
 	//bi-directional many-to-one association to Task
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idTask")
+	@JsonBackReference
 	private Task task;
 	
 	private int sortingOrder;
@@ -50,14 +52,6 @@ public class OrderTypeTask implements IEntity<Integer> {
 
 	public void setIdOrderTypeTasks(int idOrderTypeTasks) {
 		this.idOrderTypeTasks = idOrderTypeTasks;
-	}
-
-	public String getDescription() {
-		return this.description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public int getTime() {

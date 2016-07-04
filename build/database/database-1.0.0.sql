@@ -313,8 +313,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTypeTasks` (
   `idOrderTypeTasks` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idOrderType` INT UNSIGNED NOT NULL,
   `idTask` INT UNSIGNED NOT NULL,
-  `description` VARCHAR(45) NULL,
-  `time` INT NULL,
+  `time` INT NULL DEFAULT 0,
   `sortingOrder` INT NULL,
   PRIMARY KEY (`idOrderTypeTasks`),
   INDEX `fk_OrderTemplateTasks_Task1_idx` (`idTask` ASC),
@@ -376,8 +375,10 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTask` (
   `idOrderTask` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idOrder` INT UNSIGNED NOT NULL,
   `idTask` INT UNSIGNED NOT NULL,
-  `time` DATETIME NULL,
+  `time` INT NULL,
   `comments` VARCHAR(255) NULL,
+  `status` INT NULL DEFAULT 0 COMMENT '0 = NEW\n1 = COMPLETED',
+  `sortingOrder` INT NULL,
   PRIMARY KEY (`idOrderTask`),
   INDEX `fk_OrderTask_Task1_idx` (`idTask` ASC),
   INDEX `fk_OrderTask_Order1_idx` (`idOrder` ASC),
@@ -492,7 +493,6 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Specs` (
   `description` VARCHAR(45) NULL,
   `optional` INT NULL DEFAULT 0,
   `max_qty` INT NULL DEFAULT 0,
-  `Specscol` VARCHAR(45) NULL,
   PRIMARY KEY (`idSpecs`))
 ENGINE = InnoDB;
 
@@ -532,8 +532,8 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceTypeTask` (
   `idServiceTypeTask` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idServiceType` INT UNSIGNED NOT NULL,
   `idTask` INT UNSIGNED NOT NULL,
-  `comments` VARCHAR(250) NULL,
   `sortingOrder` INT NULL,
+  `time` INT NULL DEFAULT 0,
   PRIMARY KEY (`idServiceTypeTask`),
   INDEX `fk_ServiceTypeTask_Task1_idx` (`idTask` ASC),
   INDEX `fk_ServiceTypeTask_ServiceType1_idx` (`idServiceType` ASC),
@@ -594,6 +594,9 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceTask` (
   `comments` VARCHAR(250) NULL,
   `started` DATETIME NULL,
   `ended` DATETIME NULL,
+  `status` INT NULL,
+  `sortingOrder` INT NULL,
+  `time` INT NULL DEFAULT 10,
   PRIMARY KEY (`idServiceTask`),
   INDEX `fk_ServiceTask_Task1_idx` (`idTask` ASC),
   INDEX `fk_ServiceTask_Service1_idx` (`idService` ASC),
@@ -931,83 +934,6 @@ DROP VIEW IF EXISTS `sod_db`.`view1` ;
 DROP TABLE IF EXISTS `sod_db`.`view1`;
 USE `sod_db`;
 
-USE `sod_db`;
-
-DELIMITER $$
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Clients_BEFORE_INSERT` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Clients_BEFORE_INSERT` BEFORE INSERT ON `Clients` FOR EACH ROW
-BEGIN
-SET NEW.created = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Clients_BEFORE_UPDATE` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Clients_BEFORE_UPDATE` BEFORE UPDATE ON `Clients` FOR EACH ROW
-BEGIN
-SET NEW.updated = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Employee_BEFORE_INSERT` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Employee_BEFORE_INSERT` BEFORE INSERT ON `Employee` FOR EACH ROW
-BEGIN
-SET NEW.created = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Employee_BEFORE_UPDATE` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Employee_BEFORE_UPDATE` BEFORE UPDATE ON `Employee` FOR EACH ROW
-BEGIN
-SET NEW.updated = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Orders_BEFORE_INSERT` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Orders_BEFORE_INSERT` BEFORE INSERT ON `Orders` FOR EACH ROW
-BEGIN
-SET NEW.created = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Orders_BEFORE_UPDATE` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Orders_BEFORE_UPDATE` BEFORE UPDATE ON `Orders` FOR EACH ROW
-BEGIN
-SET NEW.updated = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Service_BEFORE_INSERT` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Service_BEFORE_INSERT` BEFORE INSERT ON `Service` FOR EACH ROW
-BEGIN
-SET NEW.created = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Service_BEFORE_UPDATE` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Service_BEFORE_UPDATE` BEFORE UPDATE ON `Service` FOR EACH ROW
-BEGIN
-SET NEW.updated = NOW();
-END$$
-
-
-DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -1039,7 +965,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Address` (`idAddress`, `idClient`, `country`, `state`, `zipcode`, `city`, `address`, `address2`, `comments`, `lat`, `lng`, `prefered`, `factura`) VALUES (1, 1, 'Mexico', 'Jalisco', '44540', 'Guadalajara', 'Peninsula', NULL, NULL, 20.64551528, -103.39244127, 1, NULL);
+INSERT INTO `sod_db`.`Address` (`idAddress`, `idClient`, `country`, `state`, `zipcode`, `city`, `address`, `address2`, `comments`, `lat`, `lng`, `prefered`, `factura`) VALUES (1, 1, 'Mexico', 'Jalisco', '44540', 'Guadalajara', 'Peninsula', NULL, NULL, 20.64551528, -103.39244127, 1, 1);
 
 COMMIT;
 
@@ -1158,9 +1084,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `description`, `time`, `sortingOrder`) VALUES (1, 1, 3, 'recojer', 20, 1);
-INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `description`, `time`, `sortingOrder`) VALUES (2, 1, 1, 'Servicios', 100, 2);
-INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `description`, `time`, `sortingOrder`) VALUES (3, 1, 4, 'entrega', 20, 3);
+INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `time`, `sortingOrder`) VALUES (1, 1, 3, 20, 1);
+INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `time`, `sortingOrder`) VALUES (2, 1, 1, 0, 2);
+INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `time`, `sortingOrder`) VALUES (3, 1, 4, 20, 3);
 
 COMMIT;
 
@@ -1196,8 +1122,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `Specscol`) VALUES (1, 'Tamanio', 'size of order', 0, 5, NULL);
-INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `Specscol`) VALUES (2, 'jabon', 'detergente a utilizarse', 0, 4, NULL);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`) VALUES (1, 'Tamanio', 'size of order', 0, 5);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`) VALUES (2, 'jabon', 'detergente a utilizarse', 0, 4);
 
 COMMIT;
 
@@ -1218,9 +1144,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `comments`, `sortingOrder`) VALUES (1, 1, 2, 'lavado general', 1);
-INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `comments`, `sortingOrder`) VALUES (2, 1, 5, 'doblar', 2);
-INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `comments`, `sortingOrder`) VALUES (3, 2, 6, 'planchar', 3);
+INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `sortingOrder`, `time`) VALUES (1, 1, 2, 1, 10);
+INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `sortingOrder`, `time`) VALUES (2, 1, 5, 2, 10);
+INSERT INTO `sod_db`.`ServiceTypeTask` (`idServiceTypeTask`, `idServiceType`, `idTask`, `sortingOrder`, `time`) VALUES (3, 2, 6, 3, 10);
 
 COMMIT;
 
@@ -1335,3 +1261,80 @@ INSERT INTO `sod_db`.`DistanceInfo` (`idDistanceInfo`, `distance`, `price`, `sou
 
 COMMIT;
 
+USE `sod_db`;
+
+DELIMITER $$
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Clients_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Clients_BEFORE_INSERT` BEFORE INSERT ON `Clients` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Clients_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Clients_BEFORE_UPDATE` BEFORE UPDATE ON `Clients` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Employee_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Employee_BEFORE_INSERT` BEFORE INSERT ON `Employee` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Employee_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Employee_BEFORE_UPDATE` BEFORE UPDATE ON `Employee` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Orders_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Orders_BEFORE_INSERT` BEFORE INSERT ON `Orders` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Orders_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Orders_BEFORE_UPDATE` BEFORE UPDATE ON `Orders` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Service_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Service_BEFORE_INSERT` BEFORE INSERT ON `Service` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Service_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Service_BEFORE_UPDATE` BEFORE UPDATE ON `Service` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+DELIMITER ;

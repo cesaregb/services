@@ -3,8 +3,9 @@ package com.il.sod.rest.dto.db;
 public class AssetTaskServiceDTO {
 	private int idAssetTaskService;
 	private String comments;
-	private AssetDTO asset;
-	private ServiceTaskDTO serviceTask;
+	private int idAsset;
+	private int idServiceTask;
+	
 	public int getIdAssetTaskService() {
 		return idAssetTaskService;
 	}
@@ -17,17 +18,17 @@ public class AssetTaskServiceDTO {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-	public AssetDTO getAsset() {
-		return asset;
+	public int getIdAsset() {
+		return idAsset;
 	}
-	public void setAsset(AssetDTO asset) {
-		this.asset = asset;
+	public void setIdAsset(int idAsset) {
+		this.idAsset = idAsset;
 	}
-	public ServiceTaskDTO getServiceTask() {
-		return serviceTask;
+	public int getIdServiceTask() {
+		return idServiceTask;
 	}
-	public void setServiceTask(ServiceTaskDTO serviceTask) {
-		this.serviceTask = serviceTask;
+	public void setIdServiceTask(int idServiceTask) {
+		this.idServiceTask = idServiceTask;
 	}
 
 }

@@ -1,16 +1,19 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.Date;
 import java.util.Set;
 
 public class OrderTaskDTO {	
 	private int idOrderTask;
 	private String comments;
-	private Date time;
+	private int time;
 	private Set<AssetTaskOrderDTO> assetTaskOrders;
 	private Set<EmployeeTaskOrderDTO> employeeTaskOrders;
 	private int idOrder;
 	private int idTask;
+	private int status;
+	private int sortingOrder; 
+	
+	
 	public int getIdOrderTask() {
 		return idOrderTask;
 	}
@@ -22,12 +25,6 @@ public class OrderTaskDTO {
 	}
 	public void setComments(String comments) {
 		this.comments = comments;
-	}
-	public Date getTime() {
-		return time;
-	}
-	public void setTime(Date time) {
-		this.time = time;
 	}
 	public Set<AssetTaskOrderDTO> getAssetTaskOrders() {
 		return assetTaskOrders;
@@ -52,6 +49,24 @@ public class OrderTaskDTO {
 	}
 	public void setIdTask(int idTask) {
 		this.idTask = idTask;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public int getSortingOrder() {
+		return sortingOrder;
+	}
+	public void setSortingOrder(int sortingOrder) {
+		this.sortingOrder = sortingOrder;
+	}
+	public int getTime() {
+		return time;
+	}
+	public void setTime(int time) {
+		this.time = time;
 	}
 
 }

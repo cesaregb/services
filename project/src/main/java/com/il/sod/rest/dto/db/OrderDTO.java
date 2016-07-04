@@ -20,7 +20,7 @@ public class OrderDTO {
 	private int time;
 	private Date pickUpDate;
 	private Date deliverDate;
-	private Set<Integer> services;
+	private Set<ServiceDTO> services;
 	
 	public int getIdOrder() {
 		return idOrder;
@@ -112,16 +112,16 @@ public class OrderDTO {
 	public void setDeliverDate(Date deliverDate) {
 		this.deliverDate = deliverDate;
 	}
-	public Set<Integer> getServices() {
-		return services;
-	}
-	public void setServices(Set<Integer> services) {
-		this.services = services;
-	}
 	public int getIdOrderType() {
 		return idOrderType;
 	}
 	public void setIdOrderType(int idOrderType) {
 		this.idOrderType = idOrderType;
+	}
+	public Set<ServiceDTO> getServices() {
+		return services;
+	}
+	public void setServices(Set<ServiceDTO> services) {
+		this.services = services;
 	}
 }

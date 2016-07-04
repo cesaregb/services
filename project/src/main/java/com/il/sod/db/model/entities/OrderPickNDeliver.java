@@ -13,6 +13,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 /**
  * The persistent class for the OrderPickNDeliver database table.
@@ -37,11 +39,13 @@ public class OrderPickNDeliver implements IEntity<Integer> {
 	//bi-directional many-to-one association to Address
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idAddress")
+	@JsonBackReference
 	private Address address;
 
 	//bi-directional many-to-one association to Order
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idOrder")
+	@JsonBackReference
 	private Order order;
 
 	public OrderPickNDeliver() {

@@ -8,10 +8,13 @@ public class ServiceTaskDTO {
 	private String comments;
 	private Set<AssetTaskServiceDTO> assetTaskServices;
 	private Set<EmployeeTaskServiceDTO> employeeTaskServices;
-	private ServiceDTO service;
-	private TaskDTO task;
+	private int idService;
+	private int idTask;
 	private Date started;
 	private Date ended;
+	private int status;
+	private int sortingOrder;
+	private int time;
 	
 	public int getIdServiceTask() {
 		return idServiceTask;
@@ -37,18 +40,6 @@ public class ServiceTaskDTO {
 	public void setEmployeeTaskServices(Set<EmployeeTaskServiceDTO> employeeTaskServices) {
 		this.employeeTaskServices = employeeTaskServices;
 	}
-	public ServiceDTO getService() {
-		return service;
-	}
-	public void setService(ServiceDTO service) {
-		this.service = service;
-	}
-	public TaskDTO getTask() {
-		return task;
-	}
-	public void setTask(TaskDTO task) {
-		this.task = task;
-	}
 	public Date getStarted() {
 		return started;
 	}
@@ -60,5 +51,35 @@ public class ServiceTaskDTO {
 	}
 	public void setEnded(Date ended) {
 		this.ended = ended;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public int getIdService() {
+		return idService;
+	}
+	public void setIdService(int idService) {
+		this.idService = idService;
+	}
+	public int getIdTask() {
+		return idTask;
+	}
+	public void setIdTask(int idTask) {
+		this.idTask = idTask;
+	}
+	public int getSortingOrder() {
+		return sortingOrder;
+	}
+	public void setSortingOrder(int sortingOrder) {
+		this.sortingOrder = sortingOrder;
+	}
+	public int getTime() {
+		return time;
+	}
+	public void setTime(int time) {
+		this.time = time;
 	}
 }

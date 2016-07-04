@@ -3,7 +3,9 @@ package com.il.sod.db.model.entities;
 import java.math.BigDecimal;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -55,7 +57,7 @@ public class Address implements IEntity<Integer> {
 	private Client client;
 	
 	//bi-directional many-to-one association to OrderPickNDeliver
-	@OneToMany(mappedBy="address")
+	@OneToMany(mappedBy="address", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	private Set<OrderPickNDeliver> orderPickNdelivers;
 
 

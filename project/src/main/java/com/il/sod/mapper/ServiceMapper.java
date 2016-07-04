@@ -1,12 +1,18 @@
 package com.il.sod.mapper;
 
+import com.il.sod.db.model.entities.AssetTaskService;
+import com.il.sod.db.model.entities.EmployeeTaskService;
 import com.il.sod.db.model.entities.Service;
 import com.il.sod.db.model.entities.ServiceCategory;
+import com.il.sod.db.model.entities.ServiceTask;
 import com.il.sod.db.model.entities.ServiceType;
 import com.il.sod.db.model.entities.ServiceTypeSpec;
 import com.il.sod.db.model.entities.ServiceTypeTask;
+import com.il.sod.rest.dto.db.AssetTaskServiceDTO;
+import com.il.sod.rest.dto.db.EmployeeTaskServiceDTO;
 import com.il.sod.rest.dto.db.ServiceCategoryDTO;
 import com.il.sod.rest.dto.db.ServiceDTO;
+import com.il.sod.rest.dto.db.ServiceTaskDTO;
 import com.il.sod.rest.dto.db.ServiceTypeDTO;
 import com.il.sod.rest.dto.db.ServiceTypeSpecDTO;
 import com.il.sod.rest.dto.db.ServiceTypeTaskDTO;
@@ -22,7 +28,7 @@ public enum ServiceMapper {
 	private ServiceMapper() {
 		
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
-		converterFactory.registerConverter("serviceSetConverter", new ServiceSetConverter());
+		converterFactory.registerConverter("serviceSetConverter", new ServiceSet2IntConverter());
 		converterFactory.registerConverter("serviceTypeSpecSetConverter", new ServiceTypeSpecSetConverter());
 		converterFactory.registerConverter("serviceTypeTaskSetConverter", new ServiceTypeTaskSetConverter());
 		converterFactory.registerConverter("serviceSpecSetConverter", new ServiceSpecSetConverter());
@@ -66,6 +72,24 @@ public enum ServiceMapper {
 			.byDefault()
 			.register();
 		
+		BaseMapper.MAPPER_FACTORY.classMap(ServiceTaskDTO.class, ServiceTask.class)
+			.fieldMap("assetTaskServices", "assetTaskServices").converter("assetTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("employeeTaskServices", "employeeTaskServices").converter("employeeTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.field("idService", "service.idService")
+			.field("idTask", "task.idTask").byDefault().register();
+		
+		BaseMapper.MAPPER_FACTORY.classMap(AssetTaskServiceDTO.class, AssetTaskService.class)
+			.field("idAsset", "asset.idAsset")
+			.field("idServiceTask", "serviceTask.idServiceTask")
+			.byDefault().register();
+
+		BaseMapper.MAPPER_FACTORY.classMap(EmployeeTaskServiceDTO.class, EmployeeTaskService.class)
+				.field("idServiceTask", "serviceTask.idServiceTask")
+				.field("idEmployee", "employee.idEmployee")
+				.byDefault()
+				.register();
+
+		
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
 	}
 
@@ -107,6 +131,27 @@ public enum ServiceMapper {
 	
 	public ServiceCategoryDTO map(ServiceCategory entity) {
 		return this.mapperFacade.map(entity, ServiceCategoryDTO.class);
+	}
+	
+	public ServiceTask map(ServiceTaskDTO dto) {
+		return this.mapperFacade.map(dto, ServiceTask.class);
+	}
+
+	public ServiceTaskDTO map(ServiceTask entity) {
+		return this.mapperFacade.map(entity, ServiceTaskDTO.class);
+	}
+	
+	public AssetTaskServiceDTO map(AssetTaskService dto) {
+		return this.mapperFacade.map(dto, AssetTaskServiceDTO.class);
+	}
+	public AssetTaskService map(AssetTaskServiceDTO dto) {
+		return this.mapperFacade.map(dto, AssetTaskService.class);
+	}
+	public EmployeeTaskServiceDTO map(EmployeeTaskService dto) {
+		return this.mapperFacade.map(dto, EmployeeTaskServiceDTO.class);
+	}
+	public EmployeeTaskService map(EmployeeTaskServiceDTO dto) {
+		return this.mapperFacade.map(dto, EmployeeTaskService.class);
 	}
 }
 

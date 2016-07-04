@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 /**
  * The persistent class for the ServiceSpecs database table.
@@ -30,11 +32,13 @@ public class ServiceSpec implements IEntity<Integer> {
 	//bi-directional many-to-one association to Service
 	@ManyToOne
 	@JoinColumn(name="idService")
+	@JsonBackReference
 	private Service service;
 
 	//bi-directional many-to-one association to Spec
 	@ManyToOne
 	@JoinColumn(name="idSpecs")
+	@JsonBackReference
 	private Spec spec;
 	private int quantity;
 	private float specPrice; 
