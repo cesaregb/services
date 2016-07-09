@@ -934,6 +934,83 @@ DROP VIEW IF EXISTS `sod_db`.`view1` ;
 DROP TABLE IF EXISTS `sod_db`.`view1`;
 USE `sod_db`;
 
+USE `sod_db`;
+
+DELIMITER $$
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Clients_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Clients_BEFORE_INSERT` BEFORE INSERT ON `Clients` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Clients_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Clients_BEFORE_UPDATE` BEFORE UPDATE ON `Clients` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Employee_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Employee_BEFORE_INSERT` BEFORE INSERT ON `Employee` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Employee_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Employee_BEFORE_UPDATE` BEFORE UPDATE ON `Employee` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Orders_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Orders_BEFORE_INSERT` BEFORE INSERT ON `Orders` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Orders_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Orders_BEFORE_UPDATE` BEFORE UPDATE ON `Orders` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Service_BEFORE_INSERT` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Service_BEFORE_INSERT` BEFORE INSERT ON `Service` FOR EACH ROW
+BEGIN
+SET NEW.created = NOW();
+END$$
+
+
+USE `sod_db`$$
+DROP TRIGGER IF EXISTS `sod_db`.`Service_BEFORE_UPDATE` $$
+USE `sod_db`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Service_BEFORE_UPDATE` BEFORE UPDATE ON `Service` FOR EACH ROW
+BEGIN
+SET NEW.updated = NOW();
+END$$
+
+
+DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -1023,8 +1100,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Task` (`idTask`, `idTaskType`, `name`, `description`) VALUES (1, 1, 'SERVICIOS', 'lavado de ropa general (mezclilla, etc)');
-INSERT INTO `sod_db`.`Task` (`idTask`, `idTaskType`, `name`, `description`) VALUES (2, 2, 'lavado general', 'lavado de ropa general');
+INSERT INTO `sod_db`.`Task` (`idTask`, `idTaskType`, `name`, `description`) VALUES (1, 1, 'Tallar (Mano)', 'lavado de ropa general (mezclilla, etc)');
+INSERT INTO `sod_db`.`Task` (`idTask`, `idTaskType`, `name`, `description`) VALUES (2, 2, 'Lavadora', 'lavado de ropa general');
 INSERT INTO `sod_db`.`Task` (`idTask`, `idTaskType`, `name`, `description`) VALUES (3, 4, 'recojer', 'recojer pedido');
 INSERT INTO `sod_db`.`Task` (`idTask`, `idTaskType`, `name`, `description`) VALUES (4, 4, 'entregar', 'entregar pedido');
 INSERT INTO `sod_db`.`Task` (`idTask`, `idTaskType`, `name`, `description`) VALUES (5, 2, 'doblar', 'doblado');
@@ -1237,14 +1314,14 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (1, 'client.all', 'Clients', 1, 1);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (2, 'routes.all', 'Routes', 1, 2);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (3, 'tasks.taskMenu', 'Tasks', 1, 3);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (4, 'specs.specMenu', 'Specs', 1, 4);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (5, 'employees.employeeMenu', 'Employees', 1, 5);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (6, 'assets.assetMenu', 'Assets', 1, 6);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (7, 'products.productMenu', 'Products', 1, 7);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (8, 'services.serviceMenu', 'Services', 1, 8);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (1, 'client.all', 'Clientes', 1, 1);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (2, 'routes.all', 'Rutas', 1, 2);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (3, 'tasks.taskMenu', 'Tareas', 1, 3);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (4, 'specs.specMenu', 'Configuraciones', 1, 4);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (5, 'employees.employeeMenu', 'Empleados', 1, 5);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (6, 'assets.assetMenu', 'Activos', 1, 6);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (7, 'products.productMenu', 'Productos', 1, 7);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (8, 'services.serviceMenu', 'Servicios', 1, 8);
 
 COMMIT;
 
@@ -1261,80 +1338,3 @@ INSERT INTO `sod_db`.`DistanceInfo` (`idDistanceInfo`, `distance`, `price`, `sou
 
 COMMIT;
 
-USE `sod_db`;
-
-DELIMITER $$
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Clients_BEFORE_INSERT` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Clients_BEFORE_INSERT` BEFORE INSERT ON `Clients` FOR EACH ROW
-BEGIN
-SET NEW.created = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Clients_BEFORE_UPDATE` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Clients_BEFORE_UPDATE` BEFORE UPDATE ON `Clients` FOR EACH ROW
-BEGIN
-SET NEW.updated = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Employee_BEFORE_INSERT` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Employee_BEFORE_INSERT` BEFORE INSERT ON `Employee` FOR EACH ROW
-BEGIN
-SET NEW.created = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Employee_BEFORE_UPDATE` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Employee_BEFORE_UPDATE` BEFORE UPDATE ON `Employee` FOR EACH ROW
-BEGIN
-SET NEW.updated = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Orders_BEFORE_INSERT` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Orders_BEFORE_INSERT` BEFORE INSERT ON `Orders` FOR EACH ROW
-BEGIN
-SET NEW.created = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Orders_BEFORE_UPDATE` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Orders_BEFORE_UPDATE` BEFORE UPDATE ON `Orders` FOR EACH ROW
-BEGIN
-SET NEW.updated = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Service_BEFORE_INSERT` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Service_BEFORE_INSERT` BEFORE INSERT ON `Service` FOR EACH ROW
-BEGIN
-SET NEW.created = NOW();
-END$$
-
-
-USE `sod_db`$$
-DROP TRIGGER IF EXISTS `sod_db`.`Service_BEFORE_UPDATE` $$
-USE `sod_db`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `sod_db`.`Service_BEFORE_UPDATE` BEFORE UPDATE ON `Service` FOR EACH ROW
-BEGIN
-SET NEW.updated = NOW();
-END$$
-
-
-DELIMITER ;

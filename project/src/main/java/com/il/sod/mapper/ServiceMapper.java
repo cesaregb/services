@@ -36,6 +36,8 @@ public enum ServiceMapper {
 		converterFactory.registerConverter("orderTypeSetConverter", new OrderTypeSetConverter());
 		converterFactory.registerConverter("serviceTypeSetConverter", new ServiceTypeSetConverter());
 		converterFactory.registerConverter("specConverter", new SpecConverter());
+		converterFactory.registerConverter("assetTaskServiceSetConverter", new AssetTaskServiceSetConverter());
+		converterFactory.registerConverter("employeeTaskServiceSetConverter", new EmployeeTaskServiceSetConverter());
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceDTO.class, Service.class)
 			.fieldMap("serviceSpecs", "serviceSpecs").converter("serviceSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
@@ -73,10 +75,11 @@ public enum ServiceMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceTaskDTO.class, ServiceTask.class)
-			.fieldMap("assetTaskServices", "assetTaskServices").converter("assetTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.fieldMap("employeeTaskServices", "employeeTaskServices").converter("employeeTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("assetTaskServices", "assetTaskServices").converter("assetTaskServiceSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("employeeTaskServices", "employeeTaskServices").converter("employeeTaskServiceSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.field("idService", "service.idService")
-			.field("idTask", "task.idTask").byDefault().register();
+			.field("idTask", "task.idTask")
+			.byDefault().register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(AssetTaskServiceDTO.class, AssetTaskService.class)
 			.field("idAsset", "asset.idAsset")
@@ -84,10 +87,10 @@ public enum ServiceMapper {
 			.byDefault().register();
 
 		BaseMapper.MAPPER_FACTORY.classMap(EmployeeTaskServiceDTO.class, EmployeeTaskService.class)
-				.field("idServiceTask", "serviceTask.idServiceTask")
-				.field("idEmployee", "employee.idEmployee")
-				.byDefault()
-				.register();
+			.field("idServiceTask", "serviceTask.idServiceTask")
+			.field("idEmployee", "employee.idEmployee")
+			.byDefault()
+			.register();
 
 		
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
