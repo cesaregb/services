@@ -7,8 +7,9 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT; import javax.ws.rs.PathParam;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -46,6 +47,9 @@ public class ServiceTypeSpecsService extends AbstractServiceMutations {
 	public Response saveServiceTypeSpec(ServiceTypeSpecDTO dto) throws SODAPIException {
 		try {
 			ServiceTypeSpec entity = ServiceMapper.INSTANCE.map(dto);
+			System.out.println("*****************");
+			System.out.println(this.castEntityAsString(entity));
+			System.out.println("*****************");
 			this.saveEntity(serviceTypeSpecRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);

@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import com.il.sod.db.model.entities.Spec;
 import com.il.sod.db.model.entities.SpecsValue;
-import com.il.sod.db.model.repositories.ProductRepository;
 import com.il.sod.db.model.repositories.ProductTypeRepository;
 import com.il.sod.rest.dto.db.SpecDTO;
 import com.il.sod.rest.dto.db.SpecsValueDTO;

@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiResponses;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/service-type-tasl")
+@Path("/service-type-task")
 @Produces(MediaType.APPLICATION_JSON)
 @Api(value = "/service-type-task", tags = { "service" })
 public class ServiceTypeTaskService extends AbstractServiceMutations {

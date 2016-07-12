@@ -60,6 +60,10 @@ public class SpecsValueService extends AbstractServiceMutations {
 	public Response saveSpecsValue(SpecsValueDTO dto) throws SODAPIException {
 		try {
 			SpecsValue entity = SpecsMapper.INSTANCE.map(dto);
+			if (entity.getIdProductType() > 0 && specsValueRepository.findByTypeProduct(entity.getSpec().getId(), entity.getIdProductType()).size() > 0 ){
+				throw new SODAPIException(Response.Status.BAD_REQUEST, " A SpecValue for that product type already exist. ");
+			}
+			
 			this.saveEntity(specsValueRepository, entity);
 			dto = SpecsMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
@@ -77,6 +81,9 @@ public class SpecsValueService extends AbstractServiceMutations {
 	public Response updateSpecsValue(SpecsValueDTO dto) throws SODAPIException {
 		try {
 			SpecsValue entity = SpecsMapper.INSTANCE.map(dto);
+			if (entity.getIdProductType() > 0 && specsValueRepository.findByTypeProductDifferent(entity.getSpec().getId(), entity.getIdProductType(), entity.getId()).size() > 0 ){
+				throw new SODAPIException(Response.Status.BAD_REQUEST, " A SpecValue for that product type already exist. ");
+			}
 			this.updateEntity(specsValueRepository, entity);
 			dto = SpecsMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
@@ -94,6 +101,9 @@ public class SpecsValueService extends AbstractServiceMutations {
 	public Response updateSpecsValueById(@PathParam("id") String id, SpecsValueDTO dto) throws SODAPIException {
 		try {
 			SpecsValue entity = SpecsMapper.INSTANCE.map(dto);
+			if (entity.getIdProductType() > 0 && specsValueRepository.findByTypeProductDifferent(entity.getSpec().getId(), entity.getIdProductType(), entity.getId()).size() > 0 ){
+				throw new SODAPIException(Response.Status.BAD_REQUEST, " A SpecValue for that product type already exist. ");
+			}
 			this.updateEntity(specsValueRepository, entity);
 			dto = SpecsMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
