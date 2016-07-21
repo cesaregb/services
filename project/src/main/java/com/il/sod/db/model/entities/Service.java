@@ -68,6 +68,14 @@ public class Service implements IEntity<Integer> {
 	@JoinColumn(name="idOrder")
 	@JsonBackReference
 	private Order order;
+	
+	private int nTasks;
+	
+	private int currentTask;
+	
+	//bi-directional many-to-one association to ServiceComment
+	@OneToMany(mappedBy="service")
+	private Set<ServiceComment> serviceComments;
 
 	public Service() {
 	}
@@ -202,5 +210,43 @@ public class Service implements IEntity<Integer> {
 
 	public void setOrder(Order order) {
 		this.order = order;
+	}
+
+	public int getnTasks() {
+		return nTasks;
+	}
+
+	public void setnTasks(int nTasks) {
+		this.nTasks = nTasks;
+	}
+	
+	public Set<ServiceComment> getServiceComments() {
+		return this.serviceComments;
+	}
+
+	public void setServiceComments(Set<ServiceComment> serviceComments) {
+		this.serviceComments = serviceComments;
+	}
+
+	public ServiceComment addServiceComment(ServiceComment serviceComment) {
+		getServiceComments().add(serviceComment);
+		serviceComment.setService(this);
+
+		return serviceComment;
+	}
+
+	public ServiceComment removeServiceComment(ServiceComment serviceComment) {
+		getServiceComments().remove(serviceComment);
+		serviceComment.setService(null);
+
+		return serviceComment;
+	}
+
+	public int getCurrentTask() {
+		return currentTask;
+	}
+
+	public void setCurrentTask(int currentTask) {
+		this.currentTask = currentTask;
 	}
 }

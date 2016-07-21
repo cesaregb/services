@@ -18,12 +18,14 @@ import com.il.sod.db.model.entities.OrderTypeTask;
 import com.il.sod.db.model.entities.PaymentInfo;
 import com.il.sod.db.model.entities.PhoneNumber;
 import com.il.sod.db.model.entities.Service;
+import com.il.sod.db.model.entities.ServiceComment;
 import com.il.sod.db.model.entities.ServiceSpec;
 import com.il.sod.db.model.entities.ServiceTask;
 import com.il.sod.db.model.entities.ServiceType;
 import com.il.sod.db.model.entities.ServiceTypeSpec;
 import com.il.sod.db.model.entities.ServiceTypeTask;
 import com.il.sod.db.model.entities.Spec;
+import com.il.sod.db.model.entities.Task;
 import com.il.sod.rest.dto.db.AddressDTO;
 import com.il.sod.rest.dto.db.AssetTaskOrderDTO;
 import com.il.sod.rest.dto.db.AssetTaskServiceDTO;
@@ -36,11 +38,14 @@ import com.il.sod.rest.dto.db.OrderTaskDTO;
 import com.il.sod.rest.dto.db.OrderTypeTaskDTO;
 import com.il.sod.rest.dto.db.PaymentInfoDTO;
 import com.il.sod.rest.dto.db.PhoneNumberDTO;
+import com.il.sod.rest.dto.db.ServiceCommentDTO;
 import com.il.sod.rest.dto.db.ServiceDTO;
 import com.il.sod.rest.dto.db.ServiceTaskDTO;
 import com.il.sod.rest.dto.db.ServiceTypeDTO;
 import com.il.sod.rest.dto.db.ServiceTypeSpecDTO;
+import com.il.sod.rest.dto.db.ServiceTypeTaskDTO;
 import com.il.sod.rest.dto.db.SpecDTO;
+import com.il.sod.rest.dto.db.TaskDTO;
 
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.metadata.Type;
@@ -162,15 +167,27 @@ class ServiceTypeSpecSetConverter extends BidirectionalConverter<Set<ServiceType
 	}
 }
 
-class ServiceTypeTaskSetConverter extends BidirectionalConverter<Set<ServiceTypeTask>, Set<Integer>> {
+class ServiceTypeTas2IntkSetConverter extends BidirectionalConverter<Set<ServiceTypeTask>, Set<Integer>> {
 	@Override
 	public Set<ServiceTypeTask> convertFrom(Set<Integer> source, Type<Set<ServiceTypeTask>> arg1) {
 		return source.stream().map(p -> (new ServiceTypeTask()).setId(p)).collect(Collectors.toSet());
 	}
-	
+
 	@Override
 	public Set<Integer> convertTo(Set<ServiceTypeTask> source, Type<Set<Integer>> arg1) {
 		return source.stream().map(p -> p.getId()).collect(Collectors.toSet());
+	}
+}
+
+class ServiceTypeTaskSetConverter extends BidirectionalConverter<Set<ServiceTypeTask>, Set<ServiceTypeTaskDTO>> {
+	@Override
+	public Set<ServiceTypeTask> convertFrom(Set<ServiceTypeTaskDTO> source, Type<Set<ServiceTypeTask>> arg1) {
+		return source.stream().map(p -> (ServiceMapper.INSTANCE.map(p))).collect(Collectors.toSet());
+	}
+	
+	@Override
+	public Set<ServiceTypeTaskDTO> convertTo(Set<ServiceTypeTask> source, Type<Set<ServiceTypeTaskDTO>> arg1) {
+		return source.stream().map(p -> (ServiceMapper.INSTANCE.map(p))).collect(Collectors.toSet());
 	}
 }
 
@@ -272,6 +289,17 @@ class SpecConverter extends BidirectionalConverter<Spec, SpecDTO> {
 	}
 }
 
+//class TaskConverter extends BidirectionalConverter<Task, TaskDTO> {
+//	@Override
+//	public Task convertFrom(TaskDTO arg0, Type<Task> arg1) {
+//		return TaskMapper.INSTANCE.map(arg0);
+//	}
+//	@Override
+//	public TaskDTO convertTo(Task arg0, Type<TaskDTO> arg1) {
+//		return TaskMapper.INSTANCE.map(arg0);
+//	}
+//}
+
 class ServiceSet2IntConverter extends BidirectionalConverter<Set<Service>, Set<Integer>> {
 
 	@Override
@@ -294,6 +322,18 @@ class ServiceSetConverter extends BidirectionalConverter<Set<Service>, Set<Servi
 
 	@Override
 	public Set<ServiceDTO> convertTo(Set<Service> source, Type<Set<ServiceDTO>> arg1) {
+		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+}
+
+class ServiceCommentSetConverter extends BidirectionalConverter<Set<ServiceComment>, Set<ServiceCommentDTO>> {
+	@Override
+	public Set<ServiceComment> convertFrom(Set<ServiceCommentDTO> source, Type<Set<ServiceComment>> arg1) {
+		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<ServiceCommentDTO> convertTo(Set<ServiceComment> source, Type<Set<ServiceCommentDTO>> arg1) {
 		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }

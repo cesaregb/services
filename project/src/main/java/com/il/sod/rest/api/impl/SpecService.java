@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.il.sod.db.model.entities.Spec;
-import com.il.sod.db.model.entities.Task;
 import com.il.sod.db.model.repositories.SpecRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.SpecsMapper;
@@ -49,6 +48,9 @@ public class SpecService extends AbstractServiceMutations {
 	public Response saveSpec(SpecDTO dto) throws SODAPIException {
 		try {
 			Spec entity = SpecsMapper.INSTANCE.map(dto);
+			System.out.println("****************");
+			System.out.println("spec: " + this.castEntityAsString(entity));
+			System.out.println("****************");
 			this.saveEntity(specRepository, entity);
 			dto = SpecsMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);

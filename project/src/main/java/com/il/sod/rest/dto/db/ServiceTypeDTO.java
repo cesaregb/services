@@ -10,7 +10,7 @@ public class ServiceTypeDTO {
 	private int time;
 	private Set<Integer> services;
 	private Set<ServiceTypeSpecDTO> serviceTypeSpecs;
-	private Set<Integer> serviceTypeTasks;
+	private Set<ServiceTypeTaskDTO> serviceTypeTasks;
 	private Set<Integer> orderTypes;
 	private int idServiceCategory;
 	private String serviceTypeTypeName;
@@ -38,12 +38,6 @@ public class ServiceTypeDTO {
 	}
 	public void setPrice(double price) {
 		this.price = price;
-	}
-	public Set<Integer> getServiceTypeTasks() {
-		return serviceTypeTasks;
-	}
-	public void setServiceTypeTasks(Set<Integer> serviceTypeTasks) {
-		this.serviceTypeTasks = serviceTypeTasks;
 	}
 	public Set<Integer> getServices() {
 		return services;
@@ -80,5 +74,11 @@ public class ServiceTypeDTO {
 	}
 	public void setIdServiceCategory(int idServiceCategory) {
 		this.idServiceCategory = idServiceCategory;
+	}
+	public Set<ServiceTypeTaskDTO> getServiceTypeTasks() {
+		return serviceTypeTasks;
+	}
+	public void setServiceTypeTasks(Set<ServiceTypeTaskDTO> serviceTypeTasks) {
+		this.serviceTypeTasks = serviceTypeTasks;
 	}
 }

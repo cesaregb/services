@@ -15,6 +15,8 @@ public class ServiceDTO {
 	private Date updated;
 	private int time;
 	private int idOrder;
+	private int nTasks;
+	private int currentTask;
 	
 	public int getIdService() {
 		return idService;
@@ -81,5 +83,17 @@ public class ServiceDTO {
 	}
 	public void setServiceTasks(Set<ServiceTaskDTO> serviceTasks) {
 		this.serviceTasks = serviceTasks;
+	}
+	public int getnTasks() {
+		return nTasks;
+	}
+	public void setnTasks(int nTasks) {
+		this.nTasks = nTasks;
+	}
+	public int getCurrentTask() {
+		return currentTask;
+	}
+	public void setCurrentTask(int currentTask) {
+		this.currentTask = currentTask;
 	}
 }

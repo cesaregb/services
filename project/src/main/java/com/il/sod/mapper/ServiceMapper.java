@@ -4,6 +4,7 @@ import com.il.sod.db.model.entities.AssetTaskService;
 import com.il.sod.db.model.entities.EmployeeTaskService;
 import com.il.sod.db.model.entities.Service;
 import com.il.sod.db.model.entities.ServiceCategory;
+import com.il.sod.db.model.entities.ServiceComment;
 import com.il.sod.db.model.entities.ServiceTask;
 import com.il.sod.db.model.entities.ServiceType;
 import com.il.sod.db.model.entities.ServiceTypeSpec;
@@ -11,6 +12,7 @@ import com.il.sod.db.model.entities.ServiceTypeTask;
 import com.il.sod.rest.dto.db.AssetTaskServiceDTO;
 import com.il.sod.rest.dto.db.EmployeeTaskServiceDTO;
 import com.il.sod.rest.dto.db.ServiceCategoryDTO;
+import com.il.sod.rest.dto.db.ServiceCommentDTO;
 import com.il.sod.rest.dto.db.ServiceDTO;
 import com.il.sod.rest.dto.db.ServiceTaskDTO;
 import com.il.sod.rest.dto.db.ServiceTypeDTO;
@@ -64,8 +66,9 @@ public enum ServiceMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceTypeTaskDTO.class, ServiceTypeTask.class)
+//			.fieldMap("task", "task").converter("specConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.field("idServiceType", "serviceType.idServiceType")
-			.field("idTask", "task.idTask")
+//			.field("idTask", "task.idTask")
 			.byDefault()
 			.register();
 		
@@ -89,6 +92,11 @@ public enum ServiceMapper {
 		BaseMapper.MAPPER_FACTORY.classMap(EmployeeTaskServiceDTO.class, EmployeeTaskService.class)
 			.field("idServiceTask", "serviceTask.idServiceTask")
 			.field("idEmployee", "employee.idEmployee")
+			.byDefault()
+			.register();
+		
+		BaseMapper.MAPPER_FACTORY.classMap(ServiceCommentDTO.class, ServiceComment.class)
+			.field("idService", "service.idService")
 			.byDefault()
 			.register();
 
@@ -155,6 +163,14 @@ public enum ServiceMapper {
 	}
 	public EmployeeTaskService map(EmployeeTaskServiceDTO dto) {
 		return this.mapperFacade.map(dto, EmployeeTaskService.class);
+	}
+	
+	public ServiceCommentDTO map(ServiceComment dto) {
+		return this.mapperFacade.map(dto, ServiceCommentDTO.class);
+	}
+	
+	public ServiceComment map(ServiceCommentDTO dto) {
+		return this.mapperFacade.map(dto, ServiceComment.class);
 	}
 }
 

@@ -14,9 +14,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.il.sod.db.dao.IServiceDAO;
 import com.il.sod.db.model.entities.Task;
 import com.il.sod.db.model.repositories.TaskRepository;
 import com.il.sod.db.model.repositories.TaskTypeRepository;
@@ -43,6 +45,9 @@ public class TaskService extends AbstractServiceMutations {
 
 	@Autowired
 	TaskTypeRepository taskTypeRepository;
+	
+	@Autowired
+	IServiceDAO serviceDAO;
 
 	@POST
 	@ApiOperation(value = "Create Task", response = TaskDTO.class)
@@ -125,6 +130,24 @@ public class TaskService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getTaskList() throws SODAPIException {
 		List<Task> entityList = this.getEntityList(taskRepository);
+		List<TaskDTO> list = entityList.stream().map((i) -> {
+			TaskDTO dto = TaskMapper.INSTANCE.map(i);
+			return dto;
+		}).collect(Collectors.toList());
+		return castEntityAsResponse(list);
+	}
+	
+	@GET
+	@Path("/taskType/{idTaskType}")
+	@ApiOperation(value = "Get Task by Task Type", response = TaskDTO.class, responseContainer = "List")
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getTaskListByTaskType(@PathParam("idTaskType") String idTaskType) throws SODAPIException {
+		if (!NumberUtils.isNumber(idTaskType)){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "idTaskType must be numeric ");
+		}
+		List<Task> entityList = serviceDAO.findByTaskType(Integer.valueOf(idTaskType));
 		List<TaskDTO> list = entityList.stream().map((i) -> {
 			TaskDTO dto = TaskMapper.INSTANCE.map(i);
 			return dto;

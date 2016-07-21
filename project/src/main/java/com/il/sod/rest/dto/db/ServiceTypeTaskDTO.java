@@ -3,7 +3,8 @@ package com.il.sod.rest.dto.db;
 public class ServiceTypeTaskDTO {
 	private int idServiceTypeTask;
 	private int idServiceType;
-	private int idTask;
+	private TaskDTO task;
+//	private int idTask;
 	private int sortingOrder;
 	private int time;
 	
@@ -25,16 +26,16 @@ public class ServiceTypeTaskDTO {
 	public void setIdServiceType(int idServiceType) {
 		this.idServiceType = idServiceType;
 	}
-	public int getIdTask() {
-		return idTask;
-	}
-	public void setIdTask(int idTask) {
-		this.idTask = idTask;
-	}
 	public int getTime() {
 		return time;
 	}
 	public void setTime(int time) {
 		this.time = time;
+	}
+	public TaskDTO getTask() {
+		return task;
+	}
+	public void setTask(TaskDTO task) {
+		this.task = task;
 	}
 }
