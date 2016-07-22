@@ -31,7 +31,7 @@ public class LoggingAspect {
 	}
 
 //	@After("execution(* com.il.sod.rest.api.Health.*(..))")
-	@After("execution(* com.il.sod.rest.api.*(..))")
+	@After("execution(* com.il.sod.rest.api.*.*(..))")
 	public void log(JoinPoint point) {
 		LOGGER.info("[Aspect] Service Called" + point.getSignature().getName() + " called...");
 	}

@@ -493,7 +493,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Specs` (
   `description` VARCHAR(45) NULL,
   `optional` INT NULL DEFAULT 0,
   `max_qty` INT NULL DEFAULT 0,
-  `primary` INT NULL DEFAULT 0 COMMENT '0 = false\n1 = true',
+  `isPrimary` INT NULL DEFAULT 0 COMMENT '0 = false\n1 = true',
   PRIMARY KEY (`idSpecs`))
 ENGINE = InnoDB;
 
@@ -1220,8 +1220,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `primary`) VALUES (1, 'Tamanio', 'size of order', 0, 5, 0);
-INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `primary`) VALUES (2, 'jabon', 'detergente a utilizarse', 0, 4, 0);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `isPrimary`) VALUES (1, 'Tamanio', 'size of order', 0, 5, 0);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `isPrimary`) VALUES (2, 'jabon', 'detergente a utilizarse', 0, 4, 0);
 
 COMMIT;
 

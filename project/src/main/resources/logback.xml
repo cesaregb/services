@@ -18,7 +18,7 @@
 		</encoder>
 	
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<FileNamePattern>sod_app.%i.log.zip</FileNamePattern>
+			<FileNamePattern>log/sod_app.%i.log.zip</FileNamePattern>
 			<MinIndex>1</MinIndex>
 			<MaxIndex>10</MaxIndex>
 		</rollingPolicy>

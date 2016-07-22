@@ -113,6 +113,11 @@ public class ServiceCategoryService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getServiceCategoryList() throws SODAPIException {
 		List<ServiceCategory> rentityList = this.getEntityList(serviceCategoryRepository);
+		
+//		try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException ex) { }
+		
 		List<ServiceCategoryDTO> list = rentityList.stream().map((i) -> {
 			ServiceCategoryDTO dto = ServiceMapper.INSTANCE.map(i);
 			return dto;

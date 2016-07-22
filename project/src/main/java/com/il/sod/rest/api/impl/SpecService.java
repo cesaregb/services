@@ -48,9 +48,6 @@ public class SpecService extends AbstractServiceMutations {
 	public Response saveSpec(SpecDTO dto) throws SODAPIException {
 		try {
 			Spec entity = SpecsMapper.INSTANCE.map(dto);
-			System.out.println("****************");
-			System.out.println("spec: " + this.castEntityAsString(entity));
-			System.out.println("****************");
 			this.saveEntity(specRepository, entity);
 			dto = SpecsMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
@@ -130,7 +127,8 @@ public class SpecService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getSpecList() throws SODAPIException {
-		List<Spec> entityList = specRepository.findAllNotPrimary(); 
+		List<Spec> entityList = specRepository.findAllNotPrimary();
+		
 		List<SpecDTO> list = entityList.stream().map((i) -> {
 			SpecDTO dto = SpecsMapper.INSTANCE.map(i);
 			return dto;
@@ -145,7 +143,7 @@ public class SpecService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getSpecListByPrimary() throws SODAPIException {
-		List<Spec> entityList = specRepository.findAllPrimary(); 
+		List<Spec> entityList = specRepository.findAllPrimary();
 		List<SpecDTO> list = entityList.stream().map((i) -> {
 			SpecDTO dto = SpecsMapper.INSTANCE.map(i);
 			return dto;

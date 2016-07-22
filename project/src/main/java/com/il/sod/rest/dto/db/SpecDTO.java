@@ -9,7 +9,7 @@ public class SpecDTO {
 	private Set<SpecsValueDTO> specsValues;
 	private int optional;
 	private int max_qty;
-	private int primary;
+	private int isPrimary;
 	
 	public int getIdSpecs() {
 		return idSpecs;
@@ -47,10 +47,10 @@ public class SpecDTO {
 	public void setMax_qty(int max_qty) {
 		this.max_qty = max_qty;
 	}
-	public int getPrimary() {
-		return primary;
+	public int getIsPrimary() {
+		return isPrimary;
 	}
-	public void setPrimary(int primary) {
-		this.primary = primary;
+	public void setIsPrimary(int isPrimary) {
+		this.isPrimary = isPrimary;
 	}
 }

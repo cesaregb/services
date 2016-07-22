@@ -47,7 +47,7 @@ public class Spec implements IEntity<Integer> {
 	
 	private int max_qty;
 	
-	private int primary;
+	private int isPrimary;
 	
 	public Spec() {
 	}
@@ -175,12 +175,11 @@ public class Spec implements IEntity<Integer> {
 		this.max_qty = max_qty;
 	}
 
-	public int getPrimary() {
-		return primary;
+	public int getIsPrimary() {
+		return isPrimary;
 	}
 
-	public void setPrimary(int primary) {
-		this.primary = primary;
+	public void setIsPrimary(int isPrimary) {
+		this.isPrimary = isPrimary;
 	}
-
 }
