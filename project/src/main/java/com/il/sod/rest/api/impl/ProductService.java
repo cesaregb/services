@@ -102,11 +102,11 @@ public class ProductService extends AbstractServiceMutations {
 
 	@DELETE
 	@Path("/{id}")
-	@ApiOperation(value = "Delete Task", response = GeneralResponseMessage.class)
+	@ApiOperation(value = "Delete", response = GeneralResponseMessage.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteClient(@PathParam("id") String id) throws SODAPIException {
+	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		Product entity = productRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");

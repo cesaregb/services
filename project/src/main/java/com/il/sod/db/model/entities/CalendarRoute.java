@@ -24,7 +24,7 @@ public class CalendarRoute implements IEntity<Integer> {
 	private int idCalendarRoute;
 
 	private int day;
-
+	private int action;
 	private String time;
 
 	//bi-directional many-to-one association to Route
@@ -77,6 +77,14 @@ public class CalendarRoute implements IEntity<Integer> {
 
 	public void setTime(String time) {
 		this.time = time;
+	}
+
+	public int getAction() {
+		return action;
+	}
+
+	public void setAction(int action) {
+		this.action = action;
 	}
 
 }

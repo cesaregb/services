@@ -25,6 +25,11 @@ public class ClientDAO implements IClientDAO{
 	}
 	
 	@Override
+	public List<Client> findByLoginID(String loginId) {
+		return clientRepository.findByLoginID(loginId);
+	}
+	
+	@Override
 	public List<Client> findByAddress(Integer idAddress) {
 		return clientRepository.findByAddress(idAddress);
 	}

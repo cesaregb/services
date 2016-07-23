@@ -205,6 +205,18 @@ public class ClientService extends AbstractServiceMutations {
 	}
 	
 	@GET
+	@Path("/loginId/{loginId}")
+	@ApiOperation(value = "Get Client list by loginId", response = ClientDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getClientByLoginId(@PathParam("loginId") String loginId) throws SODAPIException {
+		List<Client> lClients = clientDAO.findByLoginID(loginId);
+		List<ClientDTO> lResult = lClients.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toList());
+		return castEntityAsResponse(lResult, Response.Status.OK);
+	}
+	
+	@GET
 	@Path("/addressId/{idAddress}")
 	@ApiOperation(value = "Get Client list by payment token", response = ClientDTO.class)
 	@ApiResponses(value = {

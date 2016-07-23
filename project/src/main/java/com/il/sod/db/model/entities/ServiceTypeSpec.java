@@ -9,11 +9,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-
 /**
  * The persistent class for the ServiceTypeSpecs database table.
- *
  */
+
 @Entity
 @Table(name="ServiceTypeSpecs")
 @NamedQuery(name="ServiceTypeSpec.findAll", query="SELECT s FROM ServiceTypeSpec s")
@@ -23,8 +22,6 @@ public class ServiceTypeSpec implements IEntity<Integer> {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idServiceTypeSpecs;
-
-	private String comments;
 
 	//bi-directional many-to-one association to ServiceType
 	@ManyToOne
@@ -45,14 +42,6 @@ public class ServiceTypeSpec implements IEntity<Integer> {
 
 	public void setIdServiceTypeSpecs(int idServiceTypeSpecs) {
 		this.idServiceTypeSpecs = idServiceTypeSpecs;
-	}
-
-	public String getComments() {
-		return this.comments;
-	}
-
-	public void setComments(String comments) {
-		this.comments = comments;
 	}
 
 	public ServiceType getServiceType() {

@@ -11,6 +11,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 /**
  * The persistent class for the OrderType database table.
@@ -31,14 +33,17 @@ public class OrderType implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to OrderTypeTask
 	@OneToMany(mappedBy="orderType", fetch=FetchType.EAGER)
+	@JsonManagedReference
 	private Set<OrderTypeTask> orderTypeTasks;
 
 	//bi-directional many-to-one association to Order
 	@OneToMany(mappedBy="orderType", fetch=FetchType.EAGER)
+	@JsonManagedReference
 	private Set<Order> orders;
 	
 	//bi-directional many-to-many association to ServiceType
 	@ManyToMany(mappedBy="orderTypes", fetch=FetchType.EAGER)
+	@JsonManagedReference
 	private Set<ServiceType> serviceTypes;
 
 	public OrderType() {

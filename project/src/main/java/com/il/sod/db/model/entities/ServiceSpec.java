@@ -9,11 +9,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 /**
  * The persistent class for the ServiceSpecs database table.
  *
  */
+
 @Entity
 @Table(name="ServiceSpecs")
 @NamedQuery(name="ServiceSpec.findAll", query="SELECT s FROM ServiceSpec s")
@@ -29,16 +32,17 @@ public class ServiceSpec implements IEntity<Integer> {
 	//bi-directional many-to-one association to Service
 	@ManyToOne
 	@JoinColumn(name="idService")
+	@JsonBackReference
 	private Service service;
 
 	//bi-directional many-to-one association to Spec
 	@ManyToOne
 	@JoinColumn(name="idSpecs")
+	@JsonBackReference
 	private Spec spec;
-	
 	private int quantity;
-	
-	private float price; 
+	private float specPrice; 
+	private float serviceIncrement; 
 	
 	private String selectedValue;
 
@@ -76,6 +80,7 @@ public class ServiceSpec implements IEntity<Integer> {
 	public void setSpec(Spec spec) {
 		this.spec = spec;
 	}
+	
 	@Override
 	public Integer getId() {
 		return this.idServiceSpecs;
@@ -95,20 +100,28 @@ public class ServiceSpec implements IEntity<Integer> {
 		this.quantity = quantity;
 	}
 
-	public float getPrice() {
-		return price;
-	}
-
-	public void setPrice(float price) {
-		this.price = price;
-	}
-
 	public String getSelectedValue() {
 		return selectedValue;
 	}
 
 	public void setSelectedValue(String selectedValue) {
 		this.selectedValue = selectedValue;
+	}
+
+	public float getSpecPrice() {
+		return specPrice;
+	}
+
+	public void setSpecPrice(float specPrice) {
+		this.specPrice = specPrice;
+	}
+
+	public float getServiceIncrement() {
+		return serviceIncrement;
+	}
+
+	public void setServiceIncrement(float serviceIncrement) {
+		this.serviceIncrement = serviceIncrement;
 	}
 
 }

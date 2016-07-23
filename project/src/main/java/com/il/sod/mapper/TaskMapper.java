@@ -3,6 +3,10 @@ package com.il.sod.mapper;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.il.sod.db.model.entities.OrderTask;
+import com.il.sod.db.model.entities.OrderTypeTask;
+import com.il.sod.db.model.entities.ServiceTask;
+import com.il.sod.db.model.entities.ServiceTypeTask;
 import com.il.sod.db.model.entities.Task;
 import com.il.sod.db.model.entities.TaskType;
 import com.il.sod.rest.dto.db.TaskDTO;
@@ -34,6 +38,18 @@ public enum TaskMapper {
 			.byDefault()
 			.register();
 		
+		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeTask.class, OrderTask.class)
+			.field("task", "task")
+			.field("time", "time")
+			.field("sortingOrder", "sortingOrder")
+			.register();
+		
+		BaseMapper.MAPPER_FACTORY.classMap(ServiceTypeTask.class, ServiceTask.class)
+			.field("task", "task")
+			.field("time", "time")
+			.field("sortingOrder", "sortingOrder")
+			.register();
+		
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
 	}
 
@@ -51,6 +67,14 @@ public enum TaskMapper {
 	
 	public TaskTypeDTO map(TaskType entity) {
 		return this.mapperFacade.map(entity, TaskTypeDTO.class);
+	}
+	
+	public OrderTask map(OrderTypeTask entity){
+		return this.mapperFacade.map(entity, OrderTask.class);
+	}
+	
+	public ServiceTask map(ServiceTypeTask entity){
+		return this.mapperFacade.map(entity, ServiceTask.class);
 	}
 }
 

@@ -24,7 +24,8 @@ public class JacksonObjectMapperProvider implements ContextResolver<ObjectMapper
 		MAPPER.configure(Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
 		MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 //		MAPPER.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
-		MAPPER.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+//		MAPPER.setDateFormat(new SimpleDateFormat("yyyy-MM-dd:"));
+		MAPPER.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"));
 	}
 
 	public JacksonObjectMapperProvider() {

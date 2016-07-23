@@ -2,22 +2,19 @@ package com.il.sod.rest.dto.db;
 
 public class ServiceTypeTaskDTO {
 	private int idServiceTypeTask;
-	private String comments;
 	private int idServiceType;
-	private int idTask;
+	private String serviceTypeName;
+	private TaskDTO task;
+//	private int idTask;
 	private int sortingOrder;
+	private int time;
+	private String taskTypeName;
 	
 	public int getIdServiceTypeTask() {
 		return idServiceTypeTask;
 	}
 	public void setIdServiceTypeTask(int idServiceTypeTask) {
 		this.idServiceTypeTask = idServiceTypeTask;
-	}
-	public String getComments() {
-		return comments;
-	}
-	public void setComments(String comments) {
-		this.comments = comments;
 	}
 	public int getSortingOrder() {
 		return sortingOrder;
@@ -31,10 +28,28 @@ public class ServiceTypeTaskDTO {
 	public void setIdServiceType(int idServiceType) {
 		this.idServiceType = idServiceType;
 	}
-	public int getIdTask() {
-		return idTask;
+	public int getTime() {
+		return time;
 	}
-	public void setIdTask(int idTask) {
-		this.idTask = idTask;
+	public void setTime(int time) {
+		this.time = time;
+	}
+	public TaskDTO getTask() {
+		return task;
+	}
+	public void setTask(TaskDTO task) {
+		this.task = task;
+	}
+	public String getServiceTypeName() {
+		return serviceTypeName;
+	}
+	public void setServiceTypeName(String serviceTypeName) {
+		this.serviceTypeName = serviceTypeName;
+	}
+	public String getTaskTypeName() {
+		return taskTypeName;
+	}
+	public void setTaskTypeName(String taskTypeName) {
+		this.taskTypeName = taskTypeName;
 	}
 }

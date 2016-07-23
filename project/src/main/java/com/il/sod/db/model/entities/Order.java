@@ -18,6 +18,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 /**
  * The persistent class for the Orders database table.
@@ -52,7 +55,8 @@ public class Order implements IEntity<Integer> {
 	private int status;
 
 	//bi-directional many-to-one association to OrderTask
-	@OneToMany(mappedBy="order", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="order", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference
 	private Set<OrderTask> orderTasks;
 
 	//bi-directional many-to-one association to Client
@@ -63,14 +67,17 @@ public class Order implements IEntity<Integer> {
 	//bi-directional many-to-one association to OrderType
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idOrderType")
+	@JsonBackReference
 	private OrderType orderType;
 	
 	//bi-directional many-to-one association to OrderPickNDeliver
 	@OneToMany(mappedBy="order", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference
 	private Set<OrderPickNDeliver> orderPickNdelivers;
 	
 	//bi-directional many-to-one association to PaymentInfo
 	@OneToMany(mappedBy="order", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference
 	private Set<PaymentInfo> paymentInfos;
 	
 	private Date pickUpDate;
@@ -78,6 +85,7 @@ public class Order implements IEntity<Integer> {
 	
 	//bi-directional many-to-one association to Service
 	@OneToMany(mappedBy="order", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@JsonManagedReference
 	private Set<Service> services;
 
 	public Order() {
@@ -141,6 +149,9 @@ public class Order implements IEntity<Integer> {
 	}
 
 	public OrderTask addOrderTask(OrderTask orderTask) {
+		if (orderTasks == null){
+			orderTasks = new HashSet<>();
+		}
 		getOrderTasks().add(orderTask);
 		orderTask.setOrder(this);
 

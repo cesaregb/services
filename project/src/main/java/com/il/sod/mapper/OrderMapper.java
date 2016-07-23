@@ -36,24 +36,26 @@ public enum OrderMapper {
 		converterFactory.registerConverter("paymentInfoSetConverter", new PaymentInfoSetConverter());
 		converterFactory.registerConverter("serviceTypeSetConverter", new ServiceTypeSetConverter());
 		converterFactory.registerConverter("serviceSet2IntConverter", new ServiceSet2IntConverter());
+		converterFactory.registerConverter("serviceSetConverter", new ServiceSetConverter());
 
-		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeDTO.class, OrderType.class).fieldMap("orders", "orders")
-				.converter("orderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeDTO.class, OrderType.class)
+				.fieldMap("orders", "orders").converter("orderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("orderTypeTasks", "orderTypeTasks").converter("orderTypeTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("serviceTypes", "serviceTypes").converter("serviceTypeSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.byDefault()
 				.register();
 
 		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeTaskDTO.class, OrderTypeTask.class)
-				.field("orderType", "orderType.idOrderType").field("task", "task.idTask")
+				.field("orderType", "orderType.idOrderType")
+				.field("taskTypeName", "task.taskType.name")
 				.byDefault().register();
 
-		BaseMapper.MAPPER_FACTORY.classMap(OrderDTO.class, Order.class).fieldMap("client", "client")
-				.converter("clientConverter").mapNulls(true).mapNullsInReverse(true).add()
+		BaseMapper.MAPPER_FACTORY.classMap(OrderDTO.class, Order.class)
+				.fieldMap("client", "client").converter("clientConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("orderTasks", "orderTasks").converter("orderTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("orderPickNdelivers", "orderPickNdelivers").converter("orderPickNDeliverSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("paymentInfos", "paymentInfos").converter("paymentInfoSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-				.fieldMap("services", "services").converter("serviceSet2IntConverter").mapNulls(true).mapNullsInReverse(true).add()
+				.fieldMap("services", "services").converter("serviceSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.field("idOrderType", "orderType.idOrderType")
 				.byDefault().register();
 

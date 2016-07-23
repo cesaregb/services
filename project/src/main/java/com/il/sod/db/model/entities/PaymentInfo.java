@@ -6,6 +6,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 /**
  * The persistent class for the PaymentInfo database table.
@@ -26,6 +28,7 @@ public class PaymentInfo implements IEntity<Integer> {
 	//bi-directional many-to-one association to Order
 	@ManyToOne
 	@JoinColumn(name="idOrder")
+	@JsonBackReference
 	private Order order;
 
 	public PaymentInfo() {

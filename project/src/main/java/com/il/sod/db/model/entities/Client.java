@@ -31,16 +31,14 @@ public class Client implements IEntity<Integer> {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idClient;
-
 	private String email;
-
 	private String lastName;
-
 	private String name;
-
 	private String password;
-
 	private String twitter;
+	private String loginID;
+	private String rfc; 
+	private String razonSocial; 
 
 	//bi-directional many-to-one association to AccessKey
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
@@ -56,7 +54,7 @@ public class Client implements IEntity<Integer> {
 	private Set<PhoneNumber> phoneNumbers;
 
 	//bi-directional many-to-one association to Order
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, orphanRemoval=true)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	private Set<Order> orders;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -255,5 +253,29 @@ public class Client implements IEntity<Integer> {
 		clientPaymentInfo.setClient(null);
 
 		return clientPaymentInfo;
+	}
+
+	public String getLoginID() {
+		return loginID;
+	}
+
+	public void setLoginID(String loginID) {
+		this.loginID = loginID;
+	}
+
+	public String getRfc() {
+		return rfc;
+	}
+
+	public void setRfc(String rfc) {
+		this.rfc = rfc;
+	}
+
+	public String getRazonSocial() {
+		return razonSocial;
+	}
+
+	public void setRazonSocial(String razonSocial) {
+		this.razonSocial = razonSocial;
 	}
 }

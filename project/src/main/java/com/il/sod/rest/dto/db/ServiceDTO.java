@@ -10,11 +10,13 @@ public class ServiceDTO {
 	private double price;
 	private int idServiceType;
 	private Set<Integer> serviceSpecs;
-	private Set<Integer> serviceTasks;
+	private Set<ServiceTaskDTO> serviceTasks;
 	private Date created;
 	private Date updated;
 	private int time;
 	private int idOrder;
+	private int nTasks;
+	private int currentTask;
 	
 	public int getIdService() {
 		return idService;
@@ -46,12 +48,6 @@ public class ServiceDTO {
 	public void setServiceSpecs(Set<Integer> serviceSpecs) {
 		this.serviceSpecs = serviceSpecs;
 	}
-	public Set<Integer> getServiceTasks() {
-		return serviceTasks;
-	}
-	public void setServiceTasks(Set<Integer> serviceTasks) {
-		this.serviceTasks = serviceTasks;
-	}
 	public Date getCreated() {
 		return created;
 	}
@@ -81,5 +77,23 @@ public class ServiceDTO {
 	}
 	public void setIdServiceType(int idServiceType) {
 		this.idServiceType = idServiceType;
+	}
+	public Set<ServiceTaskDTO> getServiceTasks() {
+		return serviceTasks;
+	}
+	public void setServiceTasks(Set<ServiceTaskDTO> serviceTasks) {
+		this.serviceTasks = serviceTasks;
+	}
+	public int getnTasks() {
+		return nTasks;
+	}
+	public void setnTasks(int nTasks) {
+		this.nTasks = nTasks;
+	}
+	public int getCurrentTask() {
+		return currentTask;
+	}
+	public void setCurrentTask(int currentTask) {
+		this.currentTask = currentTask;
 	}
 }

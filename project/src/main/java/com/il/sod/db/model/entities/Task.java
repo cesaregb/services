@@ -12,6 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 /**
  * The persistent class for the Task database table.
@@ -36,19 +39,23 @@ public class Task implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to OrderTemplateTask
 	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
+	@JsonManagedReference
 	private Set<OrderTypeTask> orderTemplateTasks;
 
 	//bi-directional many-to-one association to ServiceTask
 	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
+	@JsonManagedReference
 	private Set<ServiceTask> serviceTasks;
 
 	//bi-directional many-to-one association to ServiceTypeTask
 	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
+	@JsonManagedReference
 	private Set<ServiceTypeTask> serviceTypeTasks;
 
 	//bi-directional many-to-one association to TaskType
 	@ManyToOne
 	@JoinColumn(name="idTaskType")
+	@JsonBackReference
 	private TaskType taskType;
 
 	public Task() {

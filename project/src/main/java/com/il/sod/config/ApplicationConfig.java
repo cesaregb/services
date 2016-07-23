@@ -23,7 +23,7 @@ public class ApplicationConfig extends ResourceConfig {
 	final static Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
 	
 	public static final String PARAM_API_HOST = "rest.api.host"; // localhost
-	public static final String PARAM_API_BASEPATH = "rest.api.basepath"; // /api
+	public static final String PARAM_API_BASEPATH = "rest.api.basepath"; // api
 	public static final String PARAM_VERSION = "rest.api.version";
 	public static final String PARAM_PORT = "rest.api.port"; // 8080
     

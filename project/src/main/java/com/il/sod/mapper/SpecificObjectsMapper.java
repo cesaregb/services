@@ -9,10 +9,15 @@ import java.util.stream.Collectors;
 
 import com.il.sod.config.Constants;
 import com.il.sod.db.model.entities.Menu;
+import com.il.sod.db.model.entities.OrderTask;
+import com.il.sod.db.model.entities.OrderType;
+import com.il.sod.db.model.entities.OrderTypeTask;
 import com.il.sod.db.model.entities.Product;
 import com.il.sod.db.model.entities.ServiceCategory;
+import com.il.sod.db.model.entities.ServiceTask;
 import com.il.sod.db.model.entities.ServiceType;
 import com.il.sod.db.model.entities.ServiceTypeSpec;
+import com.il.sod.db.model.entities.ServiceTypeTask;
 import com.il.sod.db.model.entities.Spec;
 import com.il.sod.db.model.entities.SpecsValue;
 import com.il.sod.db.model.repositories.ProductRepository;
@@ -54,7 +59,7 @@ public enum SpecificObjectsMapper {
 			.fieldMap("specs", "serviceTypeSpecs").converter("wSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
-		
+			
 		BaseMapper.MAPPER_FACTORY.classMap(WSpecDTO.class, ServiceTypeSpec.class)
 			.field("idSpecs","spec.idSpecs")
 			.field("description","spec.description")
@@ -81,12 +86,17 @@ public enum SpecificObjectsMapper {
 								kv.setKey(p.getId());
 								kv.setValue(p.getName());
 								kv.setServiceIncrement(p.getServiceIncrement());
+								kv.setServiceIncrement(p.getServiceIncrement());
+								kv.setSpecPrice(0d); // if we come from product we dont assign price to a product... 
+								kv.setCostType(0);
 								options.get(specValue.getSpec().getId()).add(kv);
 							}
 						}else if (specValue.getType() == Constants.SPEC_TYPE_VALUES){
-							kv.setKey(0);
+							kv.setKey(specValue.getId());
 							kv.setValue(specValue.getValue());
 							kv.setServiceIncrement(specValue.getServiceIncrement());
+							kv.setSpecPrice(specValue.getSpecPrice());
+							kv.setCostType(specValue.getCostType());
 							options.get(specValue.getSpec().getId()).add(kv);
 						}
 					}
@@ -130,6 +140,7 @@ public enum SpecificObjectsMapper {
 	public Menu map(MenuDTO dto){
 		return this.mapperFacade.map(dto, Menu.class);
 	}
+	
 }
 
 class WServiceTypeSetConverter extends BidirectionalConverter<Set<ServiceType>, Set<WServiceTypeDTO>> {
@@ -140,7 +151,6 @@ class WServiceTypeSetConverter extends BidirectionalConverter<Set<ServiceType>, 
 
 	@Override
 	public Set<WServiceTypeDTO> convertTo(Set<ServiceType> source, Type<Set<WServiceTypeDTO>> arg1) {
-		System.out.println("****source: " + source.size());
 		return source.stream().map(item -> SpecificObjectsMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }

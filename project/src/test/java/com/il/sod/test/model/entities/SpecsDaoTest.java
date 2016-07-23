@@ -7,18 +7,23 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.il.sod.db.dao.impl.SpecsValueDAO;
 import com.il.sod.db.model.entities.Spec;
+import com.il.sod.db.model.entities.SpecsValue;
 import com.il.sod.db.model.repositories.SpecRepository;
 import com.il.sod.mapper.SpecsMapper;
 import com.il.sod.rest.dto.db.SpecDTO;
 import com.il.sod.test.config.SpringTestConfiguration;
 
-@Ignore
 public class SpecsDaoTest extends SpringTestConfiguration {
 
 	@Autowired
 	SpecRepository specRepository;
+	
+	@Autowired
+	SpecsValueDAO specsValueDAO;
 
+	@Ignore 
 	@Test
 	public void test() {
 		List<Spec> entityList = specRepository.findAll();
@@ -28,5 +33,11 @@ public class SpecsDaoTest extends SpringTestConfiguration {
 			return dto;
 		}).collect(Collectors.toList());
 		System.out.println("size: " + list.size());
+	}
+	
+	@Test
+	public void testSpecValue() {
+		List<SpecsValue> entityList = specsValueDAO.findBySpec(Integer.valueOf(1));
+		System.out.println("size: " + entityList.size());
 	}
 }

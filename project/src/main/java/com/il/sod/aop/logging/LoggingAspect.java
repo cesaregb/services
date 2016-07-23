@@ -24,21 +24,22 @@ public class LoggingAspect {
 
 	@AfterThrowing(pointcut = "loggingPointcut()", throwing = "e")
 	public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
-		LOGGER.error("Exception in {}.{}() with cause = {}", 
+		LOGGER.error("[Aspect] Exception in {}.{}() with cause = {}", 
 				joinPoint.getSignature().getDeclaringTypeName(),
 				joinPoint.getSignature().getName(), 
 				e.getCause());
 	}
 
-	@After("execution(* com.il.sod.rest.api.Health.*(..))")
+//	@After("execution(* com.il.sod.rest.api.Health.*(..))")
+	@After("execution(* com.il.sod.rest.api.*.*(..))")
 	public void log(JoinPoint point) {
-		LOGGER.info("====>" + point.getSignature().getName() + " called...");
+		LOGGER.info("[Aspect] Service Called" + point.getSignature().getName() + " called...");
 	}
 	
 	@Around("loggingPointcut()")
 	public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-		LOGGER.info("************* AROUND CALL IN THE API **********");
-		LOGGER.info("Enter: {}.{}() with argument[s] = {}", 
+		LOGGER.info("[Aspect] ************* AROUND CALL IN THE API **********");
+		LOGGER.info("[Aspect] Enter: {}.{}() with argument[s] = {}", 
 				joinPoint.getSignature().getDeclaringTypeName(),
 				joinPoint.getSignature().getName(), 
 				Arrays.toString(joinPoint.getArgs()));
@@ -48,21 +49,21 @@ public class LoggingAspect {
 		try {
 			Object result = joinPoint.proceed();
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.info("Exit: {}.{}() with result = {}", 
+				LOGGER.info("[Aspect] Exit: {}.{}() with result = {}", 
 						joinPoint.getSignature().getDeclaringTypeName(),
 						joinPoint.getSignature().getName(), 
 						result);
 			}
 			return result;
 		} catch (IllegalArgumentException e) {
-			LOGGER.error("Illegal argument: {} in {}.{}()", 
+			LOGGER.error("[Aspect] Illegal argument: {} in {}.{}()", 
 					Arrays.toString(joinPoint.getArgs()),
 					joinPoint.getSignature().getDeclaringTypeName(), 
 					joinPoint.getSignature().getName());
 
 			throw e;
 		}finally{
-			LOGGER.info("************* END AROUND CALL IN THE API **********");
+			LOGGER.info("[Aspect] ************* END AROUND CALL IN THE API **********");
 		}
 		
 	}

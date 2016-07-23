@@ -13,6 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 /**
  * The persistent class for the ServiceTask database table.
@@ -28,28 +31,38 @@ public class ServiceTask implements IEntity<Integer> {
 	private int idServiceTask;
 
 	private String comments;
+	
+	private int sortingOrder;
 
 	//bi-directional many-to-one association to AssetTaskService
 	@OneToMany(mappedBy="serviceTask", fetch=FetchType.EAGER)
+	@JsonManagedReference
 	private Set<AssetTaskService> assetTaskServices;
 
 	//bi-directional many-to-one association to EmployeeTaskService
 	@OneToMany(mappedBy="serviceTask", fetch=FetchType.EAGER)
+	@JsonManagedReference
 	private Set<EmployeeTaskService> employeeTaskServices;
 
 	//bi-directional many-to-one association to Service
 	@ManyToOne
 	@JoinColumn(name="idService")
+	@JsonBackReference
 	private Service service;
 
 	//bi-directional many-to-one association to Task
 	@ManyToOne
 	@JoinColumn(name="idTask")
+	@JsonBackReference
 	private Task task;
 	
 	private Date started;
 	
 	private Date ended;
+	
+	private int status;
+	
+	private int time;
 
 	public ServiceTask() {
 	}
@@ -154,5 +167,29 @@ public class ServiceTask implements IEntity<Integer> {
 
 	public void setEnded(Date ended) {
 		this.ended = ended;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public int getSortingOrder() {
+		return sortingOrder;
+	}
+
+	public void setSortingOrder(int sortingOrder) {
+		this.sortingOrder = sortingOrder;
+	}
+
+	public int getTime() {
+		return time;
+	}
+
+	public void setTime(int time) {
+		this.time = time;
 	}
 }

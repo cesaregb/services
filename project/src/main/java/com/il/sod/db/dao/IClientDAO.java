@@ -12,4 +12,6 @@ public interface IClientDAO {
 	
 	public abstract List<Client> findByAddress(Integer idAddress);
 	
+	public List<Client> findByLoginID(String loginId);
+	
 }

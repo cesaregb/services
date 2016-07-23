@@ -20,12 +20,16 @@ import org.springframework.stereotype.Component;
 import com.il.sod.config.Constants;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.entities.Order;
+import com.il.sod.db.model.entities.OrderTask;
 import com.il.sod.db.model.entities.OrderType;
+import com.il.sod.db.model.entities.OrderTypeTask;
 import com.il.sod.db.model.entities.PaymentInfo;
 import com.il.sod.db.model.entities.Service;
 import com.il.sod.db.model.entities.ServiceCategory;
 import com.il.sod.db.model.entities.ServiceSpec;
+import com.il.sod.db.model.entities.ServiceTask;
 import com.il.sod.db.model.entities.ServiceType;
+import com.il.sod.db.model.entities.ServiceTypeTask;
 import com.il.sod.db.model.entities.Spec;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.db.model.repositories.OrderRepository;
@@ -37,6 +41,7 @@ import com.il.sod.db.model.repositories.SpecRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.OrderMapper;
 import com.il.sod.mapper.SpecificObjectsMapper;
+import com.il.sod.mapper.TaskMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderDTO;
@@ -116,12 +121,13 @@ public class AppOrdersService extends AbstractServiceMutations {
 	public Response saveOrder(NewOrderDTO orderInputDto) throws SODAPIException {
 		OrderDTO result = null;
 		// get order type. 
-		int orderType = 1;
-		if (orderInputDto.getPickUpDate() != null){
-			orderType++;
-		}
-		if (orderInputDto.getDeliveryDate() != null){
-			orderType++;
+		int orderType = 4;
+		if (orderInputDto.getPickUpDate() != null && orderInputDto.getDeliveryDate() != null){
+			orderType = 1;
+		}else if (orderInputDto.getPickUpDate() != null){
+			orderType = 2;
+		}else if (orderInputDto.getDeliveryDate() != null){
+			orderType = 3;
 		}
 		
 		Order orderEntity = new Order();
@@ -140,6 +146,13 @@ public class AppOrdersService extends AbstractServiceMutations {
 		OrderType ot = this.getEntity(orderTypeRepository, orderType);
 		orderEntity.setOrderType(ot);
 		
+		// add order tasks. 
+		for (OrderTypeTask ott : ot.getOrderTypeTasks()){
+			OrderTask orderTask = TaskMapper.INSTANCE.map(ott);
+			orderTask.setOrder(orderEntity);
+			orderEntity.addOrderTask(orderTask);
+		}
+		
 		// adding payment info in case of existing 
 		if (orderInputDto.getPaymentInfo() != null && orderInputDto.getPaymentInfo().getTransactionInfo() != null ){
 			PaymentInfo pi = new PaymentInfo();
@@ -155,12 +168,23 @@ public class AppOrdersService extends AbstractServiceMutations {
 			service.setPrice(servInput.getPrice());
 			service.setDescription(servInput.getComments());
 			
+			// add service tasks. 
+			for (ServiceTypeTask serviceTypeTask : serviceType.getServiceTypeTasks()){
+//				ServiceTask serticeTask = TaskMapper.INSTANCE.map(serviceTypeTask);
+				ServiceTask servTask = new ServiceTask();
+				servTask.setTask(serviceTypeTask.getTask());
+				servTask.setTime(serviceTypeTask.getTime());
+				servTask.setSortingOrder(serviceTypeTask.getSortingOrder());
+				servTask.setService(service);
+				service.addServiceTask(servTask);
+			}
+			
 			// get specs. 
 			for (InputSpecDTO specInput : servInput.getSpecs()){
 				ServiceSpec serviceSpec = new ServiceSpec();
 				serviceSpec.setQuantity(specInput.getQuantity());
 				serviceSpec.setService(service);
-				Spec spec = specRepository.findOne(specInput.getIdSpec());
+				Spec spec = specRepository.findOne(specInput.getIdSpecs());
 				serviceSpec.setSpec(spec);
 				serviceSpec.setSelectedValue(specInput.getValue());
 				// adding service spec

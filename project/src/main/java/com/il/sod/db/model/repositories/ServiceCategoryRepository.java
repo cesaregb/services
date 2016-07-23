@@ -14,5 +14,4 @@ public interface ServiceCategoryRepository extends JpaRepository<ServiceCategory
 	@Query("SELECT c FROM Client c join c.clientPaymentInfos cpi WHERE cpi.token=:token")
     public List<Client> findByToken(@Param("token") String token);
 	
-	
 }
