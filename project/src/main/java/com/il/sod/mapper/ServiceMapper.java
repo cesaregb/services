@@ -66,9 +66,9 @@ public enum ServiceMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceTypeTaskDTO.class, ServiceTypeTask.class)
-//			.fieldMap("task", "task").converter("specConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.field("idServiceType", "serviceType.idServiceType")
-//			.field("idTask", "task.idTask")
+			.field("serviceTypeName", "serviceType.name")
+			.field("taskTypeName", "task.taskType.name")
 			.byDefault()
 			.register();
 		

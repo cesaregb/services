@@ -25,7 +25,6 @@ import com.il.sod.db.model.entities.ServiceType;
 import com.il.sod.db.model.entities.ServiceTypeSpec;
 import com.il.sod.db.model.entities.ServiceTypeTask;
 import com.il.sod.db.model.entities.Spec;
-import com.il.sod.db.model.entities.Task;
 import com.il.sod.rest.dto.db.AddressDTO;
 import com.il.sod.rest.dto.db.AssetTaskOrderDTO;
 import com.il.sod.rest.dto.db.AssetTaskServiceDTO;
@@ -45,7 +44,6 @@ import com.il.sod.rest.dto.db.ServiceTypeDTO;
 import com.il.sod.rest.dto.db.ServiceTypeSpecDTO;
 import com.il.sod.rest.dto.db.ServiceTypeTaskDTO;
 import com.il.sod.rest.dto.db.SpecDTO;
-import com.il.sod.rest.dto.db.TaskDTO;
 
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.metadata.Type;

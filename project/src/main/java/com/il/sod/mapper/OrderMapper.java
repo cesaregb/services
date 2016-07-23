@@ -46,7 +46,8 @@ public enum OrderMapper {
 				.register();
 
 		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeTaskDTO.class, OrderTypeTask.class)
-				.field("orderType", "orderType.idOrderType").field("task", "task.idTask")
+				.field("orderType", "orderType.idOrderType")
+				.field("taskTypeName", "task.taskType.name")
 				.byDefault().register();
 
 		BaseMapper.MAPPER_FACTORY.classMap(OrderDTO.class, Order.class)
