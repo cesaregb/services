@@ -31,7 +31,7 @@ elif [ $1 = "deploy_admin" ]; then
 	docker pull $IMAGE
 	docker run -p 9000:9000 --link mongo-admin:mongo -d $IMAGE
 else
-	echo "Argument not valid"
+	echo "Argument not valid [deploy_services || deploy_web || deploy_admin]"
 	exit 1;
 fi
 
