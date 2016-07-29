@@ -5,12 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.il.sod.db.dao.IClientDAO;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
 
 @Service
-public class ClientDAO implements IClientDAO{
+public class ClientDAO{
 	
 	@Autowired
 	ClientRepository clientRepository;
@@ -19,18 +18,19 @@ public class ClientDAO implements IClientDAO{
 		return clientRepository.findByEmail(email);
 	}
 
-	@Override
 	public List<Client> findByToken(String token) {
 		return clientRepository.findByToken(token);
 	}
 	
-	@Override
 	public List<Client> findByLoginID(String loginId) {
 		return clientRepository.findByLoginID(loginId);
 	}
 	
-	@Override
 	public List<Client> findByAddress(Integer idAddress) {
 		return clientRepository.findByAddress(idAddress);
+	}
+	
+	public List<Client> findByPhone(String phone) {
+		return clientRepository.findByPhone("%" + phone + "%");
 	}
 }

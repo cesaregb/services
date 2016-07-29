@@ -36,6 +36,7 @@ import io.swagger.annotations.ApiResponses;
 @Produces(MediaType.APPLICATION_JSON)
 @Api(value = "/service-type-specs", tags = { "service" })
 public class ServiceTypeSpecsService extends AbstractServiceMutations {
+	
 	@Autowired
 	ServiceTypeSpecRepository serviceTypeSpecRepository;
 
@@ -47,9 +48,6 @@ public class ServiceTypeSpecsService extends AbstractServiceMutations {
 	public Response saveServiceTypeSpec(ServiceTypeSpecDTO dto) throws SODAPIException {
 		try {
 			ServiceTypeSpec entity = ServiceMapper.INSTANCE.map(dto);
-			System.out.println("*****************");
-			System.out.println(this.castEntityAsString(entity));
-			System.out.println("*****************");
 			this.saveEntity(serviceTypeSpecRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
@@ -92,6 +90,7 @@ public class ServiceTypeSpecsService extends AbstractServiceMutations {
 		}
 	}
 
+	@Deprecated
 	@DELETE
 	@ApiOperation(value = "Create Service Type", response = ServiceTypeSpecDTO.class)
 	@ApiResponses(value = {
@@ -108,6 +107,22 @@ public class ServiceTypeSpecsService extends AbstractServiceMutations {
 			throw new SODAPIException(e);
 		}
 	}
+	
+	@DELETE
+	@Path("/{id}")
+	@ApiOperation(value = "Delete Client", response = GeneralResponseMessage.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response deleteItem(@PathParam("id") String clientId) throws SODAPIException {
+		ServiceTypeSpec entity = serviceTypeSpecRepository.findOne(Integer.valueOf(clientId));
+		if (entity == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
+		}
+		this.deleteEntity(serviceTypeSpecRepository, entity.getId());
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Item deleted"),
+				Response.Status.OK);
+	}
 
 	@GET
 	@ApiOperation(value = "Get Service Type list", response = ServiceTypeSpecDTO.class, responseContainer = "List")
@@ -120,6 +135,23 @@ public class ServiceTypeSpecsService extends AbstractServiceMutations {
 			ServiceTypeSpecDTO dto = ServiceMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
+		return castEntityAsResponse(list);
+	}
+	
+	@GET
+	@Path("/byServiceType/{idServiceType}")
+	@ApiOperation(value = "Get Service Type list", response = ServiceTypeSpecDTO.class, responseContainer = "List")
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getServiceTypeSpecById(@PathParam("idServiceType") String idServiceType) throws SODAPIException {
+		List<ServiceTypeSpec> rentityList = serviceTypeSpecRepository.findByServiceType(Integer.valueOf(idServiceType));
+		
+		List<ServiceTypeSpecDTO> list = rentityList.stream().map((i) -> {
+			ServiceTypeSpecDTO dto = ServiceMapper.INSTANCE.map(i);
+			return dto;
+		}).collect(Collectors.toList());
+		
 		return castEntityAsResponse(list);
 	}
 

@@ -7,7 +7,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
@@ -41,10 +40,7 @@ public class OrderType implements IEntity<Integer> {
 	@JsonManagedReference
 	private Set<Order> orders;
 	
-	//bi-directional many-to-many association to ServiceType
-	@ManyToMany(mappedBy="orderTypes", fetch=FetchType.EAGER)
-	@JsonManagedReference
-	private Set<ServiceType> serviceTypes;
+	private int transportInfo;
 
 	public OrderType() {
 	}
@@ -127,11 +123,60 @@ public class OrderType implements IEntity<Integer> {
 		return this;
 	}
 	
-	public Set<ServiceType> getServiceTypes() {
-		return this.serviceTypes;
+	public int getTransportInfo() {
+		return transportInfo;
 	}
 
-	public void setServiceTypes(Set<ServiceType> serviceTypes) {
-		this.serviceTypes = serviceTypes;
+	public void setTransportInfo(int transportInfo) {
+		this.transportInfo = transportInfo;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + idOrderType;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((orderTypeTasks == null) ? 0 : orderTypeTasks.hashCode());
+		result = prime * result + ((orders == null) ? 0 : orders.hashCode());
+		result = prime * result + transportInfo;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OrderType other = (OrderType) obj;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (idOrderType != other.idOrderType)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (orderTypeTasks == null) {
+			if (other.orderTypeTasks != null)
+				return false;
+		} else if (!orderTypeTasks.equals(other.orderTypeTasks))
+			return false;
+		if (orders == null) {
+			if (other.orders != null)
+				return false;
+		} else if (!orders.equals(other.orders))
+			return false;
+		if (transportInfo != other.transportInfo)
+			return false;
+		return true;
 	}
 }

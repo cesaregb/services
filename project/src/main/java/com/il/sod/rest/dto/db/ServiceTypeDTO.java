@@ -11,7 +11,6 @@ public class ServiceTypeDTO {
 	private Set<Integer> services;
 	private Set<ServiceTypeSpecDTO> serviceTypeSpecs;
 	private Set<ServiceTypeTaskDTO> serviceTypeTasks;
-	private Set<Integer> orderTypes;
 	private int idServiceCategory;
 	private String serviceTypeTypeName;
 	
@@ -50,12 +49,6 @@ public class ServiceTypeDTO {
 	}
 	public void setTime(int time) {
 		this.time = time;
-	}
-	public Set<Integer> getOrderTypes() {
-		return orderTypes;
-	}
-	public void setOrderTypes(Set<Integer> orderTypes) {
-		this.orderTypes = orderTypes;
 	}
 	public Set<ServiceTypeSpecDTO> getServiceTypeSpecs() {
 		return serviceTypeSpecs;

@@ -12,12 +12,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.il.sod.config.Constants;
+import com.il.sod.db.dao.impl.ServiceDAO;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.entities.Order;
 import com.il.sod.db.model.entities.OrderTask;
@@ -34,13 +36,11 @@ import com.il.sod.db.model.entities.Spec;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.db.model.repositories.OrderRepository;
 import com.il.sod.db.model.repositories.OrderTypeRepository;
-import com.il.sod.db.model.repositories.ProductRepository;
 import com.il.sod.db.model.repositories.ServiceCategoryRepository;
 import com.il.sod.db.model.repositories.ServiceTypeRepository;
 import com.il.sod.db.model.repositories.SpecRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.OrderMapper;
-import com.il.sod.mapper.SpecificObjectsMapper;
 import com.il.sod.mapper.TaskMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
@@ -49,6 +49,7 @@ import com.il.sod.rest.dto.web.InpServiceDTO;
 import com.il.sod.rest.dto.web.InputSpecDTO;
 import com.il.sod.rest.dto.web.NewOrderDTO;
 import com.il.sod.rest.dto.web.WServiceCategoryDTO;
+import com.il.sod.services.SpecificObjectsConverterService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -76,13 +77,16 @@ public class AppOrdersService extends AbstractServiceMutations {
 	OrderRepository orderRepository;
 
 	@Autowired
-	ProductRepository productRepository;
-	
-	@Autowired
 	SpecRepository specRepository;
 	
 	@Autowired
 	ServiceCategoryRepository serviceCategoryRepository;
+	
+	@Autowired
+	ServiceDAO serviceDAO;
+	
+	@Autowired
+	SpecificObjectsConverterService specificObjectsConverterService;
 	
 	@GET
 	@Path("/orderTypes")
@@ -91,11 +95,28 @@ public class AppOrdersService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getOrderTypes() throws SODAPIException {
-		SpecificObjectsMapper.INSTANCE.setProductRepository(productRepository);
 		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
-		List<WServiceCategoryDTO> result = entities.stream().map(i -> SpecificObjectsMapper.INSTANCE.map(i)).collect(Collectors.toList());
+		List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
 		return this.castEntityAsResponse(result);
 	}
+	
+//	@GET
+//	@Path("/orderTypeDetails/{idOrderType}")
+//	@ApiOperation(value = "Get Address list", response = WServiceCategoryDTO.class, responseContainer = "List")
+//	@ApiResponses(value = {
+//			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+//			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+//	public Response getOrderDetails(@PathParam("idOrderType") String idOrderType) throws SODAPIException {
+//		if (!NumberUtils.isNumber(idOrderType)){
+//			throw new SODAPIException(Response.Status.BAD_REQUEST, "{idOrderType} should be numeric");
+//		}
+//		// TODO fix the many to many... 
+//		List<ServiceCategory> entities = serviceDAO.findServiceCategoryByIdOrderType(Integer.valueOf(idOrderType));
+//		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
+//		List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
+//		return this.castEntityAsResponse(result);
+//		
+//	}
 
 	@GET
 	@Path("/orders/{idClient}")

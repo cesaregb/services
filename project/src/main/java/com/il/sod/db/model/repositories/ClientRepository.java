@@ -19,5 +19,8 @@ public interface ClientRepository extends JpaRepository<Client, Integer>, JpaSpe
 	@Query("SELECT c FROM Client c join c.addresses a WHERE a.idAddress=:idAddress")
 	public List<Client> findByAddress(@Param("idAddress") Integer idAddress);
 	
+	@Query("SELECT c FROM Client c join c.phoneNumbers p WHERE p.number LIKE :phone")
+	public List<Client> findByPhone(@Param("phone") String phone);
+	
 	public List<Client> findByLoginID(String loginId);
 }

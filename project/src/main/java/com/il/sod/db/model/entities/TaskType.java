@@ -31,6 +31,8 @@ public class TaskType implements IEntity<Integer> {
 	//bi-directional many-to-one association to Task
 	@OneToMany(mappedBy="taskType", fetch=FetchType.EAGER)
 	private Set<Task> tasks;
+	
+	private boolean ordersOnly;
 
 	public TaskType() {
 	}
@@ -89,5 +91,13 @@ public class TaskType implements IEntity<Integer> {
 	public TaskType setId(Integer id) {
 		this.idTaskType = id;
 		return this;
+	}
+
+	public boolean isOrdersOnly() {
+		return ordersOnly;
+	}
+
+	public void setOrdersOnly(boolean ordersOnly) {
+		this.ordersOnly = ordersOnly;
 	}
 }

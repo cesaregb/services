@@ -13,6 +13,7 @@ public class WSpecDTO {
 	private int optional;
 	private int max_qty;
 	private double price;
+	private boolean primarySpec;
 	
 	public int getIdSpecs() {
 		return idSpecs;
@@ -55,5 +56,11 @@ public class WSpecDTO {
 	}
 	public void setPrice(double price) {
 		this.price = price;
+	}
+	public boolean isPrimarySpec() {
+		return primarySpec;
+	}
+	public void setPrimarySpec(boolean primarySpec) {
+		this.primarySpec = primarySpec;
 	}
 }

@@ -8,7 +8,7 @@ public class OrderTypeDTO {
 	private String name;
 	private Set<Integer> orders;
 	private Set<OrderTypeTaskDTO> orderTypeTasks;
-	private Set<ServiceTypeDTO> serviceTypes;
+	private int transportInfo;
 	public int getIdOrderType() {
 		return idOrderType;
 	}
@@ -39,11 +39,11 @@ public class OrderTypeDTO {
 	public void setOrderTypeTasks(Set<OrderTypeTaskDTO> orderTypeTasks) {
 		this.orderTypeTasks = orderTypeTasks;
 	}
-	public Set<ServiceTypeDTO> getServiceTypes() {
-		return serviceTypes;
+	public int getTransportInfo() {
+		return transportInfo;
 	}
-	public void setServiceTypes(Set<ServiceTypeDTO> serviceTypes) {
-		this.serviceTypes = serviceTypes;
+	public void setTransportInfo(int transportInfo) {
+		this.transportInfo = transportInfo;
 	}
 
 }

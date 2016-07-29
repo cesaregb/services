@@ -7,8 +7,9 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT; import javax.ws.rs.PathParam;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import com.il.sod.db.model.entities.OrderType;
 import com.il.sod.db.model.repositories.OrderTypeRepository;
+import com.il.sod.db.model.repositories.ServiceTypeRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.OrderMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -35,8 +37,12 @@ import io.swagger.annotations.ApiResponses;
 @Produces(MediaType.APPLICATION_JSON)
 @Api(value = "/order-type", tags = { "order" })
 public class OrderTypeService extends AbstractServiceMutations {
+	
 	@Autowired
 	OrderTypeRepository orderTypeRepository;
+	
+	@Autowired
+	ServiceTypeRepository serviceTypeRepository;
 
 	@POST
 	@ApiOperation(value = "Create Order Type", response = OrderTypeDTO.class)
@@ -89,20 +95,19 @@ public class OrderTypeService extends AbstractServiceMutations {
 	}
 
 	@DELETE
-	@ApiOperation(value = "Create Order Type", response = OrderTypeDTO.class)
+	@Path("/{id}")
+	@ApiOperation(value = "Delete Task", response = GeneralResponseMessage.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteOrderType(OrderTypeDTO dto) throws SODAPIException {
-		try {
-			OrderType entity = OrderMapper.INSTANCE.map(dto);
-			this.deleteEntity(orderTypeRepository, entity.getIdOrderType());
-			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Order deleted"),
-					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
+	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
+		OrderType entity = orderTypeRepository.findOne(Integer.valueOf(id));
+		if (entity == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
+		this.deleteEntity(orderTypeRepository, entity.getId());
+		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Item deleted"),
+				Response.Status.OK);
 	}
 
 	@GET
@@ -118,5 +123,4 @@ public class OrderTypeService extends AbstractServiceMutations {
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
-
 }

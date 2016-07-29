@@ -4,6 +4,11 @@ PGMNAME=`basename $0`
 
 current_time=$(date "+%Y.%m.%d-%H.%M.%S")
 
+# clean docker
+docker rm -v $(docker ps -aq)
+docker rmi $(docker images --quiet --filter "dangling=true")
+
+
 if [ $1 = "deploy_services" ]; then
 	echo "Deploying interactivelabs/services"
 	IMAGE="interactivelabs/services"

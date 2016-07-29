@@ -11,6 +11,7 @@ public class TaskTypeDTO {
 	private String description;
 	private String name;
 	private Set<TaskDTO> tasks;
+	private boolean ordersOnly;
 	
 	public int getIdTaskType() {
 		return idTaskType;
@@ -35,5 +36,11 @@ public class TaskTypeDTO {
 	}
 	public void setTasks(Set<TaskDTO> tasks) {
 		this.tasks = tasks;
+	}
+	public boolean isOrdersOnly() {
+		return ordersOnly;
+	}
+	public void setOrdersOnly(boolean ordersOnly) {
+		this.ordersOnly = ordersOnly;
 	}
 }

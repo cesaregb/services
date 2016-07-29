@@ -3,7 +3,7 @@ package com.il.sod.rest.dto.db;
 public class OrderTypeTaskDTO {
 	private int idOrderTypeTasks;
 	private int time;
-	private Integer orderType;
+	private Integer idOrderType;
 	private TaskDTO task;
 	private int sortingOrder;
 	private String taskTypeName;
@@ -19,12 +19,6 @@ public class OrderTypeTaskDTO {
 	}
 	public void setTime(int time) {
 		this.time = time;
-	}
-	public Integer getOrderType() {
-		return orderType;
-	}
-	public void setOrderType(Integer orderType) {
-		this.orderType = orderType;
 	}
 	public int getSortingOrder() {
 		return sortingOrder;
@@ -43,6 +37,12 @@ public class OrderTypeTaskDTO {
 	}
 	public void setTaskTypeName(String taskTypeName) {
 		this.taskTypeName = taskTypeName;
+	}
+	public Integer getIdOrderType() {
+		return idOrderType;
+	}
+	public void setIdOrderType(Integer idOrderType) {
+		this.idOrderType = idOrderType;
 	}
 
 }
