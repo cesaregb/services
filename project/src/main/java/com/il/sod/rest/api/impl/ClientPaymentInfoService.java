@@ -105,7 +105,7 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteClientPaymentInfo(ClientPaymentInfoDTO dto) throws SODAPIException {
+	public Response deleteItemPaymentInfo(ClientPaymentInfoDTO dto) throws SODAPIException {
 		try {
 			ClientPaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
 			this.deleteEntity(clientPaymentInfoRepository, entity.getIdClientPaymentInfo());

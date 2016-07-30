@@ -41,12 +41,11 @@ public enum OrderMapper {
 		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeDTO.class, OrderType.class)
 				.fieldMap("orders", "orders").converter("orderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("orderTypeTasks", "orderTypeTasks").converter("orderTypeTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-				.fieldMap("serviceTypes", "serviceTypes").converter("serviceTypeSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.byDefault()
 				.register();
 
 		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeTaskDTO.class, OrderTypeTask.class)
-				.field("orderType", "orderType.idOrderType")
+				.field("idOrderType", "orderType.idOrderType")
 				.field("taskTypeName", "task.taskType.name")
 				.byDefault().register();
 

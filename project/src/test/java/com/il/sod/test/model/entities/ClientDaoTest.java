@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.il.sod.db.dao.IClientDAO;
 import com.il.sod.db.dao.IDAO;
+import com.il.sod.db.dao.impl.ClientDAO;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.db.model.repositories.ClientSpecification;
@@ -26,7 +26,7 @@ public class ClientDaoTest extends SpringTestConfiguration{
 	IDAO<Client, Integer> genericDaoImpl;
 	
 	@Autowired
-	private IClientDAO clientDAO;
+	private ClientDAO clientDAO;
 	
 	@Autowired
 	ClientRepository clientRepository;

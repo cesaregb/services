@@ -10,13 +10,13 @@ import com.il.sod.db.model.entities.Spec;
 
 public interface SpecRepository extends JpaRepository<Spec, Integer> {
 	
-	@Query("SELECT s FROM Spec s WHERE s.isPrimary=1")
+	@Query("SELECT s FROM Spec s WHERE s.primarySpec=true")
 	public List<Spec> findAllPrimary();
 	
-	@Query("SELECT s FROM Spec s WHERE s.isPrimary=0")
+	@Query("SELECT s FROM Spec s WHERE s.primarySpec=false")
 	public List<Spec> findAllNotPrimary();
 	
-	@Query("SELECT s FROM Spec s WHERE s.isPrimary=:isPrimary")
-	public List<Spec> findAllByPrimary(@Param("isPrimary") Integer isPrimary);
+	@Query("SELECT s FROM Spec s WHERE s.primarySpec=:primarySpec")
+	public List<Spec> findAllByPrimary(@Param("primarySpec") boolean primarySpec);
 	
 }

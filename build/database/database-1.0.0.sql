@@ -158,6 +158,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`TaskType` (
   `idTaskType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
+  `ordersOnly` TINYINT(1) NULL DEFAULT 0,
   PRIMARY KEY (`idTaskType`))
 ENGINE = InnoDB;
 
@@ -300,6 +301,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`OrderType` (
   `idOrderType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
+  `transportInfo` INT NULL DEFAULT 0 COMMENT '0 = none; \n1 = show pick up\n2 = show deliver \n3 = show both.',
   PRIMARY KEY (`idOrderType`))
 ENGINE = InnoDB;
 
@@ -746,30 +748,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`ServiceType_has_OrderType`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`ServiceType_has_OrderType` ;
-
-CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceType_has_OrderType` (
-  `ServiceType_idServiceType` INT UNSIGNED NOT NULL,
-  `OrderType_idOrderType` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`ServiceType_idServiceType`, `OrderType_idOrderType`),
-  INDEX `fk_ServiceType_has_OrderType_OrderType1_idx` (`OrderType_idOrderType` ASC),
-  INDEX `fk_ServiceType_has_OrderType_ServiceType1_idx` (`ServiceType_idServiceType` ASC),
-  CONSTRAINT `fk_ServiceType_has_OrderType_ServiceType1`
-    FOREIGN KEY (`ServiceType_idServiceType`)
-    REFERENCES `sod_db`.`ServiceType` (`idServiceType`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ServiceType_has_OrderType_OrderType1`
-    FOREIGN KEY (`OrderType_idOrderType`)
-    REFERENCES `sod_db`.`OrderType` (`idOrderType`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `sod_db`.`ClientPaymentInfo`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `sod_db`.`ClientPaymentInfo` ;
@@ -1073,10 +1051,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`) VALUES (1, 'Servicios', 'utilizado como placeholder');
-INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`) VALUES (3, 'planchado', 'todo lo relevante a planchado');
-INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`) VALUES (4, 'transporte', 'recojer o entregar pedidos');
-INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`) VALUES (2, 'lavado', 'todo lo relevante a lavar ropa');
+INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`, `ordersOnly`) VALUES (1, 'Servicios', 'utilizado como placeholder', true);
+INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`, `ordersOnly`) VALUES (3, 'planchado', 'todo lo relevante a planchado', false);
+INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`, `ordersOnly`) VALUES (4, 'transporte', 'recojer o entregar pedidos', false);
+INSERT INTO `sod_db`.`TaskType` (`idTaskType`, `name`, `description`, `ordersOnly`) VALUES (2, 'lavado', 'todo lo relevante a lavar ropa', false);
 
 COMMIT;
 
@@ -1169,10 +1147,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (1, 'Order 1', 'Pickup + service + deliver');
-INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (2, 'Order 2', 'Pickup + service');
-INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (3, 'Order 3', 'Service + deliver');
-INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`) VALUES (4, 'Order 4', 'Service');
+INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`, `transportInfo`) VALUES (1, 'Order 1', 'Pickup + service + deliver', 3);
+INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`, `transportInfo`) VALUES (2, 'Order 2', 'Pickup + service', 1);
+INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`, `transportInfo`) VALUES (3, 'Order 3', 'Service + deliver', 2);
+INSERT INTO `sod_db`.`OrderType` (`idOrderType`, `name`, `description`, `transportInfo`) VALUES (4, 'Order 4', 'Service', 0);
 
 COMMIT;
 
@@ -1250,25 +1228,6 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `sod_db`.`ServiceType_has_OrderType`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `sod_db`;
-INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (1, 1);
-INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (2, 1);
-INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (3, 1);
-INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (4, 1);
-INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (5, 1);
-INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (1, 2);
-INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (2, 2);
-INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (3, 2);
-INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (4, 2);
-INSERT INTO `sod_db`.`ServiceType_has_OrderType` (`ServiceType_idServiceType`, `OrderType_idOrderType`) VALUES (5, 2);
-
-COMMIT;
-
-
--- -----------------------------------------------------
 -- Data for table `sod_db`.`ClientPaymentInfo`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -1337,12 +1296,13 @@ START TRANSACTION;
 USE `sod_db`;
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (1, 'client.all', 'Clientes', 1, 1);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (2, 'routes.all', 'Rutas', 1, 2);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (3, 'tasks.taskMenu', 'Tareas', 1, 3);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (4, 'specs.specMenu', 'Subproductos', 1, 4);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (5, 'employees.employeeMenu', 'Empleados', 1, 5);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (6, 'assets.assetMenu', 'Activos', 1, 6);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (3, 'tasks.taskMenu', 'Tareas', 1, 5);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (4, 'specs.specMenu', 'Subproductos', 1, 6);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (5, 'employees.employeeMenu', 'Empleados', 1, 4);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (6, 'assets.assetMenu', 'Activos', 1, 3);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (7, 'products.productMenu', 'Productos', 1, 7);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (8, 'services.serviceMenu', 'Servicios', 1, 8);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (9, 'orders.orderMenu', 'Orders', 1, 9);
 
 COMMIT;
 

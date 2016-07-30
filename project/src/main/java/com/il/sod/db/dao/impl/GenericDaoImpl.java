@@ -43,13 +43,9 @@ public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID>{
 	@Transactional(rollbackFor=SODAPIException.class)
 	public T delete(ID id) throws SODAPIException {
 		T deletedT = repository.findOne(id);
-
 		if (deletedT == null){
 			throw new SODAPIException("item not found in the db");
-		}else{
-			System.out.println("item found!!!!");
 		}
-
 		repository.delete(deletedT);
 		repository.flush();
 		return deletedT;

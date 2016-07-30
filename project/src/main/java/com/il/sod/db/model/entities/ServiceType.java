@@ -8,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -47,19 +45,6 @@ public class ServiceType implements IEntity<Integer> {
 	//bi-directional many-to-one association to ServiceTypeTask
 	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
 	private Set<ServiceTypeTask> serviceTypeTasks;
-	
-	//bi-directional many-to-many association to OrderType
-	@ManyToMany(fetch=FetchType.EAGER)
-	@JoinTable(
-		name="ServiceType_has_OrderType"
-		, joinColumns={
-			@JoinColumn(name="ServiceType_idServiceType")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="OrderType_idOrderType")
-			}
-		)
-	private Set<OrderType> orderTypes;
 	
 	//bi-directional many-to-one association to ServiceCategory
 	@ManyToOne(fetch=FetchType.EAGER)
@@ -186,14 +171,6 @@ public class ServiceType implements IEntity<Integer> {
 		this.time = time;
 	}
 
-	public Set<OrderType> getOrderTypes() {
-		return orderTypes;
-	}
-
-	public void setOrderTypes(Set<OrderType> orderTypes) {
-		this.orderTypes = orderTypes;
-	}
-	
 	public ServiceCategory getServiceCategory() {
 		return this.serviceCategory;
 	}

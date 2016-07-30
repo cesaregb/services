@@ -18,7 +18,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.il.sod.db.dao.IServiceDAO;
+import com.il.sod.db.dao.impl.ServiceDAO;
 import com.il.sod.db.model.entities.Task;
 import com.il.sod.db.model.repositories.TaskRepository;
 import com.il.sod.db.model.repositories.TaskTypeRepository;
@@ -47,7 +47,7 @@ public class TaskService extends AbstractServiceMutations {
 	TaskTypeRepository taskTypeRepository;
 	
 	@Autowired
-	IServiceDAO serviceDAO;
+	ServiceDAO serviceDAO;
 
 	@POST
 	@ApiOperation(value = "Create Task", response = TaskDTO.class)
@@ -91,6 +91,10 @@ public class TaskService extends AbstractServiceMutations {
 	public Response updateTaskById(@PathParam("id") String id, TaskDTO dto) throws SODAPIException {
 		try {
 			Task entity = TaskMapper.INSTANCE.map(dto);
+			System.out.println("***********");
+			System.out.println(this.castEntityAsString(entity));
+			System.out.println("***********");
+			
 			this.updateEntity(taskRepository, entity);
 			dto = TaskMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
@@ -113,7 +117,7 @@ public class TaskService extends AbstractServiceMutations {
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteClient(@PathParam("id") String id) throws SODAPIException {
+	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		Task entity = taskRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");

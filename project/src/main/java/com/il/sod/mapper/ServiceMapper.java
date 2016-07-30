@@ -53,7 +53,6 @@ public enum ServiceMapper {
 			.fieldMap("services", "services").converter("serviceSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("serviceTypeSpecs", "serviceTypeSpecs").converter("serviceTypeSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("serviceTypeTasks", "serviceTypeTasks").converter("serviceTypeTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.fieldMap("orderTypes", "orderTypes").converter("orderTypeSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.field("serviceTypeTypeName", "serviceCategory.name")
 			.field("idServiceCategory", "serviceCategory.idServiceCategory")
 			.byDefault()

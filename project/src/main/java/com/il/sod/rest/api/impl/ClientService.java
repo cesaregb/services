@@ -15,12 +15,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.il.sod.db.dao.IClientDAO;
+import com.il.sod.db.dao.impl.ClientDAO;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.db.model.repositories.ClientSpecification;
@@ -44,13 +45,15 @@ import io.swagger.annotations.ApiResponses;
 @Produces(MediaType.APPLICATION_JSON)
 @Api(value = "clients", tags = { "clients" })
 public class ClientService extends AbstractServiceMutations {
+	private static final String PHONE_TXT = "phone";
+
 	final static Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 
 	@Autowired
 	private ClientRepository clientRepository;
 	
 	@Autowired
-	private IClientDAO clientDAO;
+	private ClientDAO clientDAO;
 
 	@POST
 	@ApiOperation(value = "Create Client", response = ClientDTO.class)
@@ -115,7 +118,7 @@ public class ClientService extends AbstractServiceMutations {
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteClient(@PathParam("id") String clientId) throws SODAPIException {
+	public Response deleteItem(@PathParam("id") String clientId) throws SODAPIException {
 		Client entity = clientRepository.findOne(Integer.valueOf(clientId));
 		if (entity == null){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not found");
@@ -172,19 +175,28 @@ public class ClientService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getClientsByFilter(List<KeyValue<String, String>> list) throws SODAPIException {
+		String phone = null;
 		if (list == null || list.size() == 0){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Filters cannot be empty");
 		}
 		
 		List<ClientSpecification> filterList = new ArrayList<>();
 		for (KeyValue<String, String> kv : list){
+			if (kv.getKey().toLowerCase().equals(PHONE_TXT)){
+				phone = kv.getValue();
+			}
 			ClientSpecification spec = new ClientSpecification(new SearchCriteria(kv.getKey(), ":", kv.getValue()));
 			filterList.add(spec);
 		}
+		List<Client> entities =  null;
 		
-		SpecificationsBuilder<Client, ClientSpecification> builder = new SpecificationsBuilder<>(filterList);		
+		if (StringUtils.isNotEmpty(phone)){
+			entities = clientDAO.findByPhone(phone);
+		}else{
+			SpecificationsBuilder<Client, ClientSpecification> builder = new SpecificationsBuilder<>(filterList);
+			entities = clientRepository.findAll(builder.build());
+		}
 		
-		List<Client> entities = clientRepository.findAll(builder.build());
 		List<ClientDTO> result = entities.stream().map( (client) -> {
 				return ClientMapper.INSTANCE.map(client);
 			}).collect(Collectors.toList());
