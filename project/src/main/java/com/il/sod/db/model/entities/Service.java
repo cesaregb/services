@@ -74,7 +74,7 @@ public class Service implements IEntity<Integer> {
 	private int currentTask;
 	
 	//bi-directional many-to-one association to ServiceComment
-	@OneToMany(mappedBy="service")
+	@OneToMany(mappedBy="service", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Set<ServiceComment> serviceComments;
 
 	public Service() {

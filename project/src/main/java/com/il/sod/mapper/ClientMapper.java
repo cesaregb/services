@@ -90,6 +90,11 @@ public enum ClientMapper {
 		return this.mapperFacade.map(dto, Address.class);
 	}
 	
+	public Address map(AddressDTO dto, Address entity) {
+		this.mapperFacade.map(dto, entity);
+		return entity;
+	}
+	
 	public AddressDTO map(Address entity) {
 		return this.mapperFacade.map(entity, AddressDTO.class);
 	}

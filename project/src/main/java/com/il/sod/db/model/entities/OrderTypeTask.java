@@ -27,8 +27,6 @@ public class OrderTypeTask implements IEntity<Integer> {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idOrderTypeTasks;
 
-	private int time;
-
 	//bi-directional many-to-one association to OrderType
 	@ManyToOne
 	@JoinColumn(name="idOrderType")
@@ -52,14 +50,6 @@ public class OrderTypeTask implements IEntity<Integer> {
 
 	public void setIdOrderTypeTasks(int idOrderTypeTasks) {
 		this.idOrderTypeTasks = idOrderTypeTasks;
-	}
-
-	public int getTime() {
-		return this.time;
-	}
-
-	public void setTime(int time) {
-		this.time = time;
 	}
 
 	public OrderType getOrderType() {

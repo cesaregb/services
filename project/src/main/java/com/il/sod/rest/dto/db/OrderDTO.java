@@ -8,6 +8,8 @@ public class OrderDTO {
 	private String comments;
 	private int idAddressDeliver;
 	private int idAddressPickup;
+	private Date pickUpDate;
+	private Date deliverDate;
 	private double price;
 	private int status;
 	private ClientDTO client;
@@ -18,9 +20,14 @@ public class OrderDTO {
 	private Date created;
 	private Date updated;
 	private int time;
-	private Date pickUpDate;
-	private Date deliverDate;
 	private Set<ServiceDTO> services;
+	private int createdBy;
+	
+	// flat information.
+	private String clientName;
+	private String orderTypeName;
+	private double completed; 
+	
 	
 	public int getIdOrder() {
 		return idOrder;
@@ -123,5 +130,29 @@ public class OrderDTO {
 	}
 	public void setServices(Set<ServiceDTO> services) {
 		this.services = services;
+	}
+	public int getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(int createdBy) {
+		this.createdBy = createdBy;
+	}
+	public String getClientName() {
+		return clientName;
+	}
+	public void setClientName(String clientName) {
+		this.clientName = clientName;
+	}
+	public String getOrderTypeName() {
+		return orderTypeName;
+	}
+	public void setOrderTypeName(String orderTypeName) {
+		this.orderTypeName = orderTypeName;
+	}
+	public double getCompleted() {
+		return completed;
+	}
+	public void setCompleted(double completed) {
+		this.completed = completed;
 	}
 }

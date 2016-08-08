@@ -9,6 +9,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @ComponentScan({
 	"com.il.sod.conf.spring",  // spring configuration for mvc
 	"com.il.sod.services", // services 
+	"com.il.sod.converter.services", // converter services 
 	"com.il.sod.db.dao", // DAO Services
 	"com.il.sod.aop", // aop 
 	"com.il.sod.rest.api" // services 

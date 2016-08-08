@@ -1,4 +1,4 @@
-package com.il.sod.rest.dto.web;
+package com.il.sod.rest.dto.specifics;
 
 import java.util.Date;
 import java.util.List;

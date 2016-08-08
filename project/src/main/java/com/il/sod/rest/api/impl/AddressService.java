@@ -68,8 +68,9 @@ public class AddressService extends AbstractServiceMutations {
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateAddress(AddressDTO dto) throws SODAPIException {
 		serviceDbHelper.validateClient(clientRepository, dto);
-
-		Address entity = ClientMapper.INSTANCE.map(dto);
+		
+		Address entity = this.getEntity(addressRepository, dto.getIdAddress());
+		entity = ClientMapper.INSTANCE.map(dto, entity);
 		this.updateEntity(addressRepository, entity);
 		dto = ClientMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.CREATED);

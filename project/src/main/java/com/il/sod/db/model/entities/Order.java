@@ -87,6 +87,8 @@ public class Order implements IEntity<Integer> {
 	@OneToMany(mappedBy="order", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonManagedReference
 	private Set<Service> services;
+	
+	private int createdBy;
 
 	public Order() {
 	}
@@ -298,5 +300,13 @@ public class Order implements IEntity<Integer> {
 		service.setOrder(null);
 
 		return service;
+	}
+
+	public int getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(int createdBy) {
+		this.createdBy = createdBy;
 	}
 }

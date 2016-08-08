@@ -6,11 +6,11 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.il.sod.converter.services.SpecificObjectsConverterService;
 import com.il.sod.db.model.entities.ServiceCategory;
 import com.il.sod.db.model.repositories.ProductRepository;
 import com.il.sod.db.model.repositories.ServiceCategoryRepository;
-import com.il.sod.rest.dto.web.WServiceCategoryDTO;
-import com.il.sod.services.SpecificObjectsConverterService;
+import com.il.sod.rest.dto.specifics.WServiceCategoryDTO;
 import com.il.sod.test.config.SpringTestConfiguration;
 
 public class ServiceDaoTest extends SpringTestConfiguration{

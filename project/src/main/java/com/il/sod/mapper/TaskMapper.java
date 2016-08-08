@@ -39,15 +39,11 @@ public enum TaskMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeTask.class, OrderTask.class)
-			.field("task", "task")
-			.field("time", "time")
-			.field("sortingOrder", "sortingOrder")
+			.byDefault()
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceTypeTask.class, ServiceTask.class)
-			.field("task", "task")
-			.field("time", "time")
-			.field("sortingOrder", "sortingOrder")
+			.byDefault()
 			.register();
 		
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();

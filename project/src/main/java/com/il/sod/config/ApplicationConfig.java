@@ -54,7 +54,6 @@ public class ApplicationConfig extends ResourceConfig {
 		beanConfig.setDescription("Services for handlign the be");
 		beanConfig.setResourcePackage(SERVICES_PACKAGE);
 		beanConfig.setScan(true);
-		
 //		Json.mapper().setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 	}
 }
