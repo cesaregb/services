@@ -135,16 +135,6 @@ public class OrderTask implements IEntity<Integer> {
 	public void setOrder(Order order) {
 		this.order = order;
 	}
-	@Override
-	public Integer getId() {
-		return this.idOrderTask;
-	}
-
-	@Override
-	public OrderTask setId(Integer id) {
-		this.idOrderTask = id;
-		return this;
-	}
 
 	public int getStatus() {
 		return status;
@@ -184,5 +174,16 @@ public class OrderTask implements IEntity<Integer> {
 
 	public void setEnded(Date ended) {
 		this.ended = ended;
+	}
+	
+	@Override
+	public Integer getId() {
+		return this.idOrderTask;
+	}
+
+	@Override
+	public OrderTask setId(Integer id) {
+		this.idOrderTask = id;
+		return this;
 	}
 }
