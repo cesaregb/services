@@ -1,5 +1,6 @@
 package com.il.sod.db.model.entities;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -29,11 +30,11 @@ public class OrderTask implements IEntity<Integer> {
 	private int idOrderTask;
 
 	private String comments;
-
-	private int time;
 	
 	private int status;
-	
+	private Date started;
+	private Date ended;
+	private int time;
 	private int sortingOrder;
 
 	//bi-directional many-to-one association to AssetTaskOrder
@@ -134,16 +135,6 @@ public class OrderTask implements IEntity<Integer> {
 	public void setOrder(Order order) {
 		this.order = order;
 	}
-	@Override
-	public Integer getId() {
-		return this.idOrderTask;
-	}
-
-	@Override
-	public OrderTask setId(Integer id) {
-		this.idOrderTask = id;
-		return this;
-	}
 
 	public int getStatus() {
 		return status;
@@ -167,5 +158,32 @@ public class OrderTask implements IEntity<Integer> {
 
 	public void setTime(int time) {
 		this.time = time;
+	}
+
+	public Date getStarted() {
+		return started;
+	}
+
+	public void setStarted(Date started) {
+		this.started = started;
+	}
+
+	public Date getEnded() {
+		return ended;
+	}
+
+	public void setEnded(Date ended) {
+		this.ended = ended;
+	}
+	
+	@Override
+	public Integer getId() {
+		return this.idOrderTask;
+	}
+
+	@Override
+	public OrderTask setId(Integer id) {
+		this.idOrderTask = id;
+		return this;
 	}
 }

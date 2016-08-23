@@ -25,9 +25,7 @@ public class OrderType implements IEntity<Integer> {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idOrderType;
-
 	private String description;
-
 	private String name;
 
 	//bi-directional many-to-one association to OrderTypeTask

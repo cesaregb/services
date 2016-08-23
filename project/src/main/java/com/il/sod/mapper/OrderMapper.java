@@ -3,14 +3,12 @@ package com.il.sod.mapper;
 import com.il.sod.db.model.entities.AssetTaskOrder;
 import com.il.sod.db.model.entities.EmployeeTaskOrder;
 import com.il.sod.db.model.entities.Order;
-import com.il.sod.db.model.entities.OrderPickNDeliver;
 import com.il.sod.db.model.entities.OrderTask;
 import com.il.sod.db.model.entities.OrderType;
 import com.il.sod.db.model.entities.OrderTypeTask;
 import com.il.sod.rest.dto.db.AssetTaskOrderDTO;
 import com.il.sod.rest.dto.db.EmployeeTaskOrderDTO;
 import com.il.sod.rest.dto.db.OrderDTO;
-import com.il.sod.rest.dto.db.OrderPickNDeliverDTO;
 import com.il.sod.rest.dto.db.OrderTaskDTO;
 import com.il.sod.rest.dto.db.OrderTypeDTO;
 import com.il.sod.rest.dto.db.OrderTypeTaskDTO;
@@ -32,8 +30,6 @@ public enum OrderMapper {
 		converterFactory.registerConverter("clientConverter", new ClientConverter());
 		converterFactory.registerConverter("assetTaskOrderSetConverter", new AssetTaskOrderSetConverter());
 		converterFactory.registerConverter("employeeTaskOrderSetConverter", new EmployeeTaskOrderSetConverter());
-		converterFactory.registerConverter("orderPickNDeliverSetConverter", new OrderPickNDeliverSetConverter());
-		converterFactory.registerConverter("paymentInfoSetConverter", new PaymentInfoSetConverter());
 		converterFactory.registerConverter("serviceTypeSetConverter", new ServiceTypeSetConverter());
 		converterFactory.registerConverter("serviceSet2IntConverter", new ServiceSet2IntConverter());
 		converterFactory.registerConverter("serviceSetConverter", new ServiceSetConverter());
@@ -52,8 +48,6 @@ public enum OrderMapper {
 		BaseMapper.MAPPER_FACTORY.classMap(OrderDTO.class, Order.class)
 				.fieldMap("client", "client").converter("clientConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("orderTasks", "orderTasks").converter("orderTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-				.fieldMap("orderPickNdelivers", "orderPickNdelivers").converter("orderPickNDeliverSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-				.fieldMap("paymentInfos", "paymentInfos").converter("paymentInfoSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("services", "services").converter("serviceSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.field("idOrderType", "orderType.idOrderType")
 				.byDefault().register();
@@ -74,11 +68,6 @@ public enum OrderMapper {
 				.field("idEmployee", "employee.idEmployee")
 				.byDefault()
 				.register();
-
-		BaseMapper.MAPPER_FACTORY.classMap(OrderPickNDeliverDTO.class, OrderPickNDeliver.class)
-				.field("idOrder", "order.idOrder")
-				.field("idAddress", "address.idAddress")
-				.byDefault().register();
 
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
 	}
@@ -129,13 +118,5 @@ public enum OrderMapper {
 
 	public EmployeeTaskOrder map(EmployeeTaskOrderDTO entity) {
 		return this.mapperFacade.map(entity, EmployeeTaskOrder.class);
-	}
-
-	public OrderPickNDeliver map(OrderPickNDeliverDTO dto) {
-		return this.mapperFacade.map(dto, OrderPickNDeliver.class);
-	}
-
-	public OrderPickNDeliverDTO map(OrderPickNDeliver entity) {
-		return this.mapperFacade.map(entity, OrderPickNDeliverDTO.class);
 	}
 }

@@ -31,8 +31,6 @@ public class ServiceTask implements IEntity<Integer> {
 	private int idServiceTask;
 
 	private String comments;
-	
-	private int sortingOrder;
 
 	//bi-directional many-to-one association to AssetTaskService
 	@OneToMany(mappedBy="serviceTask", fetch=FetchType.EAGER)
@@ -56,13 +54,11 @@ public class ServiceTask implements IEntity<Integer> {
 	@JsonBackReference
 	private Task task;
 	
-	private Date started;
-	
-	private Date ended;
-	
 	private int status;
-	
+	private Date started;
+	private Date ended;
 	private int time;
+	private int sortingOrder;
 
 	public ServiceTask() {
 	}

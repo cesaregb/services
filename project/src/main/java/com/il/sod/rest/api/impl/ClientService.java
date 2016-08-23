@@ -31,7 +31,7 @@ import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ClientMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
-import com.il.sod.rest.dto.KeyValue;
+import com.il.sod.rest.dto.KeyValueSpecs;
 import com.il.sod.rest.dto.db.ClientDTO;
 
 import io.swagger.annotations.Api;
@@ -174,14 +174,14 @@ public class ClientService extends AbstractServiceMutations {
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response getClientsByFilter(List<KeyValue<String, String>> list) throws SODAPIException {
+	public Response getClientsByFilter(List<KeyValueSpecs<String, String>> list) throws SODAPIException {
 		String phone = null;
 		if (list == null || list.size() == 0){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Filters cannot be empty");
 		}
 		
 		List<ClientSpecification> filterList = new ArrayList<>();
-		for (KeyValue<String, String> kv : list){
+		for (KeyValueSpecs<String, String> kv : list){
 			if (kv.getKey().toLowerCase().equals(PHONE_TXT)){
 				phone = kv.getValue();
 			}

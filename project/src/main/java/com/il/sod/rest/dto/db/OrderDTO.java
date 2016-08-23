@@ -8,19 +8,26 @@ public class OrderDTO {
 	private String comments;
 	private int idAddressDeliver;
 	private int idAddressPickup;
+	private Date pickUpDate;
+	private Date deliverDate;
 	private double price;
 	private int status;
 	private ClientDTO client;
 	private int idOrderType;
 	private Set<OrderTaskDTO> orderTasks;
-	private Set<OrderPickNDeliverDTO> orderPickNdelivers;
-	private Set<PaymentInfoDTO> paymentInfos;
+	private PaymentInfoDTO paymentInfo;
 	private Date created;
 	private Date updated;
 	private int time;
-	private Date pickUpDate;
-	private Date deliverDate;
 	private Set<ServiceDTO> services;
+	private int createdBy;
+	private int deleted;
+	
+	// flat information.
+	private String clientName;
+	private String orderTypeName;
+	private double completed; 
+	
 	
 	public int getIdOrder() {
 		return idOrder;
@@ -88,18 +95,6 @@ public class OrderDTO {
 	public void setTime(int time) {
 		this.time = time;
 	}
-	public Set<OrderPickNDeliverDTO> getOrderPickNdelivers() {
-		return orderPickNdelivers;
-	}
-	public void setOrderPickNdelivers(Set<OrderPickNDeliverDTO> orderPickNdelivers) {
-		this.orderPickNdelivers = orderPickNdelivers;
-	}
-	public Set<PaymentInfoDTO> getPaymentInfos() {
-		return paymentInfos;
-	}
-	public void setPaymentInfos(Set<PaymentInfoDTO> paymentInfos) {
-		this.paymentInfos = paymentInfos;
-	}
 	public Date getPickUpDate() {
 		return pickUpDate;
 	}
@@ -123,5 +118,41 @@ public class OrderDTO {
 	}
 	public void setServices(Set<ServiceDTO> services) {
 		this.services = services;
+	}
+	public int getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(int createdBy) {
+		this.createdBy = createdBy;
+	}
+	public String getClientName() {
+		return clientName;
+	}
+	public void setClientName(String clientName) {
+		this.clientName = clientName;
+	}
+	public String getOrderTypeName() {
+		return orderTypeName;
+	}
+	public void setOrderTypeName(String orderTypeName) {
+		this.orderTypeName = orderTypeName;
+	}
+	public double getCompleted() {
+		return completed;
+	}
+	public void setCompleted(double completed) {
+		this.completed = completed;
+	}
+	public int getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
+	}
+	public PaymentInfoDTO getPaymentInfo() {
+		return paymentInfo;
+	}
+	public void setPaymentInfo(PaymentInfoDTO paymentInfo) {
+		this.paymentInfo = paymentInfo;
 	}
 }

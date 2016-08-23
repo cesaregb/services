@@ -91,10 +91,6 @@ public class TaskService extends AbstractServiceMutations {
 	public Response updateTaskById(@PathParam("id") String id, TaskDTO dto) throws SODAPIException {
 		try {
 			Task entity = TaskMapper.INSTANCE.map(dto);
-			System.out.println("***********");
-			System.out.println(this.castEntityAsString(entity));
-			System.out.println("***********");
-			
 			this.updateEntity(taskRepository, entity);
 			dto = TaskMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);

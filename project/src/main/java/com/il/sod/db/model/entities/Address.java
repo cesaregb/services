@@ -56,10 +56,6 @@ public class Address implements IEntity<Integer> {
 	@JsonBackReference
 	private Client client;
 	
-	//bi-directional many-to-one association to OrderPickNDeliver
-	@OneToMany(mappedBy="address", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
-	private Set<OrderPickNDeliver> orderPickNdelivers;
-
 
 	public Address() {
 	}
@@ -138,27 +134,6 @@ public class Address implements IEntity<Integer> {
 		this.zipcode = zipcode;
 	}
 	
-	public Set<OrderPickNDeliver> getOrderPickNdelivers() {
-		return this.orderPickNdelivers;
-	}
-
-	public void setOrderPickNdelivers(Set<OrderPickNDeliver> orderPickNdelivers) {
-		this.orderPickNdelivers = orderPickNdelivers;
-	}
-
-	public OrderPickNDeliver addOrderPickNdeliver(OrderPickNDeliver orderPickNdeliver) {
-		getOrderPickNdelivers().add(orderPickNdeliver);
-		orderPickNdeliver.setAddress(this);
-
-		return orderPickNdeliver;
-	}
-
-	public OrderPickNDeliver removeOrderPickNdeliver(OrderPickNDeliver orderPickNdeliver) {
-		getOrderPickNdelivers().remove(orderPickNdeliver);
-		orderPickNdeliver.setAddress(null);
-
-		return orderPickNdeliver;
-	}
 
 	public boolean isPrefered() {
 		return prefered;

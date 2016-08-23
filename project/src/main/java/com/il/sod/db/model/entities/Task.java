@@ -53,7 +53,7 @@ public class Task implements IEntity<Integer> {
 	private Set<ServiceTypeTask> serviceTypeTasks;
 
 	//bi-directional many-to-one association to TaskType
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idTaskType")
 	@JsonBackReference
 	private TaskType taskType;

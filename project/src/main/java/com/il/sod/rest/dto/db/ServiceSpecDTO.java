@@ -1,31 +1,20 @@
 package com.il.sod.rest.dto.db;
 
 public class ServiceSpecDTO {
-	private int idServiceTypeSpecs;
+	private int idServiceSpecs;
 	private String comments;
-	private ServiceDTO service;
+	private Integer idService;
 	private SpecDTO spec;
 	private String selectedValue;
 	private float specPrice; 
 	private float serviceIncrement;
+	private int quantity;
 	
-	public int getIdServiceTypeSpecs() {
-		return idServiceTypeSpecs;
-	}
-	public void setIdServiceTypeSpecs(int idServiceTypeSpecs) {
-		this.idServiceTypeSpecs = idServiceTypeSpecs;
-	}
 	public String getComments() {
 		return comments;
 	}
 	public void setComments(String comments) {
 		this.comments = comments;
-	}
-	public ServiceDTO getService() {
-		return service;
-	}
-	public void setService(ServiceDTO service) {
-		this.service = service;
 	}
 	public SpecDTO getSpec() {
 		return spec;
@@ -50,6 +39,24 @@ public class ServiceSpecDTO {
 	}
 	public void setServiceIncrement(float serviceIncrement) {
 		this.serviceIncrement = serviceIncrement;
+	}
+	public int getIdServiceSpecs() {
+		return idServiceSpecs;
+	}
+	public void setIdServiceSpecs(int idServiceSpecs) {
+		this.idServiceSpecs = idServiceSpecs;
+	}
+	public Integer getIdService() {
+		return idService;
+	}
+	public void setIdService(Integer idService) {
+		this.idService = idService;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 }

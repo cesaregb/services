@@ -1,5 +1,6 @@
 package com.il.sod.rest.dto.db;
 
+import java.util.Date;
 import java.util.Set;
 
 public class OrderTaskDTO {	
@@ -11,8 +12,9 @@ public class OrderTaskDTO {
 	private int idOrder;
 	private int idTask;
 	private int status;
+	private Date started;
+	private Date ended;
 	private int sortingOrder; 
-	
 	
 	public int getIdOrderTask() {
 		return idOrderTask;
@@ -67,6 +69,18 @@ public class OrderTaskDTO {
 	}
 	public void setTime(int time) {
 		this.time = time;
+	}
+	public Date getStarted() {
+		return started;
+	}
+	public void setStarted(Date started) {
+		this.started = started;
+	}
+	public Date getEnded() {
+		return ended;
+	}
+	public void setEnded(Date ended) {
+		this.ended = ended;
 	}
 
 }

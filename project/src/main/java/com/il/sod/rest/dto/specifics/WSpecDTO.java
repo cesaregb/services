@@ -1,15 +1,15 @@
-package com.il.sod.rest.dto.web;
+package com.il.sod.rest.dto.specifics;
 
 import java.util.List;
 import java.util.Map;
 
-import com.il.sod.rest.dto.KeyValue;
+import com.il.sod.rest.dto.KeyValueSpecs;
 
 public class WSpecDTO {
 	private int idSpecs;
 	private String description;
 	private String name;
-	private Map<Integer, List<KeyValue<Integer, String>>> options;
+	private Map<Integer, List<KeyValueSpecs<Integer, String>>> options;
 	private int optional;
 	private int max_qty;
 	private double price;
@@ -45,10 +45,10 @@ public class WSpecDTO {
 	public void setMax_qty(int max_qty) {
 		this.max_qty = max_qty;
 	}
-	public Map<Integer, List<KeyValue<Integer, String>>> getOptions() {
+	public Map<Integer, List<KeyValueSpecs<Integer, String>>> getOptions() {
 		return options;
 	}
-	public void setOptions(Map<Integer, List<KeyValue<Integer, String>>> options) {
+	public void setOptions(Map<Integer, List<KeyValueSpecs<Integer, String>>> options) {
 		this.options = options;
 	}
 	public double getPrice() {

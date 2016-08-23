@@ -1,4 +1,4 @@
-package com.il.sod.services;
+package com.il.sod.converter.services;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,11 +20,11 @@ import com.il.sod.db.model.entities.Spec;
 import com.il.sod.db.model.entities.SpecsValue;
 import com.il.sod.db.model.repositories.ProductRepository;
 import com.il.sod.mapper.BaseMapper;
-import com.il.sod.rest.dto.KeyValue;
+import com.il.sod.rest.dto.KeyValueSpecs;
 import com.il.sod.rest.dto.db.MenuDTO;
-import com.il.sod.rest.dto.web.WServiceCategoryDTO;
-import com.il.sod.rest.dto.web.WServiceTypeDTO;
-import com.il.sod.rest.dto.web.WSpecDTO;
+import com.il.sod.rest.dto.specifics.WServiceCategoryDTO;
+import com.il.sod.rest.dto.specifics.WServiceTypeDTO;
+import com.il.sod.rest.dto.specifics.WSpecDTO;
 
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
@@ -68,18 +68,18 @@ public class SpecificObjectsConverterService {
 				
 				@Override
 				public void mapBtoA(ServiceTypeSpec entity, WSpecDTO dto, MappingContext context) {
-					Map<Integer, List<KeyValue<Integer, String>>> options = new HashMap<Integer, List<KeyValue<Integer, String>>>();
+					Map<Integer, List<KeyValueSpecs<Integer, String>>> options = new HashMap<Integer, List<KeyValueSpecs<Integer, String>>>();
 					Spec spec = entity.getSpec();
 					for (SpecsValue specValue : spec.getSpecsValues()){
 						if (options.get(specValue.getSpec().getId()) == null){
 							options.put(specValue.getSpec().getId(), new ArrayList<>());
 						}
-						KeyValue<Integer, String> kv = new KeyValue<Integer, String>();
+						KeyValueSpecs<Integer, String> kv = new KeyValueSpecs<Integer, String>();
 						if (specValue.getType() == Constants.SPEC_TYPE_PRODUCT){
 							// get all products  by product type....
 							List<Product> listProduct = productRepository.findByIdProductType(specValue.getIdProductType());
 							for (Product p : listProduct){
-								kv = new KeyValue<Integer, String>();
+								kv = new KeyValueSpecs<Integer, String>();
 								kv.setKey(p.getId());
 								kv.setValue(p.getName());
 								kv.setServiceIncrement(p.getServiceIncrement());

@@ -1,19 +1,18 @@
-package com.il.sod.rest.dto.web;
+package com.il.sod.rest.dto.specifics;
 
 import java.util.Date;
 import java.util.List;
 
-public class NewOrderDTO {
+public class UIOrderDTO {
+	private int idOrder;
 	private int idClient;
 	private int idAddressPickup;
 	private int idAddressDeliver;
 	private double price;
 	private String comments;
 	private Date pickUpDate;
-	private String pickUpComments;
 	private Date deliveryDate;
-	private String deliveryComments;
-	private List<InpServiceDTO> services;
+	private List<UIServiceDTO> services;
 	private WPaymentInfoDTO paymentInfo; 
 	
 	public int getIdClient() {
@@ -52,28 +51,16 @@ public class NewOrderDTO {
 	public void setPickUpDate(Date pickUpDate) {
 		this.pickUpDate = pickUpDate;
 	}
-	public String getPickUpComments() {
-		return pickUpComments;
-	}
-	public void setPickUpComments(String pickUpComments) {
-		this.pickUpComments = pickUpComments;
-	}
 	public Date getDeliveryDate() {
 		return deliveryDate;
 	}
 	public void setDeliveryDate(Date deliveryDate) {
 		this.deliveryDate = deliveryDate;
 	}
-	public String getDeliveryComments() {
-		return deliveryComments;
-	}
-	public void setDeliveryComments(String deliveryComments) {
-		this.deliveryComments = deliveryComments;
-	}
-	public List<InpServiceDTO> getServices() {
+	public List<UIServiceDTO> getServices() {
 		return services;
 	}
-	public void setServices(List<InpServiceDTO> services) {
+	public void setServices(List<UIServiceDTO> services) {
 		this.services = services;
 	}
 	public WPaymentInfoDTO getPaymentInfo() {
@@ -81,5 +68,11 @@ public class NewOrderDTO {
 	}
 	public void setPaymentInfo(WPaymentInfoDTO paymentInfo) {
 		this.paymentInfo = paymentInfo;
+	}
+	public int getIdOrder() {
+		return idOrder;
+	}
+	public void setIdOrder(int idOrder) {
+		this.idOrder = idOrder;
 	}
 }

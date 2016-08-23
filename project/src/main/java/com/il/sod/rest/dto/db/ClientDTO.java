@@ -33,12 +33,10 @@ public class ClientDTO {
 	private Set<Integer> orders;
 	private Set<AddressDTO> addresses;
 	private Set<PhoneNumberDTO> phoneNumbers;
-	
 	private Date created;
 	private Date updated;
-	
 	private Set<ClientPaymentInfoDTO> clientPaymentInfos;
-	
+	private int deleted;
 	
 	public int getIdClient() {
 		return idClient;
@@ -147,5 +145,11 @@ public class ClientDTO {
 	}
 	public void setRazonSocial(String razonSocial) {
 		this.razonSocial = razonSocial;
+	}
+	public int getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
 	}
 }

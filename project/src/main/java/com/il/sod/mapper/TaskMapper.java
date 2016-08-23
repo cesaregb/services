@@ -23,7 +23,7 @@ public enum TaskMapper {
 	private final MapperFacade mapperFacade;
 
 	private TaskMapper() {
-		
+			
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
 		converterFactory.registerConverter("taskSetConverter", new TaskSetConverter());
 		
@@ -39,15 +39,13 @@ public enum TaskMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeTask.class, OrderTask.class)
-			.field("task", "task")
-			.field("time", "time")
-			.field("sortingOrder", "sortingOrder")
+			.exclude("id")
+			.byDefault()
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceTypeTask.class, ServiceTask.class)
-			.field("task", "task")
-			.field("time", "time")
-			.field("sortingOrder", "sortingOrder")
+			.exclude("id")
+			.byDefault()
 			.register();
 		
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();

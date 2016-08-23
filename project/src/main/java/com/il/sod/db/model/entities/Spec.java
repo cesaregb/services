@@ -49,6 +49,8 @@ public class Spec implements IEntity<Integer> {
 	
 	private boolean primarySpec;
 	
+	private int deleted;
+	
 	public Spec() {
 	}
 
@@ -181,5 +183,13 @@ public class Spec implements IEntity<Integer> {
 
 	public void setPrimarySpec(boolean primarySpec) {
 		this.primarySpec = primarySpec;
+	}
+
+	public int getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
 	}
 }

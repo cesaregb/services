@@ -12,7 +12,7 @@ public class ServiceTypeDTO {
 	private Set<ServiceTypeSpecDTO> serviceTypeSpecs;
 	private Set<ServiceTypeTaskDTO> serviceTypeTasks;
 	private int idServiceCategory;
-	private String serviceTypeTypeName;
+	private String serviceTypeCategoryName;
 	
 	public int getIdServiceType() {
 		return idServiceType;
@@ -56,12 +56,6 @@ public class ServiceTypeDTO {
 	public void setServiceTypeSpecs(Set<ServiceTypeSpecDTO> serviceTypeSpecs) {
 		this.serviceTypeSpecs = serviceTypeSpecs;
 	}
-	public String getServiceTypeTypeName() {
-		return serviceTypeTypeName;
-	}
-	public void setServiceTypeTypeName(String serviceTypeTypeName) {
-		this.serviceTypeTypeName = serviceTypeTypeName;
-	}
 	public int getIdServiceCategory() {
 		return idServiceCategory;
 	}
@@ -73,5 +67,11 @@ public class ServiceTypeDTO {
 	}
 	public void setServiceTypeTasks(Set<ServiceTypeTaskDTO> serviceTypeTasks) {
 		this.serviceTypeTasks = serviceTypeTasks;
+	}
+	public String getServiceTypeCategoryName() {
+		return serviceTypeCategoryName;
+	}
+	public void setServiceTypeCategoryName(String serviceTypeCategoryName) {
+		this.serviceTypeCategoryName = serviceTypeCategoryName;
 	}
 }
