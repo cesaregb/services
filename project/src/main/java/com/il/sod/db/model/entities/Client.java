@@ -68,6 +68,8 @@ public class Client implements IEntity<Integer> {
 	@JsonManagedReference
 	private Set<ClientPaymentInfo> clientPaymentInfos;
 	
+	private int deleted;
+	
 	public Client() {
 	}
 
@@ -277,5 +279,13 @@ public class Client implements IEntity<Integer> {
 
 	public void setRazonSocial(String razonSocial) {
 		this.razonSocial = razonSocial;
+	}
+
+	public int getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
 	}
 }

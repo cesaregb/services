@@ -8,9 +8,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.il.sod.rest.api.web.impl.AppOrdersService;
-import com.il.sod.rest.dto.specifics.InpServiceDTO;
-import com.il.sod.rest.dto.specifics.InputSpecDTO;
-import com.il.sod.rest.dto.specifics.NewOrderDTO;
+import com.il.sod.rest.dto.specifics.UIServiceDTO;
+import com.il.sod.rest.dto.specifics.UISpecDTO;
+import com.il.sod.rest.dto.specifics.UIOrderDTO;
 import com.il.sod.test.config.SpringTestConfiguration;
 
 public class OrderServiceSimTest extends SpringTestConfiguration{
@@ -20,24 +20,24 @@ public class OrderServiceSimTest extends SpringTestConfiguration{
 	
     @Test
     public void testSaveOrder() throws Exception{
-    	NewOrderDTO oi = new NewOrderDTO();
+    	UIOrderDTO oi = new UIOrderDTO();
     	oi.setIdClient(1);
     	oi.setPrice(35d);
     	oi.setIdAddressPickup(1);
     	oi.setIdAddressDeliver(1);
     	oi.setPickUpDate(new Date());
     	oi.setDeliveryDate(new Date());
-    	List<InpServiceDTO> services = new ArrayList<>();
-    	InpServiceDTO e = new InpServiceDTO();
+    	List<UIServiceDTO> services = new ArrayList<>();
+    	UIServiceDTO e = new UIServiceDTO();
     	e.setIdServiceType(1);
     	e.setPrice(35);
-    	List<InputSpecDTO> specs = new ArrayList<>();
-    	InputSpecDTO s = new InputSpecDTO();
+    	List<UISpecDTO> specs = new ArrayList<>();
+    	UISpecDTO s = new UISpecDTO();
     	s.setIdSpecs(1);
     	s.setValue("2");
     	s.setQuantity(1);
 		specs.add(s);
-		InputSpecDTO s2 = new InputSpecDTO();
+		UISpecDTO s2 = new UISpecDTO();
 		s2.setIdSpecs(2);
 		s2.setQuantity(1);
 		s2.setValue("1");

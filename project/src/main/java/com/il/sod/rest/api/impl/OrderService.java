@@ -1,23 +1,5 @@
 package com.il.sod.rest.api.impl;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.il.sod.converter.services.OrderConverterService;
 import com.il.sod.db.dao.impl.OrdersDAO;
 import com.il.sod.db.model.entities.Order;
@@ -29,11 +11,21 @@ import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderDTO;
 import com.il.sod.rest.dto.specifics.OrderTasksInfoDTO;
 import com.il.sod.rest.dto.specifics.ServiceTasksInfoDTO;
-
+import com.il.sod.rest.dto.specifics.UIOrderDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
@@ -134,7 +126,7 @@ public class OrderService extends AbstractServiceMutations {
 	
 	@GET
 	@Path("/by/status/{status}")
-	@ApiOperation(value = "Get Client list", response = OrderDTO.class, responseContainer = "List")
+	@ApiOperation(value = "Get Order by status ", response = OrderDTO.class, responseContainer = "List")
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
@@ -145,7 +137,7 @@ public class OrderService extends AbstractServiceMutations {
 	
 	@GET
 	@Path("/by/id/{orderId}")
-	@ApiOperation(value = "Get Client list", response = OrderDTO.class)
+	@ApiOperation(value = "Get Order by id", response = OrderDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
@@ -156,7 +148,7 @@ public class OrderService extends AbstractServiceMutations {
 	
 	@GET
 	@Path("/tasks/{orderId}")
-	@ApiOperation(value = "Get Client list", response = OrderTasksInfoDTO.class)
+	@ApiOperation(value = "Get Task list for order", response = OrderTasksInfoDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
@@ -170,6 +162,17 @@ public class OrderService extends AbstractServiceMutations {
 			r.setServiceTasks(i.getServiceTasks());
 			return r;}).collect(Collectors.toSet());
 		result.setServices(services);
+		return castEntityAsResponse(result, Response.Status.OK);
+	}
+
+	@GET
+	@Path("/forEdit/{orderId}")
+	@ApiOperation(value = "Get Order in Edit object mode.", response = OrderTasksInfoDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getOrder4Edit(@PathParam("orderId") String orderId) throws SODAPIException {
+		UIOrderDTO result = orderConverterService.convert2UI(this.getEntity(orderRepository, Integer.valueOf(orderId)));
 		return castEntityAsResponse(result, Response.Status.OK);
 	}
 

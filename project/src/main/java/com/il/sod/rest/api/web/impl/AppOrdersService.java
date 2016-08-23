@@ -45,9 +45,9 @@ import com.il.sod.mapper.TaskMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderDTO;
-import com.il.sod.rest.dto.specifics.InpServiceDTO;
-import com.il.sod.rest.dto.specifics.InputSpecDTO;
-import com.il.sod.rest.dto.specifics.NewOrderDTO;
+import com.il.sod.rest.dto.specifics.UIServiceDTO;
+import com.il.sod.rest.dto.specifics.UISpecDTO;
+import com.il.sod.rest.dto.specifics.UIOrderDTO;
 import com.il.sod.rest.dto.specifics.WServiceCategoryDTO;
 
 import io.swagger.annotations.Api;
@@ -120,7 +120,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response saveOrder(NewOrderDTO orderInputDto) throws SODAPIException {
+	public Response saveOrder(UIOrderDTO orderInputDto) throws SODAPIException {
 		OrderDTO result = null;
 		
 		// get order type. 
@@ -161,13 +161,15 @@ public class AppOrdersService extends AbstractServiceMutations {
 			PaymentInfo pi = new PaymentInfo();
 			pi.setTransactionInfo(orderInputDto.getPaymentInfo().getTransactionInfo());
 			pi.setType(orderInputDto.getPaymentInfo().getType());
-			orderEntity.addPaymentInfo(pi);
+			orderEntity.setPaymentInfo(pi);
 		}
 		
-		for (InpServiceDTO servInput : orderInputDto.getServices()){
+		for (UIServiceDTO servInput : orderInputDto.getServices()){
 			Service service = new Service();
 			ServiceType serviceType = serviceTypeRepository.findOne(servInput.getIdServiceType());
 			service.setServiceType(serviceType);
+			service.setName(serviceType.getName());
+			service.setDescription(serviceType.getDescription());
 			service.setPrice(servInput.getPrice());
 			service.setDescription(servInput.getComments());
 			
@@ -183,7 +185,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 			}
 			
 			// get specs. 
-			for (InputSpecDTO specInput : servInput.getSpecs()){
+			for (UISpecDTO specInput : servInput.getSpecs()){
 				ServiceSpec serviceSpec = new ServiceSpec();
 				serviceSpec.setQuantity(specInput.getQuantity());
 				serviceSpec.setService(service);
@@ -193,6 +195,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 				// adding service spec
 				service.addServiceSpec(serviceSpec);
 			}
+			
 			// adding service 
 			orderEntity.addService(service);
 		}

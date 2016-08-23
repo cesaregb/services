@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -70,15 +71,10 @@ public class Order implements IEntity<Integer> {
 	@JsonBackReference
 	private OrderType orderType;
 	
-	//bi-directional many-to-one association to OrderPickNDeliver
-	@OneToMany(mappedBy="order", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	@JsonManagedReference
-	private Set<OrderPickNDeliver> orderPickNdelivers;
-	
 	//bi-directional many-to-one association to PaymentInfo
-	@OneToMany(mappedBy="order", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToOne(mappedBy="order", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonManagedReference
-	private Set<PaymentInfo> paymentInfos;
+	private PaymentInfo paymentInfo;
 	
 	private Date pickUpDate;
 	private Date deliverDate;
@@ -89,6 +85,8 @@ public class Order implements IEntity<Integer> {
 	private Set<Service> services;
 	
 	private int createdBy;
+	
+	private int deleted;
 
 	public Order() {
 	}
@@ -217,53 +215,6 @@ public class Order implements IEntity<Integer> {
 		this.time = time;
 	}
 	
-	public Set<OrderPickNDeliver> getOrderPickNdelivers() {
-		return this.orderPickNdelivers;
-	}
-
-	public void setOrderPickNdelivers(Set<OrderPickNDeliver> orderPickNdelivers) {
-		this.orderPickNdelivers = orderPickNdelivers;
-	}
-
-	public OrderPickNDeliver addOrderPickNdeliver(OrderPickNDeliver orderPickNdeliver) {
-		getOrderPickNdelivers().add(orderPickNdeliver);
-		orderPickNdeliver.setOrder(this);
-
-		return orderPickNdeliver;
-	}
-
-	public OrderPickNDeliver removeOrderPickNdeliver(OrderPickNDeliver orderPickNdeliver) {
-		getOrderPickNdelivers().remove(orderPickNdeliver);
-		orderPickNdeliver.setOrder(null);
-
-		return orderPickNdeliver;
-	}
-	
-	public Set<PaymentInfo> getPaymentInfos() {
-		return this.paymentInfos;
-	}
-
-	public void setPaymentInfos(Set<PaymentInfo> paymentInfos) {
-		this.paymentInfos = paymentInfos;
-	}
-
-	public PaymentInfo addPaymentInfo(PaymentInfo paymentInfo) {
-		if (paymentInfos == null){
-			paymentInfos = new HashSet<>();
-		}
-		getPaymentInfos().add(paymentInfo);
-		paymentInfo.setOrder(this);
-
-		return paymentInfo;
-	}
-
-	public PaymentInfo removePaymentInfo(PaymentInfo paymentInfo) {
-		getPaymentInfos().remove(paymentInfo);
-		paymentInfo.setOrder(null);
-
-		return paymentInfo;
-	}
-	
 	public Date getPickUpDate() {
 		return pickUpDate;
 	}
@@ -308,5 +259,21 @@ public class Order implements IEntity<Integer> {
 
 	public void setCreatedBy(int createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	public int getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
+	}
+
+	public PaymentInfo getPaymentInfo() {
+		return paymentInfo;
+	}
+
+	public void setPaymentInfo(PaymentInfo paymentInfo) {
+		this.paymentInfo = paymentInfo;
 	}
 }

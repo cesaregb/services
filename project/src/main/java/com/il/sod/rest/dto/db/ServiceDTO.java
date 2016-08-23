@@ -8,8 +8,10 @@ public class ServiceDTO {
 	private String description;
 	private String name;
 	private double price;
+	private double composedPrice;
+	private double totalPrice;
 	private int idServiceType;
-	private Set<Integer> serviceSpecs;
+	private Set<ServiceSpecDTO> serviceSpecs;
 	private Set<ServiceTaskDTO> serviceTasks;
 	private Date created;
 	private Date updated;
@@ -17,6 +19,10 @@ public class ServiceDTO {
 	private int idOrder;
 	private int nTasks;
 	private int currentTask;
+	private int deleted;
+
+	// UI Requirements. 
+	private Set<SpecDTO> specs;
 	
 	public int getIdService() {
 		return idService;
@@ -41,12 +47,6 @@ public class ServiceDTO {
 	}
 	public void setPrice(double price) {
 		this.price = price;
-	}
-	public Set<Integer> getServiceSpecs() {
-		return serviceSpecs;
-	}
-	public void setServiceSpecs(Set<Integer> serviceSpecs) {
-		this.serviceSpecs = serviceSpecs;
 	}
 	public Date getCreated() {
 		return created;
@@ -95,5 +95,35 @@ public class ServiceDTO {
 	}
 	public void setCurrentTask(int currentTask) {
 		this.currentTask = currentTask;
+	}
+	public Set<SpecDTO> getSpecs() {
+		return specs;
+	}
+	public void setSpecs(Set<SpecDTO> specs) {
+		this.specs = specs;
+	}
+	public Set<ServiceSpecDTO> getServiceSpecs() {
+		return serviceSpecs;
+	}
+	public void setServiceSpecs(Set<ServiceSpecDTO> serviceSpecs) {
+		this.serviceSpecs = serviceSpecs;
+	}
+	public int getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
+	}
+	public double getComposedPrice() {
+		return composedPrice;
+	}
+	public void setComposedPrice(double composedPrice) {
+		this.composedPrice = composedPrice;
+	}
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 }

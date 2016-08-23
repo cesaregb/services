@@ -1,17 +1,16 @@
 package com.il.sod.mapper;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.il.sod.db.model.entities.Asset;
 import com.il.sod.db.model.entities.AssetType;
 import com.il.sod.rest.dto.db.AssetDTO;
 import com.il.sod.rest.dto.db.AssetTypeDTO;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.converter.ConverterFactory;
 import ma.glasnost.orika.metadata.Type;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public enum AssetMapper {
 

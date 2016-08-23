@@ -10,6 +10,7 @@ public class SpecDTO {
 	private int optional;
 	private int max_qty;
 	private boolean primarySpec;
+	private int deleted;
 	
 	public int getIdSpecs() {
 		return idSpecs;
@@ -52,5 +53,11 @@ public class SpecDTO {
 	}
 	public void setPrimarySpec(boolean primarySpec) {
 		this.primarySpec = primarySpec;
+	}
+	public int getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
 	}
 }

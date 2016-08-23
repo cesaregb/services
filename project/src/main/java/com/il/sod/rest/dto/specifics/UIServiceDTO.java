@@ -2,11 +2,13 @@ package com.il.sod.rest.dto.specifics;
 
 import java.util.List;
 
-public class InpServiceDTO {
+public class UIServiceDTO {
 	private int idServiceType;
 	private String comments;
 	private double price;
-	private List<InputSpecDTO> specs;
+	private double composedPrice;
+	private double totalPrice;
+	private List<UISpecDTO> specs;
 	
 	public int getIdServiceType() {
 		return idServiceType;
@@ -26,10 +28,26 @@ public class InpServiceDTO {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public List<InputSpecDTO> getSpecs() {
+	public List<UISpecDTO> getSpecs() {
 		return specs;
 	}
-	public void setSpecs(List<InputSpecDTO> specs) {
+	public void setSpecs(List<UISpecDTO> specs) {
 		this.specs = specs;
+	}
+
+	public double getComposedPrice() {
+		return composedPrice;
+	}
+
+	public void setComposedPrice(double composedPrice) {
+		this.composedPrice = composedPrice;
+	}
+
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 }

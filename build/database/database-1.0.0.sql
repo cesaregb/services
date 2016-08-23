@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Clients` (
   `loginID` VARCHAR(50) NULL,
   `rfc` VARCHAR(45) NULL,
   `razonSocial` VARCHAR(250) NULL,
+  `deleted` INT NULL DEFAULT 0,
   PRIMARY KEY (`idClient`))
 ENGINE = InnoDB;
 
@@ -352,6 +353,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Orders` (
   `createdBy` INT NULL DEFAULT 0,
   `created` DATETIME NULL,
   `updated` DATETIME NULL,
+  `deleted` INT NULL DEFAULT 0,
   PRIMARY KEY (`idOrder`),
   INDEX `fk_Order_OrderTemplate1_idx` (`idOrderType` ASC),
   INDEX `fk_Order_Clients1_idx` (`idClient` ASC),
@@ -498,6 +500,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Specs` (
   `optional` INT NULL DEFAULT 0,
   `max_qty` INT NULL DEFAULT 0,
   `primarySpec` TINYINT(1) NULL COMMENT '0 = false\n1 = true',
+  `deleted` INT NULL DEFAULT 0,
   PRIMARY KEY (`idSpecs`))
 ENGINE = InnoDB;
 
@@ -564,7 +567,6 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Service` (
   `idServiceType` INT UNSIGNED NOT NULL,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(250) NULL,
-  `price` DOUBLE NULL,
   `time` INT NULL,
   `created` DATETIME NULL,
   `updated` DATETIME NULL,
@@ -572,6 +574,10 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Service` (
   `idOrder` INT UNSIGNED NOT NULL,
   `nTasks` INT NULL DEFAULT 0 COMMENT '# numero de tasks o pasos',
   `currentTask` INT NULL,
+  `deleted` INT NULL DEFAULT 0,
+  `price` DOUBLE NULL,
+  `composedPrice` VARCHAR(45) NULL,
+  `totalPrice` VARCHAR(45) NULL,
   PRIMARY KEY (`idService`),
   INDEX `fk_Service_ServiceType1_idx` (`idServiceType` ASC),
   INDEX `fk_Service_Orders1_idx` (`idOrder` ASC),
@@ -696,34 +702,6 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`AssetTaskService` (
   CONSTRAINT `fk_AssetTaskService_ServiceTask1`
     FOREIGN KEY (`idServiceTask`)
     REFERENCES `sod_db`.`ServiceTask` (`idServiceTask`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sod_db`.`OrderPickNDeliver`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`OrderPickNDeliver` ;
-
-CREATE TABLE IF NOT EXISTS `sod_db`.`OrderPickNDeliver` (
-  `idOrderPickNDeliver` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `time` DATETIME NULL,
-  `comments` VARCHAR(255) NULL,
-  `typeAction` INT NULL DEFAULT 1 COMMENT '1 = pickup\n2 = delivery ',
-  `idAddress` INT UNSIGNED NOT NULL,
-  `idOrder` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`idOrderPickNDeliver`),
-  INDEX `fk_OrderPickNDeliver_Address1_idx` (`idAddress` ASC),
-  INDEX `fk_OrderPickNDeliver_Orders1_idx` (`idOrder` ASC),
-  CONSTRAINT `fk_OrderPickNDeliver_Address1`
-    FOREIGN KEY (`idAddress`)
-    REFERENCES `sod_db`.`Address` (`idAddress`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_OrderPickNDeliver_Orders1`
-    FOREIGN KEY (`idOrder`)
-    REFERENCES `sod_db`.`Orders` (`idOrder`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -1022,7 +1000,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Clients` (`idClient`, `email`, `password`, `name`, `lastName`, `twitter`, `created`, `updated`, `loginID`, `rfc`, `razonSocial`) VALUES (1, 'email@domain.com', 'aa', 'Name', 'Lastname', 'twitter', NULL, NULL, '123', NULL, NULL);
+INSERT INTO `sod_db`.`Clients` (`idClient`, `email`, `password`, `name`, `lastName`, `twitter`, `created`, `updated`, `loginID`, `rfc`, `razonSocial`, `deleted`) VALUES (1, 'email@domain.com', 'aa', 'Name', 'Lastname', 'twitter', NULL, NULL, '123', NULL, NULL, 0);
 
 COMMIT;
 
@@ -1200,8 +1178,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `primarySpec`) VALUES (1, 'Tamanio', 'size of order', 0, 5, 0);
-INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `primarySpec`) VALUES (2, 'jabon', 'detergente a utilizarse', 0, 4, 0);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `primarySpec`, `deleted`) VALUES (1, 'Tamanio', 'size of order', 0, 5, 0, NULL);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `primarySpec`, `deleted`) VALUES (2, 'jabon', 'detergente a utilizarse', 0, 4, 0, NULL);
 
 COMMIT;
 

@@ -1,6 +1,6 @@
 package com.il.sod.rest.dto.specifics;
 
-public class InputSpecDTO {
+public class UISpecDTO {
 	private int idSpecs;
 	private String value; 
 	private int quantity;

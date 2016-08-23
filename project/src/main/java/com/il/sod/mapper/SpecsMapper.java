@@ -3,9 +3,11 @@ package com.il.sod.mapper;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.il.sod.db.model.entities.ServiceSpec;
 import com.il.sod.db.model.entities.Spec;
 import com.il.sod.db.model.entities.SpecsValue;
 import com.il.sod.db.model.repositories.ProductTypeRepository;
+import com.il.sod.rest.dto.db.ServiceSpecDTO;
 import com.il.sod.rest.dto.db.SpecDTO;
 import com.il.sod.rest.dto.db.SpecsValueDTO;
 
@@ -29,6 +31,11 @@ public enum SpecsMapper {
 		
 		BaseMapper.MAPPER_FACTORY.classMap(SpecDTO.class, Spec.class)
 			.fieldMap("specsValues", "specsValues").converter("specsValueConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.byDefault()
+			.register();
+		
+		BaseMapper.MAPPER_FACTORY.classMap(ServiceSpecDTO.class, ServiceSpec.class)
+			.field("idService", "service.idService")
 			.byDefault()
 			.register();
 
@@ -67,6 +74,14 @@ public enum SpecsMapper {
 	
 	public SpecsValueDTO map(SpecsValue entity) {
 		return this.mapperFacade.map(entity, SpecsValueDTO.class);
+	}
+	
+	public ServiceSpec map(ServiceSpecDTO dto) {
+		return this.mapperFacade.map(dto, ServiceSpec.class);
+	}
+	
+	public ServiceSpecDTO map(ServiceSpec entity) {
+		return this.mapperFacade.map(entity, ServiceSpecDTO.class);
 	}
 
 	public void setProductTypeRepository(ProductTypeRepository productTypeRepository) {

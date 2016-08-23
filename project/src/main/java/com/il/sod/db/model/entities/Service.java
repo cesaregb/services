@@ -39,6 +39,8 @@ public class Service implements IEntity<Integer> {
 	private String name;
 
 	private double price;
+	private double composedPrice;
+	private double totalPrice;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created;
@@ -76,6 +78,8 @@ public class Service implements IEntity<Integer> {
 	//bi-directional many-to-one association to ServiceComment
 	@OneToMany(mappedBy="service", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Set<ServiceComment> serviceComments;
+	
+	private int deleted;
 
 	public Service() {
 	}
@@ -248,5 +252,29 @@ public class Service implements IEntity<Integer> {
 
 	public void setCurrentTask(int currentTask) {
 		this.currentTask = currentTask;
+	}
+
+	public int getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
+	}
+
+	public double getComposedPrice() {
+		return composedPrice;
+	}
+
+	public void setComposedPrice(double composedPrice) {
+		this.composedPrice = composedPrice;
+	}
+
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 }

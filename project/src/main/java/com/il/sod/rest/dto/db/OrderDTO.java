@@ -15,13 +15,13 @@ public class OrderDTO {
 	private ClientDTO client;
 	private int idOrderType;
 	private Set<OrderTaskDTO> orderTasks;
-	private Set<OrderPickNDeliverDTO> orderPickNdelivers;
-	private Set<PaymentInfoDTO> paymentInfos;
+	private PaymentInfoDTO paymentInfo;
 	private Date created;
 	private Date updated;
 	private int time;
 	private Set<ServiceDTO> services;
 	private int createdBy;
+	private int deleted;
 	
 	// flat information.
 	private String clientName;
@@ -95,18 +95,6 @@ public class OrderDTO {
 	public void setTime(int time) {
 		this.time = time;
 	}
-	public Set<OrderPickNDeliverDTO> getOrderPickNdelivers() {
-		return orderPickNdelivers;
-	}
-	public void setOrderPickNdelivers(Set<OrderPickNDeliverDTO> orderPickNdelivers) {
-		this.orderPickNdelivers = orderPickNdelivers;
-	}
-	public Set<PaymentInfoDTO> getPaymentInfos() {
-		return paymentInfos;
-	}
-	public void setPaymentInfos(Set<PaymentInfoDTO> paymentInfos) {
-		this.paymentInfos = paymentInfos;
-	}
 	public Date getPickUpDate() {
 		return pickUpDate;
 	}
@@ -154,5 +142,17 @@ public class OrderDTO {
 	}
 	public void setCompleted(double completed) {
 		this.completed = completed;
+	}
+	public int getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
+	}
+	public PaymentInfoDTO getPaymentInfo() {
+		return paymentInfo;
+	}
+	public void setPaymentInfo(PaymentInfoDTO paymentInfo) {
+		this.paymentInfo = paymentInfo;
 	}
 }
