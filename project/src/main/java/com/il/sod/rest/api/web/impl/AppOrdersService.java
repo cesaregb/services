@@ -192,6 +192,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 				Spec spec = specRepository.findOne(specInput.getIdSpecs());
 				serviceSpec.setSpec(spec);
 				serviceSpec.setSelectedValue(specInput.getValue());
+				serviceSpec.setSpecPrice(specInput.getPrice());
 				// adding service spec
 				service.addServiceSpec(serviceSpec);
 			}
