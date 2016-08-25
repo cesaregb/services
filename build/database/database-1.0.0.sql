@@ -1178,8 +1178,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `primarySpec`, `deleted`) VALUES (1, 'Tamanio', 'size of order', 0, 5, 0, NULL);
-INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `primarySpec`, `deleted`) VALUES (2, 'jabon', 'detergente a utilizarse', 0, 4, 0, NULL);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `primarySpec`, `deleted`) VALUES (1, 'Tamanio', 'size of order', 0, 5, 1, 0);
+INSERT INTO `sod_db`.`Specs` (`idSpecs`, `name`, `description`, `optional`, `max_qty`, `primarySpec`, `deleted`) VALUES (2, 'jabon', 'detergente a utilizarse', 0, 4, 0, 0);
 
 COMMIT;
 

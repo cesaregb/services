@@ -4,6 +4,8 @@ public class UISpecDTO {
 	private int idSpecs;
 	private String value; 
 	private int quantity;
+
+    private float price;
 	
 	public String getValue() {
 		return value;
@@ -23,4 +25,12 @@ public class UISpecDTO {
 	public void setIdSpecs(int idSpecs) {
 		this.idSpecs = idSpecs;
 	}
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
 }

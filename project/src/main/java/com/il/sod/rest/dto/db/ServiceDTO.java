@@ -11,6 +11,7 @@ public class ServiceDTO {
 	private double composedPrice;
 	private double totalPrice;
 	private int idServiceType;
+	private int idServiceCategory;
 	private Set<ServiceSpecDTO> serviceSpecs;
 	private Set<ServiceTaskDTO> serviceTasks;
 	private Date created;
@@ -22,7 +23,7 @@ public class ServiceDTO {
 	private int deleted;
 
 	// UI Requirements. 
-	private Set<SpecDTO> specs;
+//	private Set<SpecDTO> specs;
 	
 	public int getIdService() {
 		return idService;
@@ -96,12 +97,6 @@ public class ServiceDTO {
 	public void setCurrentTask(int currentTask) {
 		this.currentTask = currentTask;
 	}
-	public Set<SpecDTO> getSpecs() {
-		return specs;
-	}
-	public void setSpecs(Set<SpecDTO> specs) {
-		this.specs = specs;
-	}
 	public Set<ServiceSpecDTO> getServiceSpecs() {
 		return serviceSpecs;
 	}
@@ -125,5 +120,13 @@ public class ServiceDTO {
 	}
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+
+	public int getIdServiceCategory() {
+		return idServiceCategory;
+	}
+
+	public void setIdServiceCategory(int idServiceCategory) {
+		this.idServiceCategory = idServiceCategory;
 	}
 }
