@@ -80,6 +80,10 @@ public class Service implements IEntity<Integer> {
 	private Set<ServiceComment> serviceComments;
 	
 	private int deleted;
+	
+	//bi-directional many-to-one association to ServiceSubproduct
+	@OneToMany(mappedBy="service", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private Set<ServiceSubproduct> serviceSubproducts;
 
 	public Service() {
 	}
@@ -276,5 +280,27 @@ public class Service implements IEntity<Integer> {
 
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
+	}
+	
+	public Set<ServiceSubproduct> getServiceSubproducts() {
+		return this.serviceSubproducts;
+	}
+
+	public void setServiceSubproducts(Set<ServiceSubproduct> serviceSubproducts) {
+		this.serviceSubproducts = serviceSubproducts;
+	}
+
+	public ServiceSubproduct addServiceSubproduct(ServiceSubproduct serviceSubproduct) {
+		getServiceSubproducts().add(serviceSubproduct);
+		serviceSubproduct.setService(this);
+
+		return serviceSubproduct;
+	}
+
+	public ServiceSubproduct removeServiceSubproduct(ServiceSubproduct serviceSubproduct) {
+		getServiceSubproducts().remove(serviceSubproduct);
+		serviceSubproduct.setService(null);
+
+		return serviceSubproduct;
 	}
 }
