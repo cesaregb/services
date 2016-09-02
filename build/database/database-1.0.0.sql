@@ -909,6 +909,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`SubproductType` (
   `idSubproductType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(250) NULL,
+  `deleted` INT NULL DEFAULT 0,
   PRIMARY KEY (`idSubproductType`))
 ENGINE = InnoDB;
 
@@ -924,6 +925,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Subproduct` (
   `name` VARCHAR(45) NOT NULL,
   `price` DOUBLE NOT NULL,
   `maxQty` INT NULL DEFAULT 0,
+  `deleted` INT NULL DEFAULT 0,
   PRIMARY KEY (`idSubproduct`),
   INDEX `fk_Subproduct_SubproductType1_idx` (`idSubproductType` ASC),
   CONSTRAINT `fk_Subproduct_SubproductType1`
@@ -1363,12 +1365,13 @@ USE `sod_db`;
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (1, 'client.all', 'Clientes', 1, 1);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (2, 'routes.all', 'Rutas', 1, 2);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (3, 'tasks.taskMenu', 'Tareas', 1, 5);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (4, 'specs.specMenu', 'Subproductos', 1, 6);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (4, 'specs.specMenu', 'Specs', 1, 6);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (5, 'employees.employeeMenu', 'Empleados', 1, 4);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (6, 'assets.assetMenu', 'Activos', 1, 3);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (7, 'products.productMenu', 'Productos', 1, 7);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (8, 'services.serviceMenu', 'Servicios', 1, 8);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (9, 'orders.orderMenu', 'Orders', 1, 9);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (10, 'subproducts.subproductMenu', 'Subproductos', 1, 10);
 
 COMMIT;
 

@@ -10,7 +10,7 @@ import java.util.Set;
  */
 @Entity
 @NamedQuery(name="Subproduct.findAll", query="SELECT s FROM Subproduct s")
-public class Subproduct implements IEntity<Integer> {
+public class Subproduct extends SoftDeleteEntity implements IEntity<Integer>{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -96,7 +96,7 @@ public class Subproduct implements IEntity<Integer> {
 	public void setSubproductType(SubproductType subproductType) {
 		this.subproductType = subproductType;
 	}
-	
+
 	@Override
 	public Integer getId() {
 		return this.idSubproduct;

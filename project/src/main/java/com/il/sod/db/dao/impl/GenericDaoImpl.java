@@ -1,15 +1,16 @@
 package com.il.sod.db.dao.impl;
 
-import java.io.Serializable;
-import java.util.List;
-
+import com.il.sod.db.dao.IDAO;
+import com.il.sod.db.model.entities.SoftDeleteEntity;
+import com.il.sod.db.model.repositories.DeletableRepository;
+import com.il.sod.exception.SODAPIException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.il.sod.db.dao.IDAO;
-import com.il.sod.exception.SODAPIException;
+import java.io.Serializable;
+import java.util.List;
 
 @Service
 @Scope("prototype")
@@ -52,9 +53,26 @@ public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID>{
 	}
 
 	@Override
+	@Transactional(rollbackFor=SODAPIException.class)
+	public T sofDelete(ID id) throws SODAPIException {
+		T deletedT = repository.findOne(id);
+		if (deletedT == null){
+			throw new SODAPIException("item not found in the db");
+		}
+		((SoftDeleteEntity) deletedT).setDeleted(1);
+		return repository.save(deletedT);
+	}
+
+	@Override
 	@Transactional
 	public List<T> findAll() {
 		return repository.findAll();
+	}
+
+	@Override
+	@Transactional
+	public List<T> findAllActive() {
+		return ((DeletableRepository) repository).findAllByDeleted(0);
 	}
 
 	@Override

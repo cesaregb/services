@@ -79,16 +79,19 @@ public class SubproductTypeService extends AbstractServiceMutations {
 	}
 
 	@DELETE
+	@Path("/{id}")
 	@ApiOperation(value = "Create Subproduct Type", response = SubproductTypeDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteSubproductType(SubproductTypeDTO dto) throws SODAPIException {
+	public Response deleteSubproductType(@PathParam("id") String id, SubproductTypeDTO dto) throws SODAPIException {
 		try {
-			SubproductType entity = SubproductMapper.INSTANCE.map(dto);
-			this.deleteEntity(subproductTypeRepository, entity.getIdSubproductType());
-			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Entity deleted"),
+			SubproductType entity = subproductTypeRepository.findOne(Integer.valueOf(id));
+			if (entity == null){
+				throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not found");
+			}
+			this.softDeleteEntity(subproductTypeRepository, entity.getId());
+			return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Entity deleted"),
 					Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);

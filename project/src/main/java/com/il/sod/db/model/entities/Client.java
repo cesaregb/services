@@ -41,16 +41,16 @@ public class Client implements IEntity<Integer> {
 	private String razonSocial; 
 
 	//bi-directional many-to-one association to AccessKey
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Set<AccessKey> accessKeys;
 
 	//bi-directional many-to-one association to Address
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonManagedReference
 	private Set<Address> addresses;
 
 	//bi-directional many-to-one association to PhoneNumber
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Set<PhoneNumber> phoneNumbers;
 
 	//bi-directional many-to-one association to Order
@@ -64,7 +64,7 @@ public class Client implements IEntity<Integer> {
 	private Date updated;
 	
 	//bi-directional many-to-one association to ClientPaymentInfo
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonManagedReference
 	private Set<ClientPaymentInfo> clientPaymentInfos;
 	

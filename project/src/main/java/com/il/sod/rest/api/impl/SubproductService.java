@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @RolesAllowed("ADMIN")
 @Path("/subproduct")
 @Produces(MediaType.APPLICATION_JSON)
- @Api(value = "/subproduct", tags = { "subproduct" })
+@Api(value = "/subproduct", tags = { "subproduct" })
 public class SubproductService extends AbstractServiceMutations {
 
 	@Autowired
@@ -80,17 +80,21 @@ public class SubproductService extends AbstractServiceMutations {
 	}
 
 	@DELETE
+	@Path("/{id}")
 	@ApiOperation(value = "Create Subproduct", response = SubproductDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response deleteSubproduct(SubproductDTO dto) throws SODAPIException {
+	public Response deleteSubproduct(@PathParam("id") String id, SubproductDTO dto) throws SODAPIException {
 		try {
-			Subproduct entity = SubproductMapper.INSTANCE.map(dto);
-			this.deleteEntity(subproductRepository, entity.getIdSubproduct());
-			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Entity deleted"),
+			Subproduct entity = subproductRepository.findOne(Integer.valueOf(id));
+			if (entity == null){
+				throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not found");
+			}
+			this.softDeleteEntity(subproductRepository, entity.getId());
+			return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Entity deleted"),
 					Response.Status.OK);
+
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}
@@ -102,7 +106,7 @@ public class SubproductService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getSubproductList() throws SODAPIException {
-		List<Subproduct> rentityList = this.getEntityList(subproductRepository);
+		List<Subproduct> rentityList = this.getEntityList(Subproduct.class, subproductRepository);
 		List<SubproductDTO> list = rentityList.stream().map((i) -> {
 			SubproductDTO dto = SubproductMapper.INSTANCE.map(i);
 			return dto;

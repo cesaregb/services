@@ -3,6 +3,7 @@ package com.il.sod.rest.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.il.sod.config.jersey.JacksonObjectMapperProvider;
 import com.il.sod.db.dao.IDAO;
+import com.il.sod.db.model.entities.SoftDeleteEntity;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.BaseMapper;
 import com.il.sod.rest.api.helper.ServicesDBHelper;
@@ -130,11 +131,25 @@ public abstract class AbstractService{
 		return gDao.findById(id);
 	}
 	
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	protected <T> List<T> getEntityList(JpaRepository<T, Integer> repository){	
 		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
 		gDao.setRepository(repository);
 		return gDao.findAll();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> List<T> getEntityList(Class<T> clazz, JpaRepository<T, Integer> repository){
+		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
+		if (SoftDeleteEntity.class.isAssignableFrom(clazz)){
+			gDao.setRepository(repository);
+			return gDao.findAllActive();
+		}else{
+			return null;
+		}
+
+
 	}
 
 	public IDAO getGenericDaoImpl() {

@@ -8,9 +8,10 @@ import java.util.Set;
  * The persistent class for the SubproductType database table.
  * 
  */
+
 @Entity
 @NamedQuery(name="SubproductType.findAll", query="SELECT s FROM SubproductType s")
-public class SubproductType implements IEntity<Integer> {
+public class SubproductType extends SoftDeleteEntity implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -99,7 +100,7 @@ public class SubproductType implements IEntity<Integer> {
 
 		return subproduct;
 	}
-	
+
 	@Override
 	public Integer getId() {
 		return this.idSubproductType;
