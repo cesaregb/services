@@ -1,31 +1,29 @@
 package com.il.sod.rest.api;
 
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.util.List;
-
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.il.sod.config.jersey.JacksonObjectMapperProvider;
+import com.il.sod.db.dao.IDAO;
+import com.il.sod.db.model.entities.SoftDeleteEntity;
+import com.il.sod.exception.SODAPIException;
+import com.il.sod.mapper.BaseMapper;
+import com.il.sod.rest.api.helper.ServicesDBHelper;
+import com.il.sod.rest.dto.GeneralResponseMessage;
+import com.il.sod.rest.util.RestUtil;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+import ma.glasnost.orika.MapperFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.il.sod.config.jersey.JacksonObjectMapperProvider;
-import com.il.sod.db.dao.IDAO;
-import com.il.sod.exception.SODAPIException;
-import com.il.sod.mapper.BaseMapper;
-import com.il.sod.rest.api.helper.ServicesDBHelper;
-import com.il.sod.rest.dto.GeneralResponseMessage;
-import com.il.sod.rest.util.RestUtil;
-
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
-import ma.glasnost.orika.MapperFacade;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.util.List;
 
 @Component
 @SwaggerDefinition(tags = { @Tag(name = "clients", description = "Client Layer services"),
@@ -39,6 +37,7 @@ import ma.glasnost.orika.MapperFacade;
 		@Tag(name = "service", description = "Service Layer Services"),
 		@Tag(name = "payment", description = "Payment Services Client and Orders"),
 		@Tag(name = "routes", description = "Route Information,... not user related..."),
+		@Tag(name = "subproduct", description = "Subproducts, similar to specs but different!! LOL "),
 		@Tag(name = "health", description = "Validate API + MODEL Healt") })
 @Path("/v1")
 @SuppressWarnings("all")
@@ -132,11 +131,23 @@ public abstract class AbstractService{
 		return gDao.findById(id);
 	}
 	
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	protected <T> List<T> getEntityList(JpaRepository<T, Integer> repository){	
 		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
 		gDao.setRepository(repository);
 		return gDao.findAll();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> List<T> getEntityList(Class<T> clazz, JpaRepository<T, Integer> repository){
+		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
+		if (SoftDeleteEntity.class.isAssignableFrom(clazz)){
+			gDao.setRepository(repository);
+			return gDao.findAllActive();
+		}else{
+			return null;
+		}
 	}
 
 	public IDAO getGenericDaoImpl() {

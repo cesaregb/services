@@ -1,51 +1,12 @@
 package com.il.sod.mapper;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import com.il.sod.db.model.entities.Address;
-import com.il.sod.db.model.entities.AssetTaskOrder;
-import com.il.sod.db.model.entities.AssetTaskService;
-import com.il.sod.db.model.entities.Client;
-import com.il.sod.db.model.entities.ClientPaymentInfo;
-import com.il.sod.db.model.entities.EmployeeTaskOrder;
-import com.il.sod.db.model.entities.EmployeeTaskService;
-import com.il.sod.db.model.entities.Order;
-import com.il.sod.db.model.entities.OrderTask;
-import com.il.sod.db.model.entities.OrderType;
-import com.il.sod.db.model.entities.OrderTypeTask;
-import com.il.sod.db.model.entities.PaymentInfo;
-import com.il.sod.db.model.entities.PhoneNumber;
-import com.il.sod.db.model.entities.Service;
-import com.il.sod.db.model.entities.ServiceComment;
-import com.il.sod.db.model.entities.ServiceSpec;
-import com.il.sod.db.model.entities.ServiceTask;
-import com.il.sod.db.model.entities.ServiceType;
-import com.il.sod.db.model.entities.ServiceTypeSpec;
-import com.il.sod.db.model.entities.ServiceTypeTask;
-import com.il.sod.db.model.entities.Spec;
-import com.il.sod.rest.dto.db.AddressDTO;
-import com.il.sod.rest.dto.db.AssetTaskOrderDTO;
-import com.il.sod.rest.dto.db.AssetTaskServiceDTO;
-import com.il.sod.rest.dto.db.ClientDTO;
-import com.il.sod.rest.dto.db.ClientPaymentInfoDTO;
-import com.il.sod.rest.dto.db.EmployeeTaskOrderDTO;
-import com.il.sod.rest.dto.db.EmployeeTaskServiceDTO;
-import com.il.sod.rest.dto.db.OrderTaskDTO;
-import com.il.sod.rest.dto.db.OrderTypeTaskDTO;
-import com.il.sod.rest.dto.db.PaymentInfoDTO;
-import com.il.sod.rest.dto.db.PhoneNumberDTO;
-import com.il.sod.rest.dto.db.ServiceCommentDTO;
-import com.il.sod.rest.dto.db.ServiceDTO;
-import com.il.sod.rest.dto.db.ServiceSpecDTO;
-import com.il.sod.rest.dto.db.ServiceTaskDTO;
-import com.il.sod.rest.dto.db.ServiceTypeDTO;
-import com.il.sod.rest.dto.db.ServiceTypeSpecDTO;
-import com.il.sod.rest.dto.db.ServiceTypeTaskDTO;
-import com.il.sod.rest.dto.db.SpecDTO;
-
+import com.il.sod.db.model.entities.*;
+import com.il.sod.rest.dto.db.*;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.metadata.Type;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BidirectionalConverters {}
 
@@ -125,17 +86,17 @@ class EmployeeTaskOrderSetConverter
 	}
 }
 
-class PaymentInfoSetConverter extends BidirectionalConverter<Set<PaymentInfo>, Set<PaymentInfoDTO>> {
-	@Override
-	public Set<PaymentInfo> convertFrom(Set<PaymentInfoDTO> source, Type<Set<PaymentInfo>> arg1) {
-		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-	}
-
-	@Override
-	public Set<PaymentInfoDTO> convertTo(Set<PaymentInfo> source, Type<Set<PaymentInfoDTO>> arg1) {
-		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-	}
-}
+//class PaymentInfoSetConverter extends BidirectionalConverter<Set<PaymentInfo>, Set<PaymentInfoDTO>> {
+//	@Override
+//	public Set<PaymentInfo> convertFrom(Set<PaymentInfoDTO> source, Type<Set<PaymentInfo>> arg1) {
+//		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+//	}
+//
+//	@Override
+//	public Set<PaymentInfoDTO> convertTo(Set<PaymentInfo> source, Type<Set<PaymentInfoDTO>> arg1) {
+//		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+//	}
+//}
 
 //*******************
 // Service Mapper
@@ -188,17 +149,17 @@ class ServiceSpecSetConverter extends BidirectionalConverter<Set<ServiceSpec>, S
 	}
 }
 
-class ServiceTaskSet2IntConverter extends BidirectionalConverter<Set<ServiceTask>, Set<Integer>> {
-	@Override
-	public Set<ServiceTask> convertFrom(Set<Integer> source, Type<Set<ServiceTask>> arg1) {
-		return source.stream().map(p -> (new ServiceTask()).setId(p)).collect(Collectors.toSet());
-	}
-	
-	@Override
-	public Set<Integer> convertTo(Set<ServiceTask> source, Type<Set<Integer>> arg1) {
-		return source.stream().map(p -> p.getId()).collect(Collectors.toSet());
-	}
-}
+//class ServiceTaskSet2IntConverter extends BidirectionalConverter<Set<ServiceTask>, Set<Integer>> {
+//	@Override
+//	public Set<ServiceTask> convertFrom(Set<Integer> source, Type<Set<ServiceTask>> arg1) {
+//		return source.stream().map(p -> (new ServiceTask()).setId(p)).collect(Collectors.toSet());
+//	}
+//
+//	@Override
+//	public Set<Integer> convertTo(Set<ServiceTask> source, Type<Set<Integer>> arg1) {
+//		return source.stream().map(p -> p.getId()).collect(Collectors.toSet());
+//	}
+//}
 
 class ServiceTaskSetConverter extends BidirectionalConverter<Set<ServiceTask>, Set<ServiceTaskDTO>> {
 	@Override
@@ -311,17 +272,17 @@ class ServiceSetConverter extends BidirectionalConverter<Set<Service>, Set<Servi
 	}
 }
 
-class ServiceCommentSetConverter extends BidirectionalConverter<Set<ServiceComment>, Set<ServiceCommentDTO>> {
-	@Override
-	public Set<ServiceComment> convertFrom(Set<ServiceCommentDTO> source, Type<Set<ServiceComment>> arg1) {
-		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-	}
-
-	@Override
-	public Set<ServiceCommentDTO> convertTo(Set<ServiceComment> source, Type<Set<ServiceCommentDTO>> arg1) {
-		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-	}
-}
+//class ServiceCommentSetConverter extends BidirectionalConverter<Set<ServiceComment>, Set<ServiceCommentDTO>> {
+//	@Override
+//	public Set<ServiceComment> convertFrom(Set<ServiceCommentDTO> source, Type<Set<ServiceComment>> arg1) {
+//		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+//	}
+//
+//	@Override
+//	public Set<ServiceCommentDTO> convertTo(Set<ServiceComment> source, Type<Set<ServiceCommentDTO>> arg1) {
+//		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+//	}
+//}
 
 // *******************
 // ****** Clients mapper
@@ -350,17 +311,17 @@ class PhoneNumberDTOConverter extends BidirectionalConverter<Set<PhoneNumber>, S
 	}
 }
 
-class ClientPaymentInfoConverter extends BidirectionalConverter<Set<ClientPaymentInfo>, Set<ClientPaymentInfoDTO>> {
-	@Override
-	public Set<ClientPaymentInfo> convertFrom(Set<ClientPaymentInfoDTO> source, Type<Set<ClientPaymentInfo>> arg1) {
-		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-	}
-
-	@Override
-	public Set<ClientPaymentInfoDTO> convertTo(Set<ClientPaymentInfo> source, Type<Set<ClientPaymentInfoDTO>> arg1) {
-		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-	}
-}
+//class ClientPaymentInfoConverter extends BidirectionalConverter<Set<ClientPaymentInfo>, Set<ClientPaymentInfoDTO>> {
+//	@Override
+//	public Set<ClientPaymentInfo> convertFrom(Set<ClientPaymentInfoDTO> source, Type<Set<ClientPaymentInfo>> arg1) {
+//		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+//	}
+//
+//	@Override
+//	public Set<ClientPaymentInfoDTO> convertTo(Set<ClientPaymentInfo> source, Type<Set<ClientPaymentInfoDTO>> arg1) {
+//		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+//	}
+//}
 
 class ClientPaymentInfoSetConverter extends BidirectionalConverter<Set<ClientPaymentInfo>, Set<ClientPaymentInfoDTO>> {
 	@Override
@@ -373,3 +334,18 @@ class ClientPaymentInfoSetConverter extends BidirectionalConverter<Set<ClientPay
 		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }
+
+/* Subproducts */
+
+class SubproductSetConverter extends BidirectionalConverter<Set<Subproduct>, Set<SubproductDTO>> {
+	@Override
+	public Set<Subproduct> convertFrom(Set<SubproductDTO> source, Type<Set<Subproduct>> arg1) {
+		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<SubproductDTO> convertTo(Set<Subproduct> source, Type<Set<SubproductDTO>> arg1) {
+		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+}
+

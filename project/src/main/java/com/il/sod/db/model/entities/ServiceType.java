@@ -50,6 +50,10 @@ public class ServiceType implements IEntity<Integer> {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idServiceCategory")
 	private ServiceCategory serviceCategory;
+	
+	//bi-directional many-to-one association to ServiceTypeSubproductType
+	@OneToMany(mappedBy="serviceType")
+	private Set<ServiceTypeSubproductType> serviceTypeSubproductTypes;
 
 	public ServiceType() {
 	}
@@ -177,5 +181,27 @@ public class ServiceType implements IEntity<Integer> {
 
 	public void setServiceCategory(ServiceCategory serviceCategory) {
 		this.serviceCategory = serviceCategory;
+	}
+	
+	public Set<ServiceTypeSubproductType> getServiceTypeSubproductTypes() {
+		return this.serviceTypeSubproductTypes;
+	}
+
+	public void setServiceTypeSubproductTypes(Set<ServiceTypeSubproductType> serviceTypeSubproductTypes) {
+		this.serviceTypeSubproductTypes = serviceTypeSubproductTypes;
+	}
+
+	public ServiceTypeSubproductType addServiceTypeSubproductType(ServiceTypeSubproductType serviceTypeSubproductType) {
+		getServiceTypeSubproductTypes().add(serviceTypeSubproductType);
+		serviceTypeSubproductType.setServiceType(this);
+
+		return serviceTypeSubproductType;
+	}
+
+	public ServiceTypeSubproductType removeServiceTypeSubproductType(ServiceTypeSubproductType serviceTypeSubproductType) {
+		getServiceTypeSubproductTypes().remove(serviceTypeSubproductType);
+		serviceTypeSubproductType.setServiceType(null);
+
+		return serviceTypeSubproductType;
 	}
 }

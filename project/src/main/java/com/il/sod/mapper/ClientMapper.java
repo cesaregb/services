@@ -1,8 +1,5 @@
 package com.il.sod.mapper;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.il.sod.db.model.entities.Address;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.entities.ClientPaymentInfo;
@@ -11,9 +8,11 @@ import com.il.sod.rest.dto.db.AddressDTO;
 import com.il.sod.rest.dto.db.ClientDTO;
 import com.il.sod.rest.dto.db.ClientPaymentInfoDTO;
 import com.il.sod.rest.dto.db.PhoneNumberDTO;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.converter.ConverterFactory;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public enum ClientMapper {
 
@@ -118,6 +117,8 @@ public enum ClientMapper {
 	public ClientPaymentInfoDTO map(ClientPaymentInfo entity) {
 		return this.mapperFacade.map(entity, ClientPaymentInfoDTO.class);
 	}
+
+
 }
 
 

@@ -27,11 +27,11 @@ public class OrderConverterService {
 		result.setOrderTypeName(entity.getOrderType().getName());
 		
 		// override services to use the custom converter 
-		Set<ServiceDTO> r = entity.getServices().stream().map(s -> {return serviceConverterService.convert(s);}).collect(Collectors.toSet());
+		Set<ServiceDTO> r = entity.getServices().stream().map(s -> serviceConverterService.convert(s)).collect(Collectors.toSet());
 		result.setServices(r);
 		
 		if (result.getOrderTasks().size() > 0){
-			int sumStatus = result.getOrderTasks().stream().mapToInt(ot -> {return ot.getStatus();}).sum();
+			int sumStatus = result.getOrderTasks().stream().mapToInt(ot -> ot.getStatus()).sum();
 			double completed = ((sumStatus * 100) / result.getOrderTasks().size());
 			result.setCompleted(completed);
 		}else{
