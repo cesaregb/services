@@ -1,6 +1,6 @@
 package com.il.sod.rest.dto.db;
 
-public class SubproductDTO{
+public class SubproductDTO extends DeletableDTO{
 	private int idSubproduct;
 	private int maxQty;
 	private String name;

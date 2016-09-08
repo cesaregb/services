@@ -148,8 +148,6 @@ public abstract class AbstractService{
 		}else{
 			return null;
 		}
-
-
 	}
 
 	public IDAO getGenericDaoImpl() {

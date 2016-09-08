@@ -13,4 +13,7 @@ public interface SubproductRepository extends DeletableRepository<Subproduct, In
     @Query("SELECT s FROM Subproduct s WHERE s.deleted=0")
     public List<Subproduct> findAllActive();
 
+    @Query("SELECT s FROM Subproduct s WHERE s.name LIKE :name")
+    public List<Subproduct> findByName(@Param("name") String name);
+
 }

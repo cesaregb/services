@@ -1,5 +1,6 @@
 package com.il.sod.rest.api.impl;
 
+import com.il.sod.db.dao.impl.SubproductDAO;
 import com.il.sod.db.model.entities.Subproduct;
 import com.il.sod.db.model.repositories.SubproductRepository;
 import com.il.sod.exception.SODAPIException;
@@ -7,6 +8,7 @@ import com.il.sod.mapper.SubproductMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.SubproductDTO;
+import com.il.sod.rest.dto.helper.DtoHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -30,6 +32,9 @@ public class SubproductService extends AbstractServiceMutations {
 
 	@Autowired
 	SubproductRepository subproductRepository;
+
+	@Autowired
+	SubproductDAO subproductDAO;
 
 	@POST
 	@ApiOperation(value = "Create Subproduct", response = SubproductDTO.class)
@@ -111,6 +116,25 @@ public class SubproductService extends AbstractServiceMutations {
 			SubproductDTO dto = SubproductMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
+		return castEntityAsResponse(list);
+	}
+
+	@GET
+	@Path("/name/{name}")
+	@ApiOperation(value = "Get Subproduct list by name", response = SubproductDTO.class, responseContainer = "List")
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getSubproductListByName(@PathParam("name") String name) throws SODAPIException {
+		List<Subproduct> rentityList = subproductDAO.findByName(name);
+		List<SubproductDTO> list = rentityList.stream().map((i) -> {
+			SubproductDTO dto = SubproductMapper.INSTANCE.map(i);
+			return dto;
+		}).collect(Collectors.toList());
+
+		// filter list
+		list = DtoHelper.getActiveList(list);
+
 		return castEntityAsResponse(list);
 	}
 

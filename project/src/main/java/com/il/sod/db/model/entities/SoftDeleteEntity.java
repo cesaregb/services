@@ -6,13 +6,13 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class SoftDeleteEntity {
 
-    private Integer deleted;
+    private int deleted;
 
-    public Integer getDeleted() {
+    public int getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(Integer deleted) {
+    public void setDeleted(int deleted) {
         this.deleted = deleted;
     }
 }

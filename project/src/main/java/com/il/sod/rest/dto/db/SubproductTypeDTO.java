@@ -2,7 +2,7 @@ package com.il.sod.rest.dto.db;
 
 import java.util.Set;
 
-public class SubproductTypeDTO{
+public class SubproductTypeDTO extends DeletableDTO{
 	private int idSubproductType;
 	private String description;
 	private String name;

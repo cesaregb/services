@@ -87,9 +87,15 @@ public class SubproductTypeService extends AbstractServiceMutations {
 	public Response deleteSubproductType(@PathParam("id") String id, SubproductTypeDTO dto) throws SODAPIException {
 		try {
 			SubproductType entity = subproductTypeRepository.findOne(Integer.valueOf(id));
+
 			if (entity == null){
-				throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not found");
+				throw new SODAPIException(Response.Status.BAD_REQUEST, "Entity not found");
 			}
+
+			if (entity.getSubproducts().size() > 0){
+				throw new SODAPIException(Response.Status.BAD_REQUEST, "Entity Type have childs assigned.");
+			}
+
 			this.softDeleteEntity(subproductTypeRepository, entity.getId());
 			return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Entity deleted"),
 					Response.Status.OK);

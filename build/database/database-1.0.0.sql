@@ -909,7 +909,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`SubproductType` (
   `idSubproductType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(250) NULL,
-  `deleted` INT NULL DEFAULT 0,
+  `deleted` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`idSubproductType`))
 ENGINE = InnoDB;
 
@@ -924,8 +924,8 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Subproduct` (
   `idSubproductType` INT UNSIGNED NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `price` DOUBLE NOT NULL,
-  `maxQty` INT NULL DEFAULT 0,
-  `deleted` INT NULL DEFAULT 0,
+  `maxQty` INT NOT NULL DEFAULT 0,
+  `deleted` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`idSubproduct`),
   INDEX `fk_Subproduct_SubproductType1_idx` (`idSubproductType` ASC),
   CONSTRAINT `fk_Subproduct_SubproductType1`
