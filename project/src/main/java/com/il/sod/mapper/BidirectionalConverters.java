@@ -385,4 +385,17 @@ class SubproductSetConverter extends BidirectionalConverter<Set<Subproduct>, Set
 		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }
+/* Store */
+
+class DistanceInfoSetConverter extends BidirectionalConverter<Set<DistanceInfo>, Set<DistanceInfoDTO>> {
+	@Override
+	public Set<DistanceInfoDTO> convertTo(Set<DistanceInfo> source, Type<Set<DistanceInfoDTO>> type) {
+		return source.stream().map(item -> StoreInfoMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<DistanceInfo> convertFrom(Set<DistanceInfoDTO> source, Type<Set<DistanceInfo>> type) {
+		return source.stream().map(item -> StoreInfoMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+}
 

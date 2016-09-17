@@ -8,7 +8,8 @@ public class ServiceDTO {
 	private String description;
 	private String name;
 	private double price;
-	private double composedPrice;
+	private double specsPrice;
+	private double subproductsPrice;
 	private double totalPrice;
 	private int idServiceType;
 	private int idServiceCategory;
@@ -110,15 +111,26 @@ public class ServiceDTO {
 	public void setDeleted(int deleted) {
 		this.deleted = deleted;
 	}
-	public double getComposedPrice() {
-		return composedPrice;
-	}
-	public void setComposedPrice(double composedPrice) {
-		this.composedPrice = composedPrice;
-	}
 	public double getTotalPrice() {
 		return totalPrice;
 	}
+
+	public double getSpecsPrice() {
+		return specsPrice;
+	}
+
+	public void setSpecsPrice(double specsPrice) {
+		this.specsPrice = specsPrice;
+	}
+
+	public double getSubproductsPrice() {
+		return subproductsPrice;
+	}
+
+	public void setSubproductsPrice(double subproductsPrice) {
+		this.subproductsPrice = subproductsPrice;
+	}
+
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}

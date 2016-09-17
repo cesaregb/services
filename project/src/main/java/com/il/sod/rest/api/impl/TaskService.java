@@ -164,6 +164,10 @@ public class TaskService extends AbstractServiceMutations {
 		}
 		Order o = orderRepository.findOne(Integer.valueOf(idOrder));
 
+		if (o == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Order not found!");
+		}
+
 		List<OrderTask> tList = new ArrayList<>(o.getOrderTasks());
 		tList.sort((a, a1) -> a.getSortingOrder() - a1.getSortingOrder());
 
