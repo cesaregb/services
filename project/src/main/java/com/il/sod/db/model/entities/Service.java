@@ -283,6 +283,9 @@ public class Service implements IEntity<Integer> {
 	}
 	
 	public Set<ServiceSubproduct> getServiceSubproducts() {
+		if (serviceSubproducts == null){
+			serviceSubproducts = new HashSet<>();
+		}
 		return this.serviceSubproducts;
 	}
 
@@ -290,14 +293,14 @@ public class Service implements IEntity<Integer> {
 		this.serviceSubproducts = serviceSubproducts;
 	}
 
-	public ServiceSubproduct addServiceSubproduct(ServiceSubproduct serviceSubproduct) {
+	public ServiceSubproduct addSubproduct(ServiceSubproduct serviceSubproduct) {
 		getServiceSubproducts().add(serviceSubproduct);
 		serviceSubproduct.setService(this);
 
 		return serviceSubproduct;
 	}
 
-	public ServiceSubproduct removeServiceSubproduct(ServiceSubproduct serviceSubproduct) {
+	public ServiceSubproduct removeSubproduct(ServiceSubproduct serviceSubproduct) {
 		getServiceSubproducts().remove(serviceSubproduct);
 		serviceSubproduct.setService(null);
 

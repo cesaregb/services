@@ -1,16 +1,8 @@
 package com.il.sod.db.model.entities;
 
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 
 
 /**
@@ -50,11 +42,11 @@ public class ServiceType implements IEntity<Integer> {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="idServiceCategory")
 	private ServiceCategory serviceCategory;
-	
-	//bi-directional many-to-one association to ServiceTypeSubproductType
-	@OneToMany(mappedBy="serviceType")
-	private Set<ServiceTypeSubproductType> serviceTypeSubproductTypes;
 
+	//bi-directional many-to-many association to SubproductType
+	@ManyToMany(mappedBy="serviceTypes", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<SubproductType> subproductTypes;
+	
 	public ServiceType() {
 	}
 
@@ -182,26 +174,53 @@ public class ServiceType implements IEntity<Integer> {
 	public void setServiceCategory(ServiceCategory serviceCategory) {
 		this.serviceCategory = serviceCategory;
 	}
-	
-	public Set<ServiceTypeSubproductType> getServiceTypeSubproductTypes() {
-		return this.serviceTypeSubproductTypes;
+
+	public Set<SubproductType> getSubproductTypes() {
+		if (subproductTypes == null){
+			subproductTypes = new HashSet<>();
+		}
+		return subproductTypes;
 	}
 
-	public void setServiceTypeSubproductTypes(Set<ServiceTypeSubproductType> serviceTypeSubproductTypes) {
-		this.serviceTypeSubproductTypes = serviceTypeSubproductTypes;
+	public void setSubproductTypes(Set<SubproductType> subproductTypes) {
+		this.subproductTypes = subproductTypes;
 	}
 
-	public ServiceTypeSubproductType addServiceTypeSubproductType(ServiceTypeSubproductType serviceTypeSubproductType) {
-		getServiceTypeSubproductTypes().add(serviceTypeSubproductType);
-		serviceTypeSubproductType.setServiceType(this);
-
-		return serviceTypeSubproductType;
+	public void addSubproductType(SubproductType subproductType) {
+		getSubproductTypes().add(subproductType);
+		subproductType.getServiceTypes().add(this);
 	}
 
-	public ServiceTypeSubproductType removeServiceTypeSubproductType(ServiceTypeSubproductType serviceTypeSubproductType) {
-		getServiceTypeSubproductTypes().remove(serviceTypeSubproductType);
-		serviceTypeSubproductType.setServiceType(null);
+	public void removeSubproductType(SubproductType subproductType) {
+		getServiceTypeTasks().remove(subproductType);
+		subproductType.getServiceTypes().remove(this);
+	}
 
-		return serviceTypeSubproductType;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ServiceType)) return false;
+
+		ServiceType that = (ServiceType) o;
+
+		if (idServiceType != that.idServiceType) return false;
+		if (Double.compare(that.price, price) != 0) return false;
+		if (description != null ? !description.equals(that.description) : that.description != null) return false;
+		if (name != null ? !name.equals(that.name) : that.name != null) return false;
+		return time != null ? time.equals(that.time) : that.time == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result;
+		long temp;
+		result = idServiceType;
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		temp = Double.doubleToLongBits(price);
+		result = 31 * result + (int) (temp ^ (temp >>> 32));
+		result = 31 * result + (time != null ? time.hashCode() : 0);
+		return result;
 	}
 }

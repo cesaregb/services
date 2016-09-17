@@ -1,13 +1,6 @@
 package com.il.sod.db.model.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 /**
@@ -34,7 +27,7 @@ public class ServiceSubproduct implements IEntity<Integer> {
 	private Service service;
 
 	//bi-directional many-to-one association to Subproduct
-	@ManyToOne
+	@ManyToOne(fetch= FetchType.EAGER)
 	@JoinColumn(name="idSubproduct")
 	private Subproduct subproduct;
 
@@ -92,4 +85,31 @@ public class ServiceSubproduct implements IEntity<Integer> {
 		return this;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ServiceSubproduct)) return false;
+
+		ServiceSubproduct that = (ServiceSubproduct) o;
+
+		if (idServiceSubproducts != that.idServiceSubproducts) return false;
+		if (Double.compare(that.price, price) != 0) return false;
+		if (quantity != that.quantity) return false;
+		if (service != null ? !service.equals(that.service) : that.service != null) return false;
+		return subproduct != null ? subproduct.equals(that.subproduct) : that.subproduct == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result;
+		long temp;
+		result = idServiceSubproducts;
+		temp = Double.doubleToLongBits(price);
+		result = 31 * result + (int) (temp ^ (temp >>> 32));
+		result = 31 * result + quantity;
+		result = 31 * result + (service != null ? service.hashCode() : 0);
+		result = 31 * result + (subproduct != null ? subproduct.hashCode() : 0);
+		return result;
+	}
 }

@@ -1,59 +1,33 @@
 package com.il.sod.rest.api.web.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.il.sod.config.Constants;
 import com.il.sod.converter.services.SpecificObjectsConverterService;
 import com.il.sod.db.dao.impl.ServiceDAO;
-import com.il.sod.db.model.entities.Client;
-import com.il.sod.db.model.entities.Order;
-import com.il.sod.db.model.entities.OrderTask;
-import com.il.sod.db.model.entities.OrderType;
-import com.il.sod.db.model.entities.OrderTypeTask;
-import com.il.sod.db.model.entities.PaymentInfo;
-import com.il.sod.db.model.entities.Service;
-import com.il.sod.db.model.entities.ServiceCategory;
-import com.il.sod.db.model.entities.ServiceSpec;
-import com.il.sod.db.model.entities.ServiceTask;
-import com.il.sod.db.model.entities.ServiceType;
-import com.il.sod.db.model.entities.ServiceTypeTask;
-import com.il.sod.db.model.entities.Spec;
-import com.il.sod.db.model.repositories.ClientRepository;
-import com.il.sod.db.model.repositories.OrderRepository;
-import com.il.sod.db.model.repositories.OrderTypeRepository;
-import com.il.sod.db.model.repositories.ServiceCategoryRepository;
-import com.il.sod.db.model.repositories.ServiceTypeRepository;
-import com.il.sod.db.model.repositories.SpecRepository;
+import com.il.sod.db.model.entities.*;
+import com.il.sod.db.model.repositories.*;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.OrderMapper;
 import com.il.sod.mapper.TaskMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderDTO;
-import com.il.sod.rest.dto.specifics.UIServiceDTO;
-import com.il.sod.rest.dto.specifics.UISpecDTO;
-import com.il.sod.rest.dto.specifics.UIOrderDTO;
-import com.il.sod.rest.dto.specifics.WServiceCategoryDTO;
-
+import com.il.sod.rest.dto.specifics.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
@@ -78,6 +52,9 @@ public class AppOrdersService extends AbstractServiceMutations {
 	@Autowired
 	SpecRepository specRepository;
 	
+	@Autowired
+	SubproductRepository subproductRepository;
+
 	@Autowired
 	ServiceCategoryRepository serviceCategoryRepository;
 	
@@ -160,6 +137,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 		if (orderInputDto.getPaymentInfo() != null && orderInputDto.getPaymentInfo().getTransactionInfo() != null ){
 			PaymentInfo pi = new PaymentInfo();
 			pi.setTransactionInfo(orderInputDto.getPaymentInfo().getTransactionInfo());
+			pi.setOrder(orderEntity);
 			pi.setType(orderInputDto.getPaymentInfo().getType());
 			orderEntity.setPaymentInfo(pi);
 		}
@@ -189,13 +167,23 @@ public class AppOrdersService extends AbstractServiceMutations {
 				ServiceSpec serviceSpec = new ServiceSpec();
 				serviceSpec.setQuantity(specInput.getQuantity());
 				serviceSpec.setService(service);
-				Spec spec = specRepository.findOne(specInput.getIdSpecs());
-				serviceSpec.setSpec(spec);
+				serviceSpec.setSpec(specRepository.findOne(specInput.getIdSpecs()));
 				serviceSpec.setSelectedValue(specInput.getValue());
 				serviceSpec.setSpecPrice(specInput.getPrice());
 				// adding service spec
 				service.addServiceSpec(serviceSpec);
 			}
+
+			if (!CollectionUtils.isEmpty(servInput.getSubproducts())){
+				for (UISubproductDTO subproduct : servInput.getSubproducts()){
+					ServiceSubproduct ss = new ServiceSubproduct();
+					ss.setSubproduct(subproductRepository.findOne(subproduct.getIdSubproduct()));
+					ss.setQuantity(subproduct.getQuantity());
+					ss.setPrice(subproduct.getPrice());
+					service.addSubproduct(ss);
+				}
+			}
+
 			
 			// adding service 
 			orderEntity.addService(service);

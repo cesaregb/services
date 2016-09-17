@@ -56,7 +56,10 @@ public enum OrderMapper {
 				.fieldMap("assetTaskOrders", "assetTaskOrders").converter("assetTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("employeeTaskOrders", "employeeTaskOrders").converter("employeeTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.field("idOrder", "order.idOrder")
-				.field("idTask", "task.idTask").byDefault().register();
+				.field("idTask", "task.idTask")
+				.field("taskName", "task.name")
+				.byDefault().register();
+
 
 		BaseMapper.MAPPER_FACTORY.classMap(AssetTaskOrderDTO.class, AssetTaskOrder.class)
 				.field("idAsset", "asset.idAsset")

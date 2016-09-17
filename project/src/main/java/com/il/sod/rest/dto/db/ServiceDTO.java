@@ -21,6 +21,7 @@ public class ServiceDTO {
 	private int nTasks;
 	private int currentTask;
 	private int deleted;
+	private Set<ServiceSubproductDTO> serviceSubproducts;
 
 	// UI Requirements. 
 //	private Set<SpecDTO> specs;
@@ -121,12 +122,18 @@ public class ServiceDTO {
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-
 	public int getIdServiceCategory() {
 		return idServiceCategory;
 	}
-
 	public void setIdServiceCategory(int idServiceCategory) {
 		this.idServiceCategory = idServiceCategory;
+	}
+
+	public Set<ServiceSubproductDTO> getServiceSubproducts() {
+		return serviceSubproducts;
+	}
+
+	public void setServiceSubproducts(Set<ServiceSubproductDTO> serviceSubproducts) {
+		this.serviceSubproducts = serviceSubproducts;
 	}
 }

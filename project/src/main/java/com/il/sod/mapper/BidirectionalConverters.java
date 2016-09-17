@@ -223,6 +223,18 @@ class ServiceTypeSetConverter extends BidirectionalConverter<Set<ServiceType>, S
 	}
 }
 
+class ServiceTypeSet2IntConverter extends BidirectionalConverter<Set<ServiceType>, Set<Integer>> {
+	@Override
+	public Set<Integer> convertTo(Set<ServiceType> source, Type<Set<Integer>> type) {
+		return source.stream().map(p -> p.getId()).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<ServiceType> convertFrom(Set<Integer> source, Type<Set<ServiceType>> type) {
+		return source.stream().map(p -> (new ServiceType()).setId(p)).collect(Collectors.toSet());
+	}
+}
+
 class SpecConverter extends BidirectionalConverter<Spec, SpecDTO> {
 	@Override
 	public Spec convertFrom(SpecDTO source, Type<Spec> arg1) {
@@ -283,6 +295,31 @@ class ServiceSetConverter extends BidirectionalConverter<Set<Service>, Set<Servi
 //		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 //	}
 //}
+
+class SubproductTypeSetConverter extends BidirectionalConverter<Set<SubproductType>, Set<SubproductTypeDTO>> {
+	@Override
+	public Set<SubproductTypeDTO> convertTo(Set<SubproductType> source, Type<Set<SubproductTypeDTO>> type) {
+		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<SubproductType> convertFrom(Set<SubproductTypeDTO> source, Type<Set<SubproductType>> type) {
+		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+}
+
+class ServiceSubproductDTOSetConverter extends BidirectionalConverter<Set<ServiceSubproduct>, Set<ServiceSubproductDTO>> {
+	@Override
+	public Set<ServiceSubproductDTO> convertTo(Set<ServiceSubproduct> source, Type<Set<ServiceSubproductDTO>> type) {
+		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<ServiceSubproduct> convertFrom(Set<ServiceSubproductDTO> source, Type<Set<ServiceSubproduct>> type) {
+		return null;
+	}
+}
+
 
 // *******************
 // ****** Clients mapper

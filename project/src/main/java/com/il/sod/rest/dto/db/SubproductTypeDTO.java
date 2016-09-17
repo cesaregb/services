@@ -7,6 +7,7 @@ public class SubproductTypeDTO extends DeletableDTO{
 	private String description;
 	private String name;
 	private Set<SubproductDTO> subproducts;
+	private Set<Integer> serviceTypes;
 
 	public int getIdSubproductType() {
 		return idSubproductType;
@@ -38,5 +39,13 @@ public class SubproductTypeDTO extends DeletableDTO{
 
 	public void setSubproducts(Set<SubproductDTO> subproducts) {
 		this.subproducts = subproducts;
+	}
+
+	public Set<Integer> getServiceTypes() {
+		return serviceTypes;
+	}
+
+	public void setServiceTypes(Set<Integer> serviceTypes) {
+		this.serviceTypes = serviceTypes;
 	}
 }

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static org.aspectj.org.eclipse.jdt.internal.compiler.parser.TheOriginalJDTParserClass.name;
+
 @Service
 public class SubproductDAO {
 	
@@ -15,5 +17,8 @@ public class SubproductDAO {
 	
 	public List<Subproduct> findByName(String name) {
 		return subproductRepository.findByName("%" + name + "%");
+	}
+	public List<Subproduct> findBySubproductType(int idSubproductType) {
+		return subproductRepository.findBySubproductType(idSubproductType);
 	}
 }

@@ -1,21 +1,16 @@
 package com.il.sod.mapper;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import com.il.sod.db.model.entities.OrderTask;
-import com.il.sod.db.model.entities.OrderTypeTask;
-import com.il.sod.db.model.entities.ServiceTask;
-import com.il.sod.db.model.entities.ServiceTypeTask;
-import com.il.sod.db.model.entities.Task;
-import com.il.sod.db.model.entities.TaskType;
+import com.il.sod.db.model.entities.*;
 import com.il.sod.rest.dto.db.TaskDTO;
 import com.il.sod.rest.dto.db.TaskTypeDTO;
-
+import com.il.sod.rest.dto.specifics.TaskInfoDTO;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.converter.ConverterFactory;
 import ma.glasnost.orika.metadata.Type;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public enum TaskMapper {
 
@@ -47,7 +42,17 @@ public enum TaskMapper {
 			.exclude("id")
 			.byDefault()
 			.register();
-		
+
+		BaseMapper.MAPPER_FACTORY.classMap(TaskInfoDTO.class, ServiceTask.class)
+			.field("idParent", "service.idService")
+			.byDefault()
+			.register();
+
+		BaseMapper.MAPPER_FACTORY.classMap(TaskInfoDTO.class, OrderTask.class)
+			.field("idParent", "order.idOrder")
+			.byDefault()
+			.register();
+
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
 	}
 
@@ -74,6 +79,15 @@ public enum TaskMapper {
 	public ServiceTask map(ServiceTypeTask entity){
 		return this.mapperFacade.map(entity, ServiceTask.class);
 	}
+
+	public TaskInfoDTO map(ServiceTask input){
+		return this.mapperFacade.map(input, TaskInfoDTO.class);
+	}
+
+	public TaskInfoDTO map(OrderTask input){
+		return this.mapperFacade.map(input, TaskInfoDTO.class);
+	}
+
 }
 
 class TaskSetConverter extends BidirectionalConverter<Set<TaskDTO>, Set<Task>> {

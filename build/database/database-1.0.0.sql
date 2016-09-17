@@ -937,31 +937,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`ServiceTypeSubproductTypes`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`ServiceTypeSubproductTypes` ;
-
-CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceTypeSubproductTypes` (
-  `idServiceTypeSubproductTypes` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `idServiceType` INT UNSIGNED NOT NULL,
-  `idSubproductType` INT UNSIGNED NOT NULL,
-  INDEX `fk_ServiceSubproductTypes_ServiceType1_idx` (`idServiceType` ASC),
-  INDEX `fk_ServiceSubproductTypes_SubproductType1_idx` (`idSubproductType` ASC),
-  PRIMARY KEY (`idServiceTypeSubproductTypes`),
-  CONSTRAINT `fk_ServiceSubproductTypes_ServiceType1`
-    FOREIGN KEY (`idServiceType`)
-    REFERENCES `sod_db`.`ServiceType` (`idServiceType`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ServiceSubproductTypes_SubproductType1`
-    FOREIGN KEY (`idSubproductType`)
-    REFERENCES `sod_db`.`SubproductType` (`idSubproductType`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `sod_db`.`ServiceSubproducts`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `sod_db`.`ServiceSubproducts` ;
@@ -985,6 +960,19 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceSubproducts` (
     REFERENCES `sod_db`.`Subproduct` (`idSubproduct`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sod_db`.`PreferedSubproductServiceType`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`PreferedSubproductServiceType` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`PreferedSubproductServiceType` (
+  `idPreferedSubproductServiceType` INT NOT NULL AUTO_INCREMENT,
+  `idSerticeType` INT NOT NULL,
+  `idSubproductType` INT NOT NULL,
+  PRIMARY KEY (`idPreferedSubproductServiceType`))
 ENGINE = InnoDB;
 
 USE `sod_db` ;

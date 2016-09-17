@@ -13,6 +13,7 @@ public class ServiceTypeDTO {
 	private Set<ServiceTypeTaskDTO> serviceTypeTasks;
 	private int idServiceCategory;
 	private String serviceTypeCategoryName;
+	private Set<SubproductTypeDTO> subproductTypes;
 	
 	public int getIdServiceType() {
 		return idServiceType;
@@ -73,5 +74,13 @@ public class ServiceTypeDTO {
 	}
 	public void setServiceTypeCategoryName(String serviceTypeCategoryName) {
 		this.serviceTypeCategoryName = serviceTypeCategoryName;
+	}
+
+	public Set<SubproductTypeDTO> getSubproductTypes() {
+		return subproductTypes;
+	}
+
+	public void setSubproductTypes(Set<SubproductTypeDTO> subproductTypes) {
+		this.subproductTypes = subproductTypes;
 	}
 }
