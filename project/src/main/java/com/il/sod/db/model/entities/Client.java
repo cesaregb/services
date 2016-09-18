@@ -17,7 +17,6 @@ import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-
 /**
  * The persistent class for the Clients database table.
  *
@@ -69,6 +68,10 @@ public class Client implements IEntity<Integer> {
 	private Set<ClientPaymentInfo> clientPaymentInfos;
 	
 	private int deleted;
+	
+	//bi-directional many-to-one association to ClientBag
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	private Set<ClientBag> clientBags;
 	
 	public Client() {
 	}
@@ -287,5 +290,27 @@ public class Client implements IEntity<Integer> {
 
 	public void setDeleted(int deleted) {
 		this.deleted = deleted;
+	}
+	
+	public Set<ClientBag> getClientBags() {
+		return this.clientBags;
+	}
+
+	public void setClientBags(Set<ClientBag> clientBags) {
+		this.clientBags = clientBags;
+	}
+
+	public ClientBag addClientBag(ClientBag clientBag) {
+		getClientBags().add(clientBag);
+		clientBag.setClient(this);
+
+		return clientBag;
+	}
+
+	public ClientBag removeClientBag(ClientBag clientBag) {
+		getClientBags().remove(clientBag);
+		clientBag.setClient(null);
+
+		return clientBag;
 	}
 }

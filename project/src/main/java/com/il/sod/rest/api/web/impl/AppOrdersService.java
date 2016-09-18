@@ -116,7 +116,8 @@ public class AppOrdersService extends AbstractServiceMutations {
 		orderEntity.setPickUpDate(orderInputDto.getPickUpDate());
 		orderEntity.setIdAddressDeliver(orderInputDto.getIdAddressDeliver());
 		orderEntity.setDeliverDate(orderInputDto.getDeliveryDate());
-		orderEntity.setPrice(orderInputDto.getPrice());
+		orderEntity.setTotalServices(orderInputDto.getTotalServices());
+		orderEntity.setTotal(orderInputDto.getTotal());
 		orderEntity.setStatus(Constants.ORDER_CREATED);
 		// get client 
 		Client client =  clientRepository.findOne(orderInputDto.getIdClient());

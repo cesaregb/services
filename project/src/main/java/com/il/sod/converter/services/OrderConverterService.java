@@ -48,7 +48,8 @@ public class OrderConverterService {
 			result.setComments(entity.getComments());
 			result.setIdAddressPickup(entity.getIdAddressPickup());
 			result.setIdAddressDeliver(entity.getIdAddressDeliver());
-			result.setPrice(entity.getPrice());
+			result.setTotal(entity.getTotal());
+			result.setTotalServices(entity.getTotalServices());
 			result.setPickUpDate(entity.getPickUpDate());
 			result.setDeliveryDate(entity.getDeliverDate());
 			WPaymentInfoDTO paymentInfo = new WPaymentInfoDTO();

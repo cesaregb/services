@@ -348,6 +348,19 @@ class PhoneNumberDTOConverter extends BidirectionalConverter<Set<PhoneNumber>, S
 	}
 }
 
+class ClientBagSetConverter extends BidirectionalConverter<Set<ClientBag>, Set<ClientBagDTO>> {
+
+	@Override
+	public Set<ClientBagDTO> convertTo(Set<ClientBag> source, Type<Set<ClientBagDTO>> type) {
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<ClientBag> convertFrom(Set<ClientBagDTO> source, Type<Set<ClientBag>> type) {
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+}
+
 //class ClientPaymentInfoConverter extends BidirectionalConverter<Set<ClientPaymentInfo>, Set<ClientPaymentInfoDTO>> {
 //	@Override
 //	public Set<ClientPaymentInfo> convertFrom(Set<ClientPaymentInfoDTO> source, Type<Set<ClientPaymentInfo>> arg1) {

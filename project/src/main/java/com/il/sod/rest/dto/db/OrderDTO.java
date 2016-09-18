@@ -10,7 +10,8 @@ public class OrderDTO {
 	private int idAddressPickup;
 	private Date pickUpDate;
 	private Date deliverDate;
-	private double price;
+	private double totalServices;
+	private double total;
 	private int status;
 	private ClientDTO client;
 	private int idOrderType;
@@ -53,12 +54,23 @@ public class OrderDTO {
 	public void setIdAddressPickup(int idAddressPickup) {
 		this.idAddressPickup = idAddressPickup;
 	}
-	public double getPrice() {
-		return price;
+
+	public double getTotalServices() {
+		return totalServices;
 	}
-	public void setPrice(double price) {
-		this.price = price;
+
+	public void setTotalServices(double totalServices) {
+		this.totalServices = totalServices;
 	}
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
 	public int getStatus() {
 		return status;
 	}

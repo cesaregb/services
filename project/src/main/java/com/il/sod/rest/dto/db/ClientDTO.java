@@ -1,12 +1,11 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.Date;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
 import io.swagger.annotations.ApiModelProperty;
+
+import java.util.Date;
+import java.util.Set;
 
 public class ClientDTO {
 	private int idClient;
@@ -18,7 +17,7 @@ public class ClientDTO {
 	private String loginID;
 	private String rfc; 
 	private String razonSocial;
-	
+
 	@ApiModelProperty(hidden=true)
 	@JsonProperty(access = Access.READ_ONLY)
 	private String defaultPhone;
@@ -37,6 +36,7 @@ public class ClientDTO {
 	private Date updated;
 	private Set<ClientPaymentInfoDTO> clientPaymentInfos;
 	private int deleted;
+	private Set<ClientBagDTO> clientBags;
 	
 	public int getIdClient() {
 		return idClient;
@@ -151,5 +151,13 @@ public class ClientDTO {
 	}
 	public void setDeleted(int deleted) {
 		this.deleted = deleted;
+	}
+
+	public Set<ClientBagDTO> getClientBags() {
+		return clientBags;
+	}
+
+	public void setClientBags(Set<ClientBagDTO> clientBags) {
+		this.clientBags = clientBags;
 	}
 }

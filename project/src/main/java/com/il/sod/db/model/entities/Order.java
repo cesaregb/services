@@ -51,7 +51,9 @@ public class Order implements IEntity<Integer> {
 
 	private int idAddressPickup;
 
-	private double price;
+	private double totalServices;
+
+	private double total;
 
 	private int status;
 
@@ -124,12 +126,20 @@ public class Order implements IEntity<Integer> {
 		this.idAddressPickup = idAddressPickup;
 	}
 
-	public double getPrice() {
-		return this.price;
+	public double getTotalServices() {
+		return totalServices;
 	}
 
-	public void setPrice(double price) {
-		this.price = price;
+	public void setTotalServices(double totalServices) {
+		this.totalServices = totalServices;
+	}
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
 	}
 
 	public int getStatus() {
