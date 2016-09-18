@@ -5,6 +5,8 @@ import com.il.sod.rest.dto.db.*;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.metadata.Type;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,16 +39,20 @@ class OrderTaskSetConverter extends BidirectionalConverter<Set<OrderTask>, Set<O
 	}
 }
 
-class OrderTypeTaskSetConverter extends BidirectionalConverter<Set<OrderTypeTask>, Set<OrderTypeTaskDTO>> {
+class OrderTypeTaskSetConverter extends BidirectionalConverter<Set<OrderTypeTask>, List<OrderTypeTaskDTO>> {
+
 	@Override
-	public Set<OrderTypeTask> convertFrom(Set<OrderTypeTaskDTO> source, Type<Set<OrderTypeTask>> arg1) {
-		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	public List<OrderTypeTaskDTO> convertTo(Set<OrderTypeTask> source, Type<List<OrderTypeTaskDTO>> type) {
+		List<OrderTypeTaskDTO> result = source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toList());
+		Collections.sort(result, (o1, o2) -> o1.getSortingOrder() - o2.getSortingOrder());
+		return result;
 	}
 
 	@Override
-	public Set<OrderTypeTaskDTO> convertTo(Set<OrderTypeTask> source, Type<Set<OrderTypeTaskDTO>> arg1) {
+	public Set<OrderTypeTask> convertFrom(List<OrderTypeTaskDTO> source, Type<Set<OrderTypeTask>> type) {
 		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
+
 }
 
 class ClientConverter extends BidirectionalConverter<Client, ClientDTO> {
@@ -124,14 +130,17 @@ class ServiceTypeSpecSetConverter extends BidirectionalConverter<Set<ServiceType
 //	}
 //}
 
-class ServiceTypeTaskSetConverter extends BidirectionalConverter<Set<ServiceTypeTask>, Set<ServiceTypeTaskDTO>> {
+class ServiceTypeTaskSetConverter extends BidirectionalConverter<Set<ServiceTypeTask>, List<ServiceTypeTaskDTO>> {
+
 	@Override
-	public Set<ServiceTypeTask> convertFrom(Set<ServiceTypeTaskDTO> source, Type<Set<ServiceTypeTask>> arg1) {
-		return source.stream().map(p -> (ServiceMapper.INSTANCE.map(p))).collect(Collectors.toSet());
+	public List<ServiceTypeTaskDTO> convertTo(Set<ServiceTypeTask> source, Type<List<ServiceTypeTaskDTO>> type) {
+		List<ServiceTypeTaskDTO> result = source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toList());
+		Collections.sort(result, (o1, o2) -> o1.getSortingOrder() - o2.getSortingOrder());
+		return result;
 	}
-	
+
 	@Override
-	public Set<ServiceTypeTaskDTO> convertTo(Set<ServiceTypeTask> source, Type<Set<ServiceTypeTaskDTO>> arg1) {
+	public Set<ServiceTypeTask> convertFrom(List<ServiceTypeTaskDTO> source, Type<Set<ServiceTypeTask>> type) {
 		return source.stream().map(p -> (ServiceMapper.INSTANCE.map(p))).collect(Collectors.toSet());
 	}
 }

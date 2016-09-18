@@ -1,5 +1,6 @@
 package com.il.sod.rest.dto.db;
 
+import java.util.List;
 import java.util.Set;
 
 public class ServiceTypeDTO {
@@ -10,7 +11,7 @@ public class ServiceTypeDTO {
 	private int time;
 	private Set<Integer> services;
 	private Set<ServiceTypeSpecDTO> serviceTypeSpecs;
-	private Set<ServiceTypeTaskDTO> serviceTypeTasks;
+	private List<ServiceTypeTaskDTO> serviceTypeTasks;
 	private int idServiceCategory;
 	private String serviceTypeCategoryName;
 	private Set<SubproductTypeDTO> subproductTypes;
@@ -63,12 +64,15 @@ public class ServiceTypeDTO {
 	public void setIdServiceCategory(int idServiceCategory) {
 		this.idServiceCategory = idServiceCategory;
 	}
-	public Set<ServiceTypeTaskDTO> getServiceTypeTasks() {
+
+	public List<ServiceTypeTaskDTO> getServiceTypeTasks() {
 		return serviceTypeTasks;
 	}
-	public void setServiceTypeTasks(Set<ServiceTypeTaskDTO> serviceTypeTasks) {
+
+	public void setServiceTypeTasks(List<ServiceTypeTaskDTO> serviceTypeTasks) {
 		this.serviceTypeTasks = serviceTypeTasks;
 	}
+
 	public String getServiceTypeCategoryName() {
 		return serviceTypeCategoryName;
 	}

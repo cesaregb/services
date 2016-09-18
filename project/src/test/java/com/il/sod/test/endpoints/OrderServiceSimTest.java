@@ -1,17 +1,16 @@
 package com.il.sod.test.endpoints;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import com.il.sod.rest.api.web.impl.AppOrdersService;
+import com.il.sod.rest.dto.specifics.UIOrderDTO;
+import com.il.sod.rest.dto.specifics.UIServiceDTO;
+import com.il.sod.rest.dto.specifics.UISpecDTO;
+import com.il.sod.test.config.SpringTestConfiguration;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.il.sod.rest.api.web.impl.AppOrdersService;
-import com.il.sod.rest.dto.specifics.UIServiceDTO;
-import com.il.sod.rest.dto.specifics.UISpecDTO;
-import com.il.sod.rest.dto.specifics.UIOrderDTO;
-import com.il.sod.test.config.SpringTestConfiguration;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class OrderServiceSimTest extends SpringTestConfiguration{
 	
@@ -22,7 +21,7 @@ public class OrderServiceSimTest extends SpringTestConfiguration{
     public void testSaveOrder() throws Exception{
     	UIOrderDTO oi = new UIOrderDTO();
     	oi.setIdClient(1);
-    	oi.setPrice(35d);
+    	oi.setTotal(35d);
     	oi.setIdAddressPickup(1);
     	oi.setIdAddressDeliver(1);
     	oi.setPickUpDate(new Date());

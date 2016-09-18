@@ -53,6 +53,10 @@ public class ServiceService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateService(ServiceDTO dto) throws SODAPIException {
+		return updateEntity(dto);
+	}
+
+	private Response updateEntity(ServiceDTO dto) throws SODAPIException {
 		try {
 			Service entity = ServiceMapper.INSTANCE.map(dto);
 			this.updateEntity(serviceRepository, entity);
@@ -70,14 +74,7 @@ public class ServiceService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateServiceById(@PathParam("id") String id, ServiceDTO dto) throws SODAPIException {
-		try {
-			Service entity = ServiceMapper.INSTANCE.map(dto);
-			this.updateEntity(serviceRepository, entity);
-			dto = ServiceMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		return updateEntity(dto);
 	}
 
 	@DELETE

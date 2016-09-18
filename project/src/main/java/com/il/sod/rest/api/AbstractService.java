@@ -27,6 +27,7 @@ import java.util.List;
 
 @Component
 @SwaggerDefinition(tags = { @Tag(name = "clients", description = "Client Layer services"),
+		@Tag(name = "app-utils", description = "Utilities of the site - store"),
 		@Tag(name = "app-orders", description = "Services used by web-app"),
 		@Tag(name = "employee", description = "Employee services"),
 		@Tag(name = "specs", description = "Specs are the 'type of generics' that uses a service "),

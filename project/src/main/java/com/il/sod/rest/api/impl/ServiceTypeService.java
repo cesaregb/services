@@ -135,7 +135,6 @@ public class ServiceTypeService extends AbstractServiceMutations {
 		for (SubproductTypeDTO sptd :
 				listDto) {
 			serviceType.addSubproductType(subproductTypeRepository.findOne(sptd.getIdSubproductType()));
-			LOGGER.info("Adding: " + sptd.getIdSubproductType());
 		}
 		this.saveEntity(serviceTypeRepository, serviceType);
 

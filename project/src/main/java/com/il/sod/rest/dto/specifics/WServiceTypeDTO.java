@@ -1,5 +1,7 @@
 package com.il.sod.rest.dto.specifics;
 
+import com.il.sod.rest.dto.db.SubproductDTO;
+
 import java.util.Set;
 
 public class WServiceTypeDTO {
@@ -9,6 +11,8 @@ public class WServiceTypeDTO {
 	private double price;
 	private int time;
 	private Set<WSpecDTO> specs;
+	private Set<SubproductDTO> subproducts;
+
 	public int getIdServiceType() {
 		return idServiceType;
 	}
@@ -45,5 +49,12 @@ public class WServiceTypeDTO {
 	public void setSpecs(Set<WSpecDTO> specs) {
 		this.specs = specs;
 	}
-	
+
+	public Set<SubproductDTO> getSubproducts() {
+		return subproducts;
+	}
+
+	public void setSubproducts(Set<SubproductDTO> subproducts) {
+		this.subproducts = subproducts;
+	}
 }
