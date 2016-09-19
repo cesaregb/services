@@ -1,5 +1,6 @@
 package com.il.sod.rest.dto.db;
 
+import java.util.List;
 import java.util.Set;
 
 public class OrderTypeDTO {
@@ -7,7 +8,7 @@ public class OrderTypeDTO {
 	private String description;
 	private String name;
 	private Set<Integer> orders;
-	private Set<OrderTypeTaskDTO> orderTypeTasks;
+	private List<OrderTypeTaskDTO> orderTypeTasks;
 	private int transportInfo;
 	public int getIdOrderType() {
 		return idOrderType;
@@ -33,12 +34,15 @@ public class OrderTypeDTO {
 	public void setOrders(Set<Integer> orders) {
 		this.orders = orders;
 	}
-	public Set<OrderTypeTaskDTO> getOrderTypeTasks() {
+
+	public List<OrderTypeTaskDTO> getOrderTypeTasks() {
 		return orderTypeTasks;
 	}
-	public void setOrderTypeTasks(Set<OrderTypeTaskDTO> orderTypeTasks) {
+
+	public void setOrderTypeTasks(List<OrderTypeTaskDTO> orderTypeTasks) {
 		this.orderTypeTasks = orderTypeTasks;
 	}
+
 	public int getTransportInfo() {
 		return transportInfo;
 	}

@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,10 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -131,6 +135,56 @@ public class SubproductService extends AbstractServiceMutations {
 			SubproductDTO dto = SubproductMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
+
+		// filter list
+		list = DtoHelper.getActiveList(list);
+
+		return castEntityAsResponse(list);
+	}
+
+	@GET
+	@Path("/type/{idSubproductType}")
+	@ApiOperation(value = "Get Subproduct list by name", response = SubproductDTO.class, responseContainer = "List")
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getSubproductListByType(@PathParam("idSubproductType") String idSubproductType) throws SODAPIException {
+		if (!NumberUtils.isNumber(idSubproductType)){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "{idSubproductType} not valid " + idSubproductType);
+		}
+		List<Subproduct> rentityList = subproductDAO.findBySubproductType(Integer.valueOf(idSubproductType));
+		List<SubproductDTO> list = rentityList.stream().map((i) -> {
+			SubproductDTO dto = SubproductMapper.INSTANCE.map(i);
+			return dto;
+		}).collect(Collectors.toList());
+
+		// filter list
+		list = DtoHelper.getActiveList(list);
+
+		return castEntityAsResponse(list);
+	}
+
+	@POST
+	@Path("/bySubproductTypes")
+	@ApiOperation(value = "Get Subproduct list by name", response = SubproductDTO.class, responseContainer = "List")
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getSubproductListByType(List<String> ids) throws SODAPIException {
+
+		Set<SubproductDTO> spSet = new HashSet<>();
+
+		for (String item :
+				ids) {
+			List<Subproduct> rentityList = subproductDAO.findBySubproductType(Integer.valueOf(item));
+			List<SubproductDTO> list = rentityList.stream().map((i) -> {
+				SubproductDTO dto = SubproductMapper.INSTANCE.map(i);
+				return dto;
+			}).collect(Collectors.toList());
+			spSet.addAll(list);
+		}
+
+		List<SubproductDTO> list = new ArrayList<>(spSet);
 
 		// filter list
 		list = DtoHelper.getActiveList(list);

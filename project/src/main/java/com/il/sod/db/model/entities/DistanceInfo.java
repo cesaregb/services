@@ -1,10 +1,6 @@
 package com.il.sod.db.model.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 
 
 /**
@@ -25,6 +21,11 @@ public class DistanceInfo implements IEntity<Integer> {
 	private double price;
 
 	private int source;
+	
+	//bi-directional many-to-one association to Store
+	@ManyToOne
+	@JoinColumn(name="idStore")
+	private Store store;
 
 	public DistanceInfo() {
 	}
@@ -59,6 +60,14 @@ public class DistanceInfo implements IEntity<Integer> {
 
 	public void setSource(int source) {
 		this.source = source;
+	}
+
+	public Store getStore() {
+		return store;
+	}
+
+	public void setStore(Store store) {
+		this.store = store;
 	}
 
 	@Override

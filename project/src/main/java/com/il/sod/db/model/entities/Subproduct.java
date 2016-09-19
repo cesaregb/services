@@ -24,7 +24,7 @@ public class Subproduct extends SoftDeleteEntity implements IEntity<Integer>{
 	private double price;
 
 	//bi-directional many-to-one association to ServiceSubproduct
-	@OneToMany(mappedBy="subproduct")
+	@OneToMany(mappedBy="subproduct", fetch=FetchType.EAGER)
 	private Set<ServiceSubproduct> serviceSubproducts;
 
 	//bi-directional many-to-one association to SubproductType

@@ -5,6 +5,8 @@ import com.il.sod.rest.dto.db.*;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.metadata.Type;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,16 +39,20 @@ class OrderTaskSetConverter extends BidirectionalConverter<Set<OrderTask>, Set<O
 	}
 }
 
-class OrderTypeTaskSetConverter extends BidirectionalConverter<Set<OrderTypeTask>, Set<OrderTypeTaskDTO>> {
+class OrderTypeTaskSetConverter extends BidirectionalConverter<Set<OrderTypeTask>, List<OrderTypeTaskDTO>> {
+
 	@Override
-	public Set<OrderTypeTask> convertFrom(Set<OrderTypeTaskDTO> source, Type<Set<OrderTypeTask>> arg1) {
-		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	public List<OrderTypeTaskDTO> convertTo(Set<OrderTypeTask> source, Type<List<OrderTypeTaskDTO>> type) {
+		List<OrderTypeTaskDTO> result = source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toList());
+		Collections.sort(result, (o1, o2) -> o1.getSortingOrder() - o2.getSortingOrder());
+		return result;
 	}
 
 	@Override
-	public Set<OrderTypeTaskDTO> convertTo(Set<OrderTypeTask> source, Type<Set<OrderTypeTaskDTO>> arg1) {
+	public Set<OrderTypeTask> convertFrom(List<OrderTypeTaskDTO> source, Type<Set<OrderTypeTask>> type) {
 		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
+
 }
 
 class ClientConverter extends BidirectionalConverter<Client, ClientDTO> {
@@ -124,14 +130,17 @@ class ServiceTypeSpecSetConverter extends BidirectionalConverter<Set<ServiceType
 //	}
 //}
 
-class ServiceTypeTaskSetConverter extends BidirectionalConverter<Set<ServiceTypeTask>, Set<ServiceTypeTaskDTO>> {
+class ServiceTypeTaskSetConverter extends BidirectionalConverter<Set<ServiceTypeTask>, List<ServiceTypeTaskDTO>> {
+
 	@Override
-	public Set<ServiceTypeTask> convertFrom(Set<ServiceTypeTaskDTO> source, Type<Set<ServiceTypeTask>> arg1) {
-		return source.stream().map(p -> (ServiceMapper.INSTANCE.map(p))).collect(Collectors.toSet());
+	public List<ServiceTypeTaskDTO> convertTo(Set<ServiceTypeTask> source, Type<List<ServiceTypeTaskDTO>> type) {
+		List<ServiceTypeTaskDTO> result = source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toList());
+		Collections.sort(result, (o1, o2) -> o1.getSortingOrder() - o2.getSortingOrder());
+		return result;
 	}
-	
+
 	@Override
-	public Set<ServiceTypeTaskDTO> convertTo(Set<ServiceTypeTask> source, Type<Set<ServiceTypeTaskDTO>> arg1) {
+	public Set<ServiceTypeTask> convertFrom(List<ServiceTypeTaskDTO> source, Type<Set<ServiceTypeTask>> type) {
 		return source.stream().map(p -> (ServiceMapper.INSTANCE.map(p))).collect(Collectors.toSet());
 	}
 }
@@ -223,6 +232,18 @@ class ServiceTypeSetConverter extends BidirectionalConverter<Set<ServiceType>, S
 	}
 }
 
+class ServiceTypeSet2IntConverter extends BidirectionalConverter<Set<ServiceType>, Set<Integer>> {
+	@Override
+	public Set<Integer> convertTo(Set<ServiceType> source, Type<Set<Integer>> type) {
+		return source.stream().map(p -> p.getId()).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<ServiceType> convertFrom(Set<Integer> source, Type<Set<ServiceType>> type) {
+		return source.stream().map(p -> (new ServiceType()).setId(p)).collect(Collectors.toSet());
+	}
+}
+
 class SpecConverter extends BidirectionalConverter<Spec, SpecDTO> {
 	@Override
 	public Spec convertFrom(SpecDTO source, Type<Spec> arg1) {
@@ -284,6 +305,31 @@ class ServiceSetConverter extends BidirectionalConverter<Set<Service>, Set<Servi
 //	}
 //}
 
+class SubproductTypeSetConverter extends BidirectionalConverter<Set<SubproductType>, Set<SubproductTypeDTO>> {
+	@Override
+	public Set<SubproductTypeDTO> convertTo(Set<SubproductType> source, Type<Set<SubproductTypeDTO>> type) {
+		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<SubproductType> convertFrom(Set<SubproductTypeDTO> source, Type<Set<SubproductType>> type) {
+		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+}
+
+class ServiceSubproductDTOSetConverter extends BidirectionalConverter<Set<ServiceSubproduct>, Set<ServiceSubproductDTO>> {
+	@Override
+	public Set<ServiceSubproductDTO> convertTo(Set<ServiceSubproduct> source, Type<Set<ServiceSubproductDTO>> type) {
+		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<ServiceSubproduct> convertFrom(Set<ServiceSubproductDTO> source, Type<Set<ServiceSubproduct>> type) {
+		return null;
+	}
+}
+
+
 // *******************
 // ****** Clients mapper
 // *******************
@@ -307,6 +353,19 @@ class PhoneNumberDTOConverter extends BidirectionalConverter<Set<PhoneNumber>, S
 
 	@Override
 	public Set<PhoneNumberDTO> convertTo(Set<PhoneNumber> source, Type<Set<PhoneNumberDTO>> arg1) {
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+}
+
+class ClientBagSetConverter extends BidirectionalConverter<Set<ClientBag>, Set<ClientBagDTO>> {
+
+	@Override
+	public Set<ClientBagDTO> convertTo(Set<ClientBag> source, Type<Set<ClientBagDTO>> type) {
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<ClientBag> convertFrom(Set<ClientBagDTO> source, Type<Set<ClientBag>> type) {
 		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }
@@ -346,6 +405,19 @@ class SubproductSetConverter extends BidirectionalConverter<Set<Subproduct>, Set
 	@Override
 	public Set<SubproductDTO> convertTo(Set<Subproduct> source, Type<Set<SubproductDTO>> arg1) {
 		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+}
+/* Store */
+
+class DistanceInfoSetConverter extends BidirectionalConverter<Set<DistanceInfo>, Set<DistanceInfoDTO>> {
+	@Override
+	public Set<DistanceInfoDTO> convertTo(Set<DistanceInfo> source, Type<Set<DistanceInfoDTO>> type) {
+		return source.stream().map(item -> StoreInfoMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<DistanceInfo> convertFrom(Set<DistanceInfoDTO> source, Type<Set<DistanceInfo>> type) {
+		return source.stream().map(item -> StoreInfoMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }
 

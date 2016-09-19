@@ -1,8 +1,8 @@
 package com.il.sod.db.model.entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
-
 
 /**
  * The persistent class for the SubproductType database table.
@@ -22,13 +22,22 @@ public class SubproductType extends SoftDeleteEntity implements IEntity<Integer>
 
 	private String name;
 
-	//bi-directional many-to-one association to ServiceTypeSubproductType
-	@OneToMany(mappedBy="subproductType")
-	private Set<ServiceTypeSubproductType> serviceTypeSubproductTypes;
-
 	//bi-directional many-to-one association to Subproduct
 	@OneToMany(mappedBy="subproductType", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	private Set<Subproduct> subproducts;
+
+	//bi-directional many-to-many association to ServiceType
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+			name="ServiceTypeSubproductType"
+			, joinColumns={
+			@JoinColumn(name="idSubproductType")
+	}
+			, inverseJoinColumns={
+			@JoinColumn(name="idServiceType")
+	}
+	)
+	private Set<ServiceType> serviceTypes;
 
 	public SubproductType() {
 	}
@@ -57,28 +66,6 @@ public class SubproductType extends SoftDeleteEntity implements IEntity<Integer>
 		this.name = name;
 	}
 
-	public Set<ServiceTypeSubproductType> getServiceTypeSubproductTypes() {
-		return this.serviceTypeSubproductTypes;
-	}
-
-	public void setServiceTypeSubproductTypes(Set<ServiceTypeSubproductType> serviceTypeSubproductTypes) {
-		this.serviceTypeSubproductTypes = serviceTypeSubproductTypes;
-	}
-
-	public ServiceTypeSubproductType addServiceTypeSubproductType(ServiceTypeSubproductType serviceTypeSubproductType) {
-		getServiceTypeSubproductTypes().add(serviceTypeSubproductType);
-		serviceTypeSubproductType.setSubproductType(this);
-
-		return serviceTypeSubproductType;
-	}
-
-	public ServiceTypeSubproductType removeServiceTypeSubproductType(ServiceTypeSubproductType serviceTypeSubproductType) {
-		getServiceTypeSubproductTypes().remove(serviceTypeSubproductType);
-		serviceTypeSubproductType.setSubproductType(null);
-
-		return serviceTypeSubproductType;
-	}
-
 	public Set<Subproduct> getSubproducts() {
 		return this.subproducts;
 	}
@@ -99,6 +86,38 @@ public class SubproductType extends SoftDeleteEntity implements IEntity<Integer>
 		subproduct.setSubproductType(null);
 
 		return subproduct;
+	}
+
+	public Set<ServiceType> getServiceTypes() {
+		if(serviceTypes == null){
+			serviceTypes = new HashSet<>();
+		}
+		return serviceTypes;
+	}
+
+	public void setServiceTypes(Set<ServiceType> serviceTypes) {
+		this.serviceTypes = serviceTypes;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof SubproductType)) return false;
+
+		SubproductType that = (SubproductType) o;
+
+		if (idSubproductType != that.idSubproductType) return false;
+		if (description != null ? !description.equals(that.description) : that.description != null) return false;
+		return name != null ? name.equals(that.name) : that.name == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = idSubproductType;
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		return result;
 	}
 
 	@Override

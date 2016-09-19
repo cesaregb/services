@@ -6,6 +6,7 @@ import java.util.Set;
 public class OrderTaskDTO {	
 	private int idOrderTask;
 	private String comments;
+	private String taskName;
 	private int time;
 	private Set<AssetTaskOrderDTO> assetTaskOrders;
 	private Set<EmployeeTaskOrderDTO> employeeTaskOrders;
@@ -83,4 +84,11 @@ public class OrderTaskDTO {
 		this.ended = ended;
 	}
 
+	public String getTaskName() {
+		return taskName;
+	}
+
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
+	}
 }

@@ -8,7 +8,8 @@ public class UIOrderDTO {
 	private int idClient;
 	private int idAddressPickup;
 	private int idAddressDeliver;
-	private double price;
+	private double totalServices;
+	private double total;
 	private String comments;
 	private Date pickUpDate;
 	private Date deliveryDate;
@@ -33,12 +34,23 @@ public class UIOrderDTO {
 	public void setIdAddressDeliver(int idAddressDeliver) {
 		this.idAddressDeliver = idAddressDeliver;
 	}
-	public double getPrice() {
-		return price;
+
+	public double getTotalServices() {
+		return totalServices;
 	}
-	public void setPrice(double price) {
-		this.price = price;
+
+	public void setTotalServices(double totalServices) {
+		this.totalServices = totalServices;
 	}
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
 	public String getComments() {
 		return comments;
 	}

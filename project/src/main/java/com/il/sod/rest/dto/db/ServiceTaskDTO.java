@@ -5,6 +5,7 @@ import java.util.Set;
 
 public class ServiceTaskDTO {
 	private int idServiceTask;
+	private String taskName;
 	private String comments;
 	private Set<AssetTaskServiceDTO> assetTaskServices;
 	private Set<EmployeeTaskServiceDTO> employeeTaskServices;
@@ -81,5 +82,11 @@ public class ServiceTaskDTO {
 	}
 	public void setTime(int time) {
 		this.time = time;
+	}
+	public String getTaskName() {
+		return taskName;
+	}
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
 	}
 }

@@ -39,7 +39,8 @@ public class Service implements IEntity<Integer> {
 	private String name;
 
 	private double price;
-	private double composedPrice;
+	private double specsPrice;
+	private double subproductsPrice;
 	private double totalPrice;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -266,12 +267,20 @@ public class Service implements IEntity<Integer> {
 		this.deleted = deleted;
 	}
 
-	public double getComposedPrice() {
-		return composedPrice;
+	public double getSpecsPrice() {
+		return specsPrice;
 	}
 
-	public void setComposedPrice(double composedPrice) {
-		this.composedPrice = composedPrice;
+	public void setSpecsPrice(double specsPrice) {
+		this.specsPrice = specsPrice;
+	}
+
+	public double getSubproductsPrice() {
+		return subproductsPrice;
+	}
+
+	public void setSubproductsPrice(double subproductsPrice) {
+		this.subproductsPrice = subproductsPrice;
 	}
 
 	public double getTotalPrice() {
@@ -283,6 +292,9 @@ public class Service implements IEntity<Integer> {
 	}
 	
 	public Set<ServiceSubproduct> getServiceSubproducts() {
+		if (serviceSubproducts == null){
+			serviceSubproducts = new HashSet<>();
+		}
 		return this.serviceSubproducts;
 	}
 
@@ -290,14 +302,14 @@ public class Service implements IEntity<Integer> {
 		this.serviceSubproducts = serviceSubproducts;
 	}
 
-	public ServiceSubproduct addServiceSubproduct(ServiceSubproduct serviceSubproduct) {
+	public ServiceSubproduct addSubproduct(ServiceSubproduct serviceSubproduct) {
 		getServiceSubproducts().add(serviceSubproduct);
 		serviceSubproduct.setService(this);
 
 		return serviceSubproduct;
 	}
 
-	public ServiceSubproduct removeServiceSubproduct(ServiceSubproduct serviceSubproduct) {
+	public ServiceSubproduct removeSubproduct(ServiceSubproduct serviceSubproduct) {
 		getServiceSubproducts().remove(serviceSubproduct);
 		serviceSubproduct.setService(null);
 

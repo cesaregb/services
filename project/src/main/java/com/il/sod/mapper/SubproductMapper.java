@@ -18,14 +18,17 @@ public enum SubproductMapper {
 
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
 		converterFactory.registerConverter("subproductSetConverter", new SubproductSetConverter());
+		converterFactory.registerConverter("serviceTypeSet2IntConverter", new ServiceTypeSet2IntConverter());
 
 		BaseMapper.MAPPER_FACTORY.classMap(SubproductDTO.class, Subproduct.class)
 			.field("idSubproductType", "subproductType.idSubproductType")
+			.field("typeName", "subproductType.name")
 			.byDefault()
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(SubproductTypeDTO.class, SubproductType.class)
 			.fieldMap("subproducts", "subproducts").converter("subproductSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("serviceTypes", "serviceTypes").converter("serviceTypeSet2IntConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 

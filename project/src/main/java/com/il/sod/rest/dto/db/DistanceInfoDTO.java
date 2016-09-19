@@ -5,6 +5,7 @@ public class DistanceInfoDTO{
 	private int distance;
 	private double price;
 	private int source;
+	private int idStore;
 	
 	public int getIdDistanceInfo() {
 		return idDistanceInfo;
@@ -31,4 +32,11 @@ public class DistanceInfoDTO{
 		this.source = source;
 	}
 
+	public int getIdStore() {
+		return idStore;
+	}
+
+	public void setIdStore(int idStore) {
+		this.idStore = idStore;
+	}
 }

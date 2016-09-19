@@ -1,10 +1,9 @@
 package com.il.sod.db.model.repositories;
 
-import java.util.List;
-
+import com.il.sod.db.model.entities.Menu;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.il.sod.db.model.entities.Menu;
+import java.util.List;
 
 public interface MenuRepository extends JpaRepository<Menu, Integer> {
 	

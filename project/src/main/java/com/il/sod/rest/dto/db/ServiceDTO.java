@@ -8,7 +8,8 @@ public class ServiceDTO {
 	private String description;
 	private String name;
 	private double price;
-	private double composedPrice;
+	private double specsPrice;
+	private double subproductsPrice;
 	private double totalPrice;
 	private int idServiceType;
 	private int idServiceCategory;
@@ -21,6 +22,7 @@ public class ServiceDTO {
 	private int nTasks;
 	private int currentTask;
 	private int deleted;
+	private Set<ServiceSubproductDTO> serviceSubproducts;
 
 	// UI Requirements. 
 //	private Set<SpecDTO> specs;
@@ -109,24 +111,41 @@ public class ServiceDTO {
 	public void setDeleted(int deleted) {
 		this.deleted = deleted;
 	}
-	public double getComposedPrice() {
-		return composedPrice;
-	}
-	public void setComposedPrice(double composedPrice) {
-		this.composedPrice = composedPrice;
-	}
 	public double getTotalPrice() {
 		return totalPrice;
 	}
+
+	public double getSpecsPrice() {
+		return specsPrice;
+	}
+
+	public void setSpecsPrice(double specsPrice) {
+		this.specsPrice = specsPrice;
+	}
+
+	public double getSubproductsPrice() {
+		return subproductsPrice;
+	}
+
+	public void setSubproductsPrice(double subproductsPrice) {
+		this.subproductsPrice = subproductsPrice;
+	}
+
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-
 	public int getIdServiceCategory() {
 		return idServiceCategory;
 	}
-
 	public void setIdServiceCategory(int idServiceCategory) {
 		this.idServiceCategory = idServiceCategory;
+	}
+
+	public Set<ServiceSubproductDTO> getServiceSubproducts() {
+		return serviceSubproducts;
+	}
+
+	public void setServiceSubproducts(Set<ServiceSubproductDTO> serviceSubproducts) {
+		this.serviceSubproducts = serviceSubproducts;
 	}
 }

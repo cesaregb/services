@@ -1,17 +1,15 @@
 package com.il.sod.db.dao.impl;
 
-import java.util.List;
+import com.il.sod.db.model.entities.ServiceCategory;
+import com.il.sod.db.model.entities.Task;
+import com.il.sod.db.model.repositories.TaskRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.il.sod.db.model.entities.ServiceCategory;
-import com.il.sod.db.model.entities.Task;
-import com.il.sod.db.model.repositories.TaskRepository;
+import java.util.List;
 
 @Service
 public class ServiceDAO{
