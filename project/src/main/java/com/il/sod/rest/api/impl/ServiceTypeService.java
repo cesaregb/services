@@ -122,6 +122,18 @@ public class ServiceTypeService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto);
 	}
 
+	@GET
+	@Path("/public")
+	@ApiOperation(value = "Get Service Type list", response = ServiceTypeDTO.class, responseContainer = "List")
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getPublicServiceType() throws SODAPIException {
+		List<ServiceType> listEntities = serviceTypeRepository.findAllPublic();
+		List<ServiceTypeDTO> listResult = listEntities.stream().map(i -> ServiceMapper.INSTANCE.map(i)).collect(Collectors.toList());
+		return castEntityAsResponse(listResult);
+	}
+
 	@POST
 	@Path("/addSubproducts/{idServiceType}")
 	@ApiOperation(value = "Add Subproducts to Service Type", response = ServiceDTO.class)

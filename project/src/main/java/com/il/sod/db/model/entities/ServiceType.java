@@ -46,6 +46,8 @@ public class ServiceType implements IEntity<Integer> {
 	//bi-directional many-to-many association to SubproductType
 	@ManyToMany(mappedBy="serviceTypes", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<SubproductType> subproductTypes;
+
+	private boolean calculator;
 	
 	public ServiceType() {
 	}
@@ -194,6 +196,14 @@ public class ServiceType implements IEntity<Integer> {
 	public void removeSubproductType(SubproductType subproductType) {
 		getServiceTypeTasks().remove(subproductType);
 		subproductType.getServiceTypes().remove(this);
+	}
+
+	public boolean isCalculator() {
+		return calculator;
+	}
+
+	public void setCalculator(boolean calculator) {
+		this.calculator = calculator;
 	}
 
 	@Override
