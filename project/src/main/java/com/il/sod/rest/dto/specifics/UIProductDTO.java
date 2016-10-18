@@ -1,16 +1,16 @@
 package com.il.sod.rest.dto.specifics;
 
-public class UISubproductDTO {
-	private int idSubproduct;
+public class UIProductDTO {
+	private int idProduct;
 	private int quantity;
     private float price;
 
-	public int getIdSubproduct() {
-		return idSubproduct;
+	public int getIdProduct() {
+		return idProduct;
 	}
 
-	public void setIdSubproduct(int idSubproduct) {
-		this.idSubproduct = idSubproduct;
+	public void setIdProduct(int idProduct) {
+		this.idProduct = idProduct;
 	}
 
 	public int getQuantity() {

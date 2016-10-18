@@ -24,7 +24,7 @@ public class SpecsValue implements IEntity<Integer> {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idSpecsValues;
 
-	private int idProductType;
+	private int idSupplyType;
 
 	private int type;
 
@@ -89,12 +89,12 @@ public class SpecsValue implements IEntity<Integer> {
 		return this;
 	}
 
-	public int getIdProductType() {
-		return idProductType;
+	public int getIdSupplyType() {
+		return idSupplyType;
 	}
 
-	public void setIdProductType(int idProductType) {
-		this.idProductType = idProductType;
+	public void setIdSupplyType(int idSupplyType) {
+		this.idSupplyType = idSupplyType;
 	}
 
 	public double getServiceIncrement() {

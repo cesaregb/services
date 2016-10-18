@@ -13760,17 +13760,17 @@ module.exports = new Type('tag:yaml.org,2002:timestamp', {
     // of the syntax is to be deferred arbitrarily long until the end of the parentheses pair (plus a lookahead)
     // or the first comma. This situation also defers the determination of all the expressions nested in the pair.
     //
-    // There are three productions that can be parsed in a parentheses pair that needs to be determined
+    // There are three supplyions that can be parsed in a parentheses pair that needs to be determined
     // after the outermost pair is closed. They are:
     //
     //   1. AssignmentExpression
     //   2. BindingElements
     //   3. AssignmentTargets
     //
-    // In order to avoid exponential backtracking, we use two flags to denote if the production can be
+    // In order to avoid exponential backtracking, we use two flags to denote if the supplyion can be
     // binding element or assignment target.
     //
-    // The three productions have the relationship:
+    // The three supplyions have the relationship:
     //
     //   BindingElements ⊆ AssignmentTargets ⊆ AssignmentExpression
     //
@@ -13779,11 +13779,11 @@ module.exports = new Type('tag:yaml.org,2002:timestamp', {
     // first usage of CoverInitializedName and report it when we reached the end of the parentheses pair.
     //
     // isolateCoverGrammar function runs the given parser function with a new cover grammar context, and it does not
-    // effect the current flags. This means the production the parser parses is only used as an expression. Therefore
+    // effect the current flags. This means the supplyion the parser parses is only used as an expression. Therefore
     // the CoverInitializedName check is conducted.
     //
     // inheritCoverGrammar function runs the given parse function with a new cover grammar context, and it propagates
-    // the flags outside of the parser. This means the production the parser parses is used as a part of a potential
+    // the flags outside of the parser. This means the supplyion the parser parses is used as a part of a potential
     // pattern. The CoverInitializedName check is deferred.
     function isolateCoverGrammar(parser) {
         var oldIsBindingElement = isBindingElement,

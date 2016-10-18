@@ -21,12 +21,26 @@ CREATE SCHEMA IF NOT EXISTS `sod_db` DEFAULT CHARACTER SET utf8 ;
 USE `sod_db` ;
 
 -- -----------------------------------------------------
+-- Table `sod_db`.`ClientType`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`ClientType` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`ClientType` (
+  `idClientType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `description` VARCHAR(45) NULL,
+  PRIMARY KEY (`idClientType`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `sod_db`.`Clients`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `sod_db`.`Clients` ;
 
 CREATE TABLE IF NOT EXISTS `sod_db`.`Clients` (
   `idClient` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idClientType` INT UNSIGNED NOT NULL,
   `email` VARCHAR(100) NULL,
   `password` CHAR(128) NULL,
   `name` VARCHAR(250) NULL,
@@ -38,7 +52,13 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Clients` (
   `rfc` VARCHAR(45) NULL,
   `razonSocial` VARCHAR(250) NULL,
   `deleted` INT NULL DEFAULT 0,
-  PRIMARY KEY (`idClient`))
+  PRIMARY KEY (`idClient`),
+  INDEX `fk_Clients_ClientCategory1_idx` (`idClientType` ASC),
+  CONSTRAINT `fk_Clients_ClientCategory1`
+    FOREIGN KEY (`idClientType`)
+    REFERENCES `sod_db`.`ClientType` (`idClientType`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -191,15 +211,15 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`ProductType`
+-- Table `sod_db`.`SupplyType`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`ProductType` ;
+DROP TABLE IF EXISTS `sod_db`.`SupplyType` ;
 
-CREATE TABLE IF NOT EXISTS `sod_db`.`ProductType` (
-  `idProductType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `sod_db`.`SupplyType` (
+  `idSupplyType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(255) NULL,
-  PRIMARY KEY (`idProductType`))
+  PRIMARY KEY (`idSupplyType`))
 ENGINE = InnoDB;
 
 
@@ -271,23 +291,23 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`Product`
+-- Table `sod_db`.`Supply`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`Product` ;
+DROP TABLE IF EXISTS `sod_db`.`Supply` ;
 
-CREATE TABLE IF NOT EXISTS `sod_db`.`Product` (
-  `idProduct` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `idProductType` INT UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `sod_db`.`Supply` (
+  `idSupply` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idSupplyType` INT UNSIGNED NOT NULL,
   `status` INT NOT NULL DEFAULT 0,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(250) NULL,
   `price` DOUBLE NULL DEFAULT 0,
   `serviceIncrement` DOUBLE NULL DEFAULT 0,
-  PRIMARY KEY (`idProduct`),
-  INDEX `fk_Product_ProductType1_idx` (`idProductType` ASC),
+  PRIMARY KEY (`idSupply`),
+  INDEX `fk_Product_ProductType1_idx` (`idSupplyType` ASC),
   CONSTRAINT `fk_Product_ProductType1`
-    FOREIGN KEY (`idProductType`)
-    REFERENCES `sod_db`.`ProductType` (`idProductType`)
+    FOREIGN KEY (`idSupplyType`)
+    REFERENCES `sod_db`.`SupplyType` (`idSupplyType`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -579,7 +599,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Service` (
   `deleted` INT NULL DEFAULT 0,
   `price` DOUBLE NULL DEFAULT 0,
   `specsPrice` DOUBLE NULL DEFAULT 0,
-  `subproductsPrice` DOUBLE NULL DEFAULT 0,
+  `productsPrice` DOUBLE NULL DEFAULT 0,
   `totalPrice` DOUBLE NULL DEFAULT 0,
   PRIMARY KEY (`idService`),
   INDEX `fk_Service_ServiceType1_idx` (`idServiceType` ASC),
@@ -761,7 +781,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`SpecsValues` (
   `idSpecs` INT UNSIGNED NOT NULL,
   `type` INT NULL DEFAULT 1 COMMENT '1 = value\n2 = product',
   `value` VARCHAR(45) NULL,
-  `idProductType` INT NULL DEFAULT 0,
+  `idSupplyType` INT NULL DEFAULT 0,
   `serviceIncrement` DOUBLE NULL DEFAULT 0,
   `prefered` INT NULL DEFAULT 0,
   `specPrice` DOUBLE NULL DEFAULT 0,
@@ -932,101 +952,101 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`SubproductType`
+-- Table `sod_db`.`ProductType`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`SubproductType` ;
+DROP TABLE IF EXISTS `sod_db`.`ProductType` ;
 
-CREATE TABLE IF NOT EXISTS `sod_db`.`SubproductType` (
-  `idSubproductType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `sod_db`.`ProductType` (
+  `idProductType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `description` VARCHAR(250) NULL,
   `deleted` INT NOT NULL DEFAULT 0,
-  PRIMARY KEY (`idSubproductType`))
+  PRIMARY KEY (`idProductType`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`Subproduct`
+-- Table `sod_db`.`Product`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`Subproduct` ;
+DROP TABLE IF EXISTS `sod_db`.`Product` ;
 
-CREATE TABLE IF NOT EXISTS `sod_db`.`Subproduct` (
-  `idSubproduct` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `idSubproductType` INT UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `sod_db`.`Product` (
+  `idProduct` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idProductType` INT UNSIGNED NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `price` DOUBLE NOT NULL,
   `maxQty` INT NOT NULL DEFAULT 0,
   `deleted` INT NOT NULL DEFAULT 0,
-  PRIMARY KEY (`idSubproduct`),
-  INDEX `fk_Subproduct_SubproductType1_idx` (`idSubproductType` ASC),
+  PRIMARY KEY (`idProduct`),
+  INDEX `fk_Subproduct_SubproductType1_idx` (`idProductType` ASC),
   CONSTRAINT `fk_Subproduct_SubproductType1`
-    FOREIGN KEY (`idSubproductType`)
-    REFERENCES `sod_db`.`SubproductType` (`idSubproductType`)
+    FOREIGN KEY (`idProductType`)
+    REFERENCES `sod_db`.`ProductType` (`idProductType`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`ServiceSubproducts`
+-- Table `sod_db`.`ServiceProducts`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`ServiceSubproducts` ;
+DROP TABLE IF EXISTS `sod_db`.`ServiceProducts` ;
 
-CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceSubproducts` (
-  `idServiceSubproducts` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceProducts` (
+  `idServiceProducts` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idService` INT UNSIGNED NOT NULL,
-  `idSubproduct` INT UNSIGNED NOT NULL,
+  `idProduct` INT UNSIGNED NOT NULL,
   `quantity` INT NULL DEFAULT 0,
   `price` DOUBLE NULL DEFAULT 0,
   INDEX `fk_ServiceSubproducts_Service1_idx` (`idService` ASC),
-  INDEX `fk_ServiceSubproducts_Subproduct1_idx` (`idSubproduct` ASC),
-  PRIMARY KEY (`idServiceSubproducts`),
+  INDEX `fk_ServiceSubproducts_Subproduct1_idx` (`idProduct` ASC),
+  PRIMARY KEY (`idServiceProducts`),
   CONSTRAINT `fk_ServiceSubproducts_Service1`
     FOREIGN KEY (`idService`)
     REFERENCES `sod_db`.`Service` (`idService`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ServiceSubproducts_Subproduct1`
-    FOREIGN KEY (`idSubproduct`)
-    REFERENCES `sod_db`.`Subproduct` (`idSubproduct`)
+    FOREIGN KEY (`idProduct`)
+    REFERENCES `sod_db`.`Product` (`idProduct`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`ServiceTypeSubproductType`
+-- Table `sod_db`.`ServiceTypeProductType`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`ServiceTypeSubproductType` ;
+DROP TABLE IF EXISTS `sod_db`.`ServiceTypeProductType` ;
 
-CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceTypeSubproductType` (
+CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceTypeProductType` (
   `idServiceType` INT UNSIGNED NOT NULL,
-  `idSubproductType` INT UNSIGNED NOT NULL,
+  `idProductType` INT UNSIGNED NOT NULL,
   INDEX `fk_ServiceTypeSubproductType_ServiceType1_idx` (`idServiceType` ASC),
-  INDEX `fk_ServiceTypeSubproductType_SubproductType1_idx` (`idSubproductType` ASC),
+  INDEX `fk_ServiceTypeSubproductType_SubproductType1_idx` (`idProductType` ASC),
   CONSTRAINT `fk_ServiceTypeSubproductType_ServiceType1`
     FOREIGN KEY (`idServiceType`)
     REFERENCES `sod_db`.`ServiceType` (`idServiceType`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ServiceTypeSubproductType_SubproductType1`
-    FOREIGN KEY (`idSubproductType`)
-    REFERENCES `sod_db`.`SubproductType` (`idSubproductType`)
+    FOREIGN KEY (`idProductType`)
+    REFERENCES `sod_db`.`ProductType` (`idProductType`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`BagSize`
+-- Table `sod_db`.`BagType`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`BagSize` ;
+DROP TABLE IF EXISTS `sod_db`.`BagType` ;
 
-CREATE TABLE IF NOT EXISTS `sod_db`.`BagSize` (
-  `idBagSize` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `sod_db`.`BagType` (
+  `idBagType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `size` INT NULL,
-  PRIMARY KEY (`idBagSize`))
+  PRIMARY KEY (`idBagType`))
 ENGINE = InnoDB;
 
 
@@ -1039,19 +1059,106 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`ClientBags` (
   `idClientBags` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `number` VARCHAR(45) NULL,
   `inOrder` TINYINT(1) NULL,
-  `idBagSize` INT UNSIGNED NOT NULL,
+  `idBagType` INT UNSIGNED NOT NULL,
   `idClient` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`idClientBags`),
-  INDEX `fk_ClientBags_BagSize1_idx` (`idBagSize` ASC),
+  INDEX `fk_ClientBags_BagSize1_idx` (`idBagType` ASC),
   INDEX `fk_ClientBags_Clients1_idx` (`idClient` ASC),
   CONSTRAINT `fk_ClientBags_BagSize1`
-    FOREIGN KEY (`idBagSize`)
-    REFERENCES `sod_db`.`BagSize` (`idBagSize`)
+    FOREIGN KEY (`idBagType`)
+    REFERENCES `sod_db`.`BagType` (`idBagType`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ClientBags_Clients1`
     FOREIGN KEY (`idClient`)
     REFERENCES `sod_db`.`Clients` (`idClient`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sod_db`.`PromotionType`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`PromotionType` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`PromotionType` (
+  `idPromotionType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  `description` VARCHAR(255) NULL,
+  PRIMARY KEY (`idPromotionType`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sod_db`.`DiscountType`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`DiscountType` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`DiscountType` (
+  `idDiscountType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `description` VARCHAR(45) NULL,
+  PRIMARY KEY (`idDiscountType`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sod_db`.`Promotion`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`Promotion` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`Promotion` (
+  `idPromotion` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idPromotionType` INT UNSIGNED NOT NULL,
+  `idDiscountType` INT UNSIGNED NOT NULL,
+  `name` VARCHAR(60) NULL,
+  `description` VARCHAR(45) NULL,
+  `startDate` DATETIME NULL,
+  `endDate` DATETIME NULL,
+  `maxUses` INT NULL,
+  `amount` DOUBLE NULL DEFAULT 0,
+  `promoCode` VARCHAR(45) NULL,
+  `orderLimit` INT NULL,
+  `dateLimit` DATETIME NULL,
+  `minimumAmount` INT NULL,
+  PRIMARY KEY (`idPromotion`),
+  INDEX `fk_Promotion_PromotionType1_idx` (`idPromotionType` ASC),
+  INDEX `fk_Promotion_DiscountType1_idx` (`idDiscountType` ASC),
+  CONSTRAINT `fk_Promotion_PromotionType1`
+    FOREIGN KEY (`idPromotionType`)
+    REFERENCES `sod_db`.`PromotionType` (`idPromotionType`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Promotion_DiscountType1`
+    FOREIGN KEY (`idDiscountType`)
+    REFERENCES `sod_db`.`DiscountType` (`idDiscountType`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sod_db`.`OrderPromotion`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sod_db`.`OrderPromotion` ;
+
+CREATE TABLE IF NOT EXISTS `sod_db`.`OrderPromotion` (
+  `idOrderPromotion` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idOrder` INT UNSIGNED NOT NULL,
+  `idPromotion` INT UNSIGNED NOT NULL,
+  `cantidad` DOUBLE NOT NULL DEFAULT 0,
+  INDEX `fk_OrderPromotion_Orders1_idx` (`idOrder` ASC),
+  PRIMARY KEY (`idOrderPromotion`),
+  INDEX `fk_OrderPromotion_Promotion1_idx` (`idPromotion` ASC),
+  CONSTRAINT `fk_OrderPromotion_Orders1`
+    FOREIGN KEY (`idOrder`)
+    REFERENCES `sod_db`.`Orders` (`idOrder`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_OrderPromotion_Promotion1`
+    FOREIGN KEY (`idPromotion`)
+    REFERENCES `sod_db`.`Promotion` (`idPromotion`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -1153,11 +1260,24 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
+-- Data for table `sod_db`.`ClientType`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`ClientType` (`idClientType`, `name`, `description`) VALUES (1, 'Normal', 'Clientes normal');
+INSERT INTO `sod_db`.`ClientType` (`idClientType`, `name`, `description`) VALUES (2, 'Mayoreo', 'Clientes de Mayoreo');
+INSERT INTO `sod_db`.`ClientType` (`idClientType`, `name`, `description`) VALUES (3, 'Cliente Regular 1', 'Clientes Regular 1');
+INSERT INTO `sod_db`.`ClientType` (`idClientType`, `name`, `description`) VALUES (4, 'Cliente Regular 2', 'Clientes Regular 2');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `sod_db`.`Clients`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Clients` (`idClient`, `email`, `password`, `name`, `lastName`, `twitter`, `created`, `updated`, `loginID`, `rfc`, `razonSocial`, `deleted`) VALUES (1, 'email@domain.com', 'notused', 'Mirna', 'Yaneli', 'twitter', NULL, NULL, '123', NULL, NULL, 0);
+INSERT INTO `sod_db`.`Clients` (`idClient`, `idClientType`, `email`, `password`, `name`, `lastName`, `twitter`, `created`, `updated`, `loginID`, `rfc`, `razonSocial`, `deleted`) VALUES (1, 1, 'email@domain.com', 'notused', 'Mirna', 'Yaneli', 'twitter', NULL, NULL, '123', NULL, NULL, 0);
 
 COMMIT;
 
@@ -1220,13 +1340,13 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `sod_db`.`ProductType`
+-- Data for table `sod_db`.`SupplyType`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`) VALUES (1, 'detergente', NULL);
-INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`) VALUES (2, 'suavisante', NULL);
-INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`) VALUES (3, 'blanqueador', NULL);
+INSERT INTO `sod_db`.`SupplyType` (`idSupplyType`, `name`, `description`) VALUES (1, 'detergente', NULL);
+INSERT INTO `sod_db`.`SupplyType` (`idSupplyType`, `name`, `description`) VALUES (2, 'suavisante', NULL);
+INSERT INTO `sod_db`.`SupplyType` (`idSupplyType`, `name`, `description`) VALUES (3, 'blanqueador', NULL);
 
 COMMIT;
 
@@ -1269,12 +1389,12 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `sod_db`.`Product`
+-- Data for table `sod_db`.`Supply`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Product` (`idProduct`, `idProductType`, `status`, `name`, `description`, `price`, `serviceIncrement`) VALUES (1, 1, 1, 'Ariel', NULL, 100, 0);
-INSERT INTO `sod_db`.`Product` (`idProduct`, `idProductType`, `status`, `name`, `description`, `price`, `serviceIncrement`) VALUES (2, 1, 1, 'Salvo', NULL, 120, 15);
+INSERT INTO `sod_db`.`Supply` (`idSupply`, `idSupplyType`, `status`, `name`, `description`, `price`, `serviceIncrement`) VALUES (1, 1, 1, 'Ariel', NULL, 100, 0);
+INSERT INTO `sod_db`.`Supply` (`idSupply`, `idSupplyType`, `status`, `name`, `description`, `price`, `serviceIncrement`) VALUES (2, 1, 1, 'Salvo', NULL, 120, 15);
 
 COMMIT;
 
@@ -1378,9 +1498,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`, `specPrice`, `costType`) VALUES (1, 1, 1, 'Tersus Bolsa', 0, 0, 1, 60, 1);
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`, `specPrice`, `costType`) VALUES (2, 1, 1, 'Kg', 0, 0, 0, 15, 1);
-INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idProductType`, `serviceIncrement`, `prefered`, `specPrice`, `costType`) VALUES (3, 2, 2, NULL, 1, 0, 0, 0, 0);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idSupplyType`, `serviceIncrement`, `prefered`, `specPrice`, `costType`) VALUES (1, 1, 1, 'Tersus Bolsa', 0, 0, 1, 60, 1);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idSupplyType`, `serviceIncrement`, `prefered`, `specPrice`, `costType`) VALUES (2, 1, 1, 'Kg', 0, 0, 0, 15, 1);
+INSERT INTO `sod_db`.`SpecsValues` (`idSpecsValues`, `idSpecs`, `type`, `value`, `idSupplyType`, `serviceIncrement`, `prefered`, `specPrice`, `costType`) VALUES (3, 2, 2, NULL, 1, 0, 0, 0, 0);
 
 COMMIT;
 
@@ -1435,11 +1555,11 @@ INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) 
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (3, 'tasks.taskMenu', 'Tareas', 1, 5);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (4, 'specs.specMenu', 'Specs', 1, 6);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (5, 'employees.employeeMenu', 'Empleados', 1, 4);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (6, 'assets.assetMenu', 'Activos', 1, 3);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (7, 'products.productMenu', 'Productos', 1, 7);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (6, 'assets.assetMenu', 'Activos', 0, 3);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (7, 'supplies.supplyMenu', 'Consumibles', 1, 7);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (8, 'services.serviceMenu', 'Servicios', 1, 8);
 INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (9, 'orders.orderMenu', 'Orders', 2, 9);
-INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (10, 'subproducts.subproductMenu', 'Subproductos', 1, 10);
+INSERT INTO `sod_db`.`Menu` (`idMenu`, `state`, `name`, `accessLevel`, `order`) VALUES (10, 'products.productMenu', 'Productos', 1, 10);
 
 COMMIT;
 
@@ -1468,33 +1588,59 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `sod_db`.`SubproductType`
+-- Data for table `sod_db`.`ProductType`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`SubproductType` (`idSubproductType`, `name`, `description`, `deleted`) VALUES (1, 'Mayoreo Spa 1', 'mayoreo spa 1', 0);
+INSERT INTO `sod_db`.`ProductType` (`idProductType`, `name`, `description`, `deleted`) VALUES (1, 'Mayoreo Spa 1', 'mayoreo spa 1', 0);
 
 COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `sod_db`.`Subproduct`
+-- Data for table `sod_db`.`Product`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`Subproduct` (`idSubproduct`, `idSubproductType`, `name`, `price`, `maxQty`, `deleted`) VALUES (1, 1, 'Sabanas', 0.20, 200, 0);
-INSERT INTO `sod_db`.`Subproduct` (`idSubproduct`, `idSubproductType`, `name`, `price`, `maxQty`, `deleted`) VALUES (2, 1, 'Toalla Chica', 0.20, 300, 0);
+INSERT INTO `sod_db`.`Product` (`idProduct`, `idProductType`, `name`, `price`, `maxQty`, `deleted`) VALUES (1, 1, 'Sabanas', 0.20, 200, 0);
+INSERT INTO `sod_db`.`Product` (`idProduct`, `idProductType`, `name`, `price`, `maxQty`, `deleted`) VALUES (2, 1, 'Toalla Chica', 0.20, 300, 0);
 
 COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `sod_db`.`BagSize`
+-- Data for table `sod_db`.`BagType`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`BagSize` (`idBagSize`, `name`, `size`) VALUES (1, 'Chica', 5);
-INSERT INTO `sod_db`.`BagSize` (`idBagSize`, `name`, `size`) VALUES (2, 'Grande', 10);
+INSERT INTO `sod_db`.`BagType` (`idBagType`, `name`, `size`) VALUES (1, 'Chica', 5);
+INSERT INTO `sod_db`.`BagType` (`idBagType`, `name`, `size`) VALUES (2, 'Grande', 10);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`PromotionType`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`) VALUES (1, 'Periodo de tiempo', 'Descuentos entre fechas');
+INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`) VALUES (2, 'Productos o Servicios', 'Al agregar uno o alguna combinacio de producto o servicio');
+INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`) VALUES (3, 'Cantidad', 'Al llegar a una cantidad en una orden');
+INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`) VALUES (4, 'Cantidad acumulativa en periodo', 'Al llegar a una cantidad acumulativa por periodo');
+INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`) VALUES (5, 'Tipo de Client', 'Por tipo de clientes');
+INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`) VALUES (6, 'Numero de ordenes por cliente', 'Al llegar a una cantidad de ordenes por cliente');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `sod_db`.`DiscountType`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `sod_db`;
+INSERT INTO `sod_db`.`DiscountType` (`idDiscountType`, `name`, `description`) VALUES (1, 'Porcentage', NULL);
+INSERT INTO `sod_db`.`DiscountType` (`idDiscountType`, `name`, `description`) VALUES (2, 'Cantidad', NULL);
 
 COMMIT;
 

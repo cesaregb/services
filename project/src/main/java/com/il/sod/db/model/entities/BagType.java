@@ -5,35 +5,35 @@ import java.util.Set;
 
 
 /**
- * The persistent class for the BagSize database table.
+ * The persistent class for the BagType database table.
  * 
  */
 @Entity
-@NamedQuery(name="BagSize.findAll", query="SELECT b FROM BagSize b")
-public class BagSize implements IEntity<Integer> {
+@NamedQuery(name="BagSize.findAll", query="SELECT b FROM BagType b")
+public class BagType implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idBagSize;
+	private int idBagType;
 
 	private String name;
 
 	private int size;
 
 	//bi-directional many-to-one association to ClientBag
-	@OneToMany(mappedBy="bagSize")
+	@OneToMany(mappedBy="bagType")
 	private Set<ClientBag> clientBags;
 
-	public BagSize() {
+	public BagType() {
 	}
 
-	public int getIdBagSize() {
-		return this.idBagSize;
+	public int getIdBagType() {
+		return idBagType;
 	}
 
-	public void setIdBagSize(int idBagSize) {
-		this.idBagSize = idBagSize;
+	public void setIdBagType(int idBagType) {
+		this.idBagType = idBagType;
 	}
 
 	public String getName() {
@@ -62,26 +62,26 @@ public class BagSize implements IEntity<Integer> {
 
 	public ClientBag addClientBag(ClientBag clientBag) {
 		getClientBags().add(clientBag);
-		clientBag.setBagSize(this);
+		clientBag.setBagType(this);
 
 		return clientBag;
 	}
 
 	public ClientBag removeClientBag(ClientBag clientBag) {
 		getClientBags().remove(clientBag);
-		clientBag.setBagSize(null);
+		clientBag.setBagType(null);
 
 		return clientBag;
 	}
 
 	@Override
 	public Integer getId() {
-		return this.getIdBagSize();
+		return this.idBagType;
 	}
 
 	@Override
-	public BagSize setId(Integer id) {
-		this.idBagSize = id;
+	public BagType setId(Integer id) {
+		this.idBagType = id;
 		return this;
 	}
 }

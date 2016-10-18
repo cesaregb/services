@@ -23,9 +23,9 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/client-bag")
+@Path("/clients/client-bag")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/client-bag", tags = { "clients" })
+@Api(value = "/clients/client-bag", tags = { "clients" })
 public class ClientBagService extends AbstractServiceMutations {
 
 	@Autowired

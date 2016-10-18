@@ -1,17 +1,17 @@
 package com.il.sod.rest.dto.db;
 
-public class BagSizeDTO{
+public class BagTypeDTO {
 
-	private int idBagSize;
+	private int idBagtype;
 	private String name;
 	private int size;
 
-	public int getIdBagSize() {
-		return idBagSize;
+	public int getIdBagtype() {
+		return idBagtype;
 	}
 
-	public void setIdBagSize(int idBagSize) {
-		this.idBagSize = idBagSize;
+	public void setIdBagtype(int idBagtype) {
+		this.idBagtype = idBagtype;
 	}
 
 	public String getName() {

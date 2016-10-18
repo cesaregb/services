@@ -1,23 +1,5 @@
 package com.il.sod.rest.api.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.il.sod.db.dao.IClientPaymentInfoDAO;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.entities.ClientPaymentInfo;
@@ -28,17 +10,27 @@ import com.il.sod.mapper.PaymentMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ClientPaymentInfoDTO;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/client-payment-info")
+@Path("/clients/client-payment-info")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/client-payment-info", tags = { "payment" })
+@Api(value = "/clients/client-payment-info", tags = { "payment" })
 public class ClientPaymentInfoService extends AbstractServiceMutations {
 
 	@Autowired
@@ -73,6 +65,10 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateClientPaymentInfo(ClientPaymentInfoDTO dto) throws SODAPIException {
+		return updateEntity(dto);
+	}
+
+	private Response updateEntity(ClientPaymentInfoDTO dto) throws SODAPIException {
 		try {
 			ClientPaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
 			this.updateEntity(clientPaymentInfoRepository, entity);
@@ -90,14 +86,7 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateClientPaymentInfoById(@PathParam("id") String id, ClientPaymentInfoDTO dto) throws SODAPIException {
-		try {
-			ClientPaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
-			this.updateEntity(clientPaymentInfoRepository, entity);
-			dto = PaymentMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		return updateEntity(dto);
 	}
 
 	@DELETE
@@ -140,17 +129,24 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response getClientPaymentInfoList() throws SODAPIException {
-		List<ClientPaymentInfo> entityList = this.getEntityList(clientPaymentInfoRepository);
-		List<ClientPaymentInfoDTO> list = entityList.stream().map((i) -> {
-			ClientPaymentInfoDTO dto = PaymentMapper.INSTANCE.map(i);
-			return dto;
-		}).collect(Collectors.toList());
+	public Response getClientPaymentInfoList(@QueryParam("idClient") String idClient) throws SODAPIException {
+		List<ClientPaymentInfo> entityList = null;
+		if (!StringUtils.isEmpty(idClient)){
+			if (!NumberUtils.isDigits(idClient)){
+				throw new SODAPIException(Response.Status.BAD_REQUEST, "Not a valid id " + idClient);
+			}
+			entityList = clientPaymentInfoDAO.findByIdClient(Integer.valueOf(idClient));
+		}else{
+			entityList = this.getEntityList(clientPaymentInfoRepository);
+		}
+
+		List<ClientPaymentInfoDTO> list = entityList.stream().map(PaymentMapper.INSTANCE::map).collect(Collectors.toList());
 		return castEntityAsResponse(list);
+
 	}
 	
 	@GET
-	@Path("/{idClientPaymentInfo}")
+	@Path("/byId/{idClientPaymentInfo}")
 	@ApiOperation(value = "Get Payment Info list", response = ClientPaymentInfoDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -164,22 +160,4 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 		return castEntityAsResponse(piDto);
 	}
 	
-	@GET
-	@Path("/client/{idClient}")
-	@ApiOperation(value = "Get Payment Info list", response = ClientPaymentInfoDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response getPaymentInfoByClientId(@PathParam("idClient") String idClient) throws SODAPIException {
-		if (!NumberUtils.isDigits(idClient)){
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Not a valid id " + idClient);
-		}
-		List<ClientPaymentInfo> entityList = clientPaymentInfoDAO.findByIdClient(Integer.valueOf(idClient));
-		List<ClientPaymentInfoDTO> list = entityList.stream().map((i) -> {
-			ClientPaymentInfoDTO dto = PaymentMapper.INSTANCE.map(i);
-			return dto;
-		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
-	}
-
 }

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import com.il.sod.db.model.entities.ServiceSpec;
 import com.il.sod.db.model.entities.Spec;
 import com.il.sod.db.model.entities.SpecsValue;
-import com.il.sod.db.model.repositories.ProductTypeRepository;
+import com.il.sod.db.model.repositories.SupplyTypeRepository;
 import com.il.sod.rest.dto.db.ServiceSpecDTO;
 import com.il.sod.rest.dto.db.SpecDTO;
 import com.il.sod.rest.dto.db.SpecsValueDTO;
@@ -23,7 +23,7 @@ public enum SpecsMapper {
 	INSTANCE;
 	private final MapperFacade mapperFacade;
 	
-	private ProductTypeRepository productTypeRepository;
+	private SupplyTypeRepository supplyTypeRepository;
 
 	private SpecsMapper() {
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
@@ -47,10 +47,10 @@ public enum SpecsMapper {
 				
 				@Override
 				public void mapBtoA(SpecsValue entity, SpecsValueDTO dto, MappingContext context) {
-					if (productTypeRepository != null){
+					if (supplyTypeRepository != null){
 						if (entity.getType() == 2){
-							String productName = productTypeRepository.findOne(entity.getIdProductType()).getName();
-							dto.setProductName(productName);
+							String supplyName = supplyTypeRepository.findOne(entity.getIdSupplyType()).getName();
+							dto.setSupplyName(supplyName);
 						}
 					}
 				}
@@ -84,8 +84,8 @@ public enum SpecsMapper {
 		return this.mapperFacade.map(entity, ServiceSpecDTO.class);
 	}
 
-	public void setProductTypeRepository(ProductTypeRepository productTypeRepository) {
-		this.productTypeRepository = productTypeRepository;
+	public void setSupplyTypeRepository(SupplyTypeRepository supplyTypeRepository) {
+		this.supplyTypeRepository = supplyTypeRepository;
 	}	
 }
 

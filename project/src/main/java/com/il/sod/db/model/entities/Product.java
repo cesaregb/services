@@ -1,36 +1,31 @@
 package com.il.sod.db.model.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
+import java.util.Set;
 
 
 /**
  * The persistent class for the Product database table.
- *
+ * 
  */
 @Entity
-@NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
-public class Product implements IEntity<Integer> {
+@NamedQuery(name="Product.findAll", query="SELECT s FROM Product s")
+public class Product extends SoftDeleteEntity implements IEntity<Integer>{
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idProduct;
 
-	private String description;
+	private int maxQty;
 
 	private String name;
 
 	private double price;
-	
-	private double serviceIncrement;
 
-	private int status;
+	//bi-directional many-to-one association to ServiceProduct
+	@OneToMany(mappedBy="product", fetch=FetchType.EAGER)
+	private Set<ServiceProduct> serviceProducts;
 
 	//bi-directional many-to-one association to ProductType
 	@ManyToOne
@@ -48,12 +43,12 @@ public class Product implements IEntity<Integer> {
 		this.idProduct = idProduct;
 	}
 
-	public String getDescription() {
-		return this.description;
+	public int getMaxQty() {
+		return this.maxQty;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setMaxQty(int maxQty) {
+		this.maxQty = maxQty;
 	}
 
 	public String getName() {
@@ -64,12 +59,34 @@ public class Product implements IEntity<Integer> {
 		this.name = name;
 	}
 
-	public int getStatus() {
-		return this.status;
+	public double getPrice() {
+		return this.price;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public Set<ServiceProduct> getServiceProducts() {
+		return this.serviceProducts;
+	}
+
+	public void setServiceProducts(Set<ServiceProduct> serviceProducts) {
+		this.serviceProducts = serviceProducts;
+	}
+
+	public ServiceProduct addServiceProduct(ServiceProduct serviceProduct) {
+		getServiceProducts().add(serviceProduct);
+		serviceProduct.setProduct(this);
+
+		return serviceProduct;
+	}
+
+	public ServiceProduct removeServiceProduct(ServiceProduct serviceProduct) {
+		getServiceProducts().remove(serviceProduct);
+		serviceProduct.setProduct(null);
+
+		return serviceProduct;
 	}
 
 	public ProductType getProductType() {
@@ -79,6 +96,7 @@ public class Product implements IEntity<Integer> {
 	public void setProductType(ProductType productType) {
 		this.productType = productType;
 	}
+
 	@Override
 	public Integer getId() {
 		return this.idProduct;
@@ -90,19 +108,4 @@ public class Product implements IEntity<Integer> {
 		return this;
 	}
 
-	public double getServiceIncrement() {
-		return serviceIncrement;
-	}
-
-	public void setServiceIncrement(double serviceIncrement) {
-		this.serviceIncrement = serviceIncrement;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
 }

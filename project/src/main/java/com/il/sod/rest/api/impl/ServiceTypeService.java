@@ -2,14 +2,14 @@ package com.il.sod.rest.api.impl;
 
 import com.il.sod.db.model.entities.ServiceType;
 import com.il.sod.db.model.repositories.ServiceTypeRepository;
-import com.il.sod.db.model.repositories.SubproductTypeRepository;
+import com.il.sod.db.model.repositories.ProductTypeRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ServiceMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ServiceDTO;
 import com.il.sod.rest.dto.db.ServiceTypeDTO;
-import com.il.sod.rest.dto.db.SubproductTypeDTO;
+import com.il.sod.rest.dto.db.ProductTypeDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -40,7 +40,7 @@ public class ServiceTypeService extends AbstractServiceMutations {
 	ServiceTypeRepository serviceTypeRepository;
 
 	@Autowired
-	SubproductTypeRepository subproductTypeRepository;
+	ProductTypeRepository productTypeRepository;
 
 	@POST
 	@ApiOperation(value = "Create Service Type", response = ServiceTypeDTO.class)
@@ -123,7 +123,7 @@ public class ServiceTypeService extends AbstractServiceMutations {
 	}
 
 	@GET
-	@Path("/public")
+	@Path("/byCalculator")
 	@ApiOperation(value = "Get Service Type list", response = ServiceTypeDTO.class, responseContainer = "List")
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -135,18 +135,18 @@ public class ServiceTypeService extends AbstractServiceMutations {
 	}
 
 	@POST
-	@Path("/addSubproducts/{idServiceType}")
-	@ApiOperation(value = "Add Subproducts to Service Type", response = ServiceDTO.class)
+	@Path("/addProducts/{idServiceType}")
+	@ApiOperation(value = "Add Products to Service Type", response = ServiceDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response saveService(@PathParam("idServiceType") Integer idServiceType,  List<SubproductTypeDTO> listDto) throws SODAPIException {
+	public Response saveService(@PathParam("idServiceType") Integer idServiceType,  List<ProductTypeDTO> listDto) throws SODAPIException {
 		ServiceType serviceType = serviceTypeRepository.findOne(idServiceType);
 		// clean list!!
-		serviceType.setSubproductTypes(new HashSet<>());
-		for (SubproductTypeDTO sptd :
+		serviceType.setProductTypes(new HashSet<>());
+		for (ProductTypeDTO sptd :
 				listDto) {
-			serviceType.addSubproductType(subproductTypeRepository.findOne(sptd.getIdSubproductType()));
+			serviceType.addProductType(productTypeRepository.findOne(sptd.getIdProductType()));
 		}
 		this.saveEntity(serviceTypeRepository, serviceType);
 

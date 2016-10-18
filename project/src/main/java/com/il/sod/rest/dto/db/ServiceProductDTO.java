@@ -1,18 +1,18 @@
 package com.il.sod.rest.dto.db;
 
-public class ServiceSubproductDTO{
-	private int idServiceSubproducts;
+public class ServiceProductDTO{
+	private int idServiceProducts;
 	private double price;
 	private int quantity;
 	private int idService;
-	private SubproductDTO subproduct;
+	private ProductDTO product;
 
-	public int getIdServiceSubproducts() {
-		return idServiceSubproducts;
+	public int getIdServiceProducts() {
+		return idServiceProducts;
 	}
 
-	public void setIdServiceSubproducts(int idServiceSubproducts) {
-		this.idServiceSubproducts = idServiceSubproducts;
+	public void setIdServiceProducts(int idServiceProducts) {
+		this.idServiceProducts = idServiceProducts;
 	}
 
 	public double getPrice() {
@@ -31,12 +31,12 @@ public class ServiceSubproductDTO{
 		this.quantity = quantity;
 	}
 
-	public SubproductDTO getSubproduct() {
-		return subproduct;
+	public ProductDTO getProduct() {
+		return product;
 	}
 
-	public void setSubproduct(SubproductDTO subproduct) {
-		this.subproduct = subproduct;
+	public void setProduct(ProductDTO product) {
+		this.product = product;
 	}
 
 	public int getIdService() {

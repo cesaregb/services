@@ -1,7 +1,8 @@
 package com.il.sod.exception;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import com.il.sod.rest.dto.GeneralResponseMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
@@ -9,11 +10,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.il.sod.rest.dto.GeneralResponseMessage;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 @Provider
 public class ThrowableMapper extends GeneralMapper implements ExceptionMapper<Throwable> {

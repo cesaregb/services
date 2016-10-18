@@ -1,12 +1,11 @@
 package com.il.sod.db.dao.impl;
 
-import java.util.List;
-
+import com.il.sod.db.model.entities.Client;
+import com.il.sod.db.model.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.il.sod.db.model.entities.Client;
-import com.il.sod.db.model.repositories.ClientRepository;
+import java.util.List;
 
 @Service
 public class ClientDAO{
@@ -14,8 +13,13 @@ public class ClientDAO{
 	@Autowired
 	ClientRepository clientRepository;
 	
-	public List<Client> findByEmail(String email){
-		return clientRepository.findByEmail(email);
+	public Client findByEmail(String email){
+		List<Client> list = clientRepository.findByEmail(email);
+		if (list.size() > 0){
+			return list.get(0);
+		}else{
+			return null;
+		}
 	}
 
 	public List<Client> findByToken(String token) {

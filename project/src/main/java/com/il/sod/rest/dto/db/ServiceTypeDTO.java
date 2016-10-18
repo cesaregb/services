@@ -14,7 +14,7 @@ public class ServiceTypeDTO {
 	private List<ServiceTypeTaskDTO> serviceTypeTasks;
 	private int idServiceCategory;
 	private String serviceTypeCategoryName;
-	private Set<SubproductTypeDTO> subproductTypes;
+	private Set<ProductTypeDTO> productTypes;
 	private boolean calculator;
 	
 	public int getIdServiceType() {
@@ -81,12 +81,12 @@ public class ServiceTypeDTO {
 		this.serviceTypeCategoryName = serviceTypeCategoryName;
 	}
 
-	public Set<SubproductTypeDTO> getSubproductTypes() {
-		return subproductTypes;
+	public Set<ProductTypeDTO> getProductTypes() {
+		return productTypes;
 	}
 
-	public void setSubproductTypes(Set<SubproductTypeDTO> subproductTypes) {
-		this.subproductTypes = subproductTypes;
+	public void setProductTypes(Set<ProductTypeDTO> productTypes) {
+		this.productTypes = productTypes;
 	}
 
 	public boolean isCalculator() {

@@ -1,23 +1,17 @@
 package com.il.sod.db.model.entities;
 
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-
 
 /**
  * The persistent class for the ProductType database table.
- *
+ * 
  */
+
 @Entity
-@NamedQuery(name="ProductType.findAll", query="SELECT p FROM ProductType p")
-public class ProductType implements IEntity<Integer> {
+@NamedQuery(name="ProductType.findAll", query="SELECT s FROM ProductType s")
+public class ProductType extends SoftDeleteEntity implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -29,8 +23,21 @@ public class ProductType implements IEntity<Integer> {
 	private String name;
 
 	//bi-directional many-to-one association to Product
-	@OneToMany(mappedBy="productType", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="productType", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Set<Product> products;
+
+	//bi-directional many-to-many association to ServiceType
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+			name="ServiceTypeProductType"
+			, joinColumns={
+			@JoinColumn(name="idProductType")
+	}
+			, inverseJoinColumns={
+			@JoinColumn(name="idServiceType")
+	}
+	)
+	private Set<ServiceType> serviceTypes;
 
 	public ProductType() {
 	}
@@ -81,6 +88,39 @@ public class ProductType implements IEntity<Integer> {
 		return product;
 	}
 
+	public Set<ServiceType> getServiceTypes() {
+		if(serviceTypes == null){
+			serviceTypes = new HashSet<>();
+		}
+		return serviceTypes;
+	}
+
+	public void setServiceTypes(Set<ServiceType> serviceTypes) {
+		this.serviceTypes = serviceTypes;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ProductType)) return false;
+
+		ProductType that = (ProductType) o;
+
+		if (idProductType != that.idProductType) return false;
+		if (description != null ? !description.equals(that.description) : that.description != null) return false;
+		return name != null ? name.equals(that.name) : that.name == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = idProductType;
+		result = 31 * result + (description != null ? description.hashCode() : 0);
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		return result;
+	}
+
+	@Override
 	public Integer getId() {
 		return this.idProductType;
 	}
@@ -90,4 +130,5 @@ public class ProductType implements IEntity<Integer> {
 		this.idProductType = id;
 		return this;
 	}
+
 }

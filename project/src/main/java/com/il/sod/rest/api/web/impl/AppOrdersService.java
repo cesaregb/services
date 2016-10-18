@@ -27,6 +27,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -53,7 +54,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 	SpecRepository specRepository;
 	
 	@Autowired
-	SubproductRepository subproductRepository;
+	ProductRepository productRepository;
 
 	@Autowired
 	ServiceCategoryRepository serviceCategoryRepository;
@@ -75,6 +76,25 @@ public class AppOrdersService extends AbstractServiceMutations {
 		List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
 		return this.castEntityAsResponse(result);
 	}
+
+	@GET
+	@Path("/public/orderTypes")
+	@ApiOperation(value = "Get Address list", response = WServiceCategoryDTO.class, responseContainer = "List")
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+	public Response getOrderTypesPublic() throws SODAPIException {
+		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
+		List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
+
+		for (WServiceCategoryDTO cat : result){
+			Set<WServiceTypeDTO> serviceTypes =  cat.getServiceTypes().stream().filter(st -> st.isCalculator()).collect(Collectors.toSet());
+			cat.setServiceTypes(serviceTypes);
+		}
+
+		return this.castEntityAsResponse(result);
+	}
+
 	
 	@GET
 	@Path("/orders/{idClient}")
@@ -175,17 +195,16 @@ public class AppOrdersService extends AbstractServiceMutations {
 				service.addServiceSpec(serviceSpec);
 			}
 
-			if (!CollectionUtils.isEmpty(servInput.getSubproducts())){
-				for (UISubproductDTO subproduct : servInput.getSubproducts()){
-					ServiceSubproduct ss = new ServiceSubproduct();
-					ss.setSubproduct(subproductRepository.findOne(subproduct.getIdSubproduct()));
-					ss.setQuantity(subproduct.getQuantity());
-					ss.setPrice(subproduct.getPrice());
-					service.addSubproduct(ss);
+			if (!CollectionUtils.isEmpty(servInput.getProducts())){
+				for (UIProductDTO product : servInput.getProducts()){
+					ServiceProduct ss = new ServiceProduct();
+					ss.setProduct(productRepository.findOne(product.getIdProduct()));
+					ss.setQuantity(product.getQuantity());
+					ss.setPrice(product.getPrice());
+					service.addProduct(ss);
 				}
 			}
 
-			
 			// adding service 
 			orderEntity.addService(service);
 		}

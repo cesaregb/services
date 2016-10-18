@@ -1,62 +1,88 @@
 package com.il.sod.rest.dto.db;
 
-public class ProductDTO {
+public class ProductDTO extends DeletableDTO{
 	private int idProduct;
-	private String description;
+	private int maxQty;
 	private String name;
 	private double price;
-	private double serviceIncrement;
-	private int status;
 	private int idProductType;
-	private String productTypeName;
-	
+	private String typeName;
+
 	public int getIdProduct() {
 		return idProduct;
 	}
+
 	public void setIdProduct(int idProduct) {
 		this.idProduct = idProduct;
 	}
-	public String getDescription() {
-		return description;
+
+	public int getMaxQty() {
+		return maxQty;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+
+	public void setMaxQty(int maxQty) {
+		this.maxQty = maxQty;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getStatus() {
-		return status;
-	}
-	public void setStatus(int status) {
-		this.status = status;
-	}
-	public double getServiceIncrement() {
-		return serviceIncrement;
-	}
-	public void setServiceIncrement(double serviceIncrement) {
-		this.serviceIncrement = serviceIncrement;
-	}
+
 	public double getPrice() {
 		return price;
 	}
+
 	public void setPrice(double price) {
 		this.price = price;
 	}
+
 	public int getIdProductType() {
 		return idProductType;
 	}
+
 	public void setIdProductType(int idProductType) {
 		this.idProductType = idProductType;
 	}
-	public String getProductTypeName() {
-		return productTypeName;
-	}
-	public void setProductTypeName(String productTypeName) {
-		this.productTypeName = productTypeName;
+
+	public String getTypeName() {
+		return typeName;
 	}
 
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof ProductDTO)) return false;
+
+		ProductDTO that = (ProductDTO) o;
+
+		if (idProduct != that.idProduct) return false;
+		if (maxQty != that.maxQty) return false;
+		if (Double.compare(that.price, price) != 0) return false;
+		if (idProductType != that.idProductType) return false;
+		if (name != null ? !name.equals(that.name) : that.name != null) return false;
+		return typeName != null ? typeName.equals(that.typeName) : that.typeName == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result;
+		long temp;
+		result = idProduct;
+		result = 31 * result + maxQty;
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		temp = Double.doubleToLongBits(price);
+		result = 31 * result + (int) (temp ^ (temp >>> 32));
+		result = 31 * result + idProductType;
+		result = 31 * result + (typeName != null ? typeName.hashCode() : 0);
+		return result;
+	}
 }

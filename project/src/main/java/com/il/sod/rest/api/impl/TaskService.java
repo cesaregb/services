@@ -29,9 +29,9 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/task")
+@Path("/tasks")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/task", tags = { "task" })
+@Api(value = "/tasks", tags = { "tasks" })
 public class TaskService extends AbstractServiceMutations {
 	
 	@Autowired
@@ -69,6 +69,10 @@ public class TaskService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateTask(TaskDTO dto) throws SODAPIException {
+		return updateEntity(dto);
+	}
+
+	private Response updateEntity(TaskDTO dto) throws SODAPIException {
 		try {
 			Task entity = TaskMapper.INSTANCE.map(dto);
 			this.updateEntity(taskRepository, entity);
@@ -86,14 +90,7 @@ public class TaskService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateTaskById(@PathParam("id") String id, TaskDTO dto) throws SODAPIException {
-		try {
-			Task entity = TaskMapper.INSTANCE.map(dto);
-			this.updateEntity(taskRepository, entity);
-			dto = TaskMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		return updateEntity(dto);
 	}
 
 //	private TaskType getTaskType(Task entity, int idTaskType) {
@@ -135,7 +132,7 @@ public class TaskService extends AbstractServiceMutations {
 	}
 	
 	@GET
-	@Path("/taskType/{idTaskType}")
+	@Path("/byIdTaskType/{idTaskType}")
 	@ApiOperation(value = "Get Task by Task Type", response = TaskDTO.class, responseContainer = "List")
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -153,7 +150,7 @@ public class TaskService extends AbstractServiceMutations {
 	}
 
 	@GET
-	@Path("/byOrder/{idOrder}")
+	@Path("/byIdOrder/{idOrder}")
 	@ApiOperation(value = "Get Task by Task Type", response = TaskDTO.class, responseContainer = "List")
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),

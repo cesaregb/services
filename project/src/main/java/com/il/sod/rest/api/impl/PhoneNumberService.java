@@ -1,22 +1,5 @@
 package com.il.sod.rest.api.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.entities.PhoneNumber;
 import com.il.sod.db.model.repositories.ClientRepository;
@@ -26,17 +9,25 @@ import com.il.sod.mapper.ClientMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.PhoneNumberDTO;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/phone-number")
+@Path("/clients/phone-number")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/phone-number", tags = { "clients" })
+@Api(value = "/clients/phone-number", tags = { "clients" })
 public class PhoneNumberService extends AbstractServiceMutations {
 	@Autowired
 	PhoneNumberRepository phoneNumberRepository;
@@ -65,6 +56,10 @@ public class PhoneNumberService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updatePhoneNumber(PhoneNumberDTO dto) throws SODAPIException {
+		return updateEntity(dto);
+	}
+
+	private Response updateEntity(PhoneNumberDTO dto) throws SODAPIException {
 		serviceDbHelper.validateClient(clientRepository, dto);
 
 		PhoneNumber entity = ClientMapper.INSTANCE.map(dto);
@@ -80,12 +75,7 @@ public class PhoneNumberService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updatePhoneNumberById(@PathParam("id") String id, PhoneNumberDTO dto) throws SODAPIException {
-		serviceDbHelper.validateClient(clientRepository, dto);
-
-		PhoneNumber entity = ClientMapper.INSTANCE.map(dto);
-		this.updateEntity(phoneNumberRepository, entity);
-		dto = ClientMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return updateEntity(dto);
 	}
 
 	

@@ -1,22 +1,5 @@
 package com.il.sod.rest.api.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.il.sod.config.Constants;
 import com.il.sod.db.model.entities.Address;
 import com.il.sod.db.model.entities.AddressRoute;
@@ -35,11 +18,19 @@ import com.il.sod.rest.dto.db.AddressDTO;
 import com.il.sod.rest.dto.db.AddressGenericDTO;
 import com.il.sod.rest.dto.db.AddressRouteDTO;
 import com.il.sod.rest.dto.db.StopDTO;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
@@ -139,7 +130,7 @@ public class StopsService extends AbstractServiceMutations {
 	}
 	
 	@GET
-	@Path("/{stopId}")
+	@Path("/byId/{stopId}")
 	@ApiOperation(value = "Get Stop by id", response = StopDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),

@@ -91,7 +91,7 @@
 		<appender-ref ref="SQLROLLINGFILE" />
 	</logger>
 
-	<logger name="org.hibernate.type" additivity="false" level="TRACE">
+	<logger name="org.hibernate.type" additivity="false" level="DEBUG">
 		<appender-ref ref="SQLROLLINGFILE" />
 	</logger>
 	<!-- HIBERNATE -->

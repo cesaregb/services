@@ -17,6 +17,7 @@ public class ClientDTO {
 	private String loginID;
 	private String rfc; 
 	private String razonSocial;
+	private Integer idClientType;
 
 	@ApiModelProperty(hidden=true)
 	@JsonProperty(access = Access.READ_ONLY)
@@ -159,5 +160,13 @@ public class ClientDTO {
 
 	public void setClientBags(Set<ClientBagDTO> clientBags) {
 		this.clientBags = clientBags;
+	}
+
+	public Integer getIdClientType() {
+		return idClientType;
+	}
+
+	public void setIdClientType(Integer idClientType) {
+		this.idClientType = idClientType;
 	}
 }

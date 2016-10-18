@@ -1,6 +1,19 @@
 package com.il.sod.rest.api;
 
-import java.io.InputStream;
+import com.il.sod.db.dao.SocialNetworkServiceDAO;
+import com.il.sod.exception.SODAPIException;
+import com.il.sod.rest.dto.GeneralResponseMessage;
+import com.il.sod.rest.dto.TestDto;
+import com.il.sod.services.MyService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -11,23 +24,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
-
-import com.il.sod.db.dao.SocialNetworkServiceDAO;
-import com.il.sod.exception.SODAPIException;
-import com.il.sod.rest.dto.GeneralResponseMessage;
-import com.il.sod.rest.dto.TestDto;
-import com.il.sod.services.MyService;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import java.io.InputStream;
 
 @Component
 @Path("/health")
@@ -74,11 +71,11 @@ public class Health extends AbstractService {
 	}	
 	
 	@GET
-	@Path("/exception")
+	@Path("/abcdef")
 	@ApiOperation(value = "Validate API + MODEL Healt")
 	public GeneralResponseMessage throwException() throws SODAPIException{	
 		LOGGER.info("Testing throwing exception!");
-		throw new SODAPIException(Response.Status.NO_CONTENT, "Expected Exception!");
+		throw new SODAPIException(Response.Status.BAD_REQUEST, "Expected Exception!");
 	}
 	
 	@RolesAllowed("ADMIN")

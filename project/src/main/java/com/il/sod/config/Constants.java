@@ -1,5 +1,8 @@
 package com.il.sod.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constants {
 	private Constants() {
     }
@@ -45,6 +48,14 @@ public class Constants {
 	
 	// Stops Type 
 	public static final int ADDRESS_ROUTE_TYPE = 0; 
-	public static final int ADDRESS_CLIENT_TYPE = 1; 
+	public static final int ADDRESS_CLIENT_TYPE = 1;
+
+	// com.il.sod.db.model.entities.Promotion.discountType
+	public static final Map<Integer, String> discountType = new HashMap<>();
+
+	static{
+		discountType.put(1, "amount");
+		discountType.put(2, "percentge");
+	}
 	
 }

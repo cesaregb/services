@@ -1,21 +1,10 @@
 package com.il.sod.db.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * The persistent class for the Clients database table.
@@ -72,6 +61,11 @@ public class Client implements IEntity<Integer> {
 	//bi-directional many-to-one association to ClientBag
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	private Set<ClientBag> clientBags;
+
+	//bi-directional many-to-one association to ClientType
+	@ManyToOne()
+	@JoinColumn(name="idClientType")
+	private ClientType clientType;
 	
 	public Client() {
 	}
@@ -312,5 +306,52 @@ public class Client implements IEntity<Integer> {
 		clientBag.setClient(null);
 
 		return clientBag;
+	}
+
+	public ClientType getClientType() {
+		return this.clientType;
+	}
+
+	public void setClientType(ClientType clientType) {
+		this.clientType = clientType;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Client)) return false;
+
+		Client client = (Client) o;
+
+		if (idClient != client.idClient) return false;
+		if (deleted != client.deleted) return false;
+		if (email != null ? !email.equals(client.email) : client.email != null) return false;
+		if (lastName != null ? !lastName.equals(client.lastName) : client.lastName != null) return false;
+		if (name != null ? !name.equals(client.name) : client.name != null) return false;
+		if (password != null ? !password.equals(client.password) : client.password != null) return false;
+		if (twitter != null ? !twitter.equals(client.twitter) : client.twitter != null) return false;
+		if (loginID != null ? !loginID.equals(client.loginID) : client.loginID != null) return false;
+		if (rfc != null ? !rfc.equals(client.rfc) : client.rfc != null) return false;
+		if (razonSocial != null ? !razonSocial.equals(client.razonSocial) : client.razonSocial != null) return false;
+		if (created != null ? !created.equals(client.created) : client.created != null) return false;
+		return updated != null ? updated.equals(client.updated) : client.updated == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = idClient;
+		result = 31 * result + (email != null ? email.hashCode() : 0);
+		result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (password != null ? password.hashCode() : 0);
+		result = 31 * result + (twitter != null ? twitter.hashCode() : 0);
+		result = 31 * result + (loginID != null ? loginID.hashCode() : 0);
+		result = 31 * result + (rfc != null ? rfc.hashCode() : 0);
+		result = 31 * result + (razonSocial != null ? razonSocial.hashCode() : 0);
+		result = 31 * result + (created != null ? created.hashCode() : 0);
+		result = 31 * result + (updated != null ? updated.hashCode() : 0);
+		result = 31 * result + deleted;
+		return result;
 	}
 }

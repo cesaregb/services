@@ -29,16 +29,17 @@ import java.util.List;
 @SwaggerDefinition(tags = { @Tag(name = "clients", description = "Client Layer services"),
 		@Tag(name = "app-utils", description = "Utilities of the site - store"),
 		@Tag(name = "app-orders", description = "Services used by web-app"),
-		@Tag(name = "employee", description = "Employee services"),
+		@Tag(name = "employees", description = "Employee services"),
 		@Tag(name = "specs", description = "Specs are the 'type of generics' that uses a service "),
-		@Tag(name = "asset", description = "Assets  - Business assets"),
-		@Tag(name = "products", description = "Products used for specs"),
-		@Tag(name = "task", description = "Task used in orders or services"),
+//		@Tag(name = "asset", description = "Assets  - Business assets"),
+		@Tag(name = "supplies", description = "Supplies used for specs"),
+		@Tag(name = "tasks", description = "Task used in orders or services"),
 		@Tag(name = "order", description = "Order Layer Services"),
 		@Tag(name = "service", description = "Service Layer Services"),
 		@Tag(name = "payment", description = "Payment Services Client and Orders"),
 		@Tag(name = "routes", description = "Route Information,... not user related..."),
-		@Tag(name = "subproduct", description = "Subproducts, similar to specs but different!! LOL "),
+		@Tag(name = "products", description = "Products, similar to specs but different!! LOL "),
+		@Tag(name = "promotions", description = "Promotions, promotion handling  "),
 		@Tag(name = "health", description = "Validate API + MODEL Healt") })
 @Path("/v1")
 @SuppressWarnings("all")

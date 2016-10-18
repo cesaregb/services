@@ -1,7 +1,13 @@
 package com.il.sod.exception;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import com.il.sod.rest.dto.GeneralResponseMessage;
+import org.glassfish.jersey.message.internal.MessageBodyProviderNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.NotFoundException;
@@ -10,16 +16,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-
-import org.glassfish.jersey.message.internal.MessageBodyProviderNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
-import com.il.sod.rest.dto.GeneralResponseMessage;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 @Component
 @Provider

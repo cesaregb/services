@@ -43,9 +43,9 @@ public class ServiceType implements IEntity<Integer> {
 	@JoinColumn(name="idServiceCategory")
 	private ServiceCategory serviceCategory;
 
-	//bi-directional many-to-many association to SubproductType
+	//bi-directional many-to-many association to ProductType
 	@ManyToMany(mappedBy="serviceTypes", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<SubproductType> subproductTypes;
+	private Set<ProductType> productTypes;
 
 	private boolean calculator;
 	
@@ -177,25 +177,25 @@ public class ServiceType implements IEntity<Integer> {
 		this.serviceCategory = serviceCategory;
 	}
 
-	public Set<SubproductType> getSubproductTypes() {
-		if (subproductTypes == null){
-			subproductTypes = new HashSet<>();
+	public Set<ProductType> getProductTypes() {
+		if (productTypes == null){
+			productTypes = new HashSet<>();
 		}
-		return subproductTypes;
+		return productTypes;
 	}
 
-	public void setSubproductTypes(Set<SubproductType> subproductTypes) {
-		this.subproductTypes = subproductTypes;
+	public void setProductTypes(Set<ProductType> productTypes) {
+		this.productTypes = productTypes;
 	}
 
-	public void addSubproductType(SubproductType subproductType) {
-		getSubproductTypes().add(subproductType);
-		subproductType.getServiceTypes().add(this);
+	public void addProductType(ProductType productType) {
+		getProductTypes().add(productType);
+		productType.getServiceTypes().add(this);
 	}
 
-	public void removeSubproductType(SubproductType subproductType) {
-		getServiceTypeTasks().remove(subproductType);
-		subproductType.getServiceTypes().remove(this);
+	public void removeProductType(ProductType productType) {
+		getServiceTypeTasks().remove(productType);
+		productType.getServiceTypes().remove(this);
 	}
 
 	public boolean isCalculator() {

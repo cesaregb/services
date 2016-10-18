@@ -66,6 +66,10 @@ public class OrderService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateOrder(OrderDTO dto) throws SODAPIException {
+		return updateEntity(dto);
+	}
+
+	private Response updateEntity(OrderDTO dto) throws SODAPIException {
 		try {
 			Order entity = OrderMapper.INSTANCE.map(dto);
 			this.updateEntity(orderRepository, entity);
@@ -83,14 +87,7 @@ public class OrderService extends AbstractServiceMutations {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
 			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateOrderById(@PathParam("id") String id, OrderDTO dto) throws SODAPIException {
-		try {
-			Order entity = OrderMapper.INSTANCE.map(dto);
-			this.updateEntity(orderRepository, entity);
-			dto = OrderMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		return updateEntity(dto);
 	}
 
 	@DELETE
@@ -125,7 +122,7 @@ public class OrderService extends AbstractServiceMutations {
 	}
 	
 	@GET
-	@Path("/by/status/{status}")
+	@Path("/byStatus/{status}")
 	@ApiOperation(value = "Get Order by status ", response = OrderDTO.class, responseContainer = "List")
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -136,7 +133,7 @@ public class OrderService extends AbstractServiceMutations {
 	}
 	
 	@GET
-	@Path("/by/id/{orderId}")
+	@Path("/byId/{orderId}")
 	@ApiOperation(value = "Get Order by id", response = OrderDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
@@ -165,6 +162,7 @@ public class OrderService extends AbstractServiceMutations {
 		return castEntityAsResponse(result, Response.Status.OK);
 	}
 
+	@Deprecated
 	@GET
 	@Path("/forEdit/{orderId}")
 	@ApiOperation(value = "Get Order in Edit object mode.", response = OrderTasksInfoDTO.class)
