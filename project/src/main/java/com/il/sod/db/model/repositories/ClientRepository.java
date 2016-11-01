@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.il.sod.db.model.entities.Client;
 
-public interface ClientRepository extends JpaRepository<Client, Integer>, JpaSpecificationExecutor<Client> {
+public interface ClientRepository extends DeletableRepository<Client, Integer>, JpaSpecificationExecutor<Client> {
 	
 	List<Client> findByEmail(String email);
 	

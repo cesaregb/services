@@ -86,6 +86,10 @@ public class ClientService extends AbstractServiceMutations {
 		// find existing one.
 		Client entity = clientDAO.findByEmail(dto.getEmail());
 
+		if (entity.getDeleted() > 0){
+            throw new SODAPIException(Response.Status.NOT_FOUND, "Client deleted, please request admin to activate.");
+		}
+
 		if (entity == null){
 			LOGGER.info("Note update, call saveClient");
 			return this.saveClient(dto);
@@ -105,6 +109,25 @@ public class ClientService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
+    @PUT
+    @Path("/reactivate/{email}")
+    @ApiOperation(value = "Reactivate Client", response = ClientDTO.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+            @ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+    public Response reactivateCient(@PathParam("email") String email) throws SODAPIException {
+        Client entity = clientDAO.findByEmail(email);
+        if (entity == null){
+            throw new SODAPIException(Response.Status.NOT_FOUND, "Client not found with email: "+email+" ");
+        }
+        LOGGER.info("Update entity");
+        entity.setDeleted(0);
+        this.updateEntity(clientRepository, entity);
+        ClientDTO dto = ClientMapper.INSTANCE.map(entity);
+        return castEntityAsResponse(dto, Response.Status.OK);
+    }
+
+
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Client", response = GeneralResponseMessage.class)
@@ -114,9 +137,9 @@ public class ClientService extends AbstractServiceMutations {
 	public Response deleteItem(@PathParam("id") String clientId) throws SODAPIException {
 		Client entity = clientRepository.findOne(Integer.valueOf(clientId));
 		if (entity == null){
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not found");
+			throw new SODAPIException(Response.Status.NOT_FOUND, "Client not found");
 		}
-		this.deleteEntity(clientRepository, entity.getIdClient());
+		this.softDeleteEntity(clientRepository, entity.getIdClient());
 		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Client deleted"),
 				Response.Status.OK);
 	}

@@ -5,7 +5,7 @@ public class ClientBagDTO {
 	private int idClientBags;
 	private boolean inOrder;
 	private String number;
-	private BagTypeDTO bagType;
+	private int idBagtype;
 	private int idClient;
 
 	public int getIdClientBags() {
@@ -32,12 +32,12 @@ public class ClientBagDTO {
 		this.number = number;
 	}
 
-	public BagTypeDTO getBagType() {
-		return bagType;
+	public int getIdBagtype() {
+		return idBagtype;
 	}
 
-	public void setBagType(BagTypeDTO bagType) {
-		this.bagType = bagType;
+	public void setIdBagtype(int idBagtype) {
+		this.idBagtype = idBagtype;
 	}
 
 	public int getIdClient() {

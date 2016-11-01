@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +36,8 @@ import java.util.stream.Collectors;
 @Path("/clients/address")
 public class AddressService extends AbstractServiceMutations {
 
+	private final static Logger LOGGER = LoggerFactory.getLogger(AddressService.class);
+
 	@Autowired
 	AddressRepository addressRepository;
 
@@ -49,6 +53,8 @@ public class AddressService extends AbstractServiceMutations {
 		serviceDbHelper.validateClient(clientRepository, dto);
 
 		Address entity = ClientMapper.INSTANCE.map(dto);
+
+        LOGGER.info("Entity mapped: {}" , entity.toString());
 		this.saveEntity(addressRepository, entity);
 		dto = ClientMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.CREATED);

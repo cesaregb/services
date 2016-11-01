@@ -65,6 +65,7 @@ public enum ClientMapper {
 			.register();
 
 		BaseMapper.MAPPER_FACTORY.classMap(ClientBagDTO.class, ClientBag.class)
+			.field("idBagtype", "bagType.idBagType")
 			.field("idClient", "client.idClient")
 			.byDefault()
 			.register();

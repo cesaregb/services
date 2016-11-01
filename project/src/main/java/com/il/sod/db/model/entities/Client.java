@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name="Clients")
 @NamedQuery(name="Client.findAll", query="SELECT c FROM Client c")
-public class Client implements IEntity<Integer> {
+public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -55,8 +55,6 @@ public class Client implements IEntity<Integer> {
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonManagedReference
 	private Set<ClientPaymentInfo> clientPaymentInfos;
-	
-	private int deleted;
 	
 	//bi-directional many-to-one association to ClientBag
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
@@ -278,14 +276,6 @@ public class Client implements IEntity<Integer> {
 		this.razonSocial = razonSocial;
 	}
 
-	public int getDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(int deleted) {
-		this.deleted = deleted;
-	}
-	
 	public Set<ClientBag> getClientBags() {
 		return this.clientBags;
 	}
@@ -324,7 +314,6 @@ public class Client implements IEntity<Integer> {
 		Client client = (Client) o;
 
 		if (idClient != client.idClient) return false;
-		if (deleted != client.deleted) return false;
 		if (email != null ? !email.equals(client.email) : client.email != null) return false;
 		if (lastName != null ? !lastName.equals(client.lastName) : client.lastName != null) return false;
 		if (name != null ? !name.equals(client.name) : client.name != null) return false;
@@ -351,7 +340,6 @@ public class Client implements IEntity<Integer> {
 		result = 31 * result + (razonSocial != null ? razonSocial.hashCode() : 0);
 		result = 31 * result + (created != null ? created.hashCode() : 0);
 		result = 31 * result + (updated != null ? updated.hashCode() : 0);
-		result = 31 * result + deleted;
 		return result;
 	}
 }

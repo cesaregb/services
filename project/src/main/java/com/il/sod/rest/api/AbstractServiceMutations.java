@@ -30,7 +30,7 @@ public abstract class AbstractServiceMutations extends AbstractService{
 
 	@SuppressWarnings("unchecked")
 	protected <T> boolean softDeleteEntity(JpaRepository<T, Integer> repository, Integer id) throws SODAPIException {
-		ABS_LOGGER.info("Delete " + id);
+		ABS_LOGGER.info("SOFT Delete " + id);
 		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
 		gDao.setRepository(repository);
 		gDao.sofDelete(id);
