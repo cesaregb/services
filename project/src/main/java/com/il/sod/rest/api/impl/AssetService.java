@@ -35,9 +35,6 @@ public class AssetService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Asset", response = AssetDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveAsset(AssetDTO dto) throws SODAPIException {
 		Asset entity = AssetMapper.INSTANCE.map(dto);
 		this.saveEntity(assetRepository, entity);
@@ -45,12 +42,8 @@ public class AssetService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Asset", response = AssetDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateAsset(AssetDTO dto) throws SODAPIException {
 		Asset entity = AssetMapper.INSTANCE.map(dto);
 		this.updateEntity(assetRepository, entity);
@@ -58,25 +51,10 @@ public class AssetService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Asset", response = AssetDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateAssetById(@PathParam("id") String id, AssetDTO dto) throws SODAPIException {
-		Asset entity = AssetMapper.INSTANCE.map(dto);
-		this.updateEntity(assetRepository, entity);
-		dto = AssetMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
-	}
 
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Task", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		Asset entity = assetRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -89,9 +67,6 @@ public class AssetService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Asset list", response = AssetDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getAssetList() throws SODAPIException {
 		List<Asset> entityList = this.getEntityList(assetRepository);
 		List<AssetDTO> list = entityList.stream().map((i) -> {

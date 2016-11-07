@@ -36,9 +36,6 @@ public class SupplyService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Supply", response = SupplyDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveSupply(SupplyDTO dto) throws SODAPIException {
 		try {
 			Supply entity = SupplyMapper.INSTANCE.map(dto);
@@ -50,12 +47,8 @@ public class SupplyService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Supply", response = SupplyDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateSupply(SupplyDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
@@ -71,23 +64,9 @@ public class SupplyService extends AbstractServiceMutations {
 		}
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Supply", response = SupplyDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateSupplyById(@PathParam("id") String id, SupplyDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		Supply entity = supplyRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -100,9 +79,6 @@ public class SupplyService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Supply list", response = SupplyDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getSupplyList() throws SODAPIException {
 		List<Supply> entityList = this.getEntityList(supplyRepository);
 		List<SupplyDTO> list = entityList.stream().map((i) -> {

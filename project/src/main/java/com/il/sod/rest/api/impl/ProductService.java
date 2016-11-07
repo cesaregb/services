@@ -8,7 +8,7 @@ import com.il.sod.mapper.ProductMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ProductDTO;
-import com.il.sod.rest.dto.helper.DtoHelper;
+import com.il.sod.rest.dto.helper.ListsHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -43,9 +43,6 @@ public class ProductService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Product", response = ProductDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveProduct(ProductDTO dto) throws SODAPIException {
 		try {
 			Product entity = ProductMapper.INSTANCE.map(dto);
@@ -57,26 +54,11 @@ public class ProductService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Product", response = ProductDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateProduct(ProductDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
-
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Product", response = ProductDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateProductById(@PathParam("id") String id, ProductDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
 
 	private Response updateEntity(ProductDTO dto) throws SODAPIException {
 		try {
@@ -92,9 +74,6 @@ public class ProductService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Create Product", response = ProductDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteProduct(@PathParam("id") String id, ProductDTO dto) throws SODAPIException {
 		try {
 			Product entity = productRepository.findOne(Integer.valueOf(id));
@@ -112,9 +91,6 @@ public class ProductService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Product list", response = ProductDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getProductList(@QueryParam("name") String name,
 								   @QueryParam("idProductType") String idProductType) throws SODAPIException {
 		List<Product> rentityList = null;
@@ -127,7 +103,6 @@ public class ProductService extends AbstractServiceMutations {
 			rentityList = productDAO.findByProductType(Integer.valueOf(idProductType));
 		}else{
 			rentityList = this.getEntityList(Product.class, productRepository);
-
 		}
 		List<ProductDTO> list = rentityList.stream().map(ProductMapper.INSTANCE::map).collect(Collectors.toList());
 		return castEntityAsResponse(list);
@@ -136,9 +111,6 @@ public class ProductService extends AbstractServiceMutations {
 	@POST
 	@Path("/byProductTypes")
 	@ApiOperation(value = "Get Product list by name", response = ProductDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getProductListByType(List<String> ids) throws SODAPIException {
 
 		Set<ProductDTO> spSet = new HashSet<>();
@@ -156,7 +128,7 @@ public class ProductService extends AbstractServiceMutations {
 		List<ProductDTO> list = new ArrayList<>(spSet);
 
 		// filter list
-		list = DtoHelper.getActiveList(list);
+		list = ListsHelper.getActiveList(list);
 
 		return castEntityAsResponse(list);
 	}

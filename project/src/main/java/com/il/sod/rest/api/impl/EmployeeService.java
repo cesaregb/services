@@ -38,9 +38,6 @@ public class EmployeeService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Employee", response = EmployeeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveEmployee(EmployeeDTO dto) throws SODAPIException {
 		try {
 			Employee entity = EmployeeMapper.INSTANCE.map(dto);
@@ -52,12 +49,8 @@ public class EmployeeService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Employee", response = EmployeeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateEmployee(EmployeeDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
@@ -73,22 +66,9 @@ public class EmployeeService extends AbstractServiceMutations {
 		}
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Employee", response = EmployeeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateEmployeeById(@PathParam("id") String id, EmployeeDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Item", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		Employee entity = employeeRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -101,9 +81,6 @@ public class EmployeeService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Employee list", response = EmployeeDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getEmployeeList(@QueryParam("email") String email) throws SODAPIException {
 		List<Employee> entityList = null;
 		if (!StringUtils.isEmpty(email)){
@@ -118,9 +95,6 @@ public class EmployeeService extends AbstractServiceMutations {
 	@GET
 	@Path("/byId/{idEmployee}")
 	@ApiOperation(value = "Get Employee list", response = EmployeeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getEmployeeById(@PathParam("idEmployee") String idEmployee) throws SODAPIException {
 		Employee employee = this.getEntity(employeeRepository, Integer.valueOf(idEmployee));
 		if (employee == null ) {

@@ -34,9 +34,6 @@ public class PaymentInfoService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Payment Info", response = PaymentInfoDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response savePaymentInfo(PaymentInfoDTO dto) throws SODAPIException {
 		try {
 			PaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
@@ -48,12 +45,8 @@ public class PaymentInfoService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Payment Info", response = PaymentInfoDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updatePaymentInfo(PaymentInfoDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
@@ -69,39 +62,23 @@ public class PaymentInfoService extends AbstractServiceMutations {
 		}
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Payment Info", response = PaymentInfoDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updatePaymentInfoById(@PathParam("id") String id, PaymentInfoDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete PaymentInfo", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteEntity(@PathParam("id") String id) throws SODAPIException {
 		PaymentInfo entity = paymentInfoRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "PaymentInfo not found");
 		}
-		
+
 		this.deleteEntity(paymentInfoRepository, entity.getId());
 		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("PaymentInfo deleted"),
 				Response.Status.OK);
-		
+
 	}
 
 	@GET
 	@ApiOperation(value = "Get Payment Info list", response = PaymentInfoDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getPaymentInfoList() throws SODAPIException {
 		List<PaymentInfo> rentityList = this.getEntityList(paymentInfoRepository);
 		List<PaymentInfoDTO> list = rentityList.stream().map((i) -> {
@@ -110,13 +87,10 @@ public class PaymentInfoService extends AbstractServiceMutations {
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
-	
+
 	@GET
 	@Path("/byId/{idPaymentInfo}")
 	@ApiOperation(value = "Get Payment Info list", response = PaymentInfoDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getPaymentInfoById(@PathParam("idPaymentInfo") String idPaymentInfo) throws SODAPIException {
 		if (!NumberUtils.isDigits(idPaymentInfo)){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Not a valid id " + idPaymentInfo);

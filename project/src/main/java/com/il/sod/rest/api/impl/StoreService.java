@@ -33,9 +33,6 @@ public class StoreService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Store", response = StoreDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveStore(StoreDTO dto) throws SODAPIException {
 		try {
 			Store entity = StoreInfoMapper.INSTANCE.map(dto);
@@ -47,23 +44,9 @@ public class StoreService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Store", response = StoreDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateStore(StoreDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Store", response = StoreDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateStoreById(@PathParam("id") String id, StoreDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
 
@@ -81,9 +64,6 @@ public class StoreService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Item", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		Store entity = storeRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -96,9 +76,6 @@ public class StoreService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Store list", response = StoreDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getStoreList() throws SODAPIException {
 		List<Store> rentityList = storeRepository.findAll();
 		List<StoreDTO> list = rentityList.stream().map((i) -> {
@@ -111,9 +88,6 @@ public class StoreService extends AbstractServiceMutations {
 	@GET
 	@Path("/byId/{id}")
 	@ApiOperation(value = "Get Store by ID", response = StoreDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getStoreById(@PathParam("id") Integer id) throws SODAPIException {
 		Store entity = storeRepository.findOne(id);
 		StoreDTO result = StoreInfoMapper.INSTANCE.map(entity);

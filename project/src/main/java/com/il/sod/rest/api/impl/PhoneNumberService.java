@@ -37,9 +37,6 @@ public class PhoneNumberService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Phone Number", response = PhoneNumberDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response savePhoneNumber(PhoneNumberDTO dto) throws SODAPIException {
 		serviceDbHelper.validateClient(clientRepository, dto);
 
@@ -49,12 +46,8 @@ public class PhoneNumberService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Phone Number", response = PhoneNumberDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updatePhoneNumber(PhoneNumberDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
@@ -68,23 +61,9 @@ public class PhoneNumberService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Phone Number", response = PhoneNumberDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updatePhoneNumberById(@PathParam("id") String id, PhoneNumberDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete PhoneNumber", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteEntity(@PathParam("id") String id) throws SODAPIException {
 		PhoneNumber entity = phoneNumberRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -99,9 +78,6 @@ public class PhoneNumberService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Phone Number list", response = PhoneNumberDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getPhoneNumberList() throws SODAPIException {
 		List<PhoneNumber> rentityList = this.getEntityList(phoneNumberRepository);
 		List<PhoneNumberDTO> list = rentityList.stream().map((i) -> {

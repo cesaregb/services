@@ -36,18 +36,15 @@ public class OrderService extends AbstractServiceMutations {
 
 	@Autowired
 	OrderRepository orderRepository;
-	
+
 	@Autowired
 	OrdersDAO ordersDAO;
-	
+
 	@Autowired
 	OrderConverterService orderConverterService;
 
 	@POST
 	@ApiOperation(value = "Create Order Type", response = OrderDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveOrder(OrderDTO dto) throws SODAPIException {
 		try {
 			Order entity = OrderMapper.INSTANCE.map(dto);
@@ -59,12 +56,8 @@ public class OrderService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Order Type", response = OrderDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateOrder(OrderDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
@@ -80,21 +73,8 @@ public class OrderService extends AbstractServiceMutations {
 		}
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Order Type", response = OrderDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateOrderById(@PathParam("id") String id, OrderDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
 	@DELETE
 	@ApiOperation(value = "Create Order Type", response = OrderDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteOrder(OrderDTO dto) throws SODAPIException {
 		try {
 			Order entity = OrderMapper.INSTANCE.map(dto);
@@ -109,9 +89,6 @@ public class OrderService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Order Type list", response = OrderDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getOrderList() throws SODAPIException {
 		List<Order> rentityList = this.getEntityList(orderRepository);
 		List<OrderDTO> list = rentityList.stream().map((i) -> {
@@ -120,35 +97,26 @@ public class OrderService extends AbstractServiceMutations {
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
-	
+
 	@GET
 	@Path("/byStatus/{status}")
 	@ApiOperation(value = "Get Order by status ", response = OrderDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getOrdersByStatus(@PathParam("status") int status) throws SODAPIException {
 		List<OrderDTO> dto = ordersDAO.findByStatus(status).stream().map( o -> orderConverterService.convert(o)).collect(Collectors.toList());
 		return castEntityAsResponse(dto, Response.Status.OK);
 	}
-	
+
 	@GET
 	@Path("/byId/{orderId}")
 	@ApiOperation(value = "Get Order by id", response = OrderDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getOrderById(@PathParam("orderId") String orderId) throws SODAPIException {
 		OrderDTO dto = OrderMapper.INSTANCE.map(this.getEntity(orderRepository, Integer.valueOf(orderId)));
 		return castEntityAsResponse(dto, Response.Status.OK);
 	}
-	
+
 	@GET
 	@Path("/tasks/{orderId}")
 	@ApiOperation(value = "Get Task list for order", response = OrderTasksInfoDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getOrderTaskInfo(@PathParam("orderId") String orderId) throws SODAPIException {
 		OrderDTO dto = OrderMapper.INSTANCE.map(this.getEntity(orderRepository, Integer.valueOf(orderId)));
 		OrderTasksInfoDTO result = new OrderTasksInfoDTO();
@@ -166,9 +134,6 @@ public class OrderService extends AbstractServiceMutations {
 	@GET
 	@Path("/forEdit/{orderId}")
 	@ApiOperation(value = "Get Order in Edit object mode.", response = OrderTasksInfoDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getOrder4Edit(@PathParam("orderId") String orderId) throws SODAPIException {
 		UIOrderDTO result = orderConverterService.convert2UI(this.getEntity(orderRepository, Integer.valueOf(orderId)));
 		return castEntityAsResponse(result, Response.Status.OK);

@@ -30,9 +30,6 @@ public class SocialNetworkDataService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Service Type", response = SocialNetworkDataDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveSocialNetworkData(SocialNetworkDataDTO dto) throws SODAPIException {
 		try {
 			SocialNetworkData entity = converter.map(dto, SocialNetworkData.class);
@@ -44,12 +41,8 @@ public class SocialNetworkDataService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Service Type", response = SocialNetworkDataDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateSocialNetworkData(SocialNetworkDataDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
@@ -65,21 +58,8 @@ public class SocialNetworkDataService extends AbstractServiceMutations {
 		}
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Service Type", response = SocialNetworkDataDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateSocialNetworkDataById(@PathParam("id") String id, SocialNetworkDataDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
 	@DELETE
 	@ApiOperation(value = "Create Service Type", response = SocialNetworkDataDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteSocialNetworkData(SocialNetworkDataDTO dto) throws SODAPIException {
 		try {
 			SocialNetworkData entity = converter.map(dto, SocialNetworkData.class);
@@ -94,9 +74,6 @@ public class SocialNetworkDataService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Service Type list", response = SocialNetworkDataDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getSocialNetworkDataList() throws SODAPIException {
 		List<SocialNetworkData> rentityList = this.getEntityList(socialNetworkDataRepository);
 		List<SocialNetworkDataDTO> list = rentityList.stream().map((i) -> {

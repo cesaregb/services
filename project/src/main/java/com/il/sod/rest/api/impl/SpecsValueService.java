@@ -26,35 +26,32 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/specs-value")
+@Path("/specs/specs-values")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/specs-value", tags = { "specs" })
+@Api(value = "/specs/specs-values", tags = { "specs" })
 public class SpecsValueService extends AbstractServiceMutations {
-	
+
 	@Autowired
 	SpecsValueRepository specsValueRepository;
 
 	@Autowired
 	SpecRepository specRepository;
-	
+
 	@Autowired
 	SupplyTypeRepository supplyTypeRepository;
-	
+
 	@Autowired
 	private SpecsValueDAO specsValueDAO;
 
 	@POST
 	@ApiOperation(value = "Create SpecsValue", response = SpecsValueDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveSpecsValue(SpecsValueDTO dto) throws SODAPIException {
 		try {
 			SpecsValue entity = SpecsMapper.INSTANCE.map(dto);
 			if (entity.getIdSupplyType() > 0 && specsValueRepository.findByTypeSupply(entity.getSpec().getId(), entity.getIdSupplyType()).size() > 0 ){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, " A SpecValue for that supply type already exist. ");
 			}
-			
+
 			this.saveEntity(specsValueRepository, entity);
 			dto = SpecsMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
@@ -63,17 +60,9 @@ public class SpecsValueService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update SpecsValue", response = SpecsValueDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateSpecsValue(SpecsValueDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	private Response updateEntity(SpecsValueDTO dto) throws SODAPIException {
 		try {
 			SpecsValue entity = SpecsMapper.INSTANCE.map(dto);
 			if (entity.getIdSupplyType() > 0 && specsValueRepository.findByTypeSupplyDifferent(entity.getSpec().getId(), entity.getIdSupplyType(), entity.getId()).size() > 0 ){
@@ -87,22 +76,9 @@ public class SpecsValueService extends AbstractServiceMutations {
 		}
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update SpecsValue", response = SpecsValueDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateSpecsValueById(@PathParam("id") String id, SpecsValueDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		SpecsValue entity = specsValueRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -115,9 +91,6 @@ public class SpecsValueService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get SpecsValue list", response = SpecsValueDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getSpecsValueList() throws SODAPIException {
 		SpecsMapper.INSTANCE.setSupplyTypeRepository(supplyTypeRepository);
 		List<SpecsValue> entityList = this.getEntityList(specsValueRepository);
@@ -127,13 +100,10 @@ public class SpecsValueService extends AbstractServiceMutations {
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
-	
+
 	@GET
-	@Path("/byIdSpec/{idSpecs}")
+	@Path("/{idSpecs}")
 	@ApiOperation(value = "Get Specs Value list by idSpec", response = SpecsValueDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getSpecsValuesById(@PathParam("idSpecs") String idSpecs) throws SODAPIException {
 		SpecsMapper.INSTANCE.setSupplyTypeRepository(supplyTypeRepository);
 		List<SpecsValue> entityList = specsValueDAO.findBySpec(Integer.valueOf(idSpecs));

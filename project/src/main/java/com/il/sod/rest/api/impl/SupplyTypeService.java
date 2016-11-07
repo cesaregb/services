@@ -1,7 +1,12 @@
 package com.il.sod.rest.api.impl;
 
+import com.il.sod.db.model.entities.Supply;
 import com.il.sod.db.model.entities.SupplyType;
+import com.il.sod.db.model.entities.Task;
+import com.il.sod.db.model.entities.TaskType;
+import com.il.sod.db.model.repositories.SupplyRepository;
 import com.il.sod.db.model.repositories.SupplyTypeRepository;
+import com.il.sod.db.model.repositories.TaskRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.SupplyMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -30,12 +35,8 @@ public class SupplyTypeService extends AbstractServiceMutations {
 
 	@Autowired
 	SupplyTypeRepository supplyTypeRepository;
-
 	@POST
 	@ApiOperation(value = "Create Supply Type", response = SupplyTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveSupplyType(SupplyTypeDTO dto) throws SODAPIException {
 		try {
 			SupplyType entity = SupplyMapper.INSTANCE.map(dto);
@@ -47,12 +48,8 @@ public class SupplyTypeService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Supply Type", response = SupplyTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateSupplyType(SupplyTypeDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
@@ -68,22 +65,9 @@ public class SupplyTypeService extends AbstractServiceMutations {
 		}
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Supply Type", response = SupplyTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateSupplyTypeById(@PathParam("id") String id, SupplyTypeDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-	
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Task", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		SupplyType entity = supplyTypeRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -96,9 +80,6 @@ public class SupplyTypeService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Supply Type list", response = SupplyTypeDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getSupplyTypeList() throws SODAPIException {
 		List<SupplyType> rentityList = this.getEntityList(supplyTypeRepository);
 		List<SupplyTypeDTO> list = rentityList.stream().map((i) -> {
@@ -106,6 +87,22 @@ public class SupplyTypeService extends AbstractServiceMutations {
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
+	}
+
+	@Autowired
+	SupplyRepository childRepository;
+	@PUT
+	@Path("/{id}/child/{idChild}")
+	@ApiOperation(value = "Delete Task Type", response = GeneralResponseMessage.class)
+	public Response addChild(@PathParam("id") Integer id, @PathParam("idChild") Integer idChild) throws SODAPIException {
+		Supply child = childRepository.findOne(idChild);
+		SupplyType oldParent = child.getSupplyType();
+		oldParent.removeSupply(child);
+		supplyTypeRepository.save(oldParent);
+		SupplyType newParent = supplyTypeRepository.findOne(id);
+		newParent.addSupply(child);
+		supplyTypeRepository.save(newParent);
+		return castEntityAsResponse(newParent, Response.Status.OK);
 	}
 
 }

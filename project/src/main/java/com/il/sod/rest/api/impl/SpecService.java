@@ -1,12 +1,17 @@
 package com.il.sod.rest.api.impl;
 
+import com.il.sod.db.dao.impl.SpecsValueDAO;
 import com.il.sod.db.model.entities.Spec;
+import com.il.sod.db.model.entities.SpecsValue;
 import com.il.sod.db.model.repositories.SpecRepository;
+import com.il.sod.db.model.repositories.SpecsValueRepository;
+import com.il.sod.db.model.repositories.SupplyTypeRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.SpecsMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.SpecDTO;
+import com.il.sod.rest.dto.db.SpecsValueDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -23,9 +28,9 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/spec")
+@Path("/specs")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/spec", tags = { "specs" })
+@Api(value = "/specs", tags = { "specs" })
 public class SpecService extends AbstractServiceMutations {
 
 	@Autowired
@@ -33,9 +38,6 @@ public class SpecService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Spec", response = SpecDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveSpec(SpecDTO dto) throws SODAPIException {
 		try {
 			Spec entity = SpecsMapper.INSTANCE.map(dto);
@@ -47,12 +49,8 @@ public class SpecService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Spec", response = SpecDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateSpec(SpecDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
@@ -68,22 +66,9 @@ public class SpecService extends AbstractServiceMutations {
 		}
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Spec", response = SpecDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateSpecById(@PathParam("id") String id, SpecDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		Spec entity = specRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -96,44 +81,53 @@ public class SpecService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Spec list", response = SpecDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getAllSpecList() throws SODAPIException {
-		List<Spec> entityList = this.getEntityList(specRepository); 
+		List<Spec> entityList = this.getEntityList(specRepository);
 		List<SpecDTO> list = entityList.stream().map((i) -> {
 			SpecDTO dto = SpecsMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
-	
+
 	@GET
 	@Path("/byNotPrimary")
 	@ApiOperation(value = "Get Spec list Not Primary", response = SpecDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getSpecList() throws SODAPIException {
 		List<Spec> entityList = specRepository.findAllNotPrimary();
-		
+
 		List<SpecDTO> list = entityList.stream().map((i) -> {
 			SpecDTO dto = SpecsMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
-	
+
 	@GET
 	@Path("/byPrimary")
 	@ApiOperation(value = "Get Spec list Primary", response = SpecDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getSpecListByPrimary() throws SODAPIException {
 		List<Spec> entityList = specRepository.findAllPrimary();
 		List<SpecDTO> list = entityList.stream().map((i) -> {
 			SpecDTO dto = SpecsMapper.INSTANCE.map(i);
+			return dto;
+		}).collect(Collectors.toList());
+		return castEntityAsResponse(list);
+	}
+
+
+	@Autowired
+	SupplyTypeRepository supplyTypeRepository;
+	@Autowired
+	private SpecsValueDAO specsValueDAO;
+	@GET
+	@Path("/{idSpecs}/specs-values")
+	@ApiOperation(value = "Get Specs Value list by idSpec", response = SpecsValueDTO.class, responseContainer = "List")
+	public Response getSpecsValuesById(@PathParam("idSpecs") String idSpecs) throws SODAPIException {
+		SpecsMapper.INSTANCE.setSupplyTypeRepository(supplyTypeRepository);
+		List<SpecsValue> entityList = specsValueDAO.findBySpec(Integer.valueOf(idSpecs));
+		List<SpecsValueDTO> list = entityList.stream().map((i) -> {
+			SpecsValueDTO dto = SpecsMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);

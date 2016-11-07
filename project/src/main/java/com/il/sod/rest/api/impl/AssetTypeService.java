@@ -31,9 +31,6 @@ public class AssetTypeService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Asset Type", response = AssetTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveAssetType(AssetTypeDTO dto) throws SODAPIException {
 		AssetType entity = AssetMapper.INSTANCE.map(dto);
 		this.saveEntity(assetTypeRepository, entity);
@@ -41,26 +38,9 @@ public class AssetTypeService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Asset Type", response = AssetTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateAssetType(AssetTypeDTO dto) throws SODAPIException {
-		AssetType entity = AssetMapper.INSTANCE.map(dto);
-		this.updateEntity(assetTypeRepository, entity);
-		dto = AssetMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
-	}
-
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Asset Type", response = AssetTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateAssetTypeById(@PathParam("id") String id, AssetTypeDTO dto) throws SODAPIException {
 		AssetType entity = AssetMapper.INSTANCE.map(dto);
 		this.updateEntity(assetTypeRepository, entity);
 		dto = AssetMapper.INSTANCE.map(entity);
@@ -70,9 +50,6 @@ public class AssetTypeService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Task", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		AssetType entity = assetTypeRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -85,9 +62,6 @@ public class AssetTypeService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Asset Type list", response = AssetTypeDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getAssetTypeList() throws SODAPIException {
 		List<AssetType> rentityList = this.getEntityList(assetTypeRepository);
 		List<AssetTypeDTO> list = rentityList.stream().map((i) -> {

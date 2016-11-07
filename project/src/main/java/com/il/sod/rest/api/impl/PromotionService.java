@@ -38,9 +38,6 @@ public class PromotionService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Promotion", response = PromotionDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response savePromotion(PromotionDTO dto) throws SODAPIException {
 		try {
 			Promotion entity = PromotionMapper.INSTANCE.map(dto);
@@ -54,9 +51,6 @@ public class PromotionService extends AbstractServiceMutations {
 
 	@PUT
 	@ApiOperation(value = "Update Promotion", response = PromotionDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updatePromotion(PromotionDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
@@ -75,9 +69,6 @@ public class PromotionService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Create Promotion", response = PromotionDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deletePromotion(@PathParam("id") String id, PromotionDTO dto) throws SODAPIException {
 		try {
 			Promotion entity = promotionRepository.findOne(Integer.valueOf(id));
@@ -95,9 +86,6 @@ public class PromotionService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Promotion list", response = PromotionDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getPromotionList(@QueryParam("name") String name) throws SODAPIException {
 		List<Promotion> rentityList = null;
 		if (!StringUtils.isEmpty(name)){

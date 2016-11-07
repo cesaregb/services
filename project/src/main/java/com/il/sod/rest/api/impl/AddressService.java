@@ -46,9 +46,6 @@ public class AddressService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Address", response = AddressDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveAddress(AddressDTO dto) throws SODAPIException {
 		serviceDbHelper.validateClient(clientRepository, dto);
 
@@ -60,32 +57,13 @@ public class AddressService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Address", response = AddressDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateAddress(AddressDTO dto) throws SODAPIException {
 		serviceDbHelper.validateClient(clientRepository, dto);
-		
+
 		Address entity = this.getEntity(addressRepository, dto.getIdAddress());
 		entity = ClientMapper.INSTANCE.map(dto, entity);
-		this.updateEntity(addressRepository, entity);
-		dto = ClientMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
-	}
-
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Address", response = AddressDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateAddressById(@PathParam("id") String id, AddressDTO dto) throws SODAPIException {
-		serviceDbHelper.validateClient(clientRepository, dto);
-
-		Address entity = ClientMapper.INSTANCE.map(dto);
 		this.updateEntity(addressRepository, entity);
 		dto = ClientMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.CREATED);
@@ -94,9 +72,6 @@ public class AddressService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Address", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteEntityC(@PathParam("id") String id) throws SODAPIException {
 		Address entity = addressRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -111,9 +86,6 @@ public class AddressService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Address list", response = AddressDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getAddressList(@Context UriInfo uriInfo,
 								   @QueryParam("idClient") String idClient
 								   // not implemented...
@@ -144,9 +116,6 @@ public class AddressService extends AbstractServiceMutations {
 	@GET
 	@Path("/byId/{id}")
 	@ApiOperation(value = "Get Stop by id", response = AddressDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getById(@PathParam("id") String id) throws SODAPIException {
 		Address entity = this.getEntity(addressRepository, Integer.valueOf(id));
 		AddressDTO dto = ClientMapper.INSTANCE.map(entity);

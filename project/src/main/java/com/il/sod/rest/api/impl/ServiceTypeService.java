@@ -44,9 +44,6 @@ public class ServiceTypeService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Service Type", response = ServiceTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveServiceType(ServiceTypeDTO dto) throws SODAPIException {
 		ServiceType entity = ServiceMapper.INSTANCE.map(dto);
 		this.saveEntity(serviceTypeRepository, entity);
@@ -55,25 +52,8 @@ public class ServiceTypeService extends AbstractServiceMutations {
 	}
 
 	@PUT
-	@Deprecated
 	@ApiOperation(value = "Update Service Type", response = ServiceTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateServiceType(ServiceTypeDTO dto) throws SODAPIException {
-		ServiceType entity = ServiceMapper.INSTANCE.map(dto);
-		this.updateEntity(serviceTypeRepository, entity);
-		dto = converter.map(entity, ServiceTypeDTO.class);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
-	}
-
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Service Type", response = ServiceTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateServiceTypeById(@PathParam("id") String id, ServiceTypeDTO dto) throws SODAPIException {
 		ServiceType entity = ServiceMapper.INSTANCE.map(dto);
 		this.updateEntity(serviceTypeRepository, entity);
 		dto = converter.map(entity, ServiceTypeDTO.class);
@@ -83,9 +63,6 @@ public class ServiceTypeService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		ServiceType entity = serviceTypeRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -98,9 +75,6 @@ public class ServiceTypeService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Service Type list", response = ServiceTypeDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getServiceTypeList() throws SODAPIException {
 		List<ServiceType> rentityList = this.getEntityList(serviceTypeRepository);
 		List<ServiceTypeDTO> list = rentityList.stream().map((i) -> {
@@ -113,9 +87,6 @@ public class ServiceTypeService extends AbstractServiceMutations {
 	@GET
 	@Path("/byId/{id}")
 	@ApiOperation(value = "Get Service Type list", response = ServiceTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getServiceType(@PathParam("id") String id) throws SODAPIException {
 		ServiceType st = serviceTypeRepository.findOne(Integer.valueOf(id));
 		ServiceTypeDTO dto = ServiceMapper.INSTANCE.map(st);
@@ -125,9 +96,6 @@ public class ServiceTypeService extends AbstractServiceMutations {
 	@GET
 	@Path("/byCalculator")
 	@ApiOperation(value = "Get Service Type list", response = ServiceTypeDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getPublicServiceType() throws SODAPIException {
 		List<ServiceType> listEntities = serviceTypeRepository.findAllPublic();
 		List<ServiceTypeDTO> listResult = listEntities.stream().map(i -> ServiceMapper.INSTANCE.map(i)).collect(Collectors.toList());
@@ -137,9 +105,6 @@ public class ServiceTypeService extends AbstractServiceMutations {
 	@POST
 	@Path("/addProducts/{idServiceType}")
 	@ApiOperation(value = "Add Products to Service Type", response = ServiceDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveService(@PathParam("idServiceType") Integer idServiceType,  List<ProductTypeDTO> listDto) throws SODAPIException {
 		ServiceType serviceType = serviceTypeRepository.findOne(idServiceType);
 		// clean list!!

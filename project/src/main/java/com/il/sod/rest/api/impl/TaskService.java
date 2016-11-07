@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @Produces(MediaType.APPLICATION_JSON)
 @Api(value = "/tasks", tags = { "tasks" })
 public class TaskService extends AbstractServiceMutations {
-	
+
 	@Autowired
 	TaskRepository taskRepository;
 
@@ -42,15 +42,12 @@ public class TaskService extends AbstractServiceMutations {
 
 	@Autowired
 	TaskTypeRepository taskTypeRepository;
-	
+
 	@Autowired
 	ServiceDAO serviceDAO;
 
 	@POST
 	@ApiOperation(value = "Create Task", response = TaskDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveTask(TaskDTO dto) throws SODAPIException {
 		try {
 			Task entity = TaskMapper.INSTANCE.map(dto);
@@ -62,12 +59,8 @@ public class TaskService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Task", response = TaskDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateTask(TaskDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
@@ -83,16 +76,6 @@ public class TaskService extends AbstractServiceMutations {
 		}
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Task", response = TaskDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateTaskById(@PathParam("id") String id, TaskDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
 //	private TaskType getTaskType(Task entity, int idTaskType) {
 //		entity.setTaskType(getTaskType(entity, dto.getTaskTypeId()));
 //		TaskType tt = this.getEntity(taskTypeRepository, idTaskType);
@@ -104,9 +87,6 @@ public class TaskService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Task", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		Task entity = taskRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -119,9 +99,6 @@ public class TaskService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Task list", response = TaskDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getTaskList() throws SODAPIException {
 		List<Task> entityList = this.getEntityList(taskRepository);
 		List<TaskDTO> list = entityList.stream().map((i) -> {
@@ -130,13 +107,10 @@ public class TaskService extends AbstractServiceMutations {
 		}).collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
-	
+
 	@GET
 	@Path("/byIdTaskType/{idTaskType}")
 	@ApiOperation(value = "Get Task by Task Type", response = TaskDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getTaskListByTaskType(@PathParam("idTaskType") String idTaskType) throws SODAPIException {
 		if (!NumberUtils.isNumber(idTaskType)){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "idTaskType must be numeric ");
@@ -152,9 +126,6 @@ public class TaskService extends AbstractServiceMutations {
 	@GET
 	@Path("/byIdOrder/{idOrder}")
 	@ApiOperation(value = "Get Task by Task Type", response = TaskDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getTaskListByOrder(@PathParam("idOrder") String idOrder) throws SODAPIException {
 		if (!NumberUtils.isNumber(idOrder)){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "idOrder must be numeric ");
@@ -174,7 +145,7 @@ public class TaskService extends AbstractServiceMutations {
 			return r;
 		}).collect(Collectors.toList());
 
-		// TODO manage it with lambda
+		// TODO manage it with lamnda
 		int insertPosition = -1;
 		for (int i=0; i<resultList.size(); i++){
 			if (resultList.get(i).getTask().getIdTask() == 1){

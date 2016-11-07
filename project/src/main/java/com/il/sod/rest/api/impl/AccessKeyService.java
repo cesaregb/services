@@ -30,9 +30,6 @@ public class AccessKeyService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Service Type", response = AccessKeyDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveAccessKey(AccessKeyDTO dto) throws SODAPIException {
 		try {
 			AccessKey entity = converter.map(dto, AccessKey.class);
@@ -44,12 +41,9 @@ public class AccessKeyService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Service Type", response = AccessKeyDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+
 	public Response updateAccessKey(AccessKeyDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
@@ -65,21 +59,9 @@ public class AccessKeyService extends AbstractServiceMutations {
 		}
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Service Type", response = AccessKeyDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateAccessKeyById(@PathParam("id") String id, AccessKeyDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
 	@DELETE
 	@ApiOperation(value = "Create Service Type", response = AccessKeyDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+
 	public Response deleteAccessKey(AccessKeyDTO dto) throws SODAPIException {
 		try {
 			AccessKey entity = converter.map(dto, AccessKey.class);
@@ -94,9 +76,7 @@ public class AccessKeyService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Service Type list", response = AccessKeyDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+
 	public Response getAccessKeyList() throws SODAPIException {
 		List<AccessKey> rentityList = this.getEntityList(accessKeyRepository);
 		List<AccessKeyDTO> list = rentityList.stream().map((i) -> {

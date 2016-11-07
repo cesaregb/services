@@ -33,9 +33,6 @@ public class ProductTypeService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Product Type", response = ProductTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveProductType(ProductTypeDTO dto) throws SODAPIException {
 		try {
 			ProductType entity = ProductMapper.INSTANCE.map(dto);
@@ -47,23 +44,9 @@ public class ProductTypeService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Product Type", response = ProductTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateProductType(ProductTypeDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Product Type", response = ProductTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateProductTypeById(@PathParam("id") String id, ProductTypeDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
 
@@ -81,9 +64,6 @@ public class ProductTypeService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Create Product Type", response = ProductTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteProductType(@PathParam("id") String id, ProductTypeDTO dto) throws SODAPIException {
 		try {
 			ProductType entity = productTypeRepository.findOne(Integer.valueOf(id));
@@ -106,9 +86,6 @@ public class ProductTypeService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Product Type list", response = ProductTypeDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getProductTypeList() throws SODAPIException {
 		List<ProductType> rentityList = this.getEntityList(productTypeRepository);
 		List<ProductTypeDTO> list = rentityList.stream().map((i) -> {

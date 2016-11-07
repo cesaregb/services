@@ -26,7 +26,7 @@ public class SpecsValue implements IEntity<Integer> {
 
 	private int idSupplyType;
 
-	private int type;
+	private int type; // 1 = value; 2 = product
 
 	private String value;
 	
@@ -41,7 +41,7 @@ public class SpecsValue implements IEntity<Integer> {
 	
 	private double specPrice;
 	
-	private int costType;
+	private int costType; // 0 = increment; 1 = specPrice
 
 	public SpecsValue() {
 	}

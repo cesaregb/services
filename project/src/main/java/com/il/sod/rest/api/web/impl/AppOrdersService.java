@@ -68,9 +68,6 @@ public class AppOrdersService extends AbstractServiceMutations {
 	@GET
 	@Path("/orderTypes")
 	@ApiOperation(value = "Get Address list", response = WServiceCategoryDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getOrderTypes() throws SODAPIException {
 		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
 		List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
@@ -80,9 +77,6 @@ public class AppOrdersService extends AbstractServiceMutations {
 	@GET
 	@Path("/public/orderTypes")
 	@ApiOperation(value = "Get Address list", response = WServiceCategoryDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getOrderTypesPublic() throws SODAPIException {
 		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
 		List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
@@ -99,9 +93,6 @@ public class AppOrdersService extends AbstractServiceMutations {
 	@GET
 	@Path("/orders/{idClient}")
 	@ApiOperation(value = "Get Client Orders list", response = OrderDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getOrdersByClient(@PathParam("idClient") String idClient) throws SODAPIException {
 		Client client = this.getEntity(clientRepository, Integer.valueOf(idClient));
 		List<Order> rentityList = orderRepository.findByClient(client);
@@ -114,9 +105,6 @@ public class AppOrdersService extends AbstractServiceMutations {
 	
 	@POST
 	@ApiOperation(value = "Save order", response = OrderDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveOrder(UIOrderDTO orderInputDto) throws SODAPIException {
 		OrderDTO result = null;
 		

@@ -8,6 +8,7 @@ import com.il.sod.mapper.ClientMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ClientDTO;
+import com.il.sod.rest.dto.helper.ListsHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -48,9 +49,6 @@ public class ClientService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Client", response = ClientDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveClient(ClientDTO dto) throws SODAPIException {
 		try{
 
@@ -79,14 +77,11 @@ public class ClientService extends AbstractServiceMutations {
 
 	@PUT
 	@ApiOperation(value = "Update Client", response = ClientDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateClient(ClientDTO dto) throws SODAPIException {
 		// find existing one.
 		Client entity = clientDAO.findByEmail(dto.getEmail());
 
-		if (entity.getDeleted() > 0){
+		if (entity != null && entity.getDeleted() > 0){
             throw new SODAPIException(Response.Status.NOT_FOUND, "Client deleted, please request admin to activate.");
 		}
 
@@ -131,9 +126,6 @@ public class ClientService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Client", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteItem(@PathParam("id") String clientId) throws SODAPIException {
 		Client entity = clientRepository.findOne(Integer.valueOf(clientId));
 		if (entity == null){
@@ -147,9 +139,6 @@ public class ClientService extends AbstractServiceMutations {
 	@GET
 	@Path("/byId/{clientId}")
 	@ApiOperation(value = "Get Client list", response = ClientDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getClient(@PathParam("clientId") String clientId) throws SODAPIException {
 		ClientDTO dto = ClientMapper.INSTANCE.map(this.getEntity(clientRepository, Integer.valueOf(clientId)));
 		return castEntityAsResponse(dto, Response.Status.OK);
@@ -157,9 +146,6 @@ public class ClientService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Client list by filter UNIQUE[ phone, idAddress, email, token]", response = ClientDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getClientsByFilter(@Context UriInfo uriInfo,
 									   @QueryParam("idAddress") String idAddress,
 									   @QueryParam("phone") String phone,
@@ -175,12 +161,16 @@ public class ClientService extends AbstractServiceMutations {
 
 		MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
 
+
 		// logging
-		Iterator<String> it = queryParams.keySet().iterator();
-		while(it.hasNext()){
-			String theKey = it.next();
-			LOGGER.info(theKey + " : " + queryParams.getFirst(theKey));
-		}
+        Iterator<String> it;
+		if (!queryParams.isEmpty()){
+            it = queryParams.keySet().iterator();
+            while(it.hasNext()){
+                String theKey = it.next();
+                LOGGER.info(theKey + " : " + queryParams.getFirst(theKey));
+            }
+        }
 
 		List<Client> entities = null;
 		if (StringUtils.isNotEmpty(phone)) {
@@ -205,7 +195,7 @@ public class ClientService extends AbstractServiceMutations {
 			entities = this.getEntityList(clientRepository);
 		}
 
-		List<ClientDTO> result = entities.stream().map(ClientMapper.INSTANCE::map).collect(Collectors.toList());
+		List<ClientDTO> result = ListsHelper.getActiveEntityList(entities).stream().map(ClientMapper.INSTANCE::map).collect(Collectors.toList());
 		return castEntityAsResponse(result, Response.Status.OK);
 	}
 

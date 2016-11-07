@@ -44,9 +44,6 @@ public class ClientTypeService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Client Type", response = ClientTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveClientType(ClientTypeDTO dto) throws SODAPIException {
 		try {
 			ClientType entity = ClientMapper.INSTANCE.map(dto);
@@ -58,23 +55,9 @@ public class ClientTypeService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Client Type", response = ClientTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateClientType(ClientTypeDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Client Type", response = ClientTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateClientTypeById(@PathParam("id") String id, ClientTypeDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
 
@@ -92,9 +75,6 @@ public class ClientTypeService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Client Type", response = ClientTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteClientType(@PathParam("id") String id, ClientTypeDTO dto) throws SODAPIException {
 		try {
 			ClientType entity = clientTypeRepository.findOne(Integer.valueOf(id));
@@ -117,9 +97,6 @@ public class ClientTypeService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Client Type list", response = ClientTypeDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getClientTypeList() throws SODAPIException {
 		List<ClientType> rentityList = this.getEntityList(clientTypeRepository);
 		List<ClientTypeDTO> list = rentityList.stream().map((i) -> {
@@ -132,9 +109,6 @@ public class ClientTypeService extends AbstractServiceMutations {
 	@POST
 	@Path("/addClients/{idClientType}")
 	@ApiOperation(value = "Add Client to Client Type", response = ClientTypeDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response addClient2ClientType(@PathParam("idClientType") Integer idClientType, List<ClientDTO> dtoList) throws SODAPIException {
 		try {
 			List<ClientTypeDTO> result = new ArrayList<>();

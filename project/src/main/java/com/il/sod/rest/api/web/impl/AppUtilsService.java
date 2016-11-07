@@ -44,9 +44,6 @@ public class AppUtilsService extends AbstractServiceMutations {
 	@GET
 	@Path("/menu")
 	@ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getMenu() throws SODAPIException {
 		List<Menu> entities = menuRepository.findAllByOrderByOrderAsc();
 		List<MenuDTO> dtos = entities.stream().map(i -> {return specificObjectsConverterService.map(i);}).collect(Collectors.toList());
@@ -56,9 +53,6 @@ public class AppUtilsService extends AbstractServiceMutations {
 	@GET
 	@Path("/menu/{accessLevel}")
 	@ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getMenu(@PathParam("accessLevel") String accessLevel) throws SODAPIException {
 		List<Menu> entities = menuRepository.findAll();
 		int accessL = Integer.valueOf(accessLevel);

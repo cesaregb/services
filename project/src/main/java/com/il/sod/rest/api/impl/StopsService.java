@@ -41,29 +41,26 @@ public class StopsService extends AbstractServiceMutations {
 
 	@Autowired
 	StopRepository stopRepository;
-	
+
 	@Autowired
 	AddressRouteRepository addressRouteRepository;
-	
+
 	@Autowired
 	AddressRepository addressRepository;
-	
+
 	@Autowired
 	RoutesRepository routesRepository;
 
 	@POST
 	@ApiOperation(value = "Create Stop", response = StopDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveStop(StopDTO dto) throws SODAPIException {
-		
+
 		if ( dto.getType() == Constants.ADDRESS_ROUTE_TYPE ){
 			AddressRoute addressEntity = RoutesMapper.INSTANCE.map(dto.getAddress());
 			this.saveEntity(addressRouteRepository, addressEntity);
 			dto.setIdAddress(addressEntity.getIdAddressRoute());
 		}
-		
+
 		Stop entity = RoutesMapper.INSTANCE.map(dto);
 		assignDependencyToChilds(entity);
 		this.saveEntity(stopRepository, entity);
@@ -71,15 +68,11 @@ public class StopsService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Stop", response = StopDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateStop(StopDTO dto) throws SODAPIException {
 		Stop entity = this.getEntity(stopRepository, dto.getIdStops());
-		
+
 		if ( dto.getType() == Constants.ADDRESS_ROUTE_TYPE ){
 			AddressRoute addressEntity = this.getEntity(addressRouteRepository, Integer.valueOf(dto.getIdAddress()));
 			if(addressEntity != null){
@@ -90,7 +83,7 @@ public class StopsService extends AbstractServiceMutations {
 			this.saveEntity(addressRouteRepository, addressEntity);
 			entity.setIdAddress(addressEntity.getId());
 		}
-		
+
 		this.updateEntity(stopRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.CREATED);
@@ -99,9 +92,6 @@ public class StopsService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Stop", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteEntity(@PathParam("id") String id) throws SODAPIException {
 		Stop entity = stopRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -116,9 +106,6 @@ public class StopsService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Stop list", response = StopDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getStopList() throws SODAPIException {
 		List<Stop> rentityList = this.getEntityList(stopRepository);
 		List<StopDTO> list = rentityList.stream().map((i) -> {
@@ -128,25 +115,19 @@ public class StopsService extends AbstractServiceMutations {
 		return castEntityAsResponse(list);
 
 	}
-	
+
 	@GET
 	@Path("/byId/{stopId}")
 	@ApiOperation(value = "Get Stop by id", response = StopDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getStopById(@PathParam("stopId") String stopId) throws SODAPIException {
 		Stop entity = this.getEntity(stopRepository, Integer.valueOf(stopId));
 		StopDTO dto = RoutesMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto);
 	}
-	
+
 	@GET
 	@Path("/address/{type}/{id}")
 	@ApiOperation(value = "Get Stop by id", response = AddressGenericDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getById(@PathParam("type") String type, @PathParam("id") String id) throws SODAPIException {
 		if (Integer.valueOf(type) == Constants.ADDRESS_ROUTE_TYPE){
 			AddressRoute entity = this.getEntity(addressRouteRepository, Integer.valueOf(id));
@@ -159,7 +140,7 @@ public class StopsService extends AbstractServiceMutations {
 		}
 		throw new SODAPIException(Response.Status.BAD_REQUEST, "Not valid type");
 	}
-	
+
 	private void assignDependencyToChilds(Stop entity) {
 		if (entity.getRoute() != null){
 			entity.getRoute().addStop(entity);

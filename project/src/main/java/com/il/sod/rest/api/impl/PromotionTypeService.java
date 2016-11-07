@@ -39,9 +39,6 @@ public class PromotionTypeService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Promotion Type", response = PromotionTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response savePromotionType(PromotionTypeDTO dto) throws SODAPIException {
 		try {
 			PromotionType entity = PromotionMapper.INSTANCE.map(dto);
@@ -55,9 +52,6 @@ public class PromotionTypeService extends AbstractServiceMutations {
 
 	@PUT
 	@ApiOperation(value = "Update Promotion Type", response = PromotionTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updatePromotionType(PromotionTypeDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
@@ -76,9 +70,6 @@ public class PromotionTypeService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Create Promotion Type", response = PromotionTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deletePromotionType(@PathParam("id") String id, PromotionTypeDTO dto) throws SODAPIException {
 		try {
 			PromotionType entity = promotionTypeRepository.findOne(Integer.valueOf(id));
@@ -101,9 +92,6 @@ public class PromotionTypeService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Promotion Type list", response = PromotionTypeDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getPromotionTypeList() throws SODAPIException {
 		List<PromotionType> rentityList = this.getEntityList(promotionTypeRepository);
 		List<PromotionTypeDTO> list = rentityList.stream().map((i) -> {
@@ -116,9 +104,6 @@ public class PromotionTypeService extends AbstractServiceMutations {
 	@POST
 	@Path("/addPromotion/{idPromotionType}")
 	@ApiOperation(value = "Add Promotion to Promotion Type", response = PromotionTypeDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response addPromotion2PromotionType(@PathParam("idPromotionType") Integer id, PromotionDTO dto) throws SODAPIException {
 		try {
 			Promotion promotionEntity = promotionRepository.findOne(dto.getIdPromotion());

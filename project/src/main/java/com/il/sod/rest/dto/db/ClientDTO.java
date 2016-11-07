@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
 import java.util.Set;
 
-public class ClientDTO {
+public class ClientDTO extends DeletableDTO{
 	private int idClient;
 	private String email;
 	private String lastName;

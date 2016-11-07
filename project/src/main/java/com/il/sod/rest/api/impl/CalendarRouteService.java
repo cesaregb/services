@@ -41,43 +41,23 @@ public class CalendarRouteService extends AbstractServiceMutations {
 
 	@Autowired
 	CalendarRouteRepository calendarRouteRepository;
-	
+
 	@Autowired
 	RoutesRepository routesRepository;
 
 	@POST
 	@ApiOperation(value = "Create CalendarRoute", response = CalendarRouteDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveCalendarRoute(CalendarRouteDTO dto) throws SODAPIException {
-		
+
 		CalendarRoute entity = RoutesMapper.INSTANCE.map(dto);
 		this.saveEntity(calendarRouteRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update CalendarRoute", response = CalendarRouteDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateCalendarRoute(CalendarRouteDTO dto) throws SODAPIException {
-		CalendarRoute entity = RoutesMapper.INSTANCE.map(dto);
-		this.updateEntity(calendarRouteRepository, entity);
-		dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
-	}
-
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update CalendarRoute", response = CalendarRouteDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateCalendarRouteById(@PathParam("id") String id, CalendarRouteDTO dto) throws SODAPIException {
 		CalendarRoute entity = RoutesMapper.INSTANCE.map(dto);
 		this.updateEntity(calendarRouteRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
@@ -87,9 +67,6 @@ public class CalendarRouteService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete CalendarRoute", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteEntity(@PathParam("id") String id) throws SODAPIException {
 		CalendarRoute entity = calendarRouteRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -104,9 +81,6 @@ public class CalendarRouteService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get CalendarRoute list", response = CalendarRouteDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getCalendarRouteList() throws SODAPIException {
 		List<CalendarRoute> rentityList = this.getEntityList(calendarRouteRepository);
 		List<CalendarRouteDTO> list = rentityList.stream().map((i) -> {

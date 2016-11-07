@@ -33,37 +33,17 @@ public class RoutesService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Route", response = RouteDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveRoute(RouteDTO dto) throws SODAPIException {
-		
+
 		Route entity = RoutesMapper.INSTANCE.map(dto);
 		this.saveEntity(routesRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Route", response = RouteDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateRoute(RouteDTO dto) throws SODAPIException {
-		Route entity = RoutesMapper.INSTANCE.map(dto);
-		this.updateEntity(routesRepository, entity);
-		dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
-	}
-
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Route", response = RouteDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateRouteById(@PathParam("id") String id, RouteDTO dto) throws SODAPIException {
 		Route entity = RoutesMapper.INSTANCE.map(dto);
 		this.updateEntity(routesRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
@@ -73,9 +53,6 @@ public class RoutesService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Route", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteEntity(@PathParam("id") String id) throws SODAPIException {
 		Route entity = routesRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -88,9 +65,6 @@ public class RoutesService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Route list", response = RouteDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getRouteList() throws SODAPIException {
 		List<Route> rentityList = this.getEntityList(routesRepository);
 		List<RouteDTO> list = rentityList.stream().map((i) -> {
@@ -100,13 +74,10 @@ public class RoutesService extends AbstractServiceMutations {
 		return castEntityAsResponse(list);
 
 	}
-	
+
 	@GET
 	@Path("/byId/{id}")
 	@ApiOperation(value = "Get Route by id", response = RouteDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getRouteById(@PathParam("id") String id) throws SODAPIException {
 		RouteDTO dto = RoutesMapper.INSTANCE.map(this.getEntity(routesRepository, Integer.valueOf(id)));
 		return castEntityAsResponse(dto, Response.Status.OK);

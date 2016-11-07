@@ -1,5 +1,7 @@
 package com.il.sod.db.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,6 +37,7 @@ public class Supply implements IEntity<Integer> {
 	//bi-directional many-to-one association to SupplyType
 	@ManyToOne
 	@JoinColumn(name="idSupplyType")
+	@JsonBackReference
 	private SupplyType supplyType;
 
 	public Supply() {

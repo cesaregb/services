@@ -33,9 +33,6 @@ public class DistanceInfoService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Distance Info", response = DistanceInfoDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveDistanceInfo(DistanceInfoDTO dto) throws SODAPIException {
 		try {
 			DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
@@ -47,12 +44,8 @@ public class DistanceInfoService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Distance Info", response = DistanceInfoDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateDistanceInfo(DistanceInfoDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
@@ -68,22 +61,9 @@ public class DistanceInfoService extends AbstractServiceMutations {
 		}
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Distance Info", response = DistanceInfoDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateDistanceInfoById(@PathParam("id") String id, DistanceInfoDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Item", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		DistanceInfo entity = distanceInfoRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
@@ -96,9 +76,6 @@ public class DistanceInfoService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Distance Info list", response = DistanceInfoDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getDistanceInfoList() throws SODAPIException {
 		List<DistanceInfo> rentityList = distanceInfoRepository.findAllOrderByDistance();
 		List<DistanceInfoDTO> list = rentityList.stream().map((i) -> {

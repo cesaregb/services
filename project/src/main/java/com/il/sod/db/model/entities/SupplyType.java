@@ -1,5 +1,7 @@
 package com.il.sod.db.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -22,7 +24,8 @@ public class SupplyType implements IEntity<Integer> {
 	private String name;
 
 	//bi-directional many-to-one association to Supply
-	@OneToMany(mappedBy="supplyType", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="supplyType", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private Set<Supply> supplies;
 
 	public SupplyType() {
