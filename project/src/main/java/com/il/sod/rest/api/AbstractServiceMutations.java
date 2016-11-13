@@ -12,7 +12,11 @@ public abstract class AbstractServiceMutations extends AbstractService{
 	
 	@SuppressWarnings("unchecked")
 	protected <T> T saveEntity(JpaRepository<T, Integer> repository, T entity){
-		ABS_LOGGER.info("Save ");
+		try {
+			ABS_LOGGER.info("Save {}", this.castEntityAsString(entity));
+		} catch (SODAPIException e) {
+			// do nothing..
+		}
 		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
 		gDao.setRepository(repository);
 		gDao.create(entity);
@@ -39,7 +43,7 @@ public abstract class AbstractServiceMutations extends AbstractService{
 
 	@SuppressWarnings("unchecked")
 	protected <T> T updateEntity(JpaRepository<T, Integer> repository, T entity) throws SODAPIException{
-		ABS_LOGGER.info("Update " + ((IEntity) entity).getId());
+		ABS_LOGGER.info("Update {}", this.castEntityAsString(entity));
 		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
 		gDao.setRepository(repository);
 		gDao.update(entity);

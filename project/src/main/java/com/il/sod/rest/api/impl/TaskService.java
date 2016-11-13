@@ -49,6 +49,7 @@ public class TaskService extends AbstractServiceMutations {
 	public Response saveTask(TaskDTO dto) throws SODAPIException {
 		try {
 			Task entity = TaskMapper.INSTANCE.map(dto);
+
 			this.saveEntity(taskRepository, entity);
 			dto = TaskMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
