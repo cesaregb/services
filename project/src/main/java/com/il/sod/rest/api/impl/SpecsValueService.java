@@ -70,7 +70,7 @@ public class SpecsValueService extends AbstractServiceMutations {
 			}
 			this.updateEntity(specsValueRepository, entity);
 			dto = SpecsMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

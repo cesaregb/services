@@ -57,5 +57,19 @@ public class Constants {
 		discountType.put(1, "amount");
 		discountType.put(2, "percentge");
 	}
-	
+
+	// Promotion
+	public enum PROMOTION_TYPE{
+		AMOUNT(1),
+		DISCOUNT(2);
+
+		public final int val;
+		PROMOTION_TYPE(int val){
+			this.val = val;
+		}
+		public int getValue(){
+			return this.val;
+		}
+	}
+
 }

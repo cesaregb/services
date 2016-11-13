@@ -9,8 +9,6 @@ import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ServiceCategoryDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,9 +21,9 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/service-category")
+@Path("/services/service-category")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/service-category", tags = { "service" })
+@Api(value = "/services/service-category", tags = { "services" })
 public class ServiceCategoryService extends AbstractServiceMutations {
 
 	@Autowired
@@ -47,15 +45,15 @@ public class ServiceCategoryService extends AbstractServiceMutations {
 	@PUT
 	@ApiOperation(value = "Update Supply Type", response = ServiceCategoryDTO.class)
 	public Response updateServiceCategory(ServiceCategoryDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	private Response updateEntity(ServiceCategoryDTO dto) throws SODAPIException {
 		try {
+			if (dto.getIdServiceCategory() == 0
+					|| serviceCategoryRepository.findOne(dto.getIdServiceCategory()) == null){
+				throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found, please indicate a valida ID");
+			}
 			ServiceCategory entity = ServiceMapper.INSTANCE.map(dto);
 			this.updateEntity(serviceCategoryRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

@@ -10,8 +10,6 @@ import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderTypeDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,9 +22,9 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/order-type")
+@Path("/orders/order-type")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/order-type", tags = { "order" })
+@Api(value = "/orders/order-type", tags = { "orders" })
 public class OrderTypeService extends AbstractServiceMutations {
 
 	@Autowired
@@ -59,7 +57,7 @@ public class OrderTypeService extends AbstractServiceMutations {
 			OrderType entity = OrderMapper.INSTANCE.map(dto);
 			this.updateEntity(orderTypeRepository, entity);
 			dto = OrderMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

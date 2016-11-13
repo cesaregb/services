@@ -61,7 +61,7 @@ public class CalendarRouteService extends AbstractServiceMutations {
 		CalendarRoute entity = RoutesMapper.INSTANCE.map(dto);
 		this.updateEntity(calendarRouteRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE

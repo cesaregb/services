@@ -9,8 +9,6 @@ import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.RouteDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,7 +45,7 @@ public class RoutesService extends AbstractServiceMutations {
 		Route entity = RoutesMapper.INSTANCE.map(dto);
 		this.updateEntity(routesRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE

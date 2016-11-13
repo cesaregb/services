@@ -66,7 +66,7 @@ public class AddressService extends AbstractServiceMutations {
 		entity = ClientMapper.INSTANCE.map(dto, entity);
 		this.updateEntity(addressRepository, entity);
 		dto = ClientMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE

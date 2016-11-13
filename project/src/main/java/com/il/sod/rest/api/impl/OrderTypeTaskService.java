@@ -9,8 +9,6 @@ import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderTypeTaskDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,9 +21,9 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/order-type-task")
+@Path("/orders/order-type/order-type-task")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/order-type-task", tags = { "order" })
+@Api(value = "/orders/order-type/order-type-task", tags = { "orders" })
 public class OrderTypeTaskService extends AbstractServiceMutations {
 	@Autowired
 	OrderTypeTaskRepository orderTypeTaskRepository;
@@ -54,18 +52,22 @@ public class OrderTypeTaskService extends AbstractServiceMutations {
 			OrderTypeTask entity = OrderMapper.INSTANCE.map(dto);
 			this.updateEntity(orderTypeTaskRepository, entity);
 			dto = OrderMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}
 	}
 
 	@DELETE
+	@Path("/{id}")
 	@ApiOperation(value = "Create Service Type", response = OrderTypeTaskDTO.class)
-	public Response deleteOrderTypeTask(OrderTypeTaskDTO dto) throws SODAPIException {
+	public Response deleteOrderTypeTask(@PathParam("id") Integer id) throws SODAPIException {
 		try {
-			OrderTypeTask entity = OrderMapper.INSTANCE.map(dto);
-			this.deleteEntity(orderTypeTaskRepository, entity.getIdOrderTypeTasks());
+			OrderTypeTask entity = orderTypeTaskRepository.findOne(id);
+			if (entity == null){
+				throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
+			}
+			this.deleteEntity(orderTypeTaskRepository, entity.getIdOrderTypeTask());
 			return castEntityAsResponse(
 					GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
 					Response.Status.OK);

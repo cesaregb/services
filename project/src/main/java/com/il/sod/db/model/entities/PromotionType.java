@@ -22,7 +22,7 @@ public class PromotionType extends SoftDeleteEntity implements IEntity<Integer> 
 	private String name;
 
 	//bi-directional many-to-one association to PromotionDTO
-	@OneToMany(mappedBy="promotionType")
+	@OneToMany(mappedBy="promotionType", fetch = FetchType.EAGER)
 	private Set<Promotion> promotions;
 
 	public PromotionType() {

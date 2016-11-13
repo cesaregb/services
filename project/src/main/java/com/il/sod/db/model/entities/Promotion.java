@@ -234,4 +234,7 @@ public class Promotion extends SoftDeleteEntity implements IEntity<Integer> {
 		this.idPromotion = id;
 		return this;
 	}
+
+
+
 }

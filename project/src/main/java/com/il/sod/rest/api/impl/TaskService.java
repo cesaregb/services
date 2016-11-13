@@ -13,8 +13,6 @@ import com.il.sod.rest.dto.db.TaskDTO;
 import com.il.sod.rest.dto.specifics.TaskInfoDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -70,7 +68,7 @@ public class TaskService extends AbstractServiceMutations {
 			Task entity = TaskMapper.INSTANCE.map(dto);
 			this.updateEntity(taskRepository, entity);
 			dto = TaskMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

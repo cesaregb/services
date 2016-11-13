@@ -40,7 +40,7 @@ class OrderTaskSetConverter extends BidirectionalConverter<Set<OrderTask>, Set<O
 	}
 }
 
-class OrderTypeTaskSetConverter extends BidirectionalConverter<Set<OrderTypeTask>, List<OrderTypeTaskDTO>> {
+class OrderTypeTasketConverter extends BidirectionalConverter<Set<OrderTypeTask>, List<OrderTypeTaskDTO>> {
 
 	@Override
 	public List<OrderTypeTaskDTO> convertTo(Set<OrderTypeTask> source, Type<List<OrderTypeTaskDTO>> type) {

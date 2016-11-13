@@ -66,7 +66,7 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 			ClientPaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
 			this.updateEntity(clientPaymentInfoRepository, entity);
 			dto = PaymentMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

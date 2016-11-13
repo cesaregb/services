@@ -55,7 +55,7 @@ public class ClientBagService extends AbstractServiceMutations {
 			ClientBag entity = ClientMapper.INSTANCE.map(dto);
 			this.updateEntity(clientBagRepository, entity);
 			dto = ClientMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

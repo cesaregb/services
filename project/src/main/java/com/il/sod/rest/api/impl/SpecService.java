@@ -60,7 +60,7 @@ public class SpecService extends AbstractServiceMutations {
 			Spec entity = SpecsMapper.INSTANCE.map(dto);
 			this.updateEntity(specRepository, entity);
 			dto = SpecsMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

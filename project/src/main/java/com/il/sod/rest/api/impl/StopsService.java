@@ -86,7 +86,7 @@ public class StopsService extends AbstractServiceMutations {
 
 		this.updateEntity(stopRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE

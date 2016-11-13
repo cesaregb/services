@@ -60,7 +60,7 @@ public class EmployeeService extends AbstractServiceMutations {
 			Employee entity = EmployeeMapper.INSTANCE.map(dto);
 			this.updateEntity(employeeRepository, entity);
 			dto = EmployeeMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

@@ -11,8 +11,6 @@ import com.il.sod.rest.dto.db.ProductDTO;
 import com.il.sod.rest.dto.helper.ListsHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +63,7 @@ public class ProductService extends AbstractServiceMutations {
 			Product entity = ProductMapper.INSTANCE.map(dto);
 			this.updateEntity(productRepository, entity);
 			dto = ProductMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

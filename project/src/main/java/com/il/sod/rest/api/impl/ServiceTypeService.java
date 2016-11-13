@@ -1,19 +1,18 @@
 package com.il.sod.rest.api.impl;
 
+import com.il.sod.db.model.entities.ProductType;
 import com.il.sod.db.model.entities.ServiceType;
-import com.il.sod.db.model.repositories.ServiceTypeRepository;
 import com.il.sod.db.model.repositories.ProductTypeRepository;
+import com.il.sod.db.model.repositories.ServiceTypeRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ServiceMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
+import com.il.sod.rest.dto.db.ProductTypeDTO;
 import com.il.sod.rest.dto.db.ServiceDTO;
 import com.il.sod.rest.dto.db.ServiceTypeDTO;
-import com.il.sod.rest.dto.db.ProductTypeDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +28,9 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/service-type")
+@Path("/services/service-type")
 @Produces(MediaType.APPLICATION_JSON)
- @Api(value = "/service-type", tags = { "service" })
+ @Api(value = "/services/service-type", tags = { "services" })
 public class ServiceTypeService extends AbstractServiceMutations {
 
 	final static Logger LOGGER = LoggerFactory.getLogger(ServiceTypeService.class);
@@ -57,7 +56,7 @@ public class ServiceTypeService extends AbstractServiceMutations {
 		ServiceType entity = ServiceMapper.INSTANCE.map(dto);
 		this.updateEntity(serviceTypeRepository, entity);
 		dto = converter.map(entity, ServiceTypeDTO.class);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -109,10 +108,16 @@ public class ServiceTypeService extends AbstractServiceMutations {
 		ServiceType serviceType = serviceTypeRepository.findOne(idServiceType);
 		// clean list!!
 		serviceType.setProductTypes(new HashSet<>());
-		for (ProductTypeDTO sptd :
-				listDto) {
-			serviceType.addProductType(productTypeRepository.findOne(sptd.getIdProductType()));
+
+		for (ProductTypeDTO sptd : listDto) {
+			LOGGER.info("[addProducts] Searching: {}", sptd.getIdProductType());
+			ProductType pt = productTypeRepository.findOne(sptd.getIdProductType());
+			if (pt == null){
+				throw new SODAPIException(Response.Status.BAD_REQUEST, "Product Type not found "+sptd.getIdProductType()+" ");
+			}
+			serviceType.addProductType(pt);
 		}
+
 		this.saveEntity(serviceTypeRepository, serviceType);
 
 		ServiceTypeDTO dto = ServiceMapper.INSTANCE.map( serviceType );

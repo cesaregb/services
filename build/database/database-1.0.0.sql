@@ -8,14 +8,14 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- Schema sod_db
 -- -----------------------------------------------------
 -- This is the initial_scheema for the service on demand application
--- 
+--
 DROP SCHEMA IF EXISTS `sod_db` ;
 
 -- -----------------------------------------------------
 -- Schema sod_db
 --
 -- This is the initial_scheema for the service on demand application
--- 
+--
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `sod_db` DEFAULT CHARACTER SET utf8 ;
 USE `sod_db` ;
@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`Clients` (
   `deleted` INT NULL DEFAULT 0,
   PRIMARY KEY (`idClient`),
   INDEX `fk_Clients_ClientCategory1_idx` (`idClientType` ASC),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC),
   CONSTRAINT `fk_Clients_ClientCategory1`
     FOREIGN KEY (`idClientType`)
     REFERENCES `sod_db`.`ClientType` (`idClientType`)
@@ -328,16 +329,16 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`OrderTypeTasks`
+-- Table `sod_db`.`OrderTypeTask`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`OrderTypeTasks` ;
+DROP TABLE IF EXISTS `sod_db`.`OrderTypeTask` ;
 
-CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTypeTasks` (
-  `idOrderTypeTasks` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `sod_db`.`OrderTypeTask` (
+  `idOrderTypeTask` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idOrderType` INT UNSIGNED NOT NULL,
   `idTask` INT UNSIGNED NOT NULL,
   `sortingOrder` INT NULL,
-  PRIMARY KEY (`idOrderTypeTasks`),
+  PRIMARY KEY (`idOrderTypeTask`),
   INDEX `fk_OrderTemplateTasks_Task1_idx` (`idTask` ASC),
   INDEX `fk_OrderTemplateTasks_OrderTemplate1_idx` (`idOrderType` ASC),
   CONSTRAINT `fk_OrderTemplateTasks_Task1`
@@ -785,7 +786,7 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`SpecsValues` (
   `serviceIncrement` DOUBLE NULL DEFAULT 0,
   `prefered` INT NULL DEFAULT 0,
   `specPrice` DOUBLE NULL DEFAULT 0,
-  `costType` INT NULL DEFAULT 0 COMMENT '0 = increment\n1 = specPrice',
+  `costType` INT NULL DEFAULT 1 COMMENT '1 = increment\n2 = specPrice',
   PRIMARY KEY (`idSpecsValues`),
   INDEX `fk_SpecsValues_Specs1_idx` (`idSpecs` ASC),
   CONSTRAINT `fk_SpecsValues_Specs1`
@@ -1086,20 +1087,8 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`PromotionType` (
   `idPromotionType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `description` VARCHAR(255) NULL,
+  `deleted` INT NULL DEFAULT 0,
   PRIMARY KEY (`idPromotionType`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sod_db`.`DiscountType`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`DiscountType` ;
-
-CREATE TABLE IF NOT EXISTS `sod_db`.`DiscountType` (
-  `idDiscountType` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NULL,
-  `description` VARCHAR(45) NULL,
-  PRIMARY KEY (`idDiscountType`))
 ENGINE = InnoDB;
 
 
@@ -1111,28 +1100,23 @@ DROP TABLE IF EXISTS `sod_db`.`Promotion` ;
 CREATE TABLE IF NOT EXISTS `sod_db`.`Promotion` (
   `idPromotion` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idPromotionType` INT UNSIGNED NOT NULL,
-  `idDiscountType` INT UNSIGNED NOT NULL,
   `name` VARCHAR(60) NULL,
   `description` VARCHAR(45) NULL,
   `startDate` DATETIME NULL,
   `endDate` DATETIME NULL,
-  `maxUses` INT NULL,
+  `maxUses` INT NULL DEFAULT 0 COMMENT 'max uses by order',
   `amount` DOUBLE NULL DEFAULT 0,
   `promoCode` VARCHAR(45) NULL,
-  `orderLimit` INT NULL,
-  `dateLimit` DATETIME NULL,
-  `minimumAmount` INT NULL,
+  `orderLimit` INT NULL DEFAULT 0,
+  `dateLimit` DATETIME NULL COMMENT 'limit date that the promotion will be enabled. ',
+  `minimumAmount` INT NULL DEFAULT 0,
+  `discountType` INT NULL DEFAULT 1 COMMENT '1 = $\n2 = %\n',
+  `deleted` INT NULL DEFAULT 0,
   PRIMARY KEY (`idPromotion`),
   INDEX `fk_Promotion_PromotionType1_idx` (`idPromotionType` ASC),
-  INDEX `fk_Promotion_DiscountType1_idx` (`idDiscountType` ASC),
   CONSTRAINT `fk_Promotion_PromotionType1`
     FOREIGN KEY (`idPromotionType`)
     REFERENCES `sod_db`.`PromotionType` (`idPromotionType`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Promotion_DiscountType1`
-    FOREIGN KEY (`idDiscountType`)
-    REFERENCES `sod_db`.`DiscountType` (`idDiscountType`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -1413,13 +1397,13 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `sod_db`.`OrderTypeTasks`
+-- Data for table `sod_db`.`OrderTypeTask`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `sortingOrder`) VALUES (1, 1, 3, 1);
-INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `sortingOrder`) VALUES (2, 1, 1, 2);
-INSERT INTO `sod_db`.`OrderTypeTasks` (`idOrderTypeTasks`, `idOrderType`, `idTask`, `sortingOrder`) VALUES (3, 1, 4, 3);
+INSERT INTO `sod_db`.`OrderTypeTask` (`idOrderTypeTask`, `idOrderType`, `idTask`, `sortingOrder`) VALUES (1, 1, 3, 1);
+INSERT INTO `sod_db`.`OrderTypeTask` (`idOrderTypeTask`, `idOrderType`, `idTask`, `sortingOrder`) VALUES (2, 1, 1, 2);
+INSERT INTO `sod_db`.`OrderTypeTask` (`idOrderTypeTask`, `idOrderType`, `idTask`, `sortingOrder`) VALUES (3, 1, 4, 3);
 
 COMMIT;
 
@@ -1624,23 +1608,24 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`) VALUES (1, 'Periodo de tiempo', 'Descuentos entre fechas');
-INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`) VALUES (2, 'Productos o Servicios', 'Al agregar uno o alguna combinacio de producto o servicio');
-INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`) VALUES (3, 'Cantidad', 'Al llegar a una cantidad en una orden');
-INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`) VALUES (4, 'Cantidad acumulativa en periodo', 'Al llegar a una cantidad acumulativa por periodo');
-INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`) VALUES (5, 'Tipo de Client', 'Por tipo de clientes');
-INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`) VALUES (6, 'Numero de ordenes por cliente', 'Al llegar a una cantidad de ordenes por cliente');
+INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`, `deleted`) VALUES (1, 'Periodo de tiempo', 'Descuentos entre fechas', 0);
+INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`, `deleted`) VALUES (2, 'Productos o Servicios [NA]', 'Al agregar uno o alguna combinacio de producto o servicio', 0);
+INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`, `deleted`) VALUES (3, 'Cantidad', 'Al llegar a una cantidad economica en una orden', 0);
+INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`, `deleted`) VALUES (4, 'Cantidad acumulativa en periodo', 'Al llegar a una cantidad acumulativa por periodo', 0);
+INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`, `deleted`) VALUES (5, 'Tipo de Client', 'Por tipo de clientes', 0);
+INSERT INTO `sod_db`.`PromotionType` (`idPromotionType`, `name`, `description`, `deleted`) VALUES (6, 'Numero de ordenes por cliente', 'Al llegar a una cantidad de ordenes por cliente', 0);
 
 COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `sod_db`.`DiscountType`
+-- Data for table `sod_db`.`Promotion`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `sod_db`;
-INSERT INTO `sod_db`.`DiscountType` (`idDiscountType`, `name`, `description`) VALUES (1, 'Porcentage', NULL);
-INSERT INTO `sod_db`.`DiscountType` (`idDiscountType`, `name`, `description`) VALUES (2, 'Cantidad', NULL);
+INSERT INTO `sod_db`.`Promotion` (`idPromotion`, `idPromotionType`, `name`, `description`, `startDate`, `endDate`, `maxUses`, `amount`, `promoCode`, `orderLimit`, `dateLimit`, `minimumAmount`, `discountType`, `deleted`) VALUES (1, 1, 'Buen Fin', 'Promocion por el buen fin', '2016-01-01', '2017-01-01', 1, 10, NULL, 1, NULL, NULL, 2, 0);
+INSERT INTO `sod_db`.`Promotion` (`idPromotion`, `idPromotionType`, `name`, `description`, `startDate`, `endDate`, `maxUses`, `amount`, `promoCode`, `orderLimit`, `dateLimit`, `minimumAmount`, `discountType`, `deleted`) VALUES (2, 3, 'Compra de $120', 'Compra de $120', NULL, NULL, 1, 20, NULL, 1, NULL, NULL, 1, 0);
+INSERT INTO `sod_db`.`Promotion` (`idPromotion`, `idPromotionType`, `name`, `description`, `startDate`, `endDate`, `maxUses`, `amount`, `promoCode`, `orderLimit`, `dateLimit`, `minimumAmount`, `discountType`, `deleted`) VALUES (3, 4, 'Compra No. #', 'Compra no #. ', NULL, NULL, 1, 60, NULL, 1, NULL, NULL, 2, 0);
+INSERT INTO `sod_db`.`Promotion` (`idPromotion`, `idPromotionType`, `name`, `description`, `startDate`, `endDate`, `maxUses`, `amount`, `promoCode`, `orderLimit`, `dateLimit`, `minimumAmount`, `discountType`, `deleted`) VALUES (4, 5, 'Cliente Frecuente', 'Descuento por cliente frecuente', NULL, NULL, 1, 10, NULL, 1, NULL, NULL, 1, 0);
 
 COMMIT;
-

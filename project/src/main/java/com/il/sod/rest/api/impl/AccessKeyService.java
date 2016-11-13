@@ -7,8 +7,6 @@ import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.AccessKeyDTO;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -53,7 +51,7 @@ public class AccessKeyService extends AbstractServiceMutations {
 			AccessKey entity = converter.map(dto, AccessKey.class);
 			this.updateEntity(accessKeyRepository, entity);
 			dto = converter.map(entity, AccessKeyDTO.class);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

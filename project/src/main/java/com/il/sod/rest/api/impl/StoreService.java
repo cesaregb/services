@@ -55,7 +55,7 @@ public class StoreService extends AbstractServiceMutations {
 			Store entity = StoreInfoMapper.INSTANCE.map(dto);
 			this.updateEntity(storeRepository, entity);
 			dto = StoreInfoMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

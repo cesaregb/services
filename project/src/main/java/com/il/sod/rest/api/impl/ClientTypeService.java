@@ -66,7 +66,7 @@ public class ClientTypeService extends AbstractServiceMutations {
 			ClientType entity = ClientMapper.INSTANCE.map(dto);
 			this.updateEntity(clientTypeRepository, entity);
 			dto = ClientMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

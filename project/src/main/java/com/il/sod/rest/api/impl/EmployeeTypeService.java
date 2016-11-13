@@ -49,7 +49,7 @@ public class EmployeeTypeService extends AbstractServiceMutations {
 		EmployeeType entity = EmployeeMapper.INSTANCE.map(dto);
 		this.updateEntity(employeeTypeRepository, entity);
 		dto = EmployeeMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE

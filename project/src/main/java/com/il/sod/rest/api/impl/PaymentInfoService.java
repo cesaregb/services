@@ -56,7 +56,7 @@ public class PaymentInfoService extends AbstractServiceMutations {
 			PaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
 			this.updateEntity(paymentInfoRepository, entity);
 			dto = PaymentMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

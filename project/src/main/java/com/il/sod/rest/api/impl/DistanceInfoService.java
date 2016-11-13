@@ -55,7 +55,7 @@ public class DistanceInfoService extends AbstractServiceMutations {
 			DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
 			this.updateEntity(distanceInfoRepository, entity);
 			dto = StoreInfoMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

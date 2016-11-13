@@ -9,8 +9,6 @@ import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ServiceTypeSpecDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,9 +21,9 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/service-type-specs")
+@Path("/services/service-type/service-type-specs")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/service-type-specs", tags = { "service" })
+@Api(value = "/services/service-type/service-type-specs", tags = { "services" })
 public class ServiceTypeSpecsService extends AbstractServiceMutations {
 
 	@Autowired
@@ -47,15 +45,11 @@ public class ServiceTypeSpecsService extends AbstractServiceMutations {
 	@PUT
 	@ApiOperation(value = "Update Service Type", response = ServiceTypeSpecDTO.class)
 	public Response updateServiceTypeSpec(ServiceTypeSpecDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	private Response updateEntity(ServiceTypeSpecDTO dto) throws SODAPIException {
 		try {
 			ServiceTypeSpec entity = ServiceMapper.INSTANCE.map(dto);
 			this.updateEntity(serviceTypeSpecRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

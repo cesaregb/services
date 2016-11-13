@@ -14,8 +14,6 @@ import com.il.sod.rest.dto.specifics.ServiceTasksInfoDTO;
 import com.il.sod.rest.dto.specifics.UIOrderDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,9 +27,9 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/order")
+@Path("/orders")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/order", tags = { "order" })
+@Api(value = "/orders", tags = { "orders" })
 public class OrderService extends AbstractServiceMutations {
 
 	@Autowired
@@ -67,7 +65,7 @@ public class OrderService extends AbstractServiceMutations {
 			Order entity = OrderMapper.INSTANCE.map(dto);
 			this.updateEntity(orderRepository, entity);
 			dto = OrderMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

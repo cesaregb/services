@@ -136,7 +136,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 		orderEntity.setOrderType(ot);
 		
 		// add order tasks. 
-		for (OrderTypeTask ott : ot.getOrderTypeTasks()){
+		for (OrderTypeTask ott : ot.getOrderTypeTask()){
 			OrderTask orderTask = TaskMapper.INSTANCE.map(ott);
 			orderTask.setOrder(orderEntity);
 			orderEntity.addOrderTask(orderTask);

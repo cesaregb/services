@@ -59,7 +59,7 @@ public class SupplyTypeService extends AbstractServiceMutations {
 			SupplyType entity = SupplyMapper.INSTANCE.map(dto);
 			this.updateEntity(supplyTypeRepository, entity);
 			dto = SupplyMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

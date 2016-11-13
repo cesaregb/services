@@ -16,7 +16,7 @@ public enum PromotionMapper {
 		converterFactory.registerConverter("promotionSetConverter", new PromotionSetConverter());
 
 		BaseMapper.MAPPER_FACTORY.classMap(PromotionDTO.class, Promotion.class)
-			.field("idPromotionTypeDTO", "promotionType.idPromotionTypeDTO")
+			.field("idPromotionType", "promotionType.idPromotionType")
 			.byDefault()
 			.register();
 

@@ -14,18 +14,18 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 /**
- * The persistent class for the OrderTypeTasks database table.
+ * The persistent class for the OrderTypeTask database table.
  *
  */
 @Entity
-@Table(name="OrderTypeTasks")
+@Table(name="OrderTypeTask")
 @NamedQuery(name="OrderTypeTask.findAll", query="SELECT o FROM OrderTypeTask o")
 public class OrderTypeTask implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idOrderTypeTasks;
+	private int idOrderTypeTask;
 
 	//bi-directional many-to-one association to OrderType
 	@ManyToOne
@@ -44,12 +44,12 @@ public class OrderTypeTask implements IEntity<Integer> {
 	public OrderTypeTask() {
 	}
 
-	public int getIdOrderTypeTasks() {
-		return this.idOrderTypeTasks;
+	public int getIdOrderTypeTask() {
+		return this.idOrderTypeTask;
 	}
 
-	public void setIdOrderTypeTasks(int idOrderTypeTasks) {
-		this.idOrderTypeTasks = idOrderTypeTasks;
+	public void setIdOrderTypeTask(int idOrderTypeTask) {
+		this.idOrderTypeTask = idOrderTypeTask;
 	}
 
 	public OrderType getOrderType() {
@@ -69,12 +69,12 @@ public class OrderTypeTask implements IEntity<Integer> {
 	}
 	@Override
 	public Integer getId() {
-		return this.idOrderTypeTasks;
+		return this.idOrderTypeTask;
 	}
 
 	@Override
 	public OrderTypeTask setId(Integer id) {
-		this.idOrderTypeTasks = id;
+		this.idOrderTypeTask = id;
 		return this;
 	}
 

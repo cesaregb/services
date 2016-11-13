@@ -44,7 +44,7 @@ public class AssetTypeService extends AbstractServiceMutations {
 		AssetType entity = AssetMapper.INSTANCE.map(dto);
 		this.updateEntity(assetTypeRepository, entity);
 		dto = AssetMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE

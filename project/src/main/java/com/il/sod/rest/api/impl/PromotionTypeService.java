@@ -12,8 +12,6 @@ import com.il.sod.rest.dto.db.PromotionDTO;
 import com.il.sod.rest.dto.db.PromotionTypeDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,9 +24,9 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/promotions/promotionType")
+@Path("/promotions/promotion-type")
 @Produces(MediaType.APPLICATION_JSON)
- @Api(value = "/promotions/promotionType", tags = { "promotions" })
+ @Api(value = "/promotions/promotion-type", tags = { "promotions" })
 public class PromotionTypeService extends AbstractServiceMutations {
 
 	@Autowired
@@ -61,7 +59,7 @@ public class PromotionTypeService extends AbstractServiceMutations {
 			PromotionType entity = PromotionMapper.INSTANCE.map(dto);
 			this.updateEntity(promotionTypeRepository, entity);
 			dto = PromotionMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}
@@ -73,13 +71,11 @@ public class PromotionTypeService extends AbstractServiceMutations {
 	public Response deletePromotionType(@PathParam("id") String id, PromotionTypeDTO dto) throws SODAPIException {
 		try {
 			PromotionType entity = promotionTypeRepository.findOne(Integer.valueOf(id));
-
 			if (entity == null){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Entity not found");
 			}
-
 			if (entity.getPromotions().size() > 0){
-				throw new SODAPIException(Response.Status.BAD_REQUEST, "Entity Type have childs assigned.");
+				throw new SODAPIException(Response.Status.BAD_REQUEST, "Entity Type have children assigned.");
 			}
 
 			this.softDeleteEntity(promotionTypeRepository, entity.getId());

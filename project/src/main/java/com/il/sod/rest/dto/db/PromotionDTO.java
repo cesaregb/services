@@ -15,7 +15,7 @@ public class PromotionDTO extends DeletableDTO{
 	private int orderLimit;
 	private String promoCode;
 	private Date startDate;
-	private Integer idPromotionTypeDTO;
+	private Integer idPromotionType;
 	private Integer discountType;
 
 	public int getIdPromotion() {
@@ -106,12 +106,12 @@ public class PromotionDTO extends DeletableDTO{
 		this.startDate = startDate;
 	}
 
-	public Integer getIdPromotionTypeDTO() {
-		return idPromotionTypeDTO;
+	public Integer getIdPromotionType() {
+		return idPromotionType;
 	}
 
-	public void setIdPromotionTypeDTO(Integer idPromotionTypeDTO) {
-		this.idPromotionTypeDTO = idPromotionTypeDTO;
+	public void setIdPromotionType(Integer idPromotionType) {
+		this.idPromotionType = idPromotionType;
 	}
 
 	public Integer getDiscountType() {

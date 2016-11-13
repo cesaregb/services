@@ -52,7 +52,7 @@ public class SocialNetworksService extends AbstractServiceMutations {
 			SocialNetwork entity = converter.map(dto, SocialNetwork.class);
 			this.updateEntity(socialNetworkRepository, entity);
 			dto = converter.map(entity, SocialNetworkDTO.class);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

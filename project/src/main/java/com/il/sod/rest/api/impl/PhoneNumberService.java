@@ -58,7 +58,7 @@ public class PhoneNumberService extends AbstractServiceMutations {
 		PhoneNumber entity = ClientMapper.INSTANCE.map(dto);
 		this.updateEntity(phoneNumberRepository, entity);
 		dto = ClientMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
