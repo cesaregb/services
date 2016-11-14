@@ -14,6 +14,8 @@ import com.il.sod.rest.dto.specifics.TaskInfoDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +34,8 @@ import java.util.stream.Collectors;
 @Api(value = "/tasks", tags = { "tasks" })
 public class TaskService extends AbstractServiceMutations {
 
+	private final static Logger LOGGER = LoggerFactory.getLogger(TaskService.class);
+
 	@Autowired
 	TaskRepository taskRepository;
 
@@ -48,9 +52,18 @@ public class TaskService extends AbstractServiceMutations {
 	@ApiOperation(value = "Create Task", response = TaskDTO.class)
 	public Response saveTask(TaskDTO dto) throws SODAPIException {
 		try {
+			if (dto.getIdTaskType() == 0){
+				throw new SODAPIException(Response.Status.BAD_REQUEST, "Please provivde a valida Task Type");
+			}
+
 			Task entity = TaskMapper.INSTANCE.map(dto);
+			if (entity.getTaskType() == null){ // double check in case...
+				entity.setTaskType(taskTypeRepository.findOne(dto.getIdTaskType()));
+			}
+			LOGGER.info("[Task] Saving task, taskType: " + entity.getTaskType().getId());
 
 			this.saveEntity(taskRepository, entity);
+
 			dto = TaskMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
 		} catch (Exception e) {

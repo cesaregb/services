@@ -1,5 +1,6 @@
 package com.il.sod.db.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -63,6 +64,7 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	//bi-directional many-to-one association to ClientType
 	@ManyToOne()
 	@JoinColumn(name="idClientType")
+	@JsonBackReference
 	private ClientType clientType;
 	
 	public Client() {

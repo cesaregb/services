@@ -1,5 +1,7 @@
 package com.il.sod.db.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -23,6 +25,7 @@ public class ClientType implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to Client
 	@OneToMany(mappedBy="clientType", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private Set<Client> clients;
 
 	public ClientType() {
