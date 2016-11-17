@@ -62,9 +62,6 @@ public class OrderInfoService extends AbstractServiceMutations {
 	@GET
 	@Path("/byId/{idOrder}")
 	@ApiOperation(value = "Get Address list", response = WServiceCategoryDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getOrderTypes(@PathParam("idOrder") String idOrder) throws SODAPIException {
 
 

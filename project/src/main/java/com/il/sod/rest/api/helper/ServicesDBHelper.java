@@ -1,12 +1,12 @@
 package com.il.sod.rest.api.helper;
 
-import javax.ws.rs.core.Response;
-
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractService;
 import com.il.sod.rest.dto.GenericDBDTO;
+
+import javax.ws.rs.core.Response;
 
 public class ServicesDBHelper {
 	
@@ -39,10 +39,7 @@ public class ServicesDBHelper {
 			if (type == TYPE_ADDRESS){ // address 
 				return (c.getAddresses().size() == 0);
 			}
-			if (type == TYPE_PHONE){ // phoneNumner 
-				return (c.getPhoneNumbers().size() == 0);
-			}
-			if (type == TYPE_PAYMENT_METHOD){ // phoneNumner 
+			if (type == TYPE_PAYMENT_METHOD){ // phoneNumner
 				return (c.getClientPaymentInfos().size() == 0);
 			}
 		}

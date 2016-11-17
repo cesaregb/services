@@ -22,14 +22,14 @@ public enum ServiceMapper {
 		converterFactory.registerConverter("serviceTypeSetConverter", new ServiceTypeSetConverter());
 		converterFactory.registerConverter("specConverter", new SpecConverter());
 		converterFactory.registerConverter("assetTaskServiceSetConverter", new AssetTaskServiceSetConverter());
-		converterFactory.registerConverter("subproductTypeSetConverter", new SubproductTypeSetConverter());
+		converterFactory.registerConverter("productTypeSetConverter", new ProductTypeSetConverter());
 		converterFactory.registerConverter("employeeTaskServiceSetConverter", new EmployeeTaskServiceSetConverter());
-		converterFactory.registerConverter("serviceSubproductDTOSetConverter", new ServiceSubproductDTOSetConverter());
+		converterFactory.registerConverter("serviceProductDTOSetConverter", new ServiceProductDTOSetConverter());
 
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceDTO.class, Service.class)
 			.fieldMap("serviceSpecs", "serviceSpecs").converter("serviceSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("serviceTasks", "serviceTasks").converter("serviceTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.fieldMap("serviceSubproducts", "serviceSubproducts").converter("serviceSubproductDTOSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("serviceProducts", "serviceProducts").converter("serviceProductDTOSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.field("idServiceCategory", "serviceType.serviceCategory.idServiceCategory")
 			.field("idServiceType", "serviceType.idServiceType")
 			.field("idOrder", "order.idOrder")
@@ -40,7 +40,7 @@ public enum ServiceMapper {
 			.fieldMap("services", "services").converter("serviceSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("serviceTypeSpecs", "serviceTypeSpecs").converter("serviceTypeSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("serviceTypeTasks", "serviceTypeTasks").converter("serviceTypeTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.fieldMap("subproductTypes", "subproductTypes").converter("subproductTypeSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("productTypes", "productTypes").converter("productTypeSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.field("serviceTypeCategoryName", "serviceCategory.name")
 			.field("idServiceCategory", "serviceCategory.idServiceCategory")
 			.byDefault()

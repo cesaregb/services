@@ -1,11 +1,9 @@
 package com.il.sod.config.jersey;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
+import com.il.sod.rest.dto.GeneralResponseMessage;
+import org.glassfish.jersey.internal.util.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
@@ -17,12 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
-
-import org.glassfish.jersey.internal.util.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.il.sod.rest.dto.GeneralResponseMessage;
+import java.lang.reflect.Method;
+import java.util.*;
 
 //http://howtodoinjava.com/2015/08/19/jersey-rest-security/
 @Provider
@@ -108,14 +102,14 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 	public static Response getAccessDeniedResponse() {
 		return Response.
 				status(Response.Status.UNAUTHORIZED).
-				entity(GeneralResponseMessage.getInstance().error().setMessage("Access not granthed")).
+				entity(new GeneralResponseMessage(false, "Access not granted")).
 				type(MediaType.APPLICATION_JSON).
 				build();
 	}
 	public static Response getAccessUnauthorizedResponse() {
 		return Response.
 				status(Response.Status.UNAUTHORIZED).
-				entity(GeneralResponseMessage.getInstance().error().setMessage("Access not granthed")).
+				entity(new GeneralResponseMessage(false, "Access not granted")).
 				type(MediaType.APPLICATION_JSON).
 				build();
 	}

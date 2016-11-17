@@ -8,7 +8,7 @@ public class OrderTypeDTO {
 	private String description;
 	private String name;
 	private Set<Integer> orders;
-	private List<OrderTypeTaskDTO> orderTypeTasks;
+	private List<OrderTypeTaskDTO> OrderTypeTask;
 	private int transportInfo;
 	public int getIdOrderType() {
 		return idOrderType;
@@ -35,12 +35,12 @@ public class OrderTypeDTO {
 		this.orders = orders;
 	}
 
-	public List<OrderTypeTaskDTO> getOrderTypeTasks() {
-		return orderTypeTasks;
+	public List<OrderTypeTaskDTO> getOrderTypeTask() {
+		return OrderTypeTask;
 	}
 
-	public void setOrderTypeTasks(List<OrderTypeTaskDTO> orderTypeTasks) {
-		this.orderTypeTasks = orderTypeTasks;
+	public void setOrderTypeTask(List<OrderTypeTaskDTO> OrderTypeTask) {
+		this.OrderTypeTask = OrderTypeTask;
 	}
 
 	public int getTransportInfo() {

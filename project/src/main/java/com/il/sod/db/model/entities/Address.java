@@ -166,4 +166,20 @@ public class Address implements IEntity<Integer> {
 		this.factura = factura;
 	}
 
+	@Override
+	public String toString() {
+		return "Address{" +
+				"idAddress=" + idAddress +
+				", address='" + address + '\'' +
+				", address2='" + address2 + '\'' +
+				", city='" + city + '\'' +
+				", country='" + country + '\'' +
+				", state='" + state + '\'' +
+				", zipcode='" + zipcode + '\'' +
+				", prefered=" + prefered +
+				", factura=" + factura +
+				", lat=" + lat +
+				", lng=" + lng +
+				'}';
+	}
 }

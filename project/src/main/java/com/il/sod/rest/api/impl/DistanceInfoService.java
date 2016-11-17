@@ -33,9 +33,6 @@ public class DistanceInfoService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Distance Info", response = DistanceInfoDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveDistanceInfo(DistanceInfoDTO dto) throws SODAPIException {
 		try {
 			DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
@@ -47,12 +44,8 @@ public class DistanceInfoService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Distance Info", response = DistanceInfoDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response updateDistanceInfo(DistanceInfoDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
@@ -62,43 +55,27 @@ public class DistanceInfoService extends AbstractServiceMutations {
 			DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
 			this.updateEntity(distanceInfoRepository, entity);
 			dto = StoreInfoMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Distance Info", response = DistanceInfoDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateDistanceInfoById(@PathParam("id") String id, DistanceInfoDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Item", response = GeneralResponseMessage.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		DistanceInfo entity = distanceInfoRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.deleteEntity(distanceInfoRepository, entity.getId());
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Item deleted"),
+		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
 	@GET
 	@ApiOperation(value = "Get Distance Info list", response = DistanceInfoDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response getDistanceInfoList() throws SODAPIException {
 		List<DistanceInfo> rentityList = distanceInfoRepository.findAllOrderByDistance();
 		List<DistanceInfoDTO> list = rentityList.stream().map((i) -> {

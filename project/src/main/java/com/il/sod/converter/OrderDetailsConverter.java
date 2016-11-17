@@ -2,7 +2,7 @@ package com.il.sod.converter;
 
 public class OrderDetailsConverter {
 	
-//	private ProductRepository repository;
+//	private SupplyRepository repository;
 //	
 //	public OrderDetailsDTO getOrderDetailFromOrderType(OrderType ot) {
 //		OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
@@ -19,7 +19,7 @@ public class OrderDetailsConverter {
 //				// ServiceDetailsDTO details
 //				ServiceDetailsDTO serviceDetailsDTO = getServiceDetailsFromService(setviceType, service);
 //
-//				// ServiceDetailsDTO specs (pending products and possible values)
+//				// ServiceDetailsDTO specs (pending supplies and possible values)
 //				List<SpecSubDTO> specsInfoL = convertSpec2SpecSub(service.getServiceSpecs());
 //				serviceDetailsDTO.setSpecs(specsInfoL);
 //
@@ -70,14 +70,14 @@ public class OrderDetailsConverter {
 //			}
 //			KeyValue kv = new KeyValue();
 //			if (specValue.getType() == Constants.SPEC_TYPE_PRODUCT){
-//				List<Product> listProduct = repository.findByIdProductType(specValue.getIdProductType());
-//				for (Product p : listProduct){
+//				List<Supply> listSupply = repository.findByIdSupplyType(specValue.getIdSupplyType());
+//				for (Supply p : listSupply){
 //					kv = new KeyValue();
 //					kv.setKey(p.getId());
 //					kv.setValue(p.getName());
 //					options.get(specValue.getSpec().getId()).add(kv);
 //				}
-//				// get all products  by product type....
+//				// get all supplies  by supply type....
 //			}else if (specValue.getType() == Constants.SPEC_TYPE_VALUES){
 //				kv.setKey(0);
 //				kv.setValue(specValue.getValue());
@@ -87,11 +87,11 @@ public class OrderDetailsConverter {
 //		return specSub;
 //	}
 //
-//	public ProductRepository getRepository() {
+//	public SupplyRepository getRepository() {
 //		return repository;
 //	}
 //
-//	public void setRepository(ProductRepository repository) {
+//	public void setRepository(SupplyRepository repository) {
 //		this.repository = repository;
 //	}
 }

@@ -40,7 +40,7 @@ public class Service implements IEntity<Integer> {
 
 	private double price;
 	private double specsPrice;
-	private double subproductsPrice;
+	private double productsPrice;
 	private double totalPrice;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -82,9 +82,9 @@ public class Service implements IEntity<Integer> {
 	
 	private int deleted;
 	
-	//bi-directional many-to-one association to ServiceSubproduct
+	//bi-directional many-to-one association to ServiceProduct
 	@OneToMany(mappedBy="service", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	private Set<ServiceSubproduct> serviceSubproducts;
+	private Set<ServiceProduct> serviceProducts;
 
 	public Service() {
 	}
@@ -275,12 +275,12 @@ public class Service implements IEntity<Integer> {
 		this.specsPrice = specsPrice;
 	}
 
-	public double getSubproductsPrice() {
-		return subproductsPrice;
+	public double getProductsPrice() {
+		return productsPrice;
 	}
 
-	public void setSubproductsPrice(double subproductsPrice) {
-		this.subproductsPrice = subproductsPrice;
+	public void setProductsPrice(double productsPrice) {
+		this.productsPrice = productsPrice;
 	}
 
 	public double getTotalPrice() {
@@ -291,28 +291,28 @@ public class Service implements IEntity<Integer> {
 		this.totalPrice = totalPrice;
 	}
 	
-	public Set<ServiceSubproduct> getServiceSubproducts() {
-		if (serviceSubproducts == null){
-			serviceSubproducts = new HashSet<>();
+	public Set<ServiceProduct> getServiceProducts() {
+		if (serviceProducts == null){
+			serviceProducts = new HashSet<>();
 		}
-		return this.serviceSubproducts;
+		return this.serviceProducts;
 	}
 
-	public void setServiceSubproducts(Set<ServiceSubproduct> serviceSubproducts) {
-		this.serviceSubproducts = serviceSubproducts;
+	public void setServiceProducts(Set<ServiceProduct> serviceProducts) {
+		this.serviceProducts = serviceProducts;
 	}
 
-	public ServiceSubproduct addSubproduct(ServiceSubproduct serviceSubproduct) {
-		getServiceSubproducts().add(serviceSubproduct);
-		serviceSubproduct.setService(this);
+	public ServiceProduct addProduct(ServiceProduct serviceProduct) {
+		getServiceProducts().add(serviceProduct);
+		serviceProduct.setService(this);
 
-		return serviceSubproduct;
+		return serviceProduct;
 	}
 
-	public ServiceSubproduct removeSubproduct(ServiceSubproduct serviceSubproduct) {
-		getServiceSubproducts().remove(serviceSubproduct);
-		serviceSubproduct.setService(null);
+	public ServiceProduct removeProduct(ServiceProduct serviceProduct) {
+		getServiceProducts().remove(serviceProduct);
+		serviceProduct.setService(null);
 
-		return serviceSubproduct;
+		return serviceProduct;
 	}
 }

@@ -9,7 +9,7 @@ public class ServiceDTO {
 	private String name;
 	private double price;
 	private double specsPrice;
-	private double subproductsPrice;
+	private double productsPrice;
 	private double totalPrice;
 	private int idServiceType;
 	private int idServiceCategory;
@@ -22,7 +22,7 @@ public class ServiceDTO {
 	private int nTasks;
 	private int currentTask;
 	private int deleted;
-	private Set<ServiceSubproductDTO> serviceSubproducts;
+	private Set<ServiceProductDTO> serviceProducts;
 
 	// UI Requirements. 
 //	private Set<SpecDTO> specs;
@@ -123,12 +123,12 @@ public class ServiceDTO {
 		this.specsPrice = specsPrice;
 	}
 
-	public double getSubproductsPrice() {
-		return subproductsPrice;
+	public double getProductsPrice() {
+		return productsPrice;
 	}
 
-	public void setSubproductsPrice(double subproductsPrice) {
-		this.subproductsPrice = subproductsPrice;
+	public void setProductsPrice(double productsPrice) {
+		this.productsPrice = productsPrice;
 	}
 
 	public void setTotalPrice(double totalPrice) {
@@ -141,11 +141,11 @@ public class ServiceDTO {
 		this.idServiceCategory = idServiceCategory;
 	}
 
-	public Set<ServiceSubproductDTO> getServiceSubproducts() {
-		return serviceSubproducts;
+	public Set<ServiceProductDTO> getServiceProducts() {
+		return serviceProducts;
 	}
 
-	public void setServiceSubproducts(Set<ServiceSubproductDTO> serviceSubproducts) {
-		this.serviceSubproducts = serviceSubproducts;
+	public void setServiceProducts(Set<ServiceProductDTO> serviceProducts) {
+		this.serviceProducts = serviceProducts;
 	}
 }

@@ -1,16 +1,20 @@
 package com.il.sod.db.model.repositories;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.il.sod.db.model.entities.Product;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.il.sod.db.model.entities.Product;
+import java.util.List;
 
-public interface ProductRepository extends JpaRepository<Product, Integer> {
-	
-	@Query("SELECT p FROM Product p WHERE p.productType.idProductType=:idProductType")
-	List<Product> findByIdProductType(@Param("idProductType") Integer idProductType);
-	
+public interface ProductRepository extends DeletableRepository<Product, Integer> {
+
+    @Query("SELECT s FROM Product s WHERE s.deleted=0")
+    public List<Product> findAllActive();
+
+    @Query("SELECT s FROM Product s WHERE s.name LIKE :name")
+    public List<Product> findByName(@Param("name") String name);
+
+    @Query("SELECT s FROM Product s WHERE s.productType.idProductType=:idProductType")
+    public List<Product> findByProductType(@Param("idProductType") Integer idProductType);
+
 }

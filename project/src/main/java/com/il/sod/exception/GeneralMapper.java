@@ -1,15 +1,14 @@
 package com.il.sod.exception;
 
-import java.io.InputStream;
-import java.util.Scanner;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ext.Provider;
+import java.io.InputStream;
+import java.util.Scanner;
 
 @Provider
 public class GeneralMapper  {
 	
-	String buildErrorMessage(HttpServletRequest req, String error) {
+	public String buildErrorMessage(HttpServletRequest req, String error) {
         StringBuilder message = new StringBuilder();
         String entity = "(empty)";
 
@@ -31,7 +30,7 @@ public class GeneralMapper  {
         return message.toString();
     }
 
-    String getOriginalURL(HttpServletRequest req) {
+    public String getOriginalURL(HttpServletRequest req) {
         // Rebuild the original request URL: http://stackoverflow.com/a/5212336/356408
         String scheme = req.getScheme();             // http
         String serverName = req.getServerName();     // hostname.com

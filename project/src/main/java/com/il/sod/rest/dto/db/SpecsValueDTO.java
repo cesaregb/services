@@ -3,7 +3,7 @@ package com.il.sod.rest.dto.db;
 public class SpecsValueDTO {
 	
 	private int idSpecsValues;
-	private int idProductType;
+	private int idSupplyType;
 	private int type;
 	private String value;
 	private int idSpecs;
@@ -12,7 +12,7 @@ public class SpecsValueDTO {
 	private double specPrice;
 	private int costType;
 	private String specName;
-	private String productName;
+	private String supplyName;
 	
 	public SpecsValueDTO() {
 	}
@@ -41,12 +41,12 @@ public class SpecsValueDTO {
 		this.value = value;
 	}
 
-	public int getIdProductType() {
-		return idProductType;
+	public int getIdSupplyType() {
+		return idSupplyType;
 	}
 
-	public void setIdProductType(int idProductType) {
-		this.idProductType = idProductType;
+	public void setIdSupplyType(int idSupplyType) {
+		this.idSupplyType = idSupplyType;
 	}
 
 	public double getServiceIncrement() {
@@ -97,12 +97,12 @@ public class SpecsValueDTO {
 		this.specName = specName;
 	}
 
-	public String getProductName() {
-		return productName;
+	public String getSupplyName() {
+		return supplyName;
 	}
 
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setSupplyName(String supplyName) {
+		this.supplyName = supplyName;
 	}
 
 }

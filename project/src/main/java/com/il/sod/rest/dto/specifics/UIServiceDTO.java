@@ -7,10 +7,10 @@ public class UIServiceDTO {
 	private String comments;
 	private double price;
 	private double specsPrice;
-	private double subproductsPrice;
+	private double productsPrice;
 	private double totalPrice;
 	private List<UISpecDTO> specs;
-	private List<UISubproductDTO> subproducts;
+	private List<UIProductDTO> products;
 	
 	public int getIdServiceType() {
 		return idServiceType;
@@ -51,19 +51,19 @@ public class UIServiceDTO {
 		this.specsPrice = specsPrice;
 	}
 
-	public double getSubproductsPrice() {
-		return subproductsPrice;
+	public double getProductsPrice() {
+		return productsPrice;
 	}
 
-	public void setSubproductsPrice(double subproductsPrice) {
-		this.subproductsPrice = subproductsPrice;
+	public void setProductsPrice(double productsPrice) {
+		this.productsPrice = productsPrice;
 	}
 
-	public List<UISubproductDTO> getSubproducts() {
-		return subproducts;
+	public List<UIProductDTO> getProducts() {
+		return products;
 	}
 
-	public void setSubproducts(List<UISubproductDTO> subproducts) {
-		this.subproducts = subproducts;
+	public void setProducts(List<UIProductDTO> products) {
+		this.products = products;
 	}
 }

@@ -2,12 +2,12 @@ package com.il.sod.converter.services;
 
 import com.il.sod.config.Constants;
 import com.il.sod.db.model.entities.*;
-import com.il.sod.db.model.repositories.ProductRepository;
+import com.il.sod.db.model.repositories.SupplyRepository;
 import com.il.sod.mapper.BaseMapper;
-import com.il.sod.mapper.SubproductMapper;
+import com.il.sod.mapper.ProductMapper;
 import com.il.sod.rest.dto.KeyValueSpecs;
 import com.il.sod.rest.dto.db.MenuDTO;
-import com.il.sod.rest.dto.db.SubproductDTO;
+import com.il.sod.rest.dto.db.ProductDTO;
 import com.il.sod.rest.dto.specifics.WServiceCategoryDTO;
 import com.il.sod.rest.dto.specifics.WServiceTypeDTO;
 import com.il.sod.rest.dto.specifics.WSpecDTO;
@@ -27,15 +27,15 @@ import java.util.stream.Collectors;
 public class SpecificObjectsConverterService {
 	
 	@Autowired
-	ProductRepository productRepository;
-	
+	SupplyRepository supplyRepository;
+
 	private final MapperFacade mapperFacade;
 	
 	public SpecificObjectsConverterService() {
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
 		converterFactory.registerConverter("wServiceTypeSetConverter", new WServiceTypeSetConverter());
 		converterFactory.registerConverter("wSpecSetConverter", new WSpecSetConverter());
-		converterFactory.registerConverter("subproductTepe2SubproductSetConverter", new SubproductTepe2SubproductSetConverter());
+		converterFactory.registerConverter("productTepe2ProductSetConverter", new ProductTepe2ProductSetConverter());
 
 		BaseMapper.MAPPER_FACTORY.classMap(WServiceCategoryDTO.class, ServiceCategory.class)
 			.fieldMap("serviceTypes", "serviceTypes").converter("wServiceTypeSetConverter").mapNulls(true).mapNullsInReverse(true).add()
@@ -44,7 +44,7 @@ public class SpecificObjectsConverterService {
 		
 		BaseMapper.MAPPER_FACTORY.classMap(WServiceTypeDTO.class, ServiceType.class)
 			.fieldMap("specs", "serviceTypeSpecs").converter("wSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.fieldMap("subproducts", "subproductTypes").converter("subproductTepe2SubproductSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("products", "productTypes").converter("productTepe2ProductSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 			
@@ -66,14 +66,14 @@ public class SpecificObjectsConverterService {
 						options.putIfAbsent(specValue.getSpec().getId(), new ArrayList<>());
 						KeyValueSpecs<Integer, String> kv = new KeyValueSpecs<Integer, String>();
 						if (specValue.getType() == Constants.SPEC_TYPE_PRODUCT){
-							// get all products  by product type....
-							List<Product> listProduct = productRepository.findByIdProductType(specValue.getIdProductType());
-							for (Product p : listProduct){
+							// get all supplies  by supply type....
+							List<Supply> listSupply = supplyRepository.findByIdSupplyType(specValue.getIdSupplyType());
+							for (Supply p : listSupply){
 								kv = new KeyValueSpecs<Integer, String>();
 								kv.setKey(p.getId());
 								kv.setValue(p.getName());
 								kv.setServiceIncrement(p.getServiceIncrement());
-								kv.setSpecPrice(0d); // if we come from product we dont assign price to a product... 
+								kv.setSpecPrice(0d); // if we come from supply we dont assign price to a supply...
 								kv.setCostType(0);
 								options.get(specValue.getSpec().getId()).add(kv);
 							}
@@ -152,19 +152,19 @@ class WSpecSetConverter extends BidirectionalConverter<Set<ServiceTypeSpec>, Set
 	
 }
 
-class SubproductTepe2SubproductSetConverter extends BidirectionalConverter<Set<SubproductDTO>, Set<SubproductType>> {
+class ProductTepe2ProductSetConverter extends BidirectionalConverter<Set<ProductDTO>, Set<ProductType>> {
 
 	@Override
-	public Set<SubproductType> convertTo(Set<SubproductDTO> source, Type<Set<SubproductType>> type) {
+	public Set<ProductType> convertTo(Set<ProductDTO> source, Type<Set<ProductType>> type) {
 		// never used... not implemented..
 		return null;
 	}
 
 	@Override
-	public Set<SubproductDTO> convertFrom(Set<SubproductType> source, Type<Set<SubproductDTO>> type) {
-		Set<SubproductDTO> result = new HashSet<>();
+	public Set<ProductDTO> convertFrom(Set<ProductType> source, Type<Set<ProductDTO>> type) {
+		Set<ProductDTO> result = new HashSet<>();
 		source.forEach(i -> {
-			i.getSubproducts().forEach(e -> result.add(SubproductMapper.INSTANCE.map(e)));
+			i.getProducts().forEach(e -> result.add(ProductMapper.INSTANCE.map(e)));
 		});
 
 		return result;

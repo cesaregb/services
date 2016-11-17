@@ -1,21 +1,11 @@
 package com.il.sod.db.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * The persistent class for the Clients database table.
@@ -24,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name="Clients")
 @NamedQuery(name="Client.findAll", query="SELECT c FROM Client c")
-public class Client implements IEntity<Integer> {
+public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -38,6 +28,9 @@ public class Client implements IEntity<Integer> {
 	private String loginID;
 	private String rfc; 
 	private String razonSocial; 
+	private String mobilePhone;
+	private String homePhone;
+	private String otherPhone;
 
 	//bi-directional many-to-one association to AccessKey
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
@@ -47,10 +40,6 @@ public class Client implements IEntity<Integer> {
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonManagedReference
 	private Set<Address> addresses;
-
-	//bi-directional many-to-one association to PhoneNumber
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	private Set<PhoneNumber> phoneNumbers;
 
 	//bi-directional many-to-one association to Order
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
@@ -67,11 +56,15 @@ public class Client implements IEntity<Integer> {
 	@JsonManagedReference
 	private Set<ClientPaymentInfo> clientPaymentInfos;
 	
-	private int deleted;
-	
 	//bi-directional many-to-one association to ClientBag
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	private Set<ClientBag> clientBags;
+
+	//bi-directional many-to-one association to ClientType
+	@ManyToOne()
+	@JoinColumn(name="idClientType")
+	@JsonBackReference
+	private ClientType clientType;
 	
 	public Client() {
 	}
@@ -168,28 +161,6 @@ public class Client implements IEntity<Integer> {
 		return address;
 	}
 
-	public Set<PhoneNumber> getPhoneNumbers() {
-		return this.phoneNumbers;
-	}
-
-	public void setPhoneNumbers(Set<PhoneNumber> phoneNumbers) {
-		this.phoneNumbers = phoneNumbers;
-	}
-
-	public PhoneNumber addPhoneNumber(PhoneNumber phoneNumber) {
-		getPhoneNumbers().add(phoneNumber);
-		phoneNumber.setClient(this);
-
-		return phoneNumber;
-	}
-
-	public PhoneNumber removePhoneNumber(PhoneNumber phoneNumber) {
-		getPhoneNumbers().remove(phoneNumber);
-		phoneNumber.setClient(null);
-
-		return phoneNumber;
-	}
-
 	public Set<Order> getOrders() {
 		return this.orders;
 	}
@@ -284,14 +255,6 @@ public class Client implements IEntity<Integer> {
 		this.razonSocial = razonSocial;
 	}
 
-	public int getDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(int deleted) {
-		this.deleted = deleted;
-	}
-	
 	public Set<ClientBag> getClientBags() {
 		return this.clientBags;
 	}
@@ -312,5 +275,74 @@ public class Client implements IEntity<Integer> {
 		clientBag.setClient(null);
 
 		return clientBag;
+	}
+
+	public ClientType getClientType() {
+		return this.clientType;
+	}
+
+	public void setClientType(ClientType clientType) {
+		this.clientType = clientType;
+	}
+
+	public String getMobilePhone() {
+		return mobilePhone;
+	}
+
+	public void setMobilePhone(String mobilePhone) {
+		this.mobilePhone = mobilePhone;
+	}
+
+	public String getHomePhone() {
+		return homePhone;
+	}
+
+	public void setHomePhone(String homePhone) {
+		this.homePhone = homePhone;
+	}
+
+	public String getOtherPhone() {
+		return otherPhone;
+	}
+
+	public void setOtherPhone(String otherPhone) {
+		this.otherPhone = otherPhone;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Client)) return false;
+
+		Client client = (Client) o;
+
+		if (idClient != client.idClient) return false;
+		if (email != null ? !email.equals(client.email) : client.email != null) return false;
+		if (lastName != null ? !lastName.equals(client.lastName) : client.lastName != null) return false;
+		if (name != null ? !name.equals(client.name) : client.name != null) return false;
+		if (password != null ? !password.equals(client.password) : client.password != null) return false;
+		if (twitter != null ? !twitter.equals(client.twitter) : client.twitter != null) return false;
+		if (loginID != null ? !loginID.equals(client.loginID) : client.loginID != null) return false;
+		if (rfc != null ? !rfc.equals(client.rfc) : client.rfc != null) return false;
+		if (razonSocial != null ? !razonSocial.equals(client.razonSocial) : client.razonSocial != null) return false;
+		if (created != null ? !created.equals(client.created) : client.created != null) return false;
+		return updated != null ? updated.equals(client.updated) : client.updated == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = idClient;
+		result = 31 * result + (email != null ? email.hashCode() : 0);
+		result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (password != null ? password.hashCode() : 0);
+		result = 31 * result + (twitter != null ? twitter.hashCode() : 0);
+		result = 31 * result + (loginID != null ? loginID.hashCode() : 0);
+		result = 31 * result + (rfc != null ? rfc.hashCode() : 0);
+		result = 31 * result + (razonSocial != null ? razonSocial.hashCode() : 0);
+		result = 31 * result + (created != null ? created.hashCode() : 0);
+		result = 31 * result + (updated != null ? updated.hashCode() : 0);
+		return result;
 	}
 }

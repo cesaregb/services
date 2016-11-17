@@ -1,6 +1,5 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
 import javax.persistence.*;
 
 
@@ -22,10 +21,10 @@ public class ClientBag implements IEntity<Integer> {
 
 	private String number;
 
-	//bi-directional many-to-one association to BagSize
+	//bi-directional many-to-one association to BagType
 	@ManyToOne
-	@JoinColumn(name="idBagSize")
-	private BagSize bagSize;
+	@JoinColumn(name="idBagType")
+	private BagType bagType;
 
 	//bi-directional many-to-one association to Client
 	@ManyToOne
@@ -59,12 +58,12 @@ public class ClientBag implements IEntity<Integer> {
 		this.number = number;
 	}
 
-	public BagSize getBagSize() {
-		return this.bagSize;
+	public BagType getBagType() {
+		return this.bagType;
 	}
 
-	public void setBagSize(BagSize bagSize) {
-		this.bagSize = bagSize;
+	public void setBagType(BagType bagType) {
+		this.bagType = bagType;
 	}
 
 	public Client getClient() {

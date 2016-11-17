@@ -3,14 +3,7 @@ package com.il.sod.db.model.entities;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 /**
@@ -40,7 +33,7 @@ public class Spec implements IEntity<Integer> {
 	private Set<ServiceTypeSpec> serviceTypeSpecs;
 	
 	//bi-directional many-to-one association to SpecsValue
-	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<SpecsValue> specsValues;
 
 	private int optional;

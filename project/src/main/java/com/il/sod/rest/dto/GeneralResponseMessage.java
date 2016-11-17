@@ -7,16 +7,13 @@ public class GeneralResponseMessage {
 	private String message; 
 	private boolean status;
 	
-	private static class Holder {
-        static final GeneralResponseMessage INSTANCE = new GeneralResponseMessage();
-    }
-	
-	private GeneralResponseMessage(){}
-	
-	public static GeneralResponseMessage getInstance() {
-		return Holder.INSTANCE.success();
+	public GeneralResponseMessage(){}
+
+	public GeneralResponseMessage(boolean status, String message){
+		this.status = status;
+		this.message = message;
 	}
-	
+
 	public GeneralResponseMessage success(){
 		this.message = GENERIC_MESSAGE_SUCCES;
 		this.status = true;
