@@ -90,6 +90,10 @@ public class Order implements IEntity<Integer> {
 	
 	private int deleted;
 
+	//bi-directional many-to-one association to OrderPromotion
+	@OneToMany(mappedBy="order", fetch=FetchType.EAGER)
+	private Set<OrderPromotion> orderPromotions;
+
 	public Order() {
 	}
 
@@ -285,5 +289,27 @@ public class Order implements IEntity<Integer> {
 
 	public void setPaymentInfo(PaymentInfo paymentInfo) {
 		this.paymentInfo = paymentInfo;
+	}
+
+	public Set<OrderPromotion> getOrderPromotions() {
+		return this.orderPromotions;
+	}
+
+	public void setOrderPromotions(Set<OrderPromotion> orderPromotions) {
+		this.orderPromotions = orderPromotions;
+	}
+
+	public OrderPromotion addOrderPromotion(OrderPromotion orderPromotion) {
+		getOrderPromotions().add(orderPromotion);
+		orderPromotion.setOrder(this);
+
+		return orderPromotion;
+	}
+
+	public OrderPromotion removeOrderPromotion(OrderPromotion orderPromotion) {
+		getOrderPromotions().remove(orderPromotion);
+		orderPromotion.setOrder(null);
+
+		return orderPromotion;
 	}
 }

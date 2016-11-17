@@ -1,32 +1,21 @@
 package com.il.sod.rest.api.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.il.sod.db.model.entities.AccessKey;
 import com.il.sod.db.model.repositories.AccessKeyRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.AccessKeyDTO;
-
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
@@ -39,9 +28,6 @@ public class AccessKeyService extends AbstractServiceMutations {
 
 	@POST
 	@ApiOperation(value = "Create Service Type", response = AccessKeyDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
 	public Response saveAccessKey(AccessKeyDTO dto) throws SODAPIException {
 		try {
 			AccessKey entity = converter.map(dto, AccessKey.class);
@@ -53,35 +39,19 @@ public class AccessKeyService extends AbstractServiceMutations {
 		}
 	}
 
-	@Deprecated
 	@PUT
 	@ApiOperation(value = "Update Service Type", response = AccessKeyDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+
 	public Response updateAccessKey(AccessKeyDTO dto) throws SODAPIException {
-		try {
-			AccessKey entity = converter.map(dto, AccessKey.class);
-			this.updateEntity(accessKeyRepository, entity);
-			dto = converter.map(entity, AccessKeyDTO.class);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		return updateEntity(dto);
 	}
 
-	@PUT
-	@Path("/{id}")
-	@ApiOperation(value = "Update Service Type", response = AccessKeyDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-	public Response updateAccessKeyById(@PathParam("id") String id, AccessKeyDTO dto) throws SODAPIException {
+	private Response updateEntity(AccessKeyDTO dto) throws SODAPIException {
 		try {
 			AccessKey entity = converter.map(dto, AccessKey.class);
 			this.updateEntity(accessKeyRepository, entity);
 			dto = converter.map(entity, AccessKeyDTO.class);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return castEntityAsResponse(dto, Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}
@@ -89,15 +59,13 @@ public class AccessKeyService extends AbstractServiceMutations {
 
 	@DELETE
 	@ApiOperation(value = "Create Service Type", response = AccessKeyDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+
 	public Response deleteAccessKey(AccessKeyDTO dto) throws SODAPIException {
 		try {
 			AccessKey entity = converter.map(dto, AccessKey.class);
 			this.deleteEntity(accessKeyRepository, entity.getIdAccessKey());
 			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
+					new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
@@ -106,9 +74,7 @@ public class AccessKeyService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Service Type list", response = AccessKeyDTO.class, responseContainer = "List")
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
+
 	public Response getAccessKeyList() throws SODAPIException {
 		List<AccessKey> rentityList = this.getEntityList(accessKeyRepository);
 		List<AccessKeyDTO> list = rentityList.stream().map((i) -> {

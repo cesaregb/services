@@ -354,7 +354,7 @@
 				<configuration>
 					<skipTests>${skipTests}</skipTests>
 				</configuration>
-			</plugin>	
+			</plugin>
 			
 		</plugins>
 		

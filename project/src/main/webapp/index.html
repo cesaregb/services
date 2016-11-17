@@ -32,8 +32,12 @@
 
   <script type="text/javascript">
     $(function () {
-      var url = window.location.href;
-      url = url.replace("swagger-ui/","").replace("/#","") + "api/swagger.json";
+      var url = window.location.search.match(/url=([^&]+)/);
+      if (url && url.length > 1) {
+        url = decodeURIComponent(url[1]);
+      } else {
+        url = "http://localhost:8080/api/swagger.json";
+      }
 
       // Pre load translate...
       if(window.SwaggerTranslator) {
@@ -81,10 +85,10 @@
       }
 
       function addCustomAuth(){
-         var myAuth = "Basic " + btoa("user:user");
-         window.authorizations.add("key", new SwaggerClient.ApiKeyAuthorization("Authorization", myAuth, "header"));
+        var myAuth = "Basic " + btoa("user:user");
+        window.authorizations.add("key", new SwaggerClient.ApiKeyAuthorization("Authorization", myAuth, "header"));
+        console.log("a ver si asi entrando...")
       }
-
 
       $('#input_apiKey').change(addApiKeyAuthorization);
 

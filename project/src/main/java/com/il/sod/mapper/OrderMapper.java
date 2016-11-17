@@ -26,7 +26,7 @@ public enum OrderMapper {
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
 		converterFactory.registerConverter("orderSetConverter", new OrderSetConverter());
 		converterFactory.registerConverter("orderTaskSetConverter", new OrderTaskSetConverter());
-		converterFactory.registerConverter("orderTypeTaskSetConverter", new OrderTypeTaskSetConverter());
+		converterFactory.registerConverter("orderTypeTaskSetConverter", new OrderTypeTasketConverter());
 		converterFactory.registerConverter("clientConverter", new ClientConverter());
 		converterFactory.registerConverter("assetTaskOrderSetConverter", new AssetTaskOrderSetConverter());
 		converterFactory.registerConverter("employeeTaskOrderSetConverter", new EmployeeTaskOrderSetConverter());
@@ -36,7 +36,7 @@ public enum OrderMapper {
 
 		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeDTO.class, OrderType.class)
 				.fieldMap("orders", "orders").converter("orderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-				.fieldMap("orderTypeTasks", "orderTypeTasks").converter("orderTypeTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+				.fieldMap("orderTypeTask", "orderTypeTask").converter("orderTypeTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.byDefault()
 				.register();
 

@@ -4,7 +4,9 @@ import com.il.sod.db.model.entities.*;
 import com.il.sod.rest.dto.db.TaskDTO;
 import com.il.sod.rest.dto.db.TaskTypeDTO;
 import com.il.sod.rest.dto.specifics.TaskInfoDTO;
+import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.converter.ConverterFactory;
 import ma.glasnost.orika.metadata.Type;
@@ -24,8 +26,13 @@ public enum TaskMapper {
 		
 		BaseMapper.MAPPER_FACTORY.classMap(TaskDTO.class, Task.class)
 			.field("idTaskType", "taskType.idTaskType")
-			.field("taskTypeName", "taskType.name")
 			.byDefault()
+			.customize(new CustomMapper<TaskDTO, Task>() {
+				@Override
+				public void mapBtoA(Task task, TaskDTO taskDTO, MappingContext context) {
+					taskDTO.setTaskTypeName(task.getName());
+				}
+			})
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(TaskTypeDTO.class, TaskType.class)

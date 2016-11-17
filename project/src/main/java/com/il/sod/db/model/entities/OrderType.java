@@ -1,16 +1,9 @@
 package com.il.sod.db.model.entities;
 
-import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.util.Set;
 
 
 /**
@@ -31,7 +24,7 @@ public class OrderType implements IEntity<Integer> {
 	//bi-directional many-to-one association to OrderTypeTask
 	@OneToMany(mappedBy="orderType", fetch=FetchType.EAGER)
 	@JsonManagedReference
-	private Set<OrderTypeTask> orderTypeTasks;
+	private Set<OrderTypeTask> OrderTypeTask;
 
 	//bi-directional many-to-one association to Order
 	@OneToMany(mappedBy="orderType", fetch=FetchType.EAGER)
@@ -67,23 +60,23 @@ public class OrderType implements IEntity<Integer> {
 		this.name = name;
 	}
 
-	public Set<OrderTypeTask> getOrderTypeTasks() {
-		return this.orderTypeTasks;
+	public Set<OrderTypeTask> getOrderTypeTask() {
+		return this.OrderTypeTask;
 	}
 
-	public void setOrderTypeTasks(Set<OrderTypeTask> orderTypeTasks) {
-		this.orderTypeTasks = orderTypeTasks;
+	public void setOrderTypeTask(Set<OrderTypeTask> OrderTypeTask) {
+		this.OrderTypeTask = OrderTypeTask;
 	}
 
 	public OrderTypeTask addOrderTypeTask(OrderTypeTask orderTypeTask) {
-		getOrderTypeTasks().add(orderTypeTask);
+		getOrderTypeTask().add(orderTypeTask);
 		orderTypeTask.setOrderType(this);
 
 		return orderTypeTask;
 	}
 
 	public OrderTypeTask removeOrderTypeTask(OrderTypeTask orderTypeTask) {
-		getOrderTypeTasks().remove(orderTypeTask);
+		getOrderTypeTask().remove(orderTypeTask);
 		orderTypeTask.setOrderType(null);
 
 		return orderTypeTask;
@@ -136,7 +129,7 @@ public class OrderType implements IEntity<Integer> {
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + idOrderType;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((orderTypeTasks == null) ? 0 : orderTypeTasks.hashCode());
+		result = prime * result + ((OrderTypeTask == null) ? 0 : OrderTypeTask.hashCode());
 		result = prime * result + ((orders == null) ? 0 : orders.hashCode());
 		result = prime * result + transportInfo;
 		return result;
@@ -163,10 +156,10 @@ public class OrderType implements IEntity<Integer> {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (orderTypeTasks == null) {
-			if (other.orderTypeTasks != null)
+		if (OrderTypeTask == null) {
+			if (other.OrderTypeTask != null)
 				return false;
-		} else if (!orderTypeTasks.equals(other.orderTypeTasks))
+		} else if (!OrderTypeTask.equals(other.OrderTypeTask))
 			return false;
 		if (orders == null) {
 			if (other.orders != null)

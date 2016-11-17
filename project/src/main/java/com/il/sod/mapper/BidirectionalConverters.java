@@ -18,7 +18,8 @@ public class BidirectionalConverters {}
 class OrderSetConverter extends BidirectionalConverter<Set<Order>, Set<Integer>> {
 	@Override
 	public Set<Order> convertFrom(Set<Integer> source, Type<Set<Order>> destT) {
-		return source.stream().map(p -> (new Order()).setId(p)).collect(Collectors.toSet());
+//		return source.stream().map(p -> (new Order()).setId(p)).collect(Collectors.toSet());
+		return null;
 	}
 
 	@Override
@@ -39,7 +40,7 @@ class OrderTaskSetConverter extends BidirectionalConverter<Set<OrderTask>, Set<O
 	}
 }
 
-class OrderTypeTaskSetConverter extends BidirectionalConverter<Set<OrderTypeTask>, List<OrderTypeTaskDTO>> {
+class OrderTypeTasketConverter extends BidirectionalConverter<Set<OrderTypeTask>, List<OrderTypeTaskDTO>> {
 
 	@Override
 	public List<OrderTypeTaskDTO> convertTo(Set<OrderTypeTask> source, Type<List<OrderTypeTaskDTO>> type) {
@@ -305,26 +306,26 @@ class ServiceSetConverter extends BidirectionalConverter<Set<Service>, Set<Servi
 //	}
 //}
 
-class SubproductTypeSetConverter extends BidirectionalConverter<Set<SubproductType>, Set<SubproductTypeDTO>> {
+class ProductTypeSetConverter extends BidirectionalConverter<Set<ProductType>, Set<ProductTypeDTO>> {
 	@Override
-	public Set<SubproductTypeDTO> convertTo(Set<SubproductType> source, Type<Set<SubproductTypeDTO>> type) {
-		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	public Set<ProductTypeDTO> convertTo(Set<ProductType> source, Type<Set<ProductTypeDTO>> type) {
+		return source.stream().map(item -> ProductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 
 	@Override
-	public Set<SubproductType> convertFrom(Set<SubproductTypeDTO> source, Type<Set<SubproductType>> type) {
-		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	public Set<ProductType> convertFrom(Set<ProductTypeDTO> source, Type<Set<ProductType>> type) {
+		return source.stream().map(item -> ProductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }
 
-class ServiceSubproductDTOSetConverter extends BidirectionalConverter<Set<ServiceSubproduct>, Set<ServiceSubproductDTO>> {
+class ServiceProductDTOSetConverter extends BidirectionalConverter<Set<ServiceProduct>, Set<ServiceProductDTO>> {
 	@Override
-	public Set<ServiceSubproductDTO> convertTo(Set<ServiceSubproduct> source, Type<Set<ServiceSubproductDTO>> type) {
-		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	public Set<ServiceProductDTO> convertTo(Set<ServiceProduct> source, Type<Set<ServiceProductDTO>> type) {
+		return source.stream().map(item -> ProductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 
 	@Override
-	public Set<ServiceSubproduct> convertFrom(Set<ServiceSubproductDTO> source, Type<Set<ServiceSubproduct>> type) {
+	public Set<ServiceProduct> convertFrom(Set<ServiceProductDTO> source, Type<Set<ServiceProduct>> type) {
 		return null;
 	}
 }
@@ -333,26 +334,29 @@ class ServiceSubproductDTOSetConverter extends BidirectionalConverter<Set<Servic
 // *******************
 // ****** Clients mapper
 // *******************
+class ClientDTOConverter extends BidirectionalConverter<Set<Client>, Set<ClientDTO>> {
+
+	@Override
+	public Set<ClientDTO> convertTo(Set<Client> source, Type<Set<ClientDTO>> type) {
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<Client> convertFrom(Set<ClientDTO> source, Type<Set<Client>> type) {
+//		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+		return null;
+	}
+}
+
 class AddressDTOConverter extends BidirectionalConverter<Set<Address>, Set<AddressDTO>> {
 	@Override
 	public Set<Address> convertFrom(Set<AddressDTO> source, Type<Set<Address>> arg1) {
-		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+//		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+		return null;
 	}
 
 	@Override
 	public Set<AddressDTO> convertTo(Set<Address> source, Type<Set<AddressDTO>> arg1) {
-		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-	}
-}
-
-class PhoneNumberDTOConverter extends BidirectionalConverter<Set<PhoneNumber>, Set<PhoneNumberDTO>> {
-	@Override
-	public Set<PhoneNumber> convertFrom(Set<PhoneNumberDTO> source, Type<Set<PhoneNumber>> arg1) {
-		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-	}
-
-	@Override
-	public Set<PhoneNumberDTO> convertTo(Set<PhoneNumber> source, Type<Set<PhoneNumberDTO>> arg1) {
 		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }
@@ -366,7 +370,8 @@ class ClientBagSetConverter extends BidirectionalConverter<Set<ClientBag>, Set<C
 
 	@Override
 	public Set<ClientBag> convertFrom(Set<ClientBagDTO> source, Type<Set<ClientBag>> type) {
-		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+//		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+		return null;
 	}
 }
 
@@ -385,7 +390,8 @@ class ClientBagSetConverter extends BidirectionalConverter<Set<ClientBag>, Set<C
 class ClientPaymentInfoSetConverter extends BidirectionalConverter<Set<ClientPaymentInfo>, Set<ClientPaymentInfoDTO>> {
 	@Override
 	public Set<ClientPaymentInfo> convertFrom(Set<ClientPaymentInfoDTO> source, Type<Set<ClientPaymentInfo>> arg1) {
-		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+//		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+		return null;
 	}
 
 	@Override
@@ -394,17 +400,17 @@ class ClientPaymentInfoSetConverter extends BidirectionalConverter<Set<ClientPay
 	}
 }
 
-/* Subproducts */
+/* Products */
 
-class SubproductSetConverter extends BidirectionalConverter<Set<Subproduct>, Set<SubproductDTO>> {
+class ProductSetConverter extends BidirectionalConverter<Set<Product>, Set<ProductDTO>> {
 	@Override
-	public Set<Subproduct> convertFrom(Set<SubproductDTO> source, Type<Set<Subproduct>> arg1) {
-		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	public Set<Product> convertFrom(Set<ProductDTO> source, Type<Set<Product>> arg1) {
+		return source.stream().map(item -> ProductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 
 	@Override
-	public Set<SubproductDTO> convertTo(Set<Subproduct> source, Type<Set<SubproductDTO>> arg1) {
-		return source.stream().map(item -> SubproductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	public Set<ProductDTO> convertTo(Set<Product> source, Type<Set<ProductDTO>> arg1) {
+		return source.stream().map(item -> ProductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }
 /* Store */
@@ -418,6 +424,20 @@ class DistanceInfoSetConverter extends BidirectionalConverter<Set<DistanceInfo>,
 	@Override
 	public Set<DistanceInfo> convertFrom(Set<DistanceInfoDTO> source, Type<Set<DistanceInfo>> type) {
 		return source.stream().map(item -> StoreInfoMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+}
+
+/* Promotion */
+
+class PromotionSetConverter extends BidirectionalConverter<Set<Promotion>, Set<PromotionDTO>> {
+	@Override
+	public Set<PromotionDTO> convertTo(Set<Promotion> source, Type<Set<PromotionDTO>> type) {
+		return source.stream().map(item -> PromotionMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<Promotion> convertFrom(Set<PromotionDTO> promotionDTOs, Type<Set<Promotion>> type) {
+		return null;
 	}
 }
 

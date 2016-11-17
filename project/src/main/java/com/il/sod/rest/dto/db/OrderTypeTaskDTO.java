@@ -1,17 +1,17 @@
 package com.il.sod.rest.dto.db;
 
 public class OrderTypeTaskDTO {
-	private int idOrderTypeTasks;
+	private int idOrderTypeTask;
 	private Integer idOrderType;
 	private TaskDTO task;
 	private int sortingOrder;
 	private String taskTypeName;
 	
-	public int getIdOrderTypeTasks() {
-		return idOrderTypeTasks;
+	public int getIdOrderTypeTask() {
+		return idOrderTypeTask;
 	}
-	public void setIdOrderTypeTasks(int idOrderTypeTasks) {
-		this.idOrderTypeTasks = idOrderTypeTasks;
+	public void setIdOrderTypeTask(int idOrderTypeTask) {
+		this.idOrderTypeTask = idOrderTypeTask;
 	}
 	public int getSortingOrder() {
 		return sortingOrder;
