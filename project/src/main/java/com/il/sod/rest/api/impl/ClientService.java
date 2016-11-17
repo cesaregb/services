@@ -132,7 +132,7 @@ public class ClientService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.NOT_FOUND, "Client not found");
 		}
 		this.softDeleteEntity(clientRepository, entity.getIdClient());
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Client deleted"),
+		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -204,8 +204,6 @@ public class ClientService extends AbstractServiceMutations {
 			entity.getAddresses().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
 		if (entity.getAccessKeys() != null)
 			entity.getAccessKeys().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
-		if (entity.getPhoneNumbers() != null)
-			entity.getPhoneNumbers().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
 		if (entity.getOrders() != null)
 			entity.getOrders().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
 		if (entity.getClientPaymentInfos() != null)

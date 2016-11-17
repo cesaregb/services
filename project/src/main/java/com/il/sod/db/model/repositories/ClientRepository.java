@@ -1,13 +1,11 @@
 package com.il.sod.db.model.repositories;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.il.sod.db.model.entities.Client;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.il.sod.db.model.entities.Client;
+import java.util.List;
 
 public interface ClientRepository extends DeletableRepository<Client, Integer>, JpaSpecificationExecutor<Client> {
 	
@@ -19,8 +17,7 @@ public interface ClientRepository extends DeletableRepository<Client, Integer>, 
 	@Query("SELECT c FROM Client c join c.addresses a WHERE a.idAddress=:idAddress")
 	public List<Client> findByAddress(@Param("idAddress") Integer idAddress);
 	
-	@Query("SELECT c FROM Client c join c.phoneNumbers p WHERE p.number LIKE :phone")
-	public List<Client> findByPhone(@Param("phone") String phone);
-	
+	public List<Client> findByMobilePhone(String phone);
+
 	public List<Client> findByLoginID(String loginId);
 }

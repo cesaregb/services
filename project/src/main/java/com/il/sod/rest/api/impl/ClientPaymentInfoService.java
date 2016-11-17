@@ -12,8 +12,6 @@ import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ClientPaymentInfoDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +76,7 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 		try {
 			ClientPaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
 			this.deleteEntity(clientPaymentInfoRepository, entity.getIdClientPaymentInfo());
-			return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Payment Info deleted"),
+			return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);
@@ -97,7 +95,7 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 		Client cEntity = entity.getClient();
 		cEntity.removeClientPaymentInfo(entity);
 		this.saveEntity(clientRepository, cEntity);
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("ClientPaymentInfo deleted"),
+		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 

@@ -9,8 +9,6 @@ import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.PaymentInfoDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -72,7 +70,7 @@ public class PaymentInfoService extends AbstractServiceMutations {
 		}
 
 		this.deleteEntity(paymentInfoRepository, entity.getId());
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("PaymentInfo deleted"),
+		return castEntityAsResponse(new GeneralResponseMessage(true, "PaymentInfo deleted"),
 				Response.Status.OK);
 
 	}

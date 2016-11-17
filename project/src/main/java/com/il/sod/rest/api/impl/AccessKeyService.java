@@ -65,7 +65,7 @@ public class AccessKeyService extends AbstractServiceMutations {
 			AccessKey entity = converter.map(dto, AccessKey.class);
 			this.deleteEntity(accessKeyRepository, entity.getIdAccessKey());
 			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
+					new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);

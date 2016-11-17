@@ -67,7 +67,7 @@ public class Health extends AbstractService {
 		LOGGER.info("shopServiceDAO: " + shopServiceDAO.findById(6) );
 		LOGGER.info("********************************");
 		
-		return GeneralResponseMessage.getInstance().setMessage("from the resource: " + dbUrl);
+		return new GeneralResponseMessage(true, "from the resource: " + dbUrl);
 	}	
 	
 	@GET
@@ -84,6 +84,6 @@ public class Health extends AbstractService {
 	@ApiOperation(value = "Test")
 	public GeneralResponseMessage secureMethod(InputStream is) throws SODAPIException{
 		TestDto tst = this.getJsonISAsObject(is, TestDto.class);
-		return GeneralResponseMessage.getInstance().setMessage("ok your ar an admin!! good for you!! " + tst.getVal());
+		return new GeneralResponseMessage(true, "ok your ar an admin!! good for you!! " + tst.getVal());
 	}	
 }

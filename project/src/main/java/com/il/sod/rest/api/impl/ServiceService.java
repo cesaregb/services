@@ -61,7 +61,7 @@ public class ServiceService extends AbstractServiceMutations {
 			Service entity = ServiceMapper.INSTANCE.map(dto);
 			this.deleteEntity(serviceRepository, entity.getIdService());
 			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
+					new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);

@@ -79,7 +79,7 @@ public class PromotionTypeService extends AbstractServiceMutations {
 			}
 
 			this.softDeleteEntity(promotionTypeRepository, entity.getId());
-			return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Entity deleted"),
+			return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);

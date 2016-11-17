@@ -65,7 +65,7 @@ public class ServiceTypeTaskService extends AbstractServiceMutations {
 			}
 			this.deleteEntity(serviceTypeSpecRepository, id);
 			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
+					new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);

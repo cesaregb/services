@@ -20,8 +20,6 @@ import com.il.sod.rest.dto.db.AddressRouteDTO;
 import com.il.sod.rest.dto.db.StopDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -100,7 +98,7 @@ public class StopsService extends AbstractServiceMutations {
 		Route route = entity.getRoute();
 		route.removeStop(entity);
 		this.saveEntity(routesRepository, route);
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Stop deleted"),
+		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 

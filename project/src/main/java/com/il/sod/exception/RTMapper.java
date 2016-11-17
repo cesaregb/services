@@ -31,7 +31,7 @@ public class RTMapper extends GeneralMapper implements ExceptionMapper<RuntimeEx
 		LOGGER.error(errorMessage);
 		return Response.
 				status(Response.Status.SERVICE_UNAVAILABLE).
-				entity(GeneralResponseMessage.getInstance().error().setMessage("Server error, we are working on this sorry!")).
+				entity(new GeneralResponseMessage(false, "Server error, we are working on this sorry!")).
 				type(MediaType.APPLICATION_JSON).
 				build();
 	}

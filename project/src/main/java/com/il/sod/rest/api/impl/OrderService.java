@@ -78,7 +78,7 @@ public class OrderService extends AbstractServiceMutations {
 			Order entity = OrderMapper.INSTANCE.map(dto);
 			this.deleteEntity(orderRepository, entity.getIdOrder());
 			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Order deleted"),
+					new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);

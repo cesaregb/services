@@ -86,7 +86,7 @@ public abstract class AbstractService{
 	public Response genericResponse(boolean flag, String message) throws SODAPIException {
 		StringWriter writer = new StringWriter();
 		try {
-			mapper.writeValue(writer, GeneralResponseMessage.getInstance().setStatus(flag));
+			mapper.writeValue(writer, new GeneralResponseMessage(flag, message));
 		} catch (Exception e) {
 			throw new SODAPIException(e);
 		}

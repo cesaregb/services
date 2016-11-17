@@ -69,7 +69,7 @@ public class OrderTypeTaskService extends AbstractServiceMutations {
 			}
 			this.deleteEntity(orderTypeTaskRepository, entity.getIdOrderTypeTask());
 			return castEntityAsResponse(
-					GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
+					new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);

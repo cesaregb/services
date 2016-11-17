@@ -28,6 +28,9 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	private String loginID;
 	private String rfc; 
 	private String razonSocial; 
+	private String mobilePhone;
+	private String homePhone;
+	private String otherPhone;
 
 	//bi-directional many-to-one association to AccessKey
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
@@ -37,10 +40,6 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JsonManagedReference
 	private Set<Address> addresses;
-
-	//bi-directional many-to-one association to PhoneNumber
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	private Set<PhoneNumber> phoneNumbers;
 
 	//bi-directional many-to-one association to Order
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
@@ -160,28 +159,6 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 		address.setClient(null);
 
 		return address;
-	}
-
-	public Set<PhoneNumber> getPhoneNumbers() {
-		return this.phoneNumbers;
-	}
-
-	public void setPhoneNumbers(Set<PhoneNumber> phoneNumbers) {
-		this.phoneNumbers = phoneNumbers;
-	}
-
-	public PhoneNumber addPhoneNumber(PhoneNumber phoneNumber) {
-		getPhoneNumbers().add(phoneNumber);
-		phoneNumber.setClient(this);
-
-		return phoneNumber;
-	}
-
-	public PhoneNumber removePhoneNumber(PhoneNumber phoneNumber) {
-		getPhoneNumbers().remove(phoneNumber);
-		phoneNumber.setClient(null);
-
-		return phoneNumber;
 	}
 
 	public Set<Order> getOrders() {
@@ -306,6 +283,30 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 
 	public void setClientType(ClientType clientType) {
 		this.clientType = clientType;
+	}
+
+	public String getMobilePhone() {
+		return mobilePhone;
+	}
+
+	public void setMobilePhone(String mobilePhone) {
+		this.mobilePhone = mobilePhone;
+	}
+
+	public String getHomePhone() {
+		return homePhone;
+	}
+
+	public void setHomePhone(String homePhone) {
+		this.homePhone = homePhone;
+	}
+
+	public String getOtherPhone() {
+		return otherPhone;
+	}
+
+	public void setOtherPhone(String otherPhone) {
+		this.otherPhone = otherPhone;
 	}
 
 	@Override

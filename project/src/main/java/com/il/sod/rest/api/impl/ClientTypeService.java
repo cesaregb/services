@@ -13,8 +13,6 @@ import com.il.sod.rest.dto.db.ClientDTO;
 import com.il.sod.rest.dto.db.ClientTypeDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,9 +26,9 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/clients/clientType")
+@Path("/clients/client-type")
 @Produces(MediaType.APPLICATION_JSON)
- @Api(value = "/clientType", tags = { "clients" })
+ @Api(value = "/client-type", tags = { "clients" })
 public class ClientTypeService extends AbstractServiceMutations {
 
 	@Autowired
@@ -88,7 +86,7 @@ public class ClientTypeService extends AbstractServiceMutations {
 			}
 
 			this.softDeleteEntity(clientTypeRepository, entity.getId());
-			return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Entity deleted"),
+			return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 		} catch (Exception e) {
 			throw new SODAPIException(e);

@@ -19,7 +19,6 @@ public enum ClientMapper {
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
 		converterFactory.registerConverter("orderSetConverter", new OrderSetConverter());
 		converterFactory.registerConverter("addressDTOConverter", new AddressDTOConverter());
-		converterFactory.registerConverter("phoneNumberDTOConverter", new PhoneNumberDTOConverter());
 		converterFactory.registerConverter("clientPaymentInfoSetConverter", new ClientPaymentInfoSetConverter());
 		converterFactory.registerConverter("clientDTOConverter", new ClientDTOConverter());
 		converterFactory.registerConverter("clientBagSetConverter", new ClientBagSetConverter());
@@ -27,7 +26,6 @@ public enum ClientMapper {
 		BaseMapper.MAPPER_FACTORY.classMap(ClientDTO.class, Client.class)
 			.fieldMap("orders", "orders").converter("orderSetConverter").mapNulls(false).mapNullsInReverse(true).add()
 			.fieldMap("addresses", "addresses").converter("addressDTOConverter").mapNulls(false).mapNullsInReverse(true).add()
-			.fieldMap("phoneNumbers", "phoneNumbers").converter("phoneNumberDTOConverter").mapNulls(false).mapNullsInReverse(true).add()
 			.fieldMap("clientPaymentInfos", "clientPaymentInfos").converter("clientPaymentInfoSetConverter").mapNulls(false).mapNullsInReverse(true).add()
 			.fieldMap("clientBags", "clientBags").converter("clientBagSetConverter").mapNulls(false).mapNullsInReverse(true).add()
 			.field("idClientType","clientType.idClientType")
@@ -47,11 +45,6 @@ public enum ClientMapper {
 
 		BaseMapper.MAPPER_FACTORY.classMap(ClientTypeDTO.class, ClientType.class)
 			.fieldMap("clients", "clients").converter("clientDTOConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.byDefault()
-			.register();
-		
-		BaseMapper.MAPPER_FACTORY.classMap(PhoneNumberDTO.class, PhoneNumber.class)
-			.field("idClient", "client.idClient")
 			.byDefault()
 			.register();
 		
@@ -84,13 +77,6 @@ public enum ClientMapper {
 
 	public ClientDTO map(Client entity) {
 		ClientDTO result = this.mapperFacade.map(entity, ClientDTO.class);
-		
-		try{
-			PhoneNumberDTO defPhone = null;
-			defPhone = result.getPhoneNumbers().stream().filter(pn->pn.isPrefered()).collect(Collectors.toList()).get(0);
-			result.setDefaultPhone(defPhone.getNumber());
-		}catch(Exception e){ /* do nothing just assign null*/ }
-		
 		try{
 			AddressDTO defAddress = null;
 			defAddress = result.getAddresses().stream().filter(pn->pn.isPrefered()).collect(Collectors.toList()).get(0);
@@ -121,14 +107,6 @@ public enum ClientMapper {
 	
 	public Set<AddressDTO> map(Set<Address> source) {
 		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-	}
-	
-	public PhoneNumber map(PhoneNumberDTO dto) {
-		return this.mapperFacade.map(dto, PhoneNumber.class);
-	}
-	
-	public PhoneNumberDTO map(PhoneNumber entity) {
-		return this.mapperFacade.map(entity, PhoneNumberDTO.class);
 	}
 	
 	public ClientPaymentInfo map(ClientPaymentInfoDTO input) {

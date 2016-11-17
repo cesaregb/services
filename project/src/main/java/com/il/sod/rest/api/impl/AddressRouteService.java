@@ -59,7 +59,7 @@ public class AddressRouteService extends AbstractServiceMutations {
 	public Response deleteAddressRoute(AddressRouteDTO dto) throws SODAPIException {
 		AddressRoute entity = RoutesMapper.INSTANCE.map(dto);
 		this.deleteEntity(addressRouteRepository, entity.getIdAddressRoute());
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Service deleted"),
+		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -73,7 +73,7 @@ public class AddressRouteService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "AddressRoute not found");
 		}
 		this.deleteEntity(addressRouteRepository, Integer.valueOf(id));
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("AddressRoute deleted"),
+		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 

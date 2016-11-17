@@ -2,11 +2,8 @@ package com.il.sod.rest.api.impl;
 
 import com.il.sod.db.model.entities.Supply;
 import com.il.sod.db.model.entities.SupplyType;
-import com.il.sod.db.model.entities.Task;
-import com.il.sod.db.model.entities.TaskType;
 import com.il.sod.db.model.repositories.SupplyRepository;
 import com.il.sod.db.model.repositories.SupplyTypeRepository;
-import com.il.sod.db.model.repositories.TaskRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.SupplyMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -14,8 +11,6 @@ import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.SupplyTypeDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -74,7 +69,7 @@ public class SupplyTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.deleteEntity(supplyTypeRepository, entity.getId());
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Item deleted"),
+		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 

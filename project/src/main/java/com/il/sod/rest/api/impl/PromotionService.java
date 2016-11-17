@@ -74,7 +74,7 @@ public class PromotionService extends AbstractServiceMutations {
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not found");
 			}
 			this.softDeleteEntity(promotionRepository, entity.getId());
-			return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Entity deleted"),
+			return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 
 		} catch (Exception e) {

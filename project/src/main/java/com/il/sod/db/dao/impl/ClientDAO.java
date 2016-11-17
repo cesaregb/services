@@ -35,6 +35,6 @@ public class ClientDAO{
 	}
 	
 	public List<Client> findByPhone(String phone) {
-		return clientRepository.findByPhone("%" + phone + "%");
+		return clientRepository.findByMobilePhone("%" + phone + "%");
 	}
 }

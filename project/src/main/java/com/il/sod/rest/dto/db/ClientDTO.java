@@ -18,6 +18,9 @@ public class ClientDTO extends DeletableDTO{
 	private String rfc; 
 	private String razonSocial;
 	private Integer idClientType;
+	private String mobilePhone;
+	private String homePhone;
+	private String otherPhone;
 
 	@ApiModelProperty(hidden=true)
 	@JsonProperty(access = Access.READ_ONLY)
@@ -32,7 +35,6 @@ public class ClientDTO extends DeletableDTO{
 	private String defaultPayment;
 	private Set<Integer> orders;
 	private Set<AddressDTO> addresses;
-	private Set<PhoneNumberDTO> phoneNumbers;
 	private Date created;
 	private Date updated;
 	private Set<ClientPaymentInfoDTO> clientPaymentInfos;
@@ -86,12 +88,6 @@ public class ClientDTO extends DeletableDTO{
 	}
 	public void setAddresses(Set<AddressDTO> addresses) {
 		this.addresses = addresses;
-	}
-	public Set<PhoneNumberDTO> getPhoneNumbers() {
-		return phoneNumbers;
-	}
-	public void setPhoneNumbers(Set<PhoneNumberDTO> phoneNumbers) {
-		this.phoneNumbers = phoneNumbers;
 	}
 	public Date getCreated() {
 		return created;
@@ -168,5 +164,29 @@ public class ClientDTO extends DeletableDTO{
 
 	public void setIdClientType(Integer idClientType) {
 		this.idClientType = idClientType;
+	}
+
+	public String getMobilePhone() {
+		return mobilePhone;
+	}
+
+	public void setMobilePhone(String mobilePhone) {
+		this.mobilePhone = mobilePhone;
+	}
+
+	public String getHomePhone() {
+		return homePhone;
+	}
+
+	public void setHomePhone(String homePhone) {
+		this.homePhone = homePhone;
+	}
+
+	public String getOtherPhone() {
+		return otherPhone;
+	}
+
+	public void setOtherPhone(String otherPhone) {
+		this.otherPhone = otherPhone;
 	}
 }

@@ -11,8 +11,6 @@ import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.AddressDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +78,7 @@ public class AddressService extends AbstractServiceMutations {
 		Client cEntity = entity.getClient();
 		cEntity.removeAddress(entity);
 		this.saveEntity(clientRepository, cEntity);
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Address deleted"),
+		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 

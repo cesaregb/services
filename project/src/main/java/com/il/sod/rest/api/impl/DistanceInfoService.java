@@ -70,7 +70,7 @@ public class DistanceInfoService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.deleteEntity(distanceInfoRepository, entity.getId());
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Item deleted"),
+		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 

@@ -72,7 +72,7 @@ public class OrderTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.deleteEntity(orderTypeRepository, entity.getId());
-		return castEntityAsResponse(GeneralResponseMessage.getInstance().success().setMessage("Item deleted"),
+		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
