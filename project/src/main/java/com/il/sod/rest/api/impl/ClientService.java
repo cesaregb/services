@@ -50,29 +50,25 @@ public class ClientService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Client", response = ClientDTO.class)
 	public Response saveClient(ClientDTO dto) throws SODAPIException {
-		try{
 
-			if (dto.getIdClientType() == null || dto.getIdClientType() == 0){
-				final String localMessage = "Client Type should not be empty";
-				LOGGER.error(localMessage);
-				throw new SODAPIException(Response.Status.BAD_REQUEST, localMessage);
-			}
-
-			if (clientDAO.findByEmail(dto.getEmail()) != null){
-				final String localMesage = "Email already associated with another User ";
-				LOGGER.error(localMesage);
-				throw new SODAPIException(Response.Status.BAD_REQUEST, localMesage);
-			}
-
-
-			Client entity = ClientMapper.INSTANCE.map(dto);
-			assignDependencyToChilds(entity);
-			this.saveEntity(clientRepository, entity);
-			dto = ClientMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		}catch(Exception e){
-			throw new SODAPIException(e);
+		if (dto.getIdClientType() == null || dto.getIdClientType() == 0){
+			final String localMessage = "Client Type should not be empty";
+			LOGGER.error(localMessage);
+			throw new SODAPIException(Response.Status.BAD_REQUEST, localMessage);
 		}
+
+		if (clientDAO.findByEmail(dto.getEmail()) != null){
+			final String localMesage = "Email already associated with another User ";
+			LOGGER.error(localMesage);
+			throw new SODAPIException(Response.Status.BAD_REQUEST, localMesage);
+		}
+
+
+		Client entity = ClientMapper.INSTANCE.map(dto);
+		assignDependencyToChilds(entity);
+		this.saveEntity(clientRepository, entity);
+		dto = ClientMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT

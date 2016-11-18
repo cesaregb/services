@@ -32,34 +32,30 @@ public class ServiceTypeTaskService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Service Type", response = ServiceTypeTaskDTO.class)
 	public Response saveServiceTypeTask(ServiceTypeTaskDTO dto) throws SODAPIException {
-		try {
+
 			ServiceTypeTask entity = ServiceMapper.INSTANCE.map(dto);
 			this.saveEntity(serviceTypeSpecRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Service Type", response = ServiceTypeTaskDTO.class)
 	public Response updateServiceTypeTask(ServiceTypeTaskDTO dto) throws SODAPIException {
-		try {
+
 			ServiceTypeTask entity = ServiceMapper.INSTANCE.map(dto);
 			this.updateEntity(serviceTypeSpecRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Service Type", response = ServiceTypeTaskDTO.class)
 	public Response deleteServiceTypeTask(@PathParam("id") Integer id) throws SODAPIException {
-		try {
+
 			if (serviceTypeSpecRepository.findOne(id) == null){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found: "+id+" ");
 			}
@@ -67,9 +63,7 @@ public class ServiceTypeTaskService extends AbstractServiceMutations {
 			return castEntityAsResponse(
 					new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@GET

@@ -33,14 +33,12 @@ public class PaymentInfoService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Payment Info", response = PaymentInfoDTO.class)
 	public Response savePaymentInfo(PaymentInfoDTO dto) throws SODAPIException {
-		try {
+
 			PaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
 			this.saveEntity(paymentInfoRepository, entity);
 			dto = PaymentMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -50,14 +48,12 @@ public class PaymentInfoService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(PaymentInfoDTO dto) throws SODAPIException {
-		try {
+
 			PaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
 			this.updateEntity(paymentInfoRepository, entity);
 			dto = PaymentMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE

@@ -32,20 +32,18 @@ public class ServiceCategoryService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Supply Type", response = ServiceCategoryDTO.class)
 	public Response saveServiceCategory(ServiceCategoryDTO dto) throws SODAPIException {
-		try {
+
 			ServiceCategory entity = ServiceMapper.INSTANCE.map(dto);
 			this.saveEntity(serviceCategoryRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Supply Type", response = ServiceCategoryDTO.class)
 	public Response updateServiceCategory(ServiceCategoryDTO dto) throws SODAPIException {
-		try {
+
 			if (dto.getIdServiceCategory() == 0
 					|| serviceCategoryRepository.findOne(dto.getIdServiceCategory()) == null){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found, please indicate a valida ID");
@@ -54,9 +52,7 @@ public class ServiceCategoryService extends AbstractServiceMutations {
 			this.updateEntity(serviceCategoryRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE

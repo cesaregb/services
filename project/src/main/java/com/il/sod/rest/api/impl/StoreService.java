@@ -34,14 +34,12 @@ public class StoreService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Store", response = StoreDTO.class)
 	public Response saveStore(StoreDTO dto) throws SODAPIException {
-		try {
+
 			Store entity = StoreInfoMapper.INSTANCE.map(dto);
 			this.saveEntity(storeRepository, entity);
 			dto = StoreInfoMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -51,14 +49,12 @@ public class StoreService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(StoreDTO dto) throws SODAPIException {
-		try {
+
 			Store entity = StoreInfoMapper.INSTANCE.map(dto);
 			this.updateEntity(storeRepository, entity);
 			dto = StoreInfoMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE

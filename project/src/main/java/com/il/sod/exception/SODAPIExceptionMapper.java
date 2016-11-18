@@ -12,20 +12,19 @@ import javax.ws.rs.ext.Provider;
 
 @Component
 @Provider
-public class APIMapper extends GeneralMapper implements ExceptionMapper<Exception> {
+public class SODAPIExceptionMapper extends GeneralMapper implements ExceptionMapper<SODAPIException> {
 
 	@Context
 	HttpServletRequest request;
 	
 	@Override
-	public Response toResponse(Exception ex) {
+	public Response toResponse(SODAPIException ex) {
 		long ID = Thread.currentThread().getId();
 
 		logException(ex, request, ID);
 		return Response
-				.status(Response.Status.SERVICE_UNAVAILABLE)
-				.entity(new GeneralResponseMessage("Server error, we are working on this sorry!",
-						String.valueOf(ID), "[missing]", false))
+				.status(ex.getStatus())
+				.entity(new GeneralResponseMessage(ex.getMessage(), String.valueOf(ID), "[missing]", false))
 				.type(MediaType.APPLICATION_JSON)
 				.build();
 	}

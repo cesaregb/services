@@ -36,14 +36,12 @@ public class OrderTypeService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Order Type", response = OrderTypeDTO.class)
 	public Response saveOrderType(OrderTypeDTO dto) throws SODAPIException {
-		try {
+
 			OrderType entity = OrderMapper.INSTANCE.map(dto);
 			this.saveEntity(orderTypeRepository, entity);
 			dto = OrderMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -53,14 +51,12 @@ public class OrderTypeService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(OrderTypeDTO dto) throws SODAPIException {
-		try {
+
 			OrderType entity = OrderMapper.INSTANCE.map(dto);
 			this.updateEntity(orderTypeRepository, entity);
 			dto = OrderMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE

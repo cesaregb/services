@@ -42,14 +42,12 @@ public class ProductService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Product", response = ProductDTO.class)
 	public Response saveProduct(ProductDTO dto) throws SODAPIException {
-		try {
+
 			Product entity = ProductMapper.INSTANCE.map(dto);
 			this.saveEntity(productRepository, entity);
 			dto = ProductMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -59,21 +57,19 @@ public class ProductService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(ProductDTO dto) throws SODAPIException {
-		try {
+
 			Product entity = ProductMapper.INSTANCE.map(dto);
 			this.updateEntity(productRepository, entity);
 			dto = ProductMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Create Product", response = ProductDTO.class)
 	public Response deleteProduct(@PathParam("id") String id, ProductDTO dto) throws SODAPIException {
-		try {
+
 			Product entity = productRepository.findOne(Integer.valueOf(id));
 			if (entity == null){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not found");
@@ -82,9 +78,7 @@ public class ProductService extends AbstractServiceMutations {
 			return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@GET

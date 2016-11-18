@@ -31,14 +31,12 @@ public class OrderTypeTaskService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Service Type", response = OrderTypeTaskDTO.class)
 	public Response saveOrderTypeTask(OrderTypeTaskDTO dto) throws SODAPIException {
-		try {
+
 			OrderTypeTask entity = OrderMapper.INSTANCE.map(dto);
 			this.saveEntity(orderTypeTaskRepository, entity);
 			dto = OrderMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -48,21 +46,19 @@ public class OrderTypeTaskService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(OrderTypeTaskDTO dto) throws SODAPIException {
-		try {
+
 			OrderTypeTask entity = OrderMapper.INSTANCE.map(dto);
 			this.updateEntity(orderTypeTaskRepository, entity);
 			dto = OrderMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Create Service Type", response = OrderTypeTaskDTO.class)
 	public Response deleteOrderTypeTask(@PathParam("id") Integer id) throws SODAPIException {
-		try {
+
 			OrderTypeTask entity = orderTypeTaskRepository.findOne(id);
 			if (entity == null){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
@@ -71,9 +67,7 @@ public class OrderTypeTaskService extends AbstractServiceMutations {
 			return castEntityAsResponse(
 					new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@GET

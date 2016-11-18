@@ -43,14 +43,12 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Payment Info", response = ClientPaymentInfoDTO.class)
 	public Response saveClientPaymentInfo(ClientPaymentInfoDTO dto) throws SODAPIException {
-		try {
+
 			ClientPaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
 			this.saveEntity(clientPaymentInfoRepository, entity);
 			dto = PaymentMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -60,27 +58,23 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(ClientPaymentInfoDTO dto) throws SODAPIException {
-		try {
+
 			ClientPaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
 			this.updateEntity(clientPaymentInfoRepository, entity);
 			dto = PaymentMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE
 	@ApiOperation(value = "Create Payment Info", response = ClientPaymentInfoDTO.class)
 	public Response deleteItemPaymentInfo(ClientPaymentInfoDTO dto) throws SODAPIException {
-		try {
+
 			ClientPaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
 			this.deleteEntity(clientPaymentInfoRepository, entity.getIdClientPaymentInfo());
 			return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 

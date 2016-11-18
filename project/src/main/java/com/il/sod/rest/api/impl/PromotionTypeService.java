@@ -38,14 +38,12 @@ public class PromotionTypeService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Promotion Type", response = PromotionTypeDTO.class)
 	public Response savePromotionType(PromotionTypeDTO dto) throws SODAPIException {
-		try {
+
 			PromotionType entity = PromotionMapper.INSTANCE.map(dto);
 			this.saveEntity(promotionTypeRepository, entity);
 			dto = PromotionMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -55,21 +53,19 @@ public class PromotionTypeService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(PromotionTypeDTO dto) throws SODAPIException {
-		try {
+
 			PromotionType entity = PromotionMapper.INSTANCE.map(dto);
 			this.updateEntity(promotionTypeRepository, entity);
 			dto = PromotionMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Create Promotion Type", response = PromotionTypeDTO.class)
 	public Response deletePromotionType(@PathParam("id") String id, PromotionTypeDTO dto) throws SODAPIException {
-		try {
+
 			PromotionType entity = promotionTypeRepository.findOne(Integer.valueOf(id));
 			if (entity == null){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Entity not found");
@@ -81,9 +77,7 @@ public class PromotionTypeService extends AbstractServiceMutations {
 			this.softDeleteEntity(promotionTypeRepository, entity.getId());
 			return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@GET
@@ -101,7 +95,7 @@ public class PromotionTypeService extends AbstractServiceMutations {
 	@Path("/addPromotion/{idPromotionType}")
 	@ApiOperation(value = "Add Promotion to Promotion Type", response = PromotionTypeDTO.class)
 	public Response addPromotion2PromotionType(@PathParam("idPromotionType") Integer id, PromotionDTO dto) throws SODAPIException {
-		try {
+
 			Promotion promotionEntity = promotionRepository.findOne(dto.getIdPromotion());
 			if (promotionEntity == null){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Promotion not found");
@@ -114,9 +108,7 @@ public class PromotionTypeService extends AbstractServiceMutations {
 			this.saveEntity(promotionRepository, promotionEntity);
 			PromotionTypeDTO result = PromotionMapper.INSTANCE.map(promotionTypeEntity);
 			return castEntityAsResponse(result, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 }

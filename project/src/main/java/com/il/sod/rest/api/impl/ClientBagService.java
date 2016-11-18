@@ -34,14 +34,12 @@ public class ClientBagService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Client Bag", response = ClientBagDTO.class)
 	public Response saveClientBag(ClientBagDTO dto) throws SODAPIException {
-		try {
+
 			ClientBag entity = ClientMapper.INSTANCE.map(dto);
 			this.saveEntity(clientBagRepository, entity);
 			dto = ClientMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -51,14 +49,12 @@ public class ClientBagService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(ClientBagDTO dto) throws SODAPIException {
-		try {
+
 			ClientBag entity = ClientMapper.INSTANCE.map(dto);
 			this.updateEntity(clientBagRepository, entity);
 			dto = ClientMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE

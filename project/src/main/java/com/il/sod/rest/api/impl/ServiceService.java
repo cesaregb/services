@@ -31,41 +31,35 @@ public class ServiceService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Service Type", response = ServiceDTO.class)
 	public Response saveService(ServiceDTO dto) throws SODAPIException {
-		try {
+
 			Service entity = ServiceMapper.INSTANCE.map(dto);
 			this.saveEntity(serviceRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Service Type", response = ServiceDTO.class)
 	public Response updateService(ServiceDTO dto) throws SODAPIException {
-		try {
+
 			Service entity = ServiceMapper.INSTANCE.map(dto);
 			this.updateEntity(serviceRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE
 	@ApiOperation(value = "Create Service Type", response = ServiceDTO.class)
 	public Response deleteService(ServiceDTO dto) throws SODAPIException {
-		try {
+
 			Service entity = ServiceMapper.INSTANCE.map(dto);
 			this.deleteEntity(serviceRepository, entity.getIdService());
 			return castEntityAsResponse(
 					new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@GET

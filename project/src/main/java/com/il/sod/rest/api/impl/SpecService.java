@@ -39,14 +39,12 @@ public class SpecService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Spec", response = SpecDTO.class)
 	public Response saveSpec(SpecDTO dto) throws SODAPIException {
-		try {
+
 			Spec entity = SpecsMapper.INSTANCE.map(dto);
 			this.saveEntity(specRepository, entity);
 			dto = SpecsMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -56,14 +54,12 @@ public class SpecService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(SpecDTO dto) throws SODAPIException {
-		try {
+
 			Spec entity = SpecsMapper.INSTANCE.map(dto);
 			this.updateEntity(specRepository, entity);
 			dto = SpecsMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE

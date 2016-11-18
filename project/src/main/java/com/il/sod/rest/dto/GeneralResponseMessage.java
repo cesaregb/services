@@ -1,10 +1,12 @@
 package com.il.sod.rest.dto;
 
 public class GeneralResponseMessage {
-	private static final String GENERIC_MESSAGE_SUCCES = "Success";
-	private static final String GENERIC_MESSAGE_ERROR = "Error";
+	public static final String GENERIC_MESSAGE_SUCCES = "Success";
+	public static final String GENERIC_MESSAGE_ERROR = "Error";
 	
 	private String message; 
+	private String developerMessage;
+	private String link;
 	private boolean status;
 	
 	public GeneralResponseMessage(){}
@@ -14,32 +16,42 @@ public class GeneralResponseMessage {
 		this.message = message;
 	}
 
-	public GeneralResponseMessage success(){
-		this.message = GENERIC_MESSAGE_SUCCES;
-		this.status = true;
-		return this;
+	public GeneralResponseMessage(String message, String developerMessage, String link, boolean status) {
+		this.message = message;
+		this.developerMessage = developerMessage;
+		this.link = link;
+		this.status = status;
 	}
-	
-	public GeneralResponseMessage error(){
-		this.message = GENERIC_MESSAGE_ERROR;
-		this.status = false;
-		return this;
-	}
-	
+
 	public String getMessage() {
 		return message;
 	}
-	public GeneralResponseMessage setMessage(String message) {
+
+	public void setMessage(String message) {
 		this.message = message;
-		return this;
+	}
+
+	public String getDeveloperMessage() {
+		return developerMessage;
+	}
+
+	public void setDeveloperMessage(String developerMessage) {
+		this.developerMessage = developerMessage;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
 	}
 
 	public boolean isStatus() {
 		return status;
 	}
 
-	public GeneralResponseMessage setStatus(boolean status) {
+	public void setStatus(boolean status) {
 		this.status = status;
-		return this;
 	}
 }
