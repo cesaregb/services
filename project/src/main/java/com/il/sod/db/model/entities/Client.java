@@ -157,7 +157,6 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	public Address removeAddress(Address address) {
 		getAddresses().remove(address);
 		address.setClient(null);
-
 		return address;
 	}
 

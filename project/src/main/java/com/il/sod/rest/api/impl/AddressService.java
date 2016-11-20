@@ -70,7 +70,7 @@ public class AddressService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Address", response = GeneralResponseMessage.class)
-	public Response deleteEntityC(@PathParam("id") String id) throws SODAPIException {
+	public Response deleteEntity(@PathParam("id") String id) throws SODAPIException {
 		Address entity = addressRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Address not found");
@@ -78,8 +78,10 @@ public class AddressService extends AbstractServiceMutations {
 		Client cEntity = entity.getClient();
 		cEntity.removeAddress(entity);
 		this.saveEntity(clientRepository, cEntity);
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
-				Response.Status.OK);
+		this.deleteEntity(addressRepository, entity.getId());
+//		addressRepository.delete(entity);
+//		addressRepository.flush();
+		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"), Response.Status.OK);
 	}
 
 	@GET
@@ -99,7 +101,7 @@ public class AddressService extends AbstractServiceMutations {
 
 
 		List<Address> rentityList = null;
-		if (StringUtils.isEmpty(idClient)){
+		if (!StringUtils.isEmpty(idClient)){
 			Client client = this.getEntity(clientRepository, Integer.valueOf(idClient));
 			rentityList = new ArrayList<>(client.getAddresses());
 		}else{

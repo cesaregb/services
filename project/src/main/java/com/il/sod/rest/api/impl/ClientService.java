@@ -8,7 +8,7 @@ import com.il.sod.mapper.ClientMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ClientDTO;
-import com.il.sod.rest.dto.helper.ListsHelper;
+import com.il.sod.rest.dto.predicates.DeletablePredicate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -191,7 +191,10 @@ public class ClientService extends AbstractServiceMutations {
 			entities = this.getEntityList(clientRepository);
 		}
 
-		List<ClientDTO> result = ListsHelper.getActiveEntityList(entities).stream().map(ClientMapper.INSTANCE::map).collect(Collectors.toList());
+		List<ClientDTO> result = entities.stream().map(ClientMapper.INSTANCE::map)
+				.filter(DeletablePredicate.isActive())
+				.collect(Collectors.toList());
+
 		return castEntityAsResponse(result, Response.Status.OK);
 	}
 

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.il.sod.db.dao.IDAO;
 import com.il.sod.db.dao.impl.ClientDAO;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;

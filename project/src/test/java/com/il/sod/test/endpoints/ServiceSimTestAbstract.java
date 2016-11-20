@@ -2,7 +2,6 @@ package com.il.sod.test.endpoints;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.il.sod.config.jersey.JacksonObjectMapperProvider;
-import com.il.sod.db.dao.IDAO;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.BaseMapper;
 import com.il.sod.rest.dto.GeneralResponseMessage;

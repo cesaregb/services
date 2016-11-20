@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @Scope("prototype")
-public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID>{
+public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID> {
 
 	protected JpaRepository<T, ID> repository;
 

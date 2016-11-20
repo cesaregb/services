@@ -1,20 +1,18 @@
 package com.il.sod.config;
 
-import javax.annotation.PostConstruct;
-import javax.ws.rs.ApplicationPath;
-
-import org.glassfish.jersey.filter.LoggingFilter;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.il.sod.config.jersey.CORSResponseFilter;
 import com.il.sod.config.jersey.CustomLoggingFilter;
 import com.il.sod.config.jersey.JacksonObjectMapperProvider;
 import com.il.sod.rest.util.PropertyHandler;
-
 import io.swagger.jaxrs.config.BeanConfig;
+import org.glassfish.jersey.filter.LoggingFilter;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.PostConstruct;
+import javax.ws.rs.ApplicationPath;
 
 @ApplicationPath("/api") 
 public class ApplicationConfig extends ResourceConfig {

@@ -1,12 +1,8 @@
 package com.il.sod.rest.api;
 
-import com.il.sod.db.model.entities.IEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.il.sod.db.dao.IDAO;
 import com.il.sod.exception.SODAPIException;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public abstract class AbstractServiceMutations extends AbstractService{
 	

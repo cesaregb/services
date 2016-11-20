@@ -1,19 +1,18 @@
 package com.il.sod.test.model.entities;
 
-import javax.annotation.Resource;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.il.sod.db.dao.IDAO;
 import com.il.sod.db.dao.SocialNetworkServiceDAO;
 import com.il.sod.db.model.entities.SocialNetwork;
 import com.il.sod.db.model.repositories.SocialNetworkRepository;
 import com.il.sod.services.MyService;
 import com.il.sod.test.config.SpringTestConfiguration;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 @Ignore
 public class ShopDaoImplTest extends SpringTestConfiguration{
