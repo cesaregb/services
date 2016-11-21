@@ -1,12 +1,19 @@
 package com.il.sod.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ext.Provider;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Scanner;
 
 @Provider
 public class GeneralMapper  {
+
+	final static Logger LOGGER = LoggerFactory.getLogger(GeneralMapper.class);
 	
 	public String buildErrorMessage(HttpServletRequest req, String error) {
         StringBuilder message = new StringBuilder();
@@ -59,5 +66,15 @@ public class GeneralMapper  {
         }
 
         return url.toString();
+    }
+
+    protected void logException(Throwable ex, HttpServletRequest request, long threadId){
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        ex.printStackTrace(pw);
+        String error = sw.toString();
+        String errorMessage = buildErrorMessage(request, error);
+
+        LOGGER.error("[{}] {}", threadId, errorMessage);
     }
 }

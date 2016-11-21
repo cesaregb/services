@@ -13,7 +13,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 @Component
 @RolesAllowed("ADMIN")
 @Produces(MediaType.APPLICATION_JSON)
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 @Path("/clients/address")
 public class AddressService extends AbstractServiceMutations {
 
-	private final static Logger LOGGER = LoggerFactory.getLogger(AddressService.class);
+	private final static Logger LOGGER = getLogger(AddressService.class);
 
 	@Autowired
 	AddressRepository addressRepository;
@@ -46,12 +47,17 @@ public class AddressService extends AbstractServiceMutations {
 	@ApiOperation(value = "Create Address", response = AddressDTO.class)
 	public Response saveAddress(AddressDTO dto) throws SODAPIException {
 		serviceDbHelper.validateClient(clientRepository, dto);
-
+		Client client = clientRepository.findOne(dto.getIdClient());
 		Address entity = ClientMapper.INSTANCE.map(dto);
-
-        LOGGER.info("Entity mapped: {}" , entity.toString());
-		this.saveEntity(addressRepository, entity);
-		dto = ClientMapper.INSTANCE.map(entity);
+		if (client.getAddress(entity) != null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client has already an address with that information.");
+		}
+		if (client.getAddresses().size() == 0){
+			entity.setPrefered(true);
+		}
+		client.addAddress(entity);
+		client = this.saveEntity(clientRepository, client);
+		dto = ClientMapper.INSTANCE.map(client.getAddress(entity));
 		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
@@ -59,7 +65,6 @@ public class AddressService extends AbstractServiceMutations {
 	@ApiOperation(value = "Update Address", response = AddressDTO.class)
 	public Response updateAddress(AddressDTO dto) throws SODAPIException {
 		serviceDbHelper.validateClient(clientRepository, dto);
-
 		Address entity = this.getEntity(addressRepository, dto.getIdAddress());
 		entity = ClientMapper.INSTANCE.map(dto, entity);
 		this.updateEntity(addressRepository, entity);
@@ -70,16 +75,18 @@ public class AddressService extends AbstractServiceMutations {
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Address", response = GeneralResponseMessage.class)
-	public Response deleteEntityC(@PathParam("id") String id) throws SODAPIException {
+	public Response deleteEntity(@PathParam("id") String id) throws SODAPIException {
 		Address entity = addressRepository.findOne(Integer.valueOf(id));
+
 		if (entity == null){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Address not found");
 		}
+
 		Client cEntity = entity.getClient();
 		cEntity.removeAddress(entity);
 		this.saveEntity(clientRepository, cEntity);
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
-				Response.Status.OK);
+		
+		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"), Response.Status.OK);
 	}
 
 	@GET
@@ -99,7 +106,7 @@ public class AddressService extends AbstractServiceMutations {
 
 
 		List<Address> rentityList = null;
-		if (StringUtils.isEmpty(idClient)){
+		if (!StringUtils.isEmpty(idClient)){
 			Client client = this.getEntity(clientRepository, Integer.valueOf(idClient));
 			rentityList = new ArrayList<>(client.getAddresses());
 		}else{

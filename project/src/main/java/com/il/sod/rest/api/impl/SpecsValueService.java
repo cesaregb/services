@@ -44,7 +44,7 @@ public class SpecsValueService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create SpecsValue", response = SpecsValueDTO.class)
 	public Response saveSpecsValue(SpecsValueDTO dto) throws SODAPIException {
-		try {
+
 			SpecsValue entity = SpecsMapper.INSTANCE.map(dto);
 			if (entity.getIdSupplyType() > 0 && specsValueRepository.findByTypeSupply(entity.getSpec().getId(), entity.getIdSupplyType()).size() > 0 ){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, " A SpecValue for that supply type already exist. ");
@@ -53,15 +53,13 @@ public class SpecsValueService extends AbstractServiceMutations {
 			this.saveEntity(specsValueRepository, entity);
 			dto = SpecsMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
 	@ApiOperation(value = "Update SpecsValue", response = SpecsValueDTO.class)
 	public Response updateSpecsValue(SpecsValueDTO dto) throws SODAPIException {
-		try {
+
 			SpecsValue entity = SpecsMapper.INSTANCE.map(dto);
 			if (entity.getIdSupplyType() > 0 && specsValueRepository.findByTypeSupplyDifferent(entity.getSpec().getId(), entity.getIdSupplyType(), entity.getId()).size() > 0 ){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, " A SpecValue for that supply type already exist. ");
@@ -69,9 +67,7 @@ public class SpecsValueService extends AbstractServiceMutations {
 			this.updateEntity(specsValueRepository, entity);
 			dto = SpecsMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE

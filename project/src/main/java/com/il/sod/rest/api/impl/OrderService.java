@@ -44,14 +44,12 @@ public class OrderService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Order Type", response = OrderDTO.class)
 	public Response saveOrder(OrderDTO dto) throws SODAPIException {
-		try {
+
 			Order entity = OrderMapper.INSTANCE.map(dto);
 			this.saveEntity(orderRepository, entity);
 			dto = OrderMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -61,28 +59,24 @@ public class OrderService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(OrderDTO dto) throws SODAPIException {
-		try {
+
 			Order entity = OrderMapper.INSTANCE.map(dto);
 			this.updateEntity(orderRepository, entity);
 			dto = OrderMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE
 	@ApiOperation(value = "Create Order Type", response = OrderDTO.class)
 	public Response deleteOrder(OrderDTO dto) throws SODAPIException {
-		try {
+
 			Order entity = OrderMapper.INSTANCE.map(dto);
 			this.deleteEntity(orderRepository, entity.getIdOrder());
 			return castEntityAsResponse(
 					new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@GET

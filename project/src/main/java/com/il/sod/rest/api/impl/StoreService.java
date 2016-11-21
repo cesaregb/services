@@ -9,8 +9,6 @@ import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.StoreDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,9 +21,9 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/store")
+@Path("/stores")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/store", tags = { "app-utils" })
+@Api(value = "/stores", tags = {"app-utils"})
 public class StoreService extends AbstractServiceMutations {
 
 	@Autowired
@@ -34,31 +32,19 @@ public class StoreService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Store", response = StoreDTO.class)
 	public Response saveStore(StoreDTO dto) throws SODAPIException {
-		try {
-			Store entity = StoreInfoMapper.INSTANCE.map(dto);
-			this.saveEntity(storeRepository, entity);
-			dto = StoreInfoMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		Store entity = StoreInfoMapper.INSTANCE.map(dto);
+		this.saveEntity(storeRepository, entity);
+		dto = StoreInfoMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Store", response = StoreDTO.class)
 	public Response updateStore(StoreDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	private Response updateEntity(StoreDTO dto) throws SODAPIException {
-		try {
-			Store entity = StoreInfoMapper.INSTANCE.map(dto);
-			this.updateEntity(storeRepository, entity);
-			dto = StoreInfoMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		Store entity = StoreInfoMapper.INSTANCE.map(dto);
+		this.updateEntity(storeRepository, entity);
+		dto = StoreInfoMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -66,7 +52,7 @@ public class StoreService extends AbstractServiceMutations {
 	@ApiOperation(value = "Delete Item", response = GeneralResponseMessage.class)
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		Store entity = storeRepository.findOne(Integer.valueOf(id));
-		if (entity == null){
+		if (entity == null) {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.deleteEntity(storeRepository, entity.getId());

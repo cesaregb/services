@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @Scope("prototype")
-public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID>{
+public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID> {
 
 	protected JpaRepository<T, ID> repository;
 
@@ -31,7 +31,9 @@ public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID>{
 	@Override
 	@Transactional
 	public T create(T item) {
-		return repository.save(item);
+		T e = repository.save(item);
+		repository.flush();
+		return e;
 	}
 
 	@Override
@@ -41,7 +43,7 @@ public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID>{
 	}
 
 	@Override
-	@Transactional(rollbackFor=SODAPIException.class)
+	@Transactional
 	public T delete(ID id) throws SODAPIException {
 		T deletedT = repository.findOne(id);
 		if (deletedT == null){
@@ -53,7 +55,7 @@ public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID>{
 	}
 
 	@Override
-	@Transactional(rollbackFor=SODAPIException.class)
+	@Transactional
 	public T sofDelete(ID id) throws SODAPIException {
 		T deletedT = repository.findOne(id);
 		if (deletedT == null){
@@ -77,7 +79,7 @@ public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID>{
 
 	@Override
 	@Transactional(rollbackFor=SODAPIException.class)
-	public T update(T entity) throws SODAPIException {
+	public T update(T entity) {
 		repository.save(entity);
 		return entity;
 	}

@@ -5,6 +5,7 @@ import javax.ws.rs.core.Response;
 public class SODAPIException extends Exception {
 
 	private static final long serialVersionUID = 1L;
+
 	Response.Status status = Response.Status.INTERNAL_SERVER_ERROR; 
 	
 	public SODAPIException(Response.Status status, String message) {

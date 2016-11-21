@@ -31,14 +31,12 @@ public class EmployeeTypeService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Employee Type", response = EmployeeTypeDTO.class)
 	public Response saveEmployeeType(EmployeeTypeDTO dto) throws SODAPIException {
-		try {
+
 			EmployeeType entity = EmployeeMapper.INSTANCE.map(dto);
 			this.saveEntity(employeeTypeRepository, entity);
 			dto = EmployeeMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT

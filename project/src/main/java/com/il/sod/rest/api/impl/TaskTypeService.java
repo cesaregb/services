@@ -38,14 +38,12 @@ public class TaskTypeService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Task Type", response = TaskTypeDTO.class)
 	public Response saveTaskType(TaskTypeDTO dto) throws SODAPIException {
-		try {
+
 			TaskType entity = TaskMapper.INSTANCE.map(dto);
 			this.saveEntity(taskTypeRepository, entity);
 			dto = TaskMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -55,14 +53,12 @@ public class TaskTypeService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(TaskTypeDTO dto) throws SODAPIException {
-		try {
+
 			TaskType entity = TaskMapper.INSTANCE.map(dto);
 			this.updateEntity(taskTypeRepository, entity);
 			dto = TaskMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE

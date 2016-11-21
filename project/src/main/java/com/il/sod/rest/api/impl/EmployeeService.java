@@ -39,14 +39,12 @@ public class EmployeeService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Employee", response = EmployeeDTO.class)
 	public Response saveEmployee(EmployeeDTO dto) throws SODAPIException {
-		try {
+
 			Employee entity = EmployeeMapper.INSTANCE.map(dto);
 			this.saveEntity(employeeRepository, entity);
 			dto = EmployeeMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -56,14 +54,12 @@ public class EmployeeService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(EmployeeDTO dto) throws SODAPIException {
-		try {
+
 			Employee entity = EmployeeMapper.INSTANCE.map(dto);
 			this.updateEntity(employeeRepository, entity);
 			dto = EmployeeMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE

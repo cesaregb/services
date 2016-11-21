@@ -29,14 +29,10 @@ public class AccessKeyService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Service Type", response = AccessKeyDTO.class)
 	public Response saveAccessKey(AccessKeyDTO dto) throws SODAPIException {
-		try {
-			AccessKey entity = converter.map(dto, AccessKey.class);
-			this.saveEntity(accessKeyRepository, entity);
-			dto = converter.map(entity, AccessKeyDTO.class);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		AccessKey entity = converter.map(dto, AccessKey.class);
+		this.saveEntity(accessKeyRepository, entity);
+		dto = converter.map(entity, AccessKeyDTO.class);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
@@ -47,29 +43,22 @@ public class AccessKeyService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(AccessKeyDTO dto) throws SODAPIException {
-		try {
-			AccessKey entity = converter.map(dto, AccessKey.class);
-			this.updateEntity(accessKeyRepository, entity);
-			dto = converter.map(entity, AccessKeyDTO.class);
-			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		AccessKey entity = converter.map(dto, AccessKey.class);
+		this.updateEntity(accessKeyRepository, entity);
+		dto = converter.map(entity, AccessKeyDTO.class);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
 	@ApiOperation(value = "Create Service Type", response = AccessKeyDTO.class)
 
 	public Response deleteAccessKey(AccessKeyDTO dto) throws SODAPIException {
-		try {
-			AccessKey entity = converter.map(dto, AccessKey.class);
-			this.deleteEntity(accessKeyRepository, entity.getIdAccessKey());
-			return castEntityAsResponse(
-					new GeneralResponseMessage(true, "Entity deleted"),
-					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+		AccessKey entity = converter.map(dto, AccessKey.class);
+		this.deleteEntity(accessKeyRepository, entity.getIdAccessKey());
+		return castEntityAsResponse(
+				new GeneralResponseMessage(true, "Entity deleted"),
+				Response.Status.OK);
+
 	}
 
 	@GET

@@ -51,7 +51,7 @@ public class TaskService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Task", response = TaskDTO.class)
 	public Response saveTask(TaskDTO dto) throws SODAPIException {
-		try {
+
 			if (dto.getIdTaskType() == 0){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Please provivde a valida Task Type");
 			}
@@ -66,9 +66,7 @@ public class TaskService extends AbstractServiceMutations {
 
 			dto = TaskMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -78,14 +76,12 @@ public class TaskService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(TaskDTO dto) throws SODAPIException {
-		try {
+
 			Task entity = TaskMapper.INSTANCE.map(dto);
 			this.updateEntity(taskRepository, entity);
 			dto = TaskMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 //	private TaskType getTaskType(Task entity, int idTaskType) {

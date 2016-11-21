@@ -11,13 +11,5 @@ import java.util.stream.Collectors;
  */
 public class ListsHelper {
 
-    public static <T extends DeletableDTO> List<T> getActiveList(List<T> input){
-        List<T> r = input.stream().filter(i ->  i.getDeleted() == 0).collect(Collectors.toList());
-        return r;
-    }
 
-    public static <T extends SoftDeleteEntity> List<T> getActiveEntityList(List<T> input){
-        List<T> r = input.stream().filter(i ->  i.getDeleted() == 0).collect(Collectors.toList());
-        return r;
-    }
 }

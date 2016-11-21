@@ -8,7 +8,7 @@ import com.il.sod.mapper.ClientMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ClientDTO;
-import com.il.sod.rest.dto.helper.ListsHelper;
+import com.il.sod.rest.dto.predicates.DeletablePredicate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -50,29 +50,25 @@ public class ClientService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Client", response = ClientDTO.class)
 	public Response saveClient(ClientDTO dto) throws SODAPIException {
-		try{
 
-			if (dto.getIdClientType() == null || dto.getIdClientType() == 0){
-				final String localMessage = "Client Type should not be empty";
-				LOGGER.error(localMessage);
-				throw new SODAPIException(Response.Status.BAD_REQUEST, localMessage);
-			}
-
-			if (clientDAO.findByEmail(dto.getEmail()) != null){
-				final String localMesage = "Email already associated with another User ";
-				LOGGER.error(localMesage);
-				throw new SODAPIException(Response.Status.BAD_REQUEST, localMesage);
-			}
-
-
-			Client entity = ClientMapper.INSTANCE.map(dto);
-			assignDependencyToChilds(entity);
-			this.saveEntity(clientRepository, entity);
-			dto = ClientMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-		}catch(Exception e){
-			throw new SODAPIException(e);
+		if (dto.getIdClientType() == null || dto.getIdClientType() == 0){
+			final String localMessage = "Client Type should not be empty";
+			LOGGER.error(localMessage);
+			throw new SODAPIException(Response.Status.BAD_REQUEST, localMessage);
 		}
+
+		if (clientDAO.findByEmail(dto.getEmail()) != null){
+			final String localMesage = "Email already associated with another User ";
+			LOGGER.error(localMesage);
+			throw new SODAPIException(Response.Status.BAD_REQUEST, localMesage);
+		}
+
+
+		Client entity = ClientMapper.INSTANCE.map(dto);
+		assignDependencyToChilds(entity);
+		this.saveEntity(clientRepository, entity);
+		dto = ClientMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
@@ -138,7 +134,7 @@ public class ClientService extends AbstractServiceMutations {
 
 	@GET
 	@Path("/byId/{clientId}")
-	@ApiOperation(value = "Get Client list", response = ClientDTO.class)
+	@ApiOperation(value = "Get Client by id", response = ClientDTO.class)
 	public Response getClient(@PathParam("clientId") String clientId) throws SODAPIException {
 		ClientDTO dto = ClientMapper.INSTANCE.map(this.getEntity(clientRepository, Integer.valueOf(clientId)));
 		return castEntityAsResponse(dto, Response.Status.OK);
@@ -195,17 +191,16 @@ public class ClientService extends AbstractServiceMutations {
 			entities = this.getEntityList(clientRepository);
 		}
 
-		List<ClientDTO> result = ListsHelper.getActiveEntityList(entities).stream().map(ClientMapper.INSTANCE::map).collect(Collectors.toList());
+		List<ClientDTO> result = entities.stream().map(ClientMapper.INSTANCE::map)
+				.filter(DeletablePredicate.isActive())
+				.collect(Collectors.toList());
+
 		return castEntityAsResponse(result, Response.Status.OK);
 	}
 
 	private void assignDependencyToChilds(Client entity) {
 		if (entity.getAddresses() != null)
 			entity.getAddresses().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
-		if (entity.getAccessKeys() != null)
-			entity.getAccessKeys().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
-		if (entity.getOrders() != null)
-			entity.getOrders().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
 		if (entity.getClientPaymentInfos() != null)
 			entity.getClientPaymentInfos().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
 	}

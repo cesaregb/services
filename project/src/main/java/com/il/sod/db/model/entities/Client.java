@@ -2,9 +2,12 @@ package com.il.sod.db.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -15,6 +18,9 @@ import java.util.Set;
 @Table(name="Clients")
 @NamedQuery(name="Client.findAll", query="SELECT c FROM Client c")
 public class Client extends SoftDeleteEntity implements IEntity<Integer> {
+
+	private final static Logger LOGGER = LoggerFactory.getLogger(Client.class);
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -33,16 +39,16 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	private String otherPhone;
 
 	//bi-directional many-to-one association to AccessKey
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	private Set<AccessKey> accessKeys;
 
 	//bi-directional many-to-one association to Address
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	@JsonManagedReference
 	private Set<Address> addresses;
 
 	//bi-directional many-to-one association to Order
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="client", fetch=FetchType.LAZY)
 	private Set<Order> orders;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -52,12 +58,12 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	private Date updated;
 	
 	//bi-directional many-to-one association to ClientPaymentInfo
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	@JsonManagedReference
 	private Set<ClientPaymentInfo> clientPaymentInfos;
 	
 	//bi-directional many-to-one association to ClientBag
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval=true)
 	private Set<ClientBag> clientBags;
 
 	//bi-directional many-to-one association to ClientType
@@ -140,6 +146,9 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	}
 
 	public Set<Address> getAddresses() {
+		if (this.addresses == null){
+			this.addresses = new HashSet<>();
+		}
 		return this.addresses;
 	}
 
@@ -150,14 +159,12 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	public Address addAddress(Address address) {
 		getAddresses().add(address);
 		address.setClient(this);
-
 		return address;
 	}
 
 	public Address removeAddress(Address address) {
 		getAddresses().remove(address);
 		address.setClient(null);
-
 		return address;
 	}
 
@@ -210,6 +217,9 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	}
 	
 	public Set<ClientPaymentInfo> getClientPaymentInfos() {
+		if (this.clientPaymentInfos == null){
+			this.clientPaymentInfos = new HashSet<>();
+		}
 		return this.clientPaymentInfos;
 	}
 
@@ -307,6 +317,30 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 
 	public void setOtherPhone(String otherPhone) {
 		this.otherPhone = otherPhone;
+	}
+
+	@Transient
+	public Address getAddress(Address address){
+		for (Address a: getAddresses()){
+			if (a.equals(address)){ return a; }
+		}
+		return null;
+	}
+
+	@Transient
+	public ClientPaymentInfo getPaymentInfo(ClientPaymentInfo searchFor){
+		for (ClientPaymentInfo itm: getClientPaymentInfos()){
+			if (itm.equals(searchFor)){ return itm; }
+		}
+		return null;
+	}
+
+	@Transient
+	public ClientBag getClientBag(ClientBag searchFor){
+		for (ClientBag itm: getClientBags()){
+			if (itm.equals(searchFor)){ return itm; }
+		}
+		return null;
 	}
 
 	@Override

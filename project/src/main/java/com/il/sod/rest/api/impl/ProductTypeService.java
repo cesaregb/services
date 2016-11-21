@@ -32,14 +32,12 @@ public class ProductTypeService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Product Type", response = ProductTypeDTO.class)
 	public Response saveProductType(ProductTypeDTO dto) throws SODAPIException {
-		try {
+
 			ProductType entity = ProductMapper.INSTANCE.map(dto);
 			this.saveEntity(productTypeRepository, entity);
 			dto = ProductMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -49,21 +47,19 @@ public class ProductTypeService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(ProductTypeDTO dto) throws SODAPIException {
-		try {
+
 			ProductType entity = ProductMapper.INSTANCE.map(dto);
 			this.updateEntity(productTypeRepository, entity);
 			dto = ProductMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Create Product Type", response = ProductTypeDTO.class)
 	public Response deleteProductType(@PathParam("id") String id, ProductTypeDTO dto) throws SODAPIException {
-		try {
+
 			ProductType entity = productTypeRepository.findOne(Integer.valueOf(id));
 
 			if (entity == null){
@@ -77,9 +73,7 @@ public class ProductTypeService extends AbstractServiceMutations {
 			this.softDeleteEntity(productTypeRepository, entity.getId());
 			return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@GET

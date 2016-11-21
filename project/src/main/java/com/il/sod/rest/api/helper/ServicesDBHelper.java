@@ -13,7 +13,6 @@ public class ServicesDBHelper {
 	AbstractService mCallback;
 	
 	public static int TYPE_ADDRESS = 0;
-	public static int TYPE_PHONE = 1;
 	public static int TYPE_PAYMENT_METHOD = 2;
 	
 //	public interface CallbackHelper {

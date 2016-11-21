@@ -29,14 +29,12 @@ public class SocialNetworksService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Service Type", response = SocialNetworkDTO.class)
 	public Response saveSocialNetwork(SocialNetworkDTO dto) throws SODAPIException {
-		try {
+
 			SocialNetwork entity = converter.map(dto, SocialNetwork.class);
 			this.saveEntity(socialNetworkRepository, entity);
 			dto = converter.map(entity, SocialNetworkDTO.class);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -46,28 +44,24 @@ public class SocialNetworksService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(SocialNetworkDTO dto) throws SODAPIException {
-		try {
+
 			SocialNetwork entity = converter.map(dto, SocialNetwork.class);
 			this.updateEntity(socialNetworkRepository, entity);
 			dto = converter.map(entity, SocialNetworkDTO.class);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE
 	@ApiOperation(value = "Create Service Type", response = SocialNetworkDTO.class)
 	public Response deleteSocialNetwork(SocialNetworkDTO dto) throws SODAPIException {
-		try {
+
 			SocialNetwork entity = converter.map(dto, SocialNetwork.class);
 			this.deleteEntity(socialNetworkRepository, entity.getIdSocialNetworks());
 			return castEntityAsResponse(
 					new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@GET

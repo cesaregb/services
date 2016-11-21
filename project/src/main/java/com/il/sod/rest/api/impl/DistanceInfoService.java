@@ -34,14 +34,12 @@ public class DistanceInfoService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Distance Info", response = DistanceInfoDTO.class)
 	public Response saveDistanceInfo(DistanceInfoDTO dto) throws SODAPIException {
-		try {
+
 			DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
 			this.saveEntity(distanceInfoRepository, entity);
 			dto = StoreInfoMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -51,14 +49,12 @@ public class DistanceInfoService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(DistanceInfoDTO dto) throws SODAPIException {
-		try {
+
 			DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
 			this.updateEntity(distanceInfoRepository, entity);
 			dto = StoreInfoMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE

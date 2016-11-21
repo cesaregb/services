@@ -35,14 +35,12 @@ public class SupplyService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Supply", response = SupplyDTO.class)
 	public Response saveSupply(SupplyDTO dto) throws SODAPIException {
-		try {
+
 			Supply entity = SupplyMapper.INSTANCE.map(dto);
 			this.saveEntity(supplyRepository, entity);
 			dto = SupplyMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -52,14 +50,12 @@ public class SupplyService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(SupplyDTO dto) throws SODAPIException {
-		try {
+
 			Supply entity = SupplyMapper.INSTANCE.map(dto);
 			this.updateEntity(supplyRepository, entity);
 			dto = SupplyMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE

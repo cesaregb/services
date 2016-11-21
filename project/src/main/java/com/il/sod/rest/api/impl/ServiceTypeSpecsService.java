@@ -32,27 +32,23 @@ public class ServiceTypeSpecsService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Service Type", response = ServiceTypeSpecDTO.class)
 	public Response saveServiceTypeSpec(ServiceTypeSpecDTO dto) throws SODAPIException {
-		try {
+
 			ServiceTypeSpec entity = ServiceMapper.INSTANCE.map(dto);
 			this.saveEntity(serviceTypeSpecRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Service Type", response = ServiceTypeSpecDTO.class)
 	public Response updateServiceTypeSpec(ServiceTypeSpecDTO dto) throws SODAPIException {
-		try {
+
 			ServiceTypeSpec entity = ServiceMapper.INSTANCE.map(dto);
 			this.updateEntity(serviceTypeSpecRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE

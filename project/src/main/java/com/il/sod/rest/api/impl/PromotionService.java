@@ -8,6 +8,7 @@ import com.il.sod.mapper.PromotionMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.PromotionDTO;
+import com.il.sod.rest.dto.predicates.DeletablePredicate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -37,14 +38,12 @@ public class PromotionService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Promotion", response = PromotionDTO.class)
 	public Response savePromotion(PromotionDTO dto) throws SODAPIException {
-		try {
+
 			Promotion entity = PromotionMapper.INSTANCE.map(dto);
 			this.saveEntity(promotionRepository, entity);
 			dto = PromotionMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.CREATED);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@PUT
@@ -54,21 +53,19 @@ public class PromotionService extends AbstractServiceMutations {
 	}
 
 	private Response updateEntity(PromotionDTO dto) throws SODAPIException {
-		try {
+
 			Promotion entity = PromotionMapper.INSTANCE.map(dto);
 			this.updateEntity(promotionRepository, entity);
 			dto = PromotionMapper.INSTANCE.map(entity);
 			return castEntityAsResponse(dto, Response.Status.OK);
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Create Promotion", response = PromotionDTO.class)
 	public Response deletePromotion(@PathParam("id") String id, PromotionDTO dto) throws SODAPIException {
-		try {
+
 			Promotion entity = promotionRepository.findOne(Integer.valueOf(id));
 			if (entity == null){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not found");
@@ -77,21 +74,22 @@ public class PromotionService extends AbstractServiceMutations {
 			return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 
-		} catch (Exception e) {
-			throw new SODAPIException(e);
-		}
+
 	}
 
 	@GET
 	@ApiOperation(value = "Get Promotion list", response = PromotionDTO.class, responseContainer = "List")
 	public Response getPromotionList(@QueryParam("name") String name) throws SODAPIException {
-		List<Promotion> rentityList = null;
+		List<Promotion> rentityList;
 		if (!StringUtils.isEmpty(name)){
 			rentityList = promotionDAO.findByName(name);
 		}else{
-			rentityList = this.getEntityList(Promotion.class, promotionRepository);
+			rentityList = this.getEntityList(promotionRepository);
 		}
-		List<PromotionDTO> list = rentityList.stream().map(PromotionMapper.INSTANCE::map).collect(Collectors.toList());
+		List<PromotionDTO> list = rentityList.stream()
+				.map(PromotionMapper.INSTANCE::map)
+				.filter(DeletablePredicate.isActive())
+				.collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
 }

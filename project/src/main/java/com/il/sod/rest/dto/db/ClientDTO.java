@@ -24,10 +24,6 @@ public class ClientDTO extends DeletableDTO{
 
 	@ApiModelProperty(hidden=true)
 	@JsonProperty(access = Access.READ_ONLY)
-	private String defaultPhone;
-	
-	@ApiModelProperty(hidden=true)
-	@JsonProperty(access = Access.READ_ONLY)
 	private String defaultAddress;
 
 	@ApiModelProperty(hidden=true)
@@ -106,12 +102,6 @@ public class ClientDTO extends DeletableDTO{
 	}
 	public void setClientPaymentInfos(Set<ClientPaymentInfoDTO> clientPaymentInfos) {
 		this.clientPaymentInfos = clientPaymentInfos;
-	}
-	public String getDefaultPhone() {
-		return defaultPhone;
-	}
-	public void setDefaultPhone(String defaultPhone) {
-		this.defaultPhone = defaultPhone;
 	}
 	public String getDefaultAddress() {
 		return defaultAddress;
