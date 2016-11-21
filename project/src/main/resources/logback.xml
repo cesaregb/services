@@ -87,6 +87,10 @@
 	<!-- HIBERNATE -->
 	<logger name="org.hibernate" level="OFF" />
 
+	<!--<logger name="org.hibernate" level="ALL">-->
+		<!--<appender-ref ref="STDOUT" />-->
+	<!--</logger>-->
+
 	<logger name="org.hibernate.SQL" additivity="false" level="DEBUG">
 		<appender-ref ref="SQLROLLINGFILE" />
 	</logger>

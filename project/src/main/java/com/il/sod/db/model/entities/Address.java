@@ -1,20 +1,13 @@
 package com.il.sod.db.model.entities;
 
-import java.math.BigDecimal;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
 
 
 /**
@@ -24,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @NamedQuery(name="Address.findAll", query="SELECT a FROM Address a")
 public class Address implements IEntity<Integer> {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -41,7 +35,9 @@ public class Address implements IEntity<Integer> {
 	private String state;
 	
 	private String zipcode;
-	
+
+	private String comments;
+
 	private boolean prefered;
 	
 	private boolean factura;
@@ -166,20 +162,53 @@ public class Address implements IEntity<Integer> {
 		this.factura = factura;
 	}
 
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(lat, lng, address, address2, city, country, state, factura, prefered, comments);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Address address1 = (Address) o;
+		return prefered == address1.prefered &&
+				factura == address1.factura &&
+				Objects.equal(address, address1.address) &&
+				Objects.equal(address2, address1.address2) &&
+				Objects.equal(city, address1.city) &&
+				Objects.equal(country, address1.country) &&
+				Objects.equal(state, address1.state) &&
+				Objects.equal(zipcode, address1.zipcode) &&
+				Objects.equal(comments, address1.comments) &&
+				Objects.equal(lat.stripTrailingZeros(), address1.lat.stripTrailingZeros()) &&
+				Objects.equal(lng.stripTrailingZeros(), address1.lng.stripTrailingZeros());
+	}
+
 	@Override
 	public String toString() {
-		return "Address{" +
-				"idAddress=" + idAddress +
-				", address='" + address + '\'' +
-				", address2='" + address2 + '\'' +
-				", city='" + city + '\'' +
-				", country='" + country + '\'' +
-				", state='" + state + '\'' +
-				", zipcode='" + zipcode + '\'' +
-				", prefered=" + prefered +
-				", factura=" + factura +
-				", lat=" + lat +
-				", lng=" + lng +
-				'}';
+		return MoreObjects.toStringHelper(this)
+				.add("address", address)
+				.add("address2", address2)
+				.add("city", city)
+				.add("country", country)
+				.add("state", state)
+				.add("zipcode", zipcode)
+				.add("comments", comments)
+				.add("prefered", prefered)
+				.add("factura", factura)
+				.add("lat", lat)
+				.add("lng", lng)
+				.toString();
 	}
+
+
 }

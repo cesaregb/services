@@ -134,7 +134,7 @@ public class ClientService extends AbstractServiceMutations {
 
 	@GET
 	@Path("/byId/{clientId}")
-	@ApiOperation(value = "Get Client list", response = ClientDTO.class)
+	@ApiOperation(value = "Get Client by id", response = ClientDTO.class)
 	public Response getClient(@PathParam("clientId") String clientId) throws SODAPIException {
 		ClientDTO dto = ClientMapper.INSTANCE.map(this.getEntity(clientRepository, Integer.valueOf(clientId)));
 		return castEntityAsResponse(dto, Response.Status.OK);
@@ -201,10 +201,6 @@ public class ClientService extends AbstractServiceMutations {
 	private void assignDependencyToChilds(Client entity) {
 		if (entity.getAddresses() != null)
 			entity.getAddresses().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
-		if (entity.getAccessKeys() != null)
-			entity.getAccessKeys().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
-		if (entity.getOrders() != null)
-			entity.getOrders().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
 		if (entity.getClientPaymentInfos() != null)
 			entity.getClientPaymentInfos().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
 	}
