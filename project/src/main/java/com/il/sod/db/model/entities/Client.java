@@ -39,7 +39,7 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	private String otherPhone;
 
 	//bi-directional many-to-one association to AccessKey
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	private Set<AccessKey> accessKeys;
 
 	//bi-directional many-to-one association to Address
@@ -58,12 +58,12 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	private Date updated;
 	
 	//bi-directional many-to-one association to ClientPaymentInfo
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	@JsonManagedReference
 	private Set<ClientPaymentInfo> clientPaymentInfos;
 	
 	//bi-directional many-to-one association to ClientBag
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval=true)
 	private Set<ClientBag> clientBags;
 
 	//bi-directional many-to-one association to ClientType
@@ -217,6 +217,9 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	}
 	
 	public Set<ClientPaymentInfo> getClientPaymentInfos() {
+		if (this.clientPaymentInfos == null){
+			this.clientPaymentInfos = new HashSet<>();
+		}
 		return this.clientPaymentInfos;
 	}
 
@@ -320,6 +323,22 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	public Address getAddress(Address address){
 		for (Address a: getAddresses()){
 			if (a.equals(address)){ return a; }
+		}
+		return null;
+	}
+
+	@Transient
+	public ClientPaymentInfo getPaymentInfo(ClientPaymentInfo searchFor){
+		for (ClientPaymentInfo itm: getClientPaymentInfos()){
+			if (itm.equals(searchFor)){ return itm; }
+		}
+		return null;
+	}
+
+	@Transient
+	public ClientBag getClientBag(ClientBag searchFor){
+		for (ClientBag itm: getClientBags()){
+			if (itm.equals(searchFor)){ return itm; }
 		}
 		return null;
 	}

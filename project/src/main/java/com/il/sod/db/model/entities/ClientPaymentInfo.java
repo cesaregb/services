@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 
 
 /**
@@ -27,6 +29,7 @@ public class ClientPaymentInfo implements IEntity<Integer> {
 	private String token;
 
 	private int type;
+
 	private boolean prefered;
 
 	//bi-directional many-to-one association to Client
@@ -88,4 +91,28 @@ public class ClientPaymentInfo implements IEntity<Integer> {
 		this.prefered = prefered;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ClientPaymentInfo that = (ClientPaymentInfo) o;
+		return type == that.type &&
+				prefered == that.prefered &&
+				Objects.equal(token, that.token);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(token, type, prefered);
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("idClientPaymentInfo", idClientPaymentInfo)
+				.add("token", token)
+				.add("type", type)
+				.add("prefered", prefered)
+				.toString();
+	}
 }
