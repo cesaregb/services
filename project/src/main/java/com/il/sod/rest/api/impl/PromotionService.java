@@ -8,6 +8,7 @@ import com.il.sod.mapper.PromotionMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.PromotionDTO;
+import com.il.sod.rest.dto.predicates.DeletablePredicate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -79,13 +80,16 @@ public class PromotionService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Promotion list", response = PromotionDTO.class, responseContainer = "List")
 	public Response getPromotionList(@QueryParam("name") String name) throws SODAPIException {
-		List<Promotion> rentityList = null;
+		List<Promotion> rentityList;
 		if (!StringUtils.isEmpty(name)){
 			rentityList = promotionDAO.findByName(name);
 		}else{
-			rentityList = this.getEntityList(Promotion.class, promotionRepository);
+			rentityList = this.getEntityList(promotionRepository);
 		}
-		List<PromotionDTO> list = rentityList.stream().map(PromotionMapper.INSTANCE::map).collect(Collectors.toList());
+		List<PromotionDTO> list = rentityList.stream()
+				.map(PromotionMapper.INSTANCE::map)
+				.filter(DeletablePredicate.isActive())
+				.collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
 }

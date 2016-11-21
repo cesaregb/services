@@ -1,17 +1,5 @@
 package com.il.sod.test.model.entities;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specifications;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.il.sod.db.dao.IDAO;
 import com.il.sod.db.dao.impl.ClientDAO;
 import com.il.sod.db.model.entities.Client;
@@ -19,6 +7,15 @@ import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.db.model.repositories.ClientSpecification;
 import com.il.sod.db.model.repositories.SearchCriteria;
 import com.il.sod.test.config.SpringTestConfiguration;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class ClientDaoTest extends SpringTestConfiguration{
 	

@@ -24,16 +24,18 @@ public enum ClientMapper {
 		converterFactory.registerConverter("clientBagSetConverter", new ClientBagSetConverter());
 
 		BaseMapper.MAPPER_FACTORY.classMap(ClientDTO.class, Client.class)
-			.fieldMap("orders", "orders").converter("orderSetConverter").mapNulls(false).mapNullsInReverse(true).add()
+//			.fieldMap("orders", "orders").converter("orderSetConverter").mapNulls(false).mapNullsInReverse(true).add()
 			.fieldMap("addresses", "addresses").converter("addressDTOConverter").mapNulls(false).mapNullsInReverse(true).add()
 			.fieldMap("clientPaymentInfos", "clientPaymentInfos").converter("clientPaymentInfoSetConverter").mapNulls(false).mapNullsInReverse(true).add()
 			.fieldMap("clientBags", "clientBags").converter("clientBagSetConverter").mapNulls(false).mapNullsInReverse(true).add()
 			.field("idClientType","clientType.idClientType")
+				// IMPORTANT!!
+			.exclude("orders")
 			.byDefault()
-			.customize(new CustomMapper<ClientDTO, Client>() { // holder..
+			.customize(new CustomMapper<ClientDTO, Client>() {
 				@Override
 				public void mapBtoA(Client client, ClientDTO clientDTO, MappingContext context) {
-//					clientDTO.setIdClientType(client.getClientType().getIdClientType());
+					clientDTO.setIdClientType(client.getClientType().getIdClientType());
 				}
 			})
 			.register();
@@ -79,13 +81,13 @@ public enum ClientMapper {
 		ClientDTO result = this.mapperFacade.map(entity, ClientDTO.class);
 		try{
 			AddressDTO defAddress = null;
-			defAddress = result.getAddresses().stream().filter(pn->pn.isPrefered()).collect(Collectors.toList()).get(0);
+			defAddress = result.getAddresses().stream().filter(AddressDTO::isPrefered).collect(Collectors.toList()).get(0);
 			result.setDefaultAddress(defAddress.toString());
 		}catch(Exception e){ /* do nothing just assign null*/ }
 		
 		try{
 			ClientPaymentInfoDTO defPayment = null;
-			defPayment = result.getClientPaymentInfos().stream().filter(pn->pn.isPrefered()).collect(Collectors.toList()).get(0);
+			defPayment = result.getClientPaymentInfos().stream().filter(ClientPaymentInfoDTO::isPrefered).collect(Collectors.toList()).get(0);
 			result.setDefaultPayment(defPayment.toString());
 		}catch(Exception e){ /* do nothing just assign null*/ }
 		

@@ -133,7 +133,6 @@ public abstract class AbstractService{
 		return gDao.findById(id);
 	}
 	
-	@Deprecated
 	@SuppressWarnings("unchecked")
 	protected <T> List<T> getEntityList(JpaRepository<T, Integer> repository){	
 		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
@@ -142,7 +141,7 @@ public abstract class AbstractService{
 	}
 
 	@SuppressWarnings("unchecked")
-	protected <T> List<T> getEntityList(Class<T> clazz, JpaRepository<T, Integer> repository){
+	protected <T> List<T> getEntityListActive(Class<T> clazz, JpaRepository<T, Integer> repository){
 		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
 		if (SoftDeleteEntity.class.isAssignableFrom(clazz)){
 			gDao.setRepository(repository);

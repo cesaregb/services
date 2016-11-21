@@ -8,7 +8,7 @@ import com.il.sod.mapper.ClientMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ClientDTO;
-import com.il.sod.rest.dto.helper.ListsHelper;
+import com.il.sod.rest.dto.predicates.DeletablePredicate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -134,7 +134,7 @@ public class ClientService extends AbstractServiceMutations {
 
 	@GET
 	@Path("/byId/{clientId}")
-	@ApiOperation(value = "Get Client list", response = ClientDTO.class)
+	@ApiOperation(value = "Get Client by id", response = ClientDTO.class)
 	public Response getClient(@PathParam("clientId") String clientId) throws SODAPIException {
 		ClientDTO dto = ClientMapper.INSTANCE.map(this.getEntity(clientRepository, Integer.valueOf(clientId)));
 		return castEntityAsResponse(dto, Response.Status.OK);
@@ -191,17 +191,16 @@ public class ClientService extends AbstractServiceMutations {
 			entities = this.getEntityList(clientRepository);
 		}
 
-		List<ClientDTO> result = ListsHelper.getActiveEntityList(entities).stream().map(ClientMapper.INSTANCE::map).collect(Collectors.toList());
+		List<ClientDTO> result = entities.stream().map(ClientMapper.INSTANCE::map)
+				.filter(DeletablePredicate.isActive())
+				.collect(Collectors.toList());
+
 		return castEntityAsResponse(result, Response.Status.OK);
 	}
 
 	private void assignDependencyToChilds(Client entity) {
 		if (entity.getAddresses() != null)
 			entity.getAddresses().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
-		if (entity.getAccessKeys() != null)
-			entity.getAccessKeys().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
-		if (entity.getOrders() != null)
-			entity.getOrders().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
 		if (entity.getClientPaymentInfos() != null)
 			entity.getClientPaymentInfos().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
 	}
