@@ -6,7 +6,7 @@
   # docker push interactivelabs/services
 # docker run -p 8080:8080 -e "APP_PROFILE=dev" -it interactivelabs/services
 # docker run -p 8080:8080 -e "spring.profiles.active=dev" -d interactivelabs/services
-# docker run -p 8080:8080 -it  --entrypoint bash interactivelabs/services
+# docker run -p 8080:8080 -e "APP_PROFILE=dev" -it --entrypoint bash interactivelabs/services
 #
 # To run:
 # docker run -p 8080:8080 -it interactivelabs/services:v1
@@ -42,7 +42,7 @@ RUN ln -s apache-maven-3.3.9 maven
 
 ENV PATH=$PATH:/usr/local/maven/bin
 
-# Install
+# Install node
 RUN cd /tmp && wget http://nodejs.org/dist/v0.12.3/node-v0.12.3-linux-x64.tar.gz
 RUN cd /usr && tar --strip-components 1 -xzf /tmp/node-v0.12.3-linux-x64.tar.gz
 
@@ -51,14 +51,14 @@ ENV BASE_USER il
 ENV USER_HOME /home/$BASE_USER
 
 # Create our user
-RUN useradd $BASE_USER
+RUN useradd ${BASE_USER}
 
 #make the base_user the owner of all its HOME files, including the .ssh and DOCENG_BASE_SRC dirs
 RUN chown -R $BASE_USER:$BASE_USER $USER_HOME
 
-
 #docker project file specific
 EXPOSE 8080
+
 #microservice name
 ENV MODULE services
 ENV MODULE_SOURCE ${USER_HOME}/${MODULE}
@@ -75,6 +75,27 @@ USER $BASE_USER
 WORKDIR ${MODULE_SOURCE}/project
 RUN mvn clean install package
 
+# logstasg!
+#change workingdir to work and prepare the image
+WORKDIR ${USER_HOME}
+# this is not working at the time.
+ENV elastic_search_url=localhost
+ENV elastic_search_port=9200
+
+RUN \
+ wget -P ${USER_HOME} https://download.elastic.co/logstash/logstash/logstash-2.1.1.tar.gz  &&\
+ tar xvzf logstash-2.1.1.tar.gz  &&\
+ rm -f logstash-2.1.1.tar.gz  &&\
+ chown -R ${BASE_USER}:${BASE_USER} logstash-2.1.1
+
+# logstash.conf and Dockerfile are on same location
+ADD logstash.conf ${USER_HOME}
+
+CMD ${USER_HOME}/logstash-2.1.1/bin/logstash -f ${USER_HOME}/logstash.conf
+# /home/il/logstash-2.1.1/bin/logstash -f /home/il/logstash.conf
+
+#change working dir to execute the project
+WORKDIR ${MODULE_SOURCE}/project
 #When this image is run as a container, start the jetty server. It will be listening on the ${REGISTRATION_API_PORT}
 # ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "target/sod_project-1.0.jar"]
 # ENTRYPOINT ["mvn", "clean", "compile", "-Dspring.profiles.active=dev", "exec:java"]

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
@@ -25,6 +26,9 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 	
 	@Context
 	private ResourceInfo resourceInfo;
+
+	@Context
+	private HttpServletRequest sr;
 
 	private static final String AUTHORIZATION_PROPERTY = "Authorization";
 	private static final String AUTHENTICATION_SCHEME = "Basic";

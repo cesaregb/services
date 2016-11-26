@@ -6,7 +6,7 @@
 	<groupId>com.il.sod</groupId>
 	<artifactId>sod_project</artifactId>
 	<version>1.0</version>
-	<name>Initial service</name>
+	<name>SOD Services</name>
 	<url>http://maven.apache.org</url>
     
 	<properties>
@@ -14,7 +14,7 @@
 		<jetty.version>8.1.5.v20120716</jetty.version>
 		<java.version>1.8</java.version>
 		<slf4j.version>1.7.13</slf4j.version>
-		<logback.version>1.0.1</logback.version>
+		<logback.version>1.1.7</logback.version>
 		<spring.data>1.9.2.RELEASE</spring.data>
 		<spring.version>4.2.4.RELEASE</spring.version>
 		<mysql.version>5.1.30</mysql.version>
@@ -43,9 +43,11 @@
 
 		<apache.commons.lang3.version>3.4</apache.commons.lang3.version>
 		<apache.commons.collections.version>4.0</apache.commons.collections.version>
+		<logstash-logback-encoder-version>4.8</logstash-logback-encoder-version>
 	</properties>
     
     <repositories>
+		<!--not used-->
 	</repositories>
     
     <dependencies>
@@ -168,6 +170,11 @@
 			<artifactId>logback-core</artifactId>
 			<version>${logback.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>${logstash-logback-encoder-version}</version>
+		</dependency>
 		
 		<!-- ******* JPA/Hibernate ******** -->
 		<dependency>
@@ -191,6 +198,7 @@
 		   <version>${mysql.version}</version>
 		   <!-- <scope>runtime</scope> -->
 		</dependency>
+
 		<!-- General libraries  -->
 		<dependency>
 			<groupId>org.jboss.spec</groupId>
@@ -246,7 +254,8 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- Integration test (REST Services) -->
+
+		<!-- Integration test (REST Services) -->
 		<dependency>
 			<groupId>com.jayway.restassured</groupId>
 			<artifactId>rest-assured</artifactId>
@@ -298,6 +307,7 @@
 			<version>${javax.mail.version}</version>
 			<scope>provided</scope>
 		</dependency>
+
 		<!-- velocity -->
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
@@ -309,12 +319,14 @@
 			<artifactId>velocity-tools</artifactId>
 			<version>${velocity-tools.version}</version>
 		</dependency>
-		
+
+		<!--dont know.-->
 		<dependency>
 		    <groupId>com.intersult</groupId>
 		    <artifactId>jpa-fix</artifactId>
 		    <version>1.1</version>
 		</dependency>
+
     </dependencies>
     
     <build>
