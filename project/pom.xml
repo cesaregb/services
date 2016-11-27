@@ -8,7 +8,7 @@
 	<version>1.0</version>
 	<name>SOD Services</name>
 	<url>http://maven.apache.org</url>
-    
+
 	<properties>
 		<skipTests>true</skipTests>
 		<jetty.version>8.1.5.v20120716</jetty.version>
@@ -44,6 +44,8 @@
 		<apache.commons.lang3.version>3.4</apache.commons.lang3.version>
 		<apache.commons.collections.version>4.0</apache.commons.collections.version>
 		<logstash-logback-encoder-version>4.8</logstash-logback-encoder-version>
+
+		<typesafe-config.version>1.3.1</typesafe-config.version>
 	</properties>
     
     <repositories>
@@ -94,6 +96,7 @@
 		    <artifactId>jersey-client</artifactId>
 		    <version>${jersey.version}</version>
 		</dependency>
+
 		<!-- Swagger for jersey2 -->
 		<dependency>
 			<groupId>io.swagger</groupId>
@@ -178,6 +181,12 @@
 		
 		<!-- ******* JPA/Hibernate ******** -->
 		<dependency>
+			<groupId>com.intersult</groupId>
+			<artifactId>jpa-fix</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
 			<version>${spring.data}</version>
@@ -233,6 +242,12 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>${apache.commons.lang3.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.typesafe</groupId>
+			<artifactId>config</artifactId>
+			<version>${typesafe-config.version}</version>
 		</dependency>
 
 		<!-- Testing dependencies -->
@@ -320,13 +335,6 @@
 			<version>${velocity-tools.version}</version>
 		</dependency>
 
-		<!--dont know.-->
-		<dependency>
-		    <groupId>com.intersult</groupId>
-		    <artifactId>jpa-fix</artifactId>
-		    <version>1.1</version>
-		</dependency>
-
     </dependencies>
     
     <build>
@@ -355,6 +363,7 @@
         		<artifactId>jetty-maven-plugin</artifactId>
 				<version>${jetty.version}</version>
 			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>

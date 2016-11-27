@@ -1,6 +1,7 @@
 package com.il.sod.config;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.il.sod.config.jersey.AuthenticationFilter;
 import com.il.sod.config.jersey.CORSResponseFilter;
 import com.il.sod.config.jersey.CustomLoggingFilter;
 import com.il.sod.config.jersey.JacksonObjectMapperProvider;
@@ -28,7 +29,7 @@ public class ApplicationConfig extends ResourceConfig {
 	public ApplicationConfig() {
         register(LoggingFilter.class);
         register(CORSResponseFilter.class);
-//        register(AuthenticationFilter.class);
+        register(AuthenticationFilter.class);
         register(CustomLoggingFilter.class);
         register(JacksonObjectMapperProvider.class);
         register(JacksonJaxbJsonProvider.class);

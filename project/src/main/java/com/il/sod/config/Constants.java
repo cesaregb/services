@@ -72,4 +72,7 @@ public class Constants {
 		}
 	}
 
+	// Property for getting the state of the typesafe config
+	public static final String COM_IL_SOD_APPLICATION = "com.il.sod.application";
+
 }
