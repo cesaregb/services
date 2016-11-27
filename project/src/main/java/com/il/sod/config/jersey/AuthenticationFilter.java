@@ -1,6 +1,9 @@
 package com.il.sod.config.jersey;
 
+import com.il.sod.config.Constants;
 import com.il.sod.rest.dto.GeneralResponseMessage;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.glassfish.jersey.internal.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +23,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 //http://howtodoinjava.com/2015/08/19/jersey-rest-security/
+
 @Provider
 public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequestFilter {
 	private final Logger LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
@@ -28,29 +32,44 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 	private ResourceInfo resourceInfo;
 
 	@Context
-	private HttpServletRequest sr;
+	private HttpServletRequest servletRequest;
 
 	private static final String AUTHORIZATION_PROPERTY = "Authorization";
+
 	private static final String AUTHENTICATION_SCHEME = "Basic";
 
 	@Override
 	public void filter(ContainerRequestContext requestContext)  {
+		Config envConfig = ConfigFactory.load().getConfig(Constants.COM_IL_SOD_APPLICATION);
 		String reqMethod = requestContext.getMethod();
 		Method method = resourceInfo.getResourceMethod();
-		
-		LOGGER.info("***** AuthenticationFilter");
+
+		List<String> ips = envConfig.getStringList("security.ips");
+		LOGGER.info("***** AuthenticationFilter\n ips with access: ");
+		ips.forEach(LOGGER::info);
+		LOGGER.info("For ips different than above, authentication [user/password] will be required");
+		LOGGER.info("Requester IP Address:" + servletRequest.getRemoteAddr());
+
 		String myMethod = requestContext.getUriInfo().getPath();
-		LOGGER.info("method: " + method.getName() + " -- " + myMethod + " -- " + reqMethod);
+		String requesterIp = servletRequest.getRemoteAddr();
+		boolean ipAllowed = ips.contains(requesterIp);
+		LOGGER.info("method: " + reqMethod + " \nmyMethod: " + myMethod + "\nJava Method:" + method.getName());
+
 		// Access allowed for all
-		if (! method.isAnnotationPresent(PermitAll.class) 
-				&& ! myMethod.toLowerCase().equals("swagger.json") && !reqMethod.toUpperCase().equals("OPTIONS")) {
+		if (!ipAllowed
+				&& !method.isAnnotationPresent(PermitAll.class)
+				&& !myMethod.toLowerCase().equals("swagger.json")
+				&& !reqMethod.toUpperCase().equals("OPTIONS")) {
+
 			// Access denied for all
 			if (method.isAnnotationPresent(DenyAll.class)) {
 				requestContext.abortWith(getAccessUnauthorizedResponse());
 				return;
 			}
+
 			// Get request headers
 			final MultivaluedMap<String, String> headers = requestContext.getHeaders();
+
 			// Fetch authorization header
 			final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
 			
@@ -72,10 +91,10 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 			final String password = tokenizer.nextToken();
 
 			// Verifying Username and password
-			System.out.println("***********************");
-			System.out.println("username: " + username);
-			System.out.println("password: " + password);
-			System.out.println("***********************");
+			LOGGER.info("***********************");
+			LOGGER.info("username: " + username);
+			LOGGER.info("password: " + password);
+			LOGGER.info("***********************");
 
 			// Verify user access
 			if (method.isAnnotationPresent(RolesAllowed.class)) {

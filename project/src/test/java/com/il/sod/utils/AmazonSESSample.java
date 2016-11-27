@@ -1,12 +1,11 @@
 package com.il.sod.utils;
 
-import java.util.Properties;
-
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 
 public class AmazonSESSample {
 	
@@ -17,8 +16,7 @@ public class AmazonSESSample {
 //	email.password=AnJXL5HlMUdsy0COy1aSAj/cmXjos/sSQ11XE+12O7sC
 	
 	static final String FROM = "clientes@tersuslavanderia.com";   // Replace with your "From" address. This address must be verified.
-    static final String TO = "cesareg.borjon@gmail.com";  // Replace with a "To" address. If your account is still in the 
-                                                       // sandbox, this address must be verified.
+    static final String TO = "cesareg.borjon@gmail.com";  // Replace with a "To" address. If your account is still in the sandbox, this address must be verified.
     
     static final String BODY = "This email was sent through the Amazon SES SMTP interface by using Java.";
     static final String SUBJECT = "Amazon SES test (SMTP interface accessed using Java)";

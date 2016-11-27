@@ -1,32 +1,41 @@
 package com.il.sod.config;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 
 public class Constants {
+
 	private Constants() {
     }
 
+    // helper to get values from properties
+    private static Config envConfig = ConfigFactory.load().getConfig(Constants.COM_IL_SOD_APPLICATION);
+
+    // profiles
     public static final String SPRING_PROFILE_LOCAL = "local";
     public static final String SPRING_PROFILE_DOCKER = "docker";
     public static final String SPRING_PROFILE_DEVELOPMENT = "dev";
     public static final String SPRING_PROFILE_PRODUCTION = "prod";
-    public static final String SPRING_PROFILE_FAST = "fast";
-    public static final String SPRING_PROFILE_CLOUD = "cloud";
-    public static final String SYSTEM_ACCOUNT = "system";
-    
+
+
+	// properties.
     public static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
 
+	// env vars if exist (Override existing info)
     public static final String PROPERTY_NAME_DB_URL = "DB_URL";
     public static final String PROPERTY_NAME_DB_USER = "DB_USER";
     public static final String PROPERTY_NAME_DB_PASSWORD = "DB_PASSWORD";
+
+	public static final String DOCKER_ENV_FLAG = "DB_URL";
+
+
 
 	public static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "com.il.sod.db.model.entities";
 	
 	public static final String ENV_APP_PROFILE = "APP_PROFILE";
 
-	public static final String DOCKER_ENV_FLAG = "DB_URL";
-	
+
+	// for spects, when we are assigning type
 	public static final int SPEC_TYPE_PRODUCT = 2;
 	public static final int SPEC_TYPE_VALUES = 1;
 	
@@ -50,18 +59,11 @@ public class Constants {
 	public static final int ADDRESS_ROUTE_TYPE = 0; 
 	public static final int ADDRESS_CLIENT_TYPE = 1;
 
-	// com.il.sod.db.model.entities.Promotion.discountType
-	public static final Map<Integer, String> discountType = new HashMap<>();
-
-	static{
-		discountType.put(1, "amount");
-		discountType.put(2, "percentge");
-	}
 
 	// Promotion
 	public enum PROMOTION_TYPE{
-		AMOUNT(1),
-		DISCOUNT(2);
+		AMOUNT(envConfig.getInt("constants.promo.type.amount")),
+		PERCENTAGE(envConfig.getInt("constants.promo.type.percentge"));
 
 		public final int val;
 		PROMOTION_TYPE(int val){
@@ -70,6 +72,13 @@ public class Constants {
 		public int getValue(){
 			return this.val;
 		}
+	}
+
+	// Property for getting the state of the typesafe config
+	public static final String COM_IL_SOD_APPLICATION = "com.il.sod.application";
+
+	// initialize all static information
+	static{
 	}
 
 }

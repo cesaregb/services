@@ -63,7 +63,6 @@ public class ClientService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, localMesage);
 		}
 
-
 		Client entity = ClientMapper.INSTANCE.map(dto);
 		assignDependencyToChilds(entity);
 		this.saveEntity(clientRepository, entity);

@@ -117,7 +117,7 @@
 	<logger name="com.il.sod" level="DEBUG" additivity="false">
 		<appender-ref ref="APP_FILE" />
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="stash" />
+		<!--<appender-ref ref="stash" />-->
 	</logger>
 
 	<root level="INFO">

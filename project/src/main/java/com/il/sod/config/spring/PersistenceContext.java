@@ -1,15 +1,6 @@
 package com.il.sod.config.spring;
 
-import static com.il.sod.config.Constants.PROPERTY_NAME_DATABASE_DRIVER;
-import static com.il.sod.config.Constants.PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN;
-
-import java.util.Map;
-import java.util.Properties;
-
-import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
+import com.il.sod.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,7 +15,15 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.il.sod.config.Constants;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
+
+import static com.il.sod.config.Constants.PROPERTY_NAME_DATABASE_DRIVER;
+import static com.il.sod.config.Constants.PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN;
 
 @Configuration
 @EnableTransactionManagement
@@ -53,9 +52,9 @@ public class PersistenceContext {
 	DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(env.getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER));
-		if (dataSourceInfo != null 
-				&& (dataSourceInfo.containsKey("valid") 
-						&& dataSourceInfo.get("valid") == "1")) {
+		if (dataSourceInfo != null
+				&& (dataSourceInfo.containsKey("valid")
+				&& Objects.equals(dataSourceInfo.get("valid"), "1"))) {
 			dataSource.setUrl(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_URL));
 			dataSource.setUsername(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_USER));
 			dataSource.setPassword(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_PASSWORD));
