@@ -1,8 +1,5 @@
 package com.il.sod.config.spring;
 
-import java.io.IOException;
-import java.util.Properties;
-
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.velocity.VelocityEngineFactory;
+
+import java.io.IOException;
+import java.util.Properties;
 
 @Configuration
 public class MailConfiguration {
@@ -40,11 +40,13 @@ public class MailConfiguration {
 	
 	@Value("${email.host}")
     private String host;
+
     @Value("${email.port}")
     private Integer port;
     
     @Value("${email.username}")
     private String emailUsername;
+
     @Value("${email.password}")
     private String emailPassword;
 

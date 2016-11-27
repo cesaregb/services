@@ -14,9 +14,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>log/sod_app.log</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} -
-				%msg%n
-			</Pattern>
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n </Pattern>
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
 			<FileNamePattern>log/sod_app.%i.log.zip</FileNamePattern>
@@ -69,6 +67,21 @@
 		</triggeringPolicy>
 	</appender>
 
+	<appender name="stash" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>log/file.log</file>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>log/sod_app.%i.log.zip</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>10</MaxIndex>
+		</rollingPolicy>
+
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>10MB</MaxFileSize>
+		</triggeringPolicy>
+		<encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+	</appender>
+
 	<!-- APPENDER -->
 
 	<!-- FRAMEWORKS -->
@@ -104,6 +117,7 @@
 	<logger name="com.il.sod" level="DEBUG" additivity="false">
 		<appender-ref ref="APP_FILE" />
 		<appender-ref ref="STDOUT" />
+		<!--<appender-ref ref="stash" />-->
 	</logger>
 
 	<root level="INFO">
