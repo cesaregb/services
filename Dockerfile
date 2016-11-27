@@ -4,12 +4,11 @@
 # To publish:
   # docker logn
   # docker push interactivelabs/services
+#
+# To run:
 # docker run -p 8080:8080 -e "APP_PROFILE=dev" -it interactivelabs/services
 # docker run -p 8080:8080 -e "spring.profiles.active=dev" -d interactivelabs/services
 # docker run -p 8080:8080 -e "APP_PROFILE=dev" -it --entrypoint bash interactivelabs/services
-#
-# To run:
-# docker run -p 8080:8080 -it interactivelabs/services:v1
 FROM centos:6
 MAINTAINER cesareg.borjon@gmail.com
 
@@ -71,10 +70,6 @@ RUN chown -R ${BASE_USER}:${BASE_USER} ${MODULE_SOURCE}
 
 USER $BASE_USER
 
-# Build the registration services now
-WORKDIR ${MODULE_SOURCE}/project
-RUN mvn clean install package
-
 # logstasg!
 #change workingdir to work and prepare the image
 WORKDIR ${USER_HOME}
@@ -94,9 +89,13 @@ ADD logstash.conf ${USER_HOME}
 CMD ${USER_HOME}/logstash-2.1.1/bin/logstash -f ${USER_HOME}/logstash.conf
 # /home/il/logstash-2.1.1/bin/logstash -f /home/il/logstash.conf
 
-#change working dir to execute the project
+
+# Build the registration services now
 WORKDIR ${MODULE_SOURCE}/project
+RUN mvn clean install package
+
 #When this image is run as a container, start the jetty server. It will be listening on the ${REGISTRATION_API_PORT}
 # ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "target/sod_project-1.0.jar"]
 # ENTRYPOINT ["mvn", "clean", "compile", "-Dspring.profiles.active=dev", "exec:java"]
-ENTRYPOINT ["mvn", "clean", "compile", "exec:java"]
+# ENTRYPOINT ["mvn", "compile", "exec:java"]
+ENTRYPOINT mvn compile exec:java
