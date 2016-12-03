@@ -5,8 +5,6 @@ import com.il.sod.config.JWTSingleton;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureException;
 import org.glassfish.jersey.internal.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +40,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
 	private static final String AUTHORIZATION_PROPERTY = "Authorization";
 
-	private static final String AUTHENTICATION_SCHEME = "Basic";
+	private static final String AUTHENTICATION_SCHEME_BASIC = "Basic";
+	private static final String AUTHENTICATION_SCHEME_BEARER = "Bearer";
 
 	/**
 	 * Auth filter.
@@ -74,29 +73,46 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 		List<String> ips = envConfig.getStringList("security.ips");
 		LOGGER.info("***** AuthenticationFilter\n ips with access: ");
 		ips.forEach(LOGGER::info);
-		LOGGER.info("For ips different than above, authentication [user/password] will be required");
-		LOGGER.info("Requester IP Address:" + servletRequest.getRemoteAddr());
-
+		LOGGER.info("Request IP Address:" + servletRequest.getRemoteAddr());
 
 		String myMethod = requestContext.getUriInfo().getPath();
 		String requesterIp = servletRequest.getRemoteAddr();
-		LOGGER.info("method: " + reqMethod + " \nmyMethod: " + myMethod + "\nJava Method:" + method.getName());
+		LOGGER.info("[Request Info] method: " + reqMethod + " \nmyMethod: " + myMethod + "\nJava Method:" + method.getName());
 
 		// the request is comming from a known ip.
 		boolean requestAuthenticated = ips.contains(requesterIp);
 
-		try {
-			// Auth request with JWT
-			requestAuthenticated = requestAuthenticated || Jwts.parser().setSigningKey(JWTSingleton.INSTANCE.getKey())
-					.parseClaimsJws("compactJws")
-					.getBody()
-					.getSubject().equals(Constants.BASIC_AUTH);
+		if (requestAuthenticated){
+			LOGGER.info("Authentication granted! IP {} in trusted ips", requesterIp);
+		}
 
-		} catch (SignatureException e) {
-			// JWT is present but not correct, attempt to bypase security.
+		// Get request headers
+		final MultivaluedMap<String, String> headers = requestContext.getHeaders();
+
+		// Fetch authorization header
+		final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
+
+		StringBuilder basicAuth = new StringBuilder();
+		StringBuilder bearerAuth = new StringBuilder();
+
+		// If no authorization information present; block access
+		if (authorization == null || authorization.isEmpty()) {
 			requestContext.abortWith(getAccessDeniedResponse());
 			return;
+		}else{
+			// iterate thru auth header, it may contain 2 types.
+			for (String s : authorization) {
+				if (s.contains(AUTHENTICATION_SCHEME_BASIC)){
+					basicAuth.append(s);
+				}else if (s.contains(AUTHENTICATION_SCHEME_BEARER)){
+					bearerAuth.append(s);
+				}
+			}
 		}
+
+		final String authToken = bearerAuth.toString().trim().replace(AUTHENTICATION_SCHEME_BEARER,"");
+
+		requestAuthenticated = requestAuthenticated || JWTSingleton.INSTANCE.isValidToken(authToken);
 
 		// Access denied for all
 		if (method.isAnnotationPresent(DenyAll.class)) {
@@ -104,35 +120,26 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 			return;
 		}
 
-		// Verify user access
-		RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
-		Set<String> rolesSet = new HashSet<>(Arrays.asList(rolesAnnotation.value()));
-
-		boolean requireBasicAuth = rolesSet.contains(Constants.BASIC_AUTH);
-
 		// already authenticated
 		boolean bypassAuth = requestAuthenticated
 				|| method.isAnnotationPresent(PermitAll.class)
 				|| myMethod.toLowerCase().equals("swagger.json")
 				|| reqMethod.toUpperCase().equals("OPTIONS");
 
+		// Verify user access
+		boolean requireBasicAuth = false;
+		Set<String> rolesSet = null;
+		RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
+		if (rolesAnnotation != null){
+			rolesSet = new HashSet<>(Arrays.asList(rolesAnnotation.value()));
+			requireBasicAuth = rolesSet.contains(Constants.BASIC_AUTH);
+		}
 
+		// **  Require basic authentication
 		if (requireBasicAuth && (! bypassAuth) ) {
 
-			// Get request headers
-			final MultivaluedMap<String, String> headers = requestContext.getHeaders();
-
-			// Fetch authorization header
-			final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
-
-			// If no authorization information present; block access
-			if (authorization == null || authorization.isEmpty()) {
-				requestContext.abortWith(getAccessDeniedResponse());
-				return;
-			}
-
 			// Get encoded username and password
-			final String encodedUserPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+			final String encodedUserPassword = basicAuth.toString().replaceFirst(AUTHENTICATION_SCHEME_BASIC + " ", "");
 
 			// Decode username and password
 			String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));
@@ -170,7 +177,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 		return username.equals("user")
 				&& password.equals("user")
 				&& rolesSet.contains(Constants.BASIC_AUTH);
-
 	}
 
 	public static Response getAccessDeniedResponse() {
@@ -180,6 +186,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 				type(MediaType.APPLICATION_JSON).
 				build();
 	}
+
 	public static Response getAccessUnauthorizedResponse() {
 		return Response.
 				status(Response.Status.UNAUTHORIZED).

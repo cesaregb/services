@@ -1,5 +1,6 @@
 package com.il.sod.rest.api.security.impl;
 
+import com.il.sod.config.Constants;
 import com.il.sod.config.JWTSingleton;
 import com.il.sod.converter.services.SpecificObjectsConverterService;
 import com.il.sod.db.model.entities.Menu;
@@ -8,8 +9,6 @@ import com.il.sod.db.model.repositories.MenuRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.db.MenuDTO;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -46,12 +45,7 @@ public class SecurityService extends AbstractServiceMutations {
 	@Path("/app/{appId}")
 	@ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
 	public Response authClient(@PathParam("appId") String appId) throws SODAPIException {
-
-		String compactJws = Jwts.builder()
-				.setSubject("BASIC_AUTH")
-				.signWith(SignatureAlgorithm.HS512, JWTSingleton.INSTANCE.getKey())
-				.compact();
-
+		String compactJws = JWTSingleton.INSTANCE.createJWT(appId, Constants.BASIC_AUTH, 1);
 		return this.castEntityAsResponse(compactJws);
 	}
 
