@@ -5,8 +5,10 @@ import com.typesafe.config.ConfigFactory;
 
 public class Constants {
 
-	private Constants() {
-    }
+	private Constants() { }
+
+	// Auth profiles.
+	public static final String BASIC_AUTH = "BASIC_AUTH";
 
     // helper to get values from properties
     private static Config envConfig = ConfigFactory.load().getConfig(Constants.COM_IL_SOD_APPLICATION);

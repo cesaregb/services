@@ -1,18 +1,24 @@
 package com.il.sod.config.jersey;
 
 import com.il.sod.config.Constants;
+import com.il.sod.config.JWTSingleton;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureException;
 import org.glassfish.jersey.internal.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -23,9 +29,9 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 //http://howtodoinjava.com/2015/08/19/jersey-rest-security/
-
 @Provider
-public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequestFilter {
+@Priority(Priorities.AUTHENTICATION)
+public class AuthenticationFilter implements ContainerRequestFilter {
 	private final Logger LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
 
 	@Context
@@ -38,35 +44,80 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 
 	private static final String AUTHENTICATION_SCHEME = "Basic";
 
+	/**
+	 * Auth filter.
+	 * NOTE Endpoints can be:
+	 * @DenyAll none
+	 * All endpoints require authentication except for:
+	 * @PermitAll (any request is served)
+	 * @RolesAllowed("BASIC_AUTH") (basic authentication is possible)
+	 *
+	 *  Allowed methods:
+		Endpoints annotated with @PermitAll have access to all requests
+		Endpoint swagger.json
+		OPTIONS requests
+		Request coming from ips [security.ips]
+		Request properly authenticated with the security token.
+
+		These are not exclusive, it can be authenticated and be coming from a trusted ip
+	 *
+	 * @param requestContext
+	 */
+
 	@Override
 	public void filter(ContainerRequestContext requestContext)  {
 		Config envConfig = ConfigFactory.load().getConfig(Constants.COM_IL_SOD_APPLICATION);
 		String reqMethod = requestContext.getMethod();
 		Method method = resourceInfo.getResourceMethod();
 
+		// get and log the allowed ips.
 		List<String> ips = envConfig.getStringList("security.ips");
 		LOGGER.info("***** AuthenticationFilter\n ips with access: ");
 		ips.forEach(LOGGER::info);
 		LOGGER.info("For ips different than above, authentication [user/password] will be required");
 		LOGGER.info("Requester IP Address:" + servletRequest.getRemoteAddr());
 
+
 		String myMethod = requestContext.getUriInfo().getPath();
 		String requesterIp = servletRequest.getRemoteAddr();
-		// TODO change me to authenticate the requests..
-		boolean ipAllowed = ips.contains(requesterIp) || true;
 		LOGGER.info("method: " + reqMethod + " \nmyMethod: " + myMethod + "\nJava Method:" + method.getName());
 
-		// Access allowed for all
-		if (!ipAllowed
-				&& !method.isAnnotationPresent(PermitAll.class)
-				&& !myMethod.toLowerCase().equals("swagger.json")
-				&& !reqMethod.toUpperCase().equals("OPTIONS")) {
+		// the request is comming from a known ip.
+		boolean requestAuthenticated = ips.contains(requesterIp);
 
-			// Access denied for all
-			if (method.isAnnotationPresent(DenyAll.class)) {
-				requestContext.abortWith(getAccessUnauthorizedResponse());
-				return;
-			}
+		try {
+			// Auth request with JWT
+			requestAuthenticated = requestAuthenticated || Jwts.parser().setSigningKey(JWTSingleton.INSTANCE.getKey())
+					.parseClaimsJws("compactJws")
+					.getBody()
+					.getSubject().equals(Constants.BASIC_AUTH);
+
+		} catch (SignatureException e) {
+			// JWT is present but not correct, attempt to bypase security.
+			requestContext.abortWith(getAccessDeniedResponse());
+			return;
+		}
+
+		// Access denied for all
+		if (method.isAnnotationPresent(DenyAll.class)) {
+			requestContext.abortWith(getAccessUnauthorizedResponse());
+			return;
+		}
+
+		// Verify user access
+		RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
+		Set<String> rolesSet = new HashSet<>(Arrays.asList(rolesAnnotation.value()));
+
+		boolean requireBasicAuth = rolesSet.contains(Constants.BASIC_AUTH);
+
+		// already authenticated
+		boolean bypassAuth = requestAuthenticated
+				|| method.isAnnotationPresent(PermitAll.class)
+				|| myMethod.toLowerCase().equals("swagger.json")
+				|| reqMethod.toUpperCase().equals("OPTIONS");
+
+
+		if (requireBasicAuth && (! bypassAuth) ) {
 
 			// Get request headers
 			final MultivaluedMap<String, String> headers = requestContext.getHeaders();
@@ -97,30 +148,29 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 			LOGGER.info("password: " + password);
 			LOGGER.info("***********************");
 
-			// Verify user access
-			if (method.isAnnotationPresent(RolesAllowed.class)) {
-				RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
-				Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
-
-				// Is user valid?
-				if (!isUserAllowed(username, password, rolesSet)) {
-					requestContext.abortWith(getAccessDeniedResponse());
-					return;
-				}
+			// Is user valid?
+			if (method.isAnnotationPresent(RolesAllowed.class) && !isUserAllowed(username, password, rolesSet)) {
+				// we need  to validate if the method requires auth before rejecting the call.
+				requestContext.abortWith(getAccessDeniedResponse());
+				return;
 			}
 		}
+		// no return is required, the jwt creation si handled by the auth/app/{appId} endpoint.
 	}
 
+	/**
+	 * Validate if user is valid.
+	 * Only validates the BASIC_AUTH Role.
+	 * @param username
+	 * @param password
+	 * @param rolesSet
+	 * @return
+	 */
 	private boolean isUserAllowed(final String username, final String password, final Set<String> rolesSet) {
-		boolean isAllowed = false;
-		if (username.equals("user") && password.equals("user")) {
-			String userRole = "ADMIN";
-			// Step 2. Verify user role
-			if (rolesSet.contains(userRole)) {
-				isAllowed = true;
-			}
-		}
-		return isAllowed;
+		return username.equals("user")
+				&& password.equals("user")
+				&& rolesSet.contains(Constants.BASIC_AUTH);
+
 	}
 
 	public static Response getAccessDeniedResponse() {

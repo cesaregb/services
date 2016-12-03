@@ -78,7 +78,7 @@ public class Health extends AbstractService {
 		throw new SODAPIException(Response.Status.BAD_REQUEST, "Expected Exception!");
 	}
 	
-	@RolesAllowed("ADMIN")
+	@RolesAllowed("BASIC_AUTH")
 	@GET
 	@Path("/admin_service")
 	@ApiOperation(value = "Test")
