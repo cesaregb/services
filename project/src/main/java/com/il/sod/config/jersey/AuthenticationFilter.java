@@ -75,15 +75,14 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 		ips.forEach(LOGGER::info);
 		LOGGER.info("Request IP Address:" + servletRequest.getRemoteAddr());
 
-		String myMethod = requestContext.getUriInfo().getPath();
+		String requestedURLMethod = requestContext.getUriInfo().getPath();
 		String requesterIp = servletRequest.getRemoteAddr();
-		LOGGER.info("[Request Info] method: " + reqMethod + " \nmyMethod: " + myMethod + "\nJava Method:" + method.getName());
+		LOGGER.info("[Request Info] http method: " + reqMethod + " \nrequested Method: " + requestedURLMethod + "\nJava Method:" + method.getName());
 
 		// the request is comming from a known ip.
-		boolean requestAuthenticated = ips.contains(requesterIp);
-
-		if (requestAuthenticated){
+		if (ips.contains(requesterIp)){
 			LOGGER.info("Authentication granted! IP {} in trusted ips", requesterIp);
+			return;
 		}
 
 		// Get request headers
@@ -96,10 +95,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 		StringBuilder bearerAuth = new StringBuilder();
 
 		// If no authorization information present; block access
-		if (authorization == null || authorization.isEmpty()) {
-			requestContext.abortWith(getAccessDeniedResponse());
-			return;
-		}else{
+		if (authorization != null && !authorization.isEmpty()) {
 			// iterate thru auth header, it may contain 2 types.
 			for (String s : authorization) {
 				if (s.contains(AUTHENTICATION_SCHEME_BASIC)){
@@ -110,24 +106,35 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 			}
 		}
 
-		final String authToken = bearerAuth.toString().trim().replace(AUTHENTICATION_SCHEME_BEARER,"");
+		final String authToken = bearerAuth.toString()
+				.trim()
+				.replaceAll("\\s+","")
+				.replace(AUTHENTICATION_SCHEME_BEARER, "");
 
-		requestAuthenticated = requestAuthenticated || JWTSingleton.INSTANCE.isValidToken(authToken);
+		if (JWTSingleton.INSTANCE.isValidToken(authToken)){
+			LOGGER.info("Authentication granted! Token {} ", authToken);
+			return;
+		}
 
 		// Access denied for all
 		if (method.isAnnotationPresent(DenyAll.class)) {
+			LOGGER.error("Authentication DenyAll ");
 			requestContext.abortWith(getAccessUnauthorizedResponse());
 			return;
 		}
 
 		// already authenticated
-		boolean bypassAuth = requestAuthenticated
-				|| method.isAnnotationPresent(PermitAll.class)
-				|| myMethod.toLowerCase().equals("swagger.json")
-				|| reqMethod.toUpperCase().equals("OPTIONS");
+		System.out.println("********* " +requestedURLMethod+ " **** " + requestedURLMethod.toLowerCase().equals("swagger.json"));
+		if (method.isAnnotationPresent(PermitAll.class)
+				|| requestedURLMethod.toLowerCase().equals("swagger.json")
+				|| reqMethod.toUpperCase().equals("OPTIONS")){
+			LOGGER.info("Authentication not needed!");
+			return;
+		}
 
 		// Verify user access
 		boolean requireBasicAuth = false;
+
 		Set<String> rolesSet = null;
 		RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
 		if (rolesAnnotation != null){
@@ -136,7 +143,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 		}
 
 		// **  Require basic authentication
-		if (requireBasicAuth && (! bypassAuth) ) {
+		if (requireBasicAuth && basicAuth.length() > 0) {
 
 			// Get encoded username and password
 			final String encodedUserPassword = basicAuth.toString().replaceFirst(AUTHENTICATION_SCHEME_BASIC + " ", "");
@@ -149,19 +156,25 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 			final String username = tokenizer.nextToken();
 			final String password = tokenizer.nextToken();
 
-			// Verifying Username and password
-			LOGGER.info("***********************");
-			LOGGER.info("username: " + username);
-			LOGGER.info("password: " + password);
-			LOGGER.info("***********************");
-
 			// Is user valid?
 			if (method.isAnnotationPresent(RolesAllowed.class) && !isUserAllowed(username, password, rolesSet)) {
 				// we need  to validate if the method requires auth before rejecting the call.
 				requestContext.abortWith(getAccessDeniedResponse());
 				return;
+			}else{
+				LOGGER.info("Authentication completed with:");
+				// Verifying Username and password
+				LOGGER.info("***********************");
+				LOGGER.info("username: " + username);
+				LOGGER.info("password: " + password);
+				LOGGER.info("***********************");
+				return;
 			}
 		}
+
+		//RETURN error for the un-authenticated request.
+		requestContext.abortWith(getAccessDeniedResponse());
+
 		// no return is required, the jwt creation si handled by the auth/app/{appId} endpoint.
 	}
 
@@ -179,7 +192,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 				&& rolesSet.contains(Constants.BASIC_AUTH);
 	}
 
-	public static Response getAccessDeniedResponse() {
+	private static Response getAccessDeniedResponse() {
 		return Response.
 				status(Response.Status.UNAUTHORIZED).
 				entity(new GeneralResponseMessage(false, "Access not granted")).
@@ -187,7 +200,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 				build();
 	}
 
-	public static Response getAccessUnauthorizedResponse() {
+	private static Response getAccessUnauthorizedResponse() {
 		return Response.
 				status(Response.Status.UNAUTHORIZED).
 				entity(new GeneralResponseMessage(false, "Access not granted")).

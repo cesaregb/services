@@ -30,27 +30,25 @@ import java.util.stream.Collectors;
 @Api(value = "/app-utils", tags = { "app-utils" })
 public class AppUtilsService extends AbstractServiceMutations {
 	
-	final static Logger LOGGER = LoggerFactory.getLogger(AppUtilsService.class);
+	private final static Logger LOGGER = LoggerFactory.getLogger(AppUtilsService.class);
 	
 	@Autowired
 	MenuRepository menuRepository;
 	
 	@Autowired
 	SpecificObjectsConverterService specificObjectsConverterService;
-	
+
 	@GET
 	@Path("/menu")
-	@Deprecated
 	@ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
 	public Response getMenu() throws SODAPIException {
 		List<Menu> entities = menuRepository.findAllByOrderByOrderAsc();
 		List<MenuDTO> dtos = entities.stream().map(i -> {return specificObjectsConverterService.map(i);}).collect(Collectors.toList());
 		return this.castEntityAsResponse(dtos);
 	}
-	
+
 	@GET
 	@Path("/menu/{accessLevel}")
-	@Deprecated
 	@ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
 	public Response getMenu(@PathParam("accessLevel") String accessLevel) throws SODAPIException {
 		List<Menu> entities = menuRepository.findAll();

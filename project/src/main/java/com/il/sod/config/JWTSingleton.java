@@ -3,7 +3,6 @@ package com.il.sod.config;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 
 import java.security.Key;
@@ -41,7 +40,7 @@ public enum JWTSingleton {
 	//Sample method to construct a JWT
 	public String createJWT(String id, String subject, int days) {
 
-		String issuer = "InteractiveLabs";
+		final String issuer = "InteractiveLabs";
 
 		long nowMillis = System.currentTimeMillis();
 		Date now = new Date(nowMillis);
@@ -72,13 +71,21 @@ public enum JWTSingleton {
 //				.setSigningKey(DatatypeConverter.parseBase64Binary(apiKey.getSecret()))
 //				.parseClaimsJws(jwt).getBody();
 
+		System.out.println("TOken"+ token);
+
+
+		if (token == null || token.length() == 0) {
+			return false;
+		}
+
 		try {
 			return  Jwts.parser().setSigningKey(key)
 					.parseClaimsJws(token)
 					.getBody()
 					.getSubject().equals(Constants.BASIC_AUTH);
 
-		} catch (SignatureException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 
