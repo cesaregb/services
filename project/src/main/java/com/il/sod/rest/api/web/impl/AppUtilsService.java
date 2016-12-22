@@ -5,12 +5,9 @@ import com.il.sod.db.model.entities.Menu;
 import com.il.sod.db.model.repositories.MenuRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractServiceMutations;
-import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.MenuDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +30,14 @@ import java.util.stream.Collectors;
 @Api(value = "/app-utils", tags = { "app-utils" })
 public class AppUtilsService extends AbstractServiceMutations {
 	
-	final static Logger LOGGER = LoggerFactory.getLogger(AppUtilsService.class);
+	private final static Logger LOGGER = LoggerFactory.getLogger(AppUtilsService.class);
 	
 	@Autowired
 	MenuRepository menuRepository;
 	
 	@Autowired
 	SpecificObjectsConverterService specificObjectsConverterService;
-	
+
 	@GET
 	@Path("/menu")
 	@ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
@@ -49,7 +46,7 @@ public class AppUtilsService extends AbstractServiceMutations {
 		List<MenuDTO> dtos = entities.stream().map(i -> {return specificObjectsConverterService.map(i);}).collect(Collectors.toList());
 		return this.castEntityAsResponse(dtos);
 	}
-	
+
 	@GET
 	@Path("/menu/{accessLevel}")
 	@ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")

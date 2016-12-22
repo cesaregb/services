@@ -1,6 +1,7 @@
 package com.il.sod.config.jersey;
 
 import com.il.sod.config.Constants;
+import com.il.sod.config.JWTSingleton;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -8,11 +9,14 @@ import org.glassfish.jersey.internal.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -23,9 +27,9 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 //http://howtodoinjava.com/2015/08/19/jersey-rest-security/
-
 @Provider
-public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequestFilter {
+@Priority(Priorities.AUTHENTICATION)
+public class AuthenticationFilter implements ContainerRequestFilter {
 	private final Logger LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
 
 	@Context
@@ -36,7 +40,28 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 
 	private static final String AUTHORIZATION_PROPERTY = "Authorization";
 
-	private static final String AUTHENTICATION_SCHEME = "Basic";
+	private static final String AUTHENTICATION_SCHEME_BASIC = "Basic";
+	private static final String AUTHENTICATION_SCHEME_BEARER = "Bearer";
+
+	/**
+	 * Auth filter.
+	 * NOTE Endpoints can be:
+	 * @DenyAll none
+	 * All endpoints require authentication except for:
+	 * @PermitAll (any request is served)
+	 * @RolesAllowed("BASIC_AUTH") (basic authentication is possible)
+	 *
+	 *  Allowed methods:
+		Endpoints annotated with @PermitAll have access to all requests
+		Endpoint swagger.json
+		OPTIONS requests
+		Request coming from ips [security.ips]
+		Request properly authenticated with the security token.
+
+		These are not exclusive, it can be authenticated and be coming from a trusted ip
+	 *
+	 * @param requestContext
+	 */
 
 	@Override
 	public void filter(ContainerRequestContext requestContext)  {
@@ -44,44 +69,84 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 		String reqMethod = requestContext.getMethod();
 		Method method = resourceInfo.getResourceMethod();
 
+		// get and log the allowed ips.
 		List<String> ips = envConfig.getStringList("security.ips");
 		LOGGER.info("***** AuthenticationFilter\n ips with access: ");
 		ips.forEach(LOGGER::info);
-		LOGGER.info("For ips different than above, authentication [user/password] will be required");
-		LOGGER.info("Requester IP Address:" + servletRequest.getRemoteAddr());
+		LOGGER.info("Request IP Address:" + servletRequest.getRemoteAddr());
 
-		String myMethod = requestContext.getUriInfo().getPath();
+		String requestedURLMethod = requestContext.getUriInfo().getPath();
 		String requesterIp = servletRequest.getRemoteAddr();
-		// TODO change me to authenticate the requests..
-		boolean ipAllowed = ips.contains(requesterIp) || true;
-		LOGGER.info("method: " + reqMethod + " \nmyMethod: " + myMethod + "\nJava Method:" + method.getName());
+		LOGGER.info("[Request Info] http method: " + reqMethod + " \nrequested Method: " + requestedURLMethod + "\nJava Method:" + method.getName());
 
-		// Access allowed for all
-		if (!ipAllowed
-				&& !method.isAnnotationPresent(PermitAll.class)
-				&& !myMethod.toLowerCase().equals("swagger.json")
-				&& !reqMethod.toUpperCase().equals("OPTIONS")) {
+		// the request is comming from a known ip.
+		if (ips.contains(requesterIp)){
+			LOGGER.info("Authentication granted! IP {} in trusted ips", requesterIp);
+			return;
+		}
 
-			// Access denied for all
-			if (method.isAnnotationPresent(DenyAll.class)) {
-				requestContext.abortWith(getAccessUnauthorizedResponse());
-				return;
+		// Get request headers
+		final MultivaluedMap<String, String> headers = requestContext.getHeaders();
+
+		// Fetch authorization header
+		final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
+
+		StringBuilder basicAuth = new StringBuilder();
+		StringBuilder bearerAuth = new StringBuilder();
+
+		// If no authorization information present; block access
+		if (authorization != null && !authorization.isEmpty()) {
+			// iterate thru auth header, it may contain 2 types.
+			for (String s : authorization) {
+				if (s.contains(AUTHENTICATION_SCHEME_BASIC)){
+					basicAuth.append(s);
+				}else if (s.contains(AUTHENTICATION_SCHEME_BEARER)){
+					bearerAuth.append(s);
+				}
 			}
+		}
 
-			// Get request headers
-			final MultivaluedMap<String, String> headers = requestContext.getHeaders();
+		final String authToken = bearerAuth.toString()
+				.trim()
+				.replaceAll("\\s+","")
+				.replace(AUTHENTICATION_SCHEME_BEARER, "");
 
-			// Fetch authorization header
-			final List<String> authorization = headers.get(AUTHORIZATION_PROPERTY);
+		if (JWTSingleton.INSTANCE.isValidToken(authToken)){
+			LOGGER.info("Authentication granted! Token {} ", authToken);
+			return;
+		}
 
-			// If no authorization information present; block access
-			if (authorization == null || authorization.isEmpty()) {
-				requestContext.abortWith(getAccessDeniedResponse());
-				return;
-			}
+		// Access denied for all
+		if (method.isAnnotationPresent(DenyAll.class)) {
+			LOGGER.error("Authentication DenyAll ");
+			requestContext.abortWith(getAccessUnauthorizedResponse());
+			return;
+		}
+
+		// already authenticated
+		System.out.println("********* " +requestedURLMethod+ " **** " + requestedURLMethod.toLowerCase().equals("swagger.json"));
+		if (method.isAnnotationPresent(PermitAll.class)
+				|| requestedURLMethod.toLowerCase().equals("swagger.json")
+				|| reqMethod.toUpperCase().equals("OPTIONS")){
+			LOGGER.info("Authentication not needed!");
+			return;
+		}
+
+		// Verify user access
+		boolean requireBasicAuth = false;
+
+		Set<String> rolesSet = null;
+		RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
+		if (rolesAnnotation != null){
+			rolesSet = new HashSet<>(Arrays.asList(rolesAnnotation.value()));
+			requireBasicAuth = rolesSet.contains(Constants.BASIC_AUTH);
+		}
+
+		// **  Require basic authentication
+		if (requireBasicAuth && basicAuth.length() > 0) {
 
 			// Get encoded username and password
-			final String encodedUserPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+			final String encodedUserPassword = basicAuth.toString().replaceFirst(AUTHENTICATION_SCHEME_BASIC + " ", "");
 
 			// Decode username and password
 			String usernameAndPassword = new String(Base64.decode(encodedUserPassword.getBytes()));
@@ -91,46 +156,51 @@ public class AuthenticationFilter implements javax.ws.rs.container.ContainerRequ
 			final String username = tokenizer.nextToken();
 			final String password = tokenizer.nextToken();
 
-			// Verifying Username and password
-			LOGGER.info("***********************");
-			LOGGER.info("username: " + username);
-			LOGGER.info("password: " + password);
-			LOGGER.info("***********************");
-
-			// Verify user access
-			if (method.isAnnotationPresent(RolesAllowed.class)) {
-				RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
-				Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
-
-				// Is user valid?
-				if (!isUserAllowed(username, password, rolesSet)) {
-					requestContext.abortWith(getAccessDeniedResponse());
-					return;
-				}
+			// Is user valid?
+			if (method.isAnnotationPresent(RolesAllowed.class) && !isUserAllowed(username, password, rolesSet)) {
+				// we need  to validate if the method requires auth before rejecting the call.
+				requestContext.abortWith(getAccessDeniedResponse());
+				return;
+			}else{
+				LOGGER.info("Authentication completed with:");
+				// Verifying Username and password
+				LOGGER.info("***********************");
+				LOGGER.info("username: " + username);
+				LOGGER.info("password: " + password);
+				LOGGER.info("***********************");
+				return;
 			}
 		}
+
+		//RETURN error for the un-authenticated request.
+		requestContext.abortWith(getAccessDeniedResponse());
+
+		// no return is required, the jwt creation si handled by the auth/app/{appId} endpoint.
 	}
 
+	/**
+	 * Validate if user is valid.
+	 * Only validates the BASIC_AUTH Role.
+	 * @param username
+	 * @param password
+	 * @param rolesSet
+	 * @return
+	 */
 	private boolean isUserAllowed(final String username, final String password, final Set<String> rolesSet) {
-		boolean isAllowed = false;
-		if (username.equals("user") && password.equals("user")) {
-			String userRole = "ADMIN";
-			// Step 2. Verify user role
-			if (rolesSet.contains(userRole)) {
-				isAllowed = true;
-			}
-		}
-		return isAllowed;
+		return username.equals("user")
+				&& password.equals("user")
+				&& rolesSet.contains(Constants.BASIC_AUTH);
 	}
 
-	public static Response getAccessDeniedResponse() {
+	private static Response getAccessDeniedResponse() {
 		return Response.
 				status(Response.Status.UNAUTHORIZED).
 				entity(new GeneralResponseMessage(false, "Access not granted")).
 				type(MediaType.APPLICATION_JSON).
 				build();
 	}
-	public static Response getAccessUnauthorizedResponse() {
+
+	private static Response getAccessUnauthorizedResponse() {
 		return Response.
 				status(Response.Status.UNAUTHORIZED).
 				entity(new GeneralResponseMessage(false, "Access not granted")).
