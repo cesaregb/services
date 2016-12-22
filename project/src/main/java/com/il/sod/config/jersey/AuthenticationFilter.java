@@ -43,6 +43,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	private static final String AUTHENTICATION_SCHEME_BASIC = "Basic";
 	private static final String AUTHENTICATION_SCHEME_BEARER = "Bearer";
 
+	private final Config envConfig = ConfigFactory.load().getConfig(Constants.COM_IL_SOD_APPLICATION);
+
 	/**
 	 * Auth filter.
 	 * NOTE Endpoints can be:
@@ -65,7 +67,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
 	@Override
 	public void filter(ContainerRequestContext requestContext)  {
-		Config envConfig = ConfigFactory.load().getConfig(Constants.COM_IL_SOD_APPLICATION);
 		String reqMethod = requestContext.getMethod();
 		Method method = resourceInfo.getResourceMethod();
 
@@ -162,20 +163,13 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 				requestContext.abortWith(getAccessDeniedResponse());
 				return;
 			}else{
-				LOGGER.info("Authentication completed with:");
-				// Verifying Username and password
-				LOGGER.info("***********************");
-				LOGGER.info("username: " + username);
-				LOGGER.info("password: " + password);
-				LOGGER.info("***********************");
+				LOGGER.info("Authentication completed!");
 				return;
 			}
 		}
 
 		//RETURN error for the un-authenticated request.
 		requestContext.abortWith(getAccessDeniedResponse());
-
-		// no return is required, the jwt creation si handled by the auth/app/{appId} endpoint.
 	}
 
 	/**
@@ -187,8 +181,17 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	 * @return
 	 */
 	private boolean isUserAllowed(final String username, final String password, final Set<String> rolesSet) {
-		return username.equals("user")
-				&& password.equals("user")
+		// TODO handle pwd as chararray
+
+		final String systemUser = envConfig.getString("security.user");
+		final String systemPwd = envConfig.getString("security.password");
+		LOGGER.info("[isUserAllowed] ***********************");
+		LOGGER.info("\nusername: {} \tpassword: {} ", username, password);
+		LOGGER.info("\nsystemUser: {} \tsystemPwd: {} ", systemUser, systemPwd);
+		LOGGER.info("[isUserAllowed] ***********************");
+
+		return username.equals(systemUser)
+				&& password.equals(systemPwd)
 				&& rolesSet.contains(Constants.BASIC_AUTH);
 	}
 

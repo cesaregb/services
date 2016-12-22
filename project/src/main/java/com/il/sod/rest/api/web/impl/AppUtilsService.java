@@ -52,7 +52,8 @@ public class AppUtilsService extends AbstractServiceMutations {
 	@ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
 	public Response getMenu(@PathParam("accessLevel") String accessLevel) throws SODAPIException {
 		List<Menu> entities = menuRepository.findAll();
-		int accessL = Integer.valueOf(accessLevel);
+		// TODO create enum for handling roles.
+		final int accessL = (accessLevel.equals("admin"))?1:2;
 		List<MenuDTO> dtos = entities.stream()
 				.filter(i -> i.getAccessLevel() >= accessL)
 				.map(i -> {return specificObjectsConverterService.map(i);})
