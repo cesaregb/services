@@ -1,5 +1,6 @@
 package com.il.sod.config;
 
+import com.il.sod.rest.util.PropertyHandler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -9,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
-
-import com.il.sod.rest.util.PropertyHandler;
 
 public class App {
 	final static Logger LOGGER = LoggerFactory.getLogger(App.class);
@@ -38,7 +37,8 @@ public class App {
 		ServletHolder staticServlet = context.addServlet(DefaultServlet.class, "/*");
 		staticServlet.setInitParameter("resourceBase", "src/main/webapp");
 		staticServlet.setInitParameter("pathInfoOnly", "true");
-	   
+
+
 		try {
 			server.start();
 			server.join();

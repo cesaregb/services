@@ -40,6 +40,7 @@ import java.util.List;
 		@Tag(name = "routes", description = "Route Information,... not user related..."),
 		@Tag(name = "products", description = "Products, similar to specs but different!! LOL "),
 		@Tag(name = "promotions", description = "Promotions, promotion handling  "),
+		@Tag(name = "auth", description = "Auth services "),
 		@Tag(name = "health", description = "Validate API + MODEL Healt") })
 @Path("/v1")
 @SuppressWarnings("all")
