@@ -1,8 +1,7 @@
 package com.il.sod.db.model.entities;
 
-import java.util.Set;
-
 import javax.persistence.*;
+import java.util.Set;
 
 
 /**
@@ -11,7 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @NamedQuery(name="TaskType.findAll", query="SELECT t FROM TaskType t")
-public class TaskType implements IEntity<Integer> {
+public class TaskType extends SoftDeleteEntity  implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id

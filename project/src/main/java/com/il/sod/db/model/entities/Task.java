@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
  */
 @Entity
 @NamedQuery(name="Task.findAll", query="SELECT t FROM Task t")
-public class Task implements IEntity<Integer> {
+public class Task extends SoftDeleteEntity  implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id

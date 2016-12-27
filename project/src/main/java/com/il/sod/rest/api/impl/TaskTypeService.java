@@ -10,6 +10,7 @@ import com.il.sod.mapper.TaskMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.TaskTypeDTO;
+import com.il.sod.rest.dto.predicates.DeletablePredicate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 @RolesAllowed("ADMIN")
 @Path("/tasks/task-type")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/tasks/task-type", tags = { "tasks" })
+@Api(value = "/tasks/task-type", tags = {"tasks"})
 public class TaskTypeService extends AbstractServiceMutations {
 
 	@Autowired
@@ -38,27 +39,20 @@ public class TaskTypeService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Task Type", response = TaskTypeDTO.class)
 	public Response saveTaskType(TaskTypeDTO dto) throws SODAPIException {
-
-			TaskType entity = TaskMapper.INSTANCE.map(dto);
-			this.saveEntity(taskTypeRepository, entity);
-			dto = TaskMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+		TaskType entity = TaskMapper.INSTANCE.map(dto);
+		this.saveEntity(taskTypeRepository, entity);
+		dto = TaskMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Task Type", response = TaskTypeDTO.class)
 	public Response updateTaskType(TaskTypeDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	private Response updateEntity(TaskTypeDTO dto) throws SODAPIException {
-
-			TaskType entity = TaskMapper.INSTANCE.map(dto);
-			this.updateEntity(taskTypeRepository, entity);
-			dto = TaskMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
-
+		TaskType entity = TaskMapper.INSTANCE.map(dto);
+		this.updateEntity(taskTypeRepository, entity);
+		dto = TaskMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -66,10 +60,10 @@ public class TaskTypeService extends AbstractServiceMutations {
 	@ApiOperation(value = "Delete Task Type", response = GeneralResponseMessage.class)
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		TaskType entity = taskTypeRepository.findOne(Integer.valueOf(id));
-		if (entity == null){
+		if (entity == null) {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
-		this.deleteEntity(taskTypeRepository, entity.getId());
+		this.softDeleteEntity(taskTypeRepository, entity.getId());
 		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
@@ -77,31 +71,30 @@ public class TaskTypeService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Task Type list", response = TaskTypeDTO.class, responseContainer = "List")
 	public Response getTaskTypeList(@QueryParam("filterBy") Boolean filterBy) throws SODAPIException {
-		List<TaskType> rentityList = null;
-		if (filterBy != null){
-			rentityList = tasksDAO.findBySection(filterBy);
-		}else{
-			rentityList = this.getEntityList(taskTypeRepository);
-		}
-		List<TaskTypeDTO> list = rentityList.stream().map(TaskMapper.INSTANCE::map).collect(Collectors.toList());
+		List<TaskType> rentityList = (filterBy != null)?tasksDAO.findBySection(filterBy):this.getEntityList(taskTypeRepository);
+		List<TaskTypeDTO> list = rentityList.stream()
+				.map(TaskMapper.INSTANCE::map)
+				.filter(DeletablePredicate.isActive())
+				.collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
 
 
-    @Autowired
-    TaskRepository taskRepository;
+	@Autowired
+	TaskRepository taskRepository;
+
 	@PUT
 	@Path("/{id}/child/{idChild}")
 	@ApiOperation(value = "Delete Task Type", response = GeneralResponseMessage.class)
 	public Response addChild(@PathParam("id") Integer id, @PathParam("idChild") Integer idChild) throws SODAPIException {
-        Task child = taskRepository.findOne(idChild);
-        TaskType oldParent = child.getTaskType();
-        oldParent.removeTask(child);
-        taskTypeRepository.save(oldParent);
-        TaskType newParent = taskTypeRepository.findOne(id);
-        newParent.addTask(child);
-        taskTypeRepository.save(newParent);
-        return castEntityAsResponse(newParent, Response.Status.OK);
+		Task child = taskRepository.findOne(idChild);
+		TaskType oldParent = child.getTaskType();
+		oldParent.removeTask(child);
+		taskTypeRepository.save(oldParent);
+		TaskType newParent = taskTypeRepository.findOne(id);
+		newParent.addTask(child);
+		taskTypeRepository.save(newParent);
+		return castEntityAsResponse(newParent, Response.Status.OK);
 	}
 
 }

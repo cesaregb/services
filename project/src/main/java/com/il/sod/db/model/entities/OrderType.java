@@ -12,7 +12,7 @@ import java.util.Set;
  */
 @Entity
 @NamedQuery(name="OrderType.findAll", query="SELECT o FROM OrderType o")
-public class OrderType implements IEntity<Integer> {
+public class OrderType extends SoftDeleteEntity implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id

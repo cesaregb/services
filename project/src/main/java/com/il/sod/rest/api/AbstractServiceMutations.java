@@ -45,7 +45,7 @@ public abstract class AbstractServiceMutations extends AbstractService{
 
 		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
 		gDao.setRepository(repository);
-		gDao.update(entity);
+		entity = gDao.update(entity);
 		return entity;
 	}
 }

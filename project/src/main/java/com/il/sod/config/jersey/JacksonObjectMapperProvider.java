@@ -1,17 +1,15 @@
 package com.il.sod.config.jersey;
 
-import java.text.SimpleDateFormat;
-
-import javax.ws.rs.ext.ContextResolver;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.ext.ContextResolver;
+import java.text.SimpleDateFormat;
 
 public class JacksonObjectMapperProvider implements ContextResolver<ObjectMapper> {
 	final static Logger LOGGER = LoggerFactory.getLogger(JacksonObjectMapperProvider.class);
@@ -19,7 +17,7 @@ public class JacksonObjectMapperProvider implements ContextResolver<ObjectMapper
 	public static final ObjectMapper MAPPER = new ObjectMapper();
 
 	static {
-		MAPPER.setSerializationInclusion(Include.NON_EMPTY);
+		MAPPER.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 		MAPPER.disable(MapperFeature.USE_GETTERS_AS_SETTERS);
 		MAPPER.configure(Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
 		MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
