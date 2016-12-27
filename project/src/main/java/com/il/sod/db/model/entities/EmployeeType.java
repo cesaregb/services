@@ -1,14 +1,7 @@
 package com.il.sod.db.model.entities;
 
+import javax.persistence.*;
 import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 
 
 /**
@@ -17,7 +10,7 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQuery(name="EmployeeType.findAll", query="SELECT e FROM EmployeeType e")
-public class EmployeeType implements IEntity<Integer> {
+public class EmployeeType extends SoftDeleteEntity implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id

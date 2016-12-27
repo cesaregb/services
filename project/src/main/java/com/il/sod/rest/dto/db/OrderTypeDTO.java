@@ -10,7 +10,7 @@ public class OrderTypeDTO extends DeletableDTO{
 	private String description;
 	private String name;
 	private Set<Integer> orders;
-	private List<OrderTypeTaskDTO> OrderTypeTask;
+	private List<OrderTypeTaskDTO> orderTypeTask;
 	private Integer transportInfo;
 	public int getIdOrderType() {
 		return idOrderType;
@@ -38,11 +38,11 @@ public class OrderTypeDTO extends DeletableDTO{
 	}
 
 	public List<OrderTypeTaskDTO> getOrderTypeTask() {
-		return OrderTypeTask;
+		return orderTypeTask;
 	}
 
 	public void setOrderTypeTask(List<OrderTypeTaskDTO> OrderTypeTask) {
-		this.OrderTypeTask = OrderTypeTask;
+		this.orderTypeTask = OrderTypeTask;
 	}
 
 	public Integer getTransportInfo() {

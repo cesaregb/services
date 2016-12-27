@@ -2,7 +2,7 @@ package com.il.sod.rest.dto.db;
 
 import java.util.Date;
 
-public class EmployeeDTO {
+public class EmployeeDTO extends DeletableDTO {
 	private int idEmployee;
 	private String lastname;
 	private String name;

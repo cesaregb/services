@@ -2,7 +2,7 @@ package com.il.sod.rest.dto.db;
 
 import java.util.Set;
 
-public class AssetTypeDTO {
+public class AssetTypeDTO extends DeletableDTO {
 	private int idAssetType;
 	private String description;
 	private String name;

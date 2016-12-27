@@ -3,6 +3,7 @@ package com.il.sod.db.model.entities;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -22,9 +23,9 @@ public class OrderType extends SoftDeleteEntity implements IEntity<Integer> {
 	private String name;
 
 	//bi-directional many-to-one association to OrderTypeTask
-	@OneToMany(mappedBy="orderType", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="orderType", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	@JsonManagedReference
-	private Set<OrderTypeTask> OrderTypeTask;
+	private Set<OrderTypeTask> orderTypeTask;
 
 	//bi-directional many-to-one association to Order
 	@OneToMany(mappedBy="orderType", fetch=FetchType.EAGER)
@@ -61,24 +62,25 @@ public class OrderType extends SoftDeleteEntity implements IEntity<Integer> {
 	}
 
 	public Set<OrderTypeTask> getOrderTypeTask() {
-		return this.OrderTypeTask;
+		if (this.orderTypeTask == null){
+			this.orderTypeTask = new HashSet<>();
+		}
+		return this.orderTypeTask;
 	}
 
 	public void setOrderTypeTask(Set<OrderTypeTask> OrderTypeTask) {
-		this.OrderTypeTask = OrderTypeTask;
+		this.orderTypeTask = OrderTypeTask;
 	}
 
 	public OrderTypeTask addOrderTypeTask(OrderTypeTask orderTypeTask) {
 		getOrderTypeTask().add(orderTypeTask);
 		orderTypeTask.setOrderType(this);
-
 		return orderTypeTask;
 	}
 
 	public OrderTypeTask removeOrderTypeTask(OrderTypeTask orderTypeTask) {
 		getOrderTypeTask().remove(orderTypeTask);
 		orderTypeTask.setOrderType(null);
-
 		return orderTypeTask;
 	}
 
@@ -129,7 +131,7 @@ public class OrderType extends SoftDeleteEntity implements IEntity<Integer> {
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + idOrderType;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((OrderTypeTask == null) ? 0 : OrderTypeTask.hashCode());
+		result = prime * result + ((orderTypeTask == null) ? 0 : orderTypeTask.hashCode());
 		result = prime * result + ((orders == null) ? 0 : orders.hashCode());
 		result = prime * result + transportInfo;
 		return result;
@@ -156,10 +158,10 @@ public class OrderType extends SoftDeleteEntity implements IEntity<Integer> {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (OrderTypeTask == null) {
-			if (other.OrderTypeTask != null)
+		if (orderTypeTask == null) {
+			if (other.orderTypeTask != null)
 				return false;
-		} else if (!OrderTypeTask.equals(other.OrderTypeTask))
+		} else if (!orderTypeTask.equals(other.orderTypeTask))
 			return false;
 		if (orders == null) {
 			if (other.orders != null)

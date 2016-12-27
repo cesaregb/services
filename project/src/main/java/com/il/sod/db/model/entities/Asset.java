@@ -19,7 +19,7 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQuery(name="Asset.findAll", query="SELECT a FROM Asset a")
-public class Asset implements IEntity<Integer> {
+public class Asset extends SoftDeleteEntity implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id

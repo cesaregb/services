@@ -7,9 +7,11 @@ import com.il.sod.mapper.OrderMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderTypeDTO;
+import com.il.sod.rest.dto.db.OrderTypeTaskDTO;
 import com.il.sod.rest.dto.predicates.DeletablePredicate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.jaxrs.PATCH;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -72,5 +74,35 @@ public class OrderTypeService extends AbstractServiceMutations {
 
 		list.forEach(System.out::println);
 		return castEntityAsResponse(list);
+	}
+
+
+	/**
+	 * Update task type tasks
+	 * @param dto
+	 * @return
+	 * @throws SODAPIException
+	 */
+	@PATCH
+	@ApiOperation(value = "Update order type tasks", response = OrderTypeTaskDTO.class)
+	public Response updateOrterTypeTasks(OrderTypeDTO dto) throws SODAPIException {
+		OrderType orderType = orderTypeRepository.findOne(dto.getIdOrderType());
+		if (orderType == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
+		}
+		// remove existing order type tasks
+		// hopefully will cascade the deletes!!!
+		orderType.setOrderTypeTask(null);
+		orderType = this.saveEntity(orderTypeRepository, orderType);
+
+		// add new order type tasks (probably are the same...)
+		// validation made on request time.
+		for (OrderTypeTaskDTO ott: dto.getOrderTypeTask()) {
+			orderType.addOrderTypeTask(OrderMapper.INSTANCE.map(ott));
+		}
+		orderType = this.saveEntity(orderTypeRepository, orderType);
+		dto = OrderMapper.INSTANCE.map(orderType);
+
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 }

@@ -9,6 +9,7 @@ import com.il.sod.mapper.SupplyMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.SupplyTypeDTO;
+import com.il.sod.rest.dto.predicates.DeletablePredicate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,35 +26,29 @@ import java.util.stream.Collectors;
 @RolesAllowed("ADMIN")
 @Path("/supplies/supply-type")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/supplies/supply-type", tags = { "supplies" })
+@Api(value = "/supplies/supply-type", tags = {"supplies"})
 public class SupplyTypeService extends AbstractServiceMutations {
 
 	@Autowired
-	SupplyTypeRepository supplyTypeRepository;
+	private SupplyTypeRepository supplyTypeRepository;
+
 	@POST
 	@ApiOperation(value = "Create Supply Type", response = SupplyTypeDTO.class)
 	public Response saveSupplyType(SupplyTypeDTO dto) throws SODAPIException {
-
-			SupplyType entity = SupplyMapper.INSTANCE.map(dto);
-			this.saveEntity(supplyTypeRepository, entity);
-			dto = SupplyMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+		SupplyType entity = SupplyMapper.INSTANCE.map(dto);
+		this.saveEntity(supplyTypeRepository, entity);
+		dto = SupplyMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Supply Type", response = SupplyTypeDTO.class)
 	public Response updateSupplyType(SupplyTypeDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	private Response updateEntity(SupplyTypeDTO dto) throws SODAPIException {
-
-			SupplyType entity = SupplyMapper.INSTANCE.map(dto);
-			this.updateEntity(supplyTypeRepository, entity);
-			dto = SupplyMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
-
+		SupplyType entity = SupplyMapper.INSTANCE.map(dto);
+		this.updateEntity(supplyTypeRepository, entity);
+		dto = SupplyMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -61,10 +56,10 @@ public class SupplyTypeService extends AbstractServiceMutations {
 	@ApiOperation(value = "Delete Task", response = GeneralResponseMessage.class)
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		SupplyType entity = supplyTypeRepository.findOne(Integer.valueOf(id));
-		if (entity == null){
+		if (entity == null) {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
-		this.deleteEntity(supplyTypeRepository, entity.getId());
+		this.softDeleteEntity(supplyTypeRepository, entity.getId());
 		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
@@ -76,12 +71,15 @@ public class SupplyTypeService extends AbstractServiceMutations {
 		List<SupplyTypeDTO> list = rentityList.stream().map((i) -> {
 			SupplyTypeDTO dto = SupplyMapper.INSTANCE.map(i);
 			return dto;
-		}).collect(Collectors.toList());
+		})
+				.filter(DeletablePredicate.isActive())
+				.collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
 
 	@Autowired
-	SupplyRepository childRepository;
+	private SupplyRepository childRepository;
+
 	@PUT
 	@Path("/{id}/child/{idChild}")
 	@ApiOperation(value = "Delete Task Type", response = GeneralResponseMessage.class)

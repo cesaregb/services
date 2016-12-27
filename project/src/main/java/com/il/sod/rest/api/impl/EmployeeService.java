@@ -8,10 +8,9 @@ import com.il.sod.mapper.EmployeeMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.EmployeeDTO;
+import com.il.sod.rest.dto.predicates.DeletablePredicate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,11 +26,11 @@ import java.util.stream.Collectors;
 @RolesAllowed("ADMIN")
 @Path("/employees")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/employees", tags = { "employees" })
+@Api(value = "/employees", tags = {"employees"})
 public class EmployeeService extends AbstractServiceMutations {
 
 	@Autowired
-	EmployeeRepository employeeRepository;
+	private EmployeeRepository employeeRepository;
 
 	@Autowired
 	private IEmployeeDAO employeeDAO;
@@ -39,27 +38,20 @@ public class EmployeeService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Employee", response = EmployeeDTO.class)
 	public Response saveEmployee(EmployeeDTO dto) throws SODAPIException {
-
-			Employee entity = EmployeeMapper.INSTANCE.map(dto);
-			this.saveEntity(employeeRepository, entity);
-			dto = EmployeeMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+		Employee entity = EmployeeMapper.INSTANCE.map(dto);
+		this.saveEntity(employeeRepository, entity);
+		dto = EmployeeMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Employee", response = EmployeeDTO.class)
 	public Response updateEmployee(EmployeeDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	private Response updateEntity(EmployeeDTO dto) throws SODAPIException {
-
-			Employee entity = EmployeeMapper.INSTANCE.map(dto);
-			this.updateEntity(employeeRepository, entity);
-			dto = EmployeeMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
-
+		Employee entity = EmployeeMapper.INSTANCE.map(dto);
+		this.updateEntity(employeeRepository, entity);
+		dto = EmployeeMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -67,10 +59,10 @@ public class EmployeeService extends AbstractServiceMutations {
 	@ApiOperation(value = "Delete Item", response = GeneralResponseMessage.class)
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		Employee entity = employeeRepository.findOne(Integer.valueOf(id));
-		if (entity == null){
+		if (entity == null) {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
-		this.deleteEntity(employeeRepository, entity.getId());
+		this.softDeleteEntity(employeeRepository, entity.getId());
 		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
@@ -79,12 +71,14 @@ public class EmployeeService extends AbstractServiceMutations {
 	@ApiOperation(value = "Get Employee list", response = EmployeeDTO.class, responseContainer = "List")
 	public Response getEmployeeList(@QueryParam("email") String email) throws SODAPIException {
 		List<Employee> entityList = null;
-		if (!StringUtils.isEmpty(email)){
+		if (!StringUtils.isEmpty(email)) {
 			entityList = employeeDAO.findByEmail(email);
-		}else{
+		} else {
 			entityList = this.getEntityList(employeeRepository);
 		}
-		List<EmployeeDTO> list = entityList.stream().map(EmployeeMapper.INSTANCE::map).collect(Collectors.toList());
+		List<EmployeeDTO> list = entityList.stream().map(EmployeeMapper.INSTANCE::map)
+				.filter(DeletablePredicate.isActive())
+				.collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
 
@@ -93,7 +87,7 @@ public class EmployeeService extends AbstractServiceMutations {
 	@ApiOperation(value = "Get Employee list", response = EmployeeDTO.class)
 	public Response getEmployeeById(@PathParam("idEmployee") String idEmployee) throws SODAPIException {
 		Employee employee = this.getEntity(employeeRepository, Integer.valueOf(idEmployee));
-		if (employee == null ) {
+		if (employee == null) {
 			throw new SODAPIException(Response.Status.NO_CONTENT, "No employee found");
 		}
 		EmployeeDTO dto = EmployeeMapper.INSTANCE.map(employee);

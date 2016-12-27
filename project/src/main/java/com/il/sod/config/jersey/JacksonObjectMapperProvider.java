@@ -17,7 +17,7 @@ public class JacksonObjectMapperProvider implements ContextResolver<ObjectMapper
 	public static final ObjectMapper MAPPER = new ObjectMapper();
 
 	static {
-		MAPPER.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+		MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		MAPPER.disable(MapperFeature.USE_GETTERS_AS_SETTERS);
 		MAPPER.configure(Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
 		MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
