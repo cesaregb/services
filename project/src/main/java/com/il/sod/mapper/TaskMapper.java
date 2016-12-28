@@ -30,7 +30,7 @@ public enum TaskMapper {
 			.customize(new CustomMapper<TaskDTO, Task>() {
 				@Override
 				public void mapBtoA(Task task, TaskDTO taskDTO, MappingContext context) {
-					taskDTO.setTaskTypeName(task.getName());
+					taskDTO.setTaskTypeName(task.getTaskType().getName());
 				}
 			})
 			.register();

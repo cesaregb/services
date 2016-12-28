@@ -74,7 +74,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 		List<String> ips = envConfig.getStringList("security.ips");
 //		LOGGER.info("***** AuthenticationFilter\n ips with access: ");
 //		ips.forEach(LOGGER::info);
-//		LOGGER.info("Request IP Address:" + servletRequest.getRemoteAddr());
+		LOGGER.info("Request IP Address:" + servletRequest.getRemoteAddr());
 
 		String requestedURLMethod = requestContext.getUriInfo().getPath();
 		String requesterIp = servletRequest.getRemoteAddr();

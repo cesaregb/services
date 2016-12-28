@@ -33,7 +33,7 @@ public class Spec implements IEntity<Integer> {
 	private Set<ServiceTypeSpec> serviceTypeSpecs;
 	
 	//bi-directional many-to-one association to SpecsValue
-	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	private Set<SpecsValue> specsValues;
 
 	private int optional;
@@ -139,7 +139,6 @@ public class Spec implements IEntity<Integer> {
 	public SpecsValue removeSpecsValue(SpecsValue specsValue) {
 		getSpecsValues().remove(specsValue);
 		specsValue.setSpec(null);
-
 		return specsValue;
 	}
 

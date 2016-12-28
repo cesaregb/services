@@ -24,8 +24,7 @@ public abstract class AbstractServiceMutations extends AbstractService{
 		ABS_LOGGER.info("Delete " + id);
 		IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
 		gDao.setRepository(repository);
-		gDao.delete(id);
-		return true;
+		return gDao.delete(id);
 	}
 
 	@SuppressWarnings("unchecked")
