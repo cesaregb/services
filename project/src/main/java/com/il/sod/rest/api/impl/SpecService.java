@@ -75,32 +75,6 @@ public class SpecService extends AbstractServiceMutations {
 		return castEntityAsResponse(list);
 	}
 
-	@GET
-	@Path("/byNotPrimary")
-	@ApiOperation(value = "Get Spec list Not Primary", response = SpecDTO.class, responseContainer = "List")
-	public Response getSpecList() throws SODAPIException {
-		List<Spec> entityList = specRepository.findAllNotPrimary();
-
-		List<SpecDTO> list = entityList.stream().map((i) -> {
-			SpecDTO dto = SpecsMapper.INSTANCE.map(i);
-			return dto;
-		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
-	}
-
-	@GET
-	@Path("/byPrimary")
-	@ApiOperation(value = "Get Spec list Primary", response = SpecDTO.class, responseContainer = "List")
-	public Response getSpecListByPrimary() throws SODAPIException {
-		List<Spec> entityList = specRepository.findAllPrimary();
-		List<SpecDTO> list = entityList.stream().map((i) -> {
-			SpecDTO dto = SpecsMapper.INSTANCE.map(i);
-			return dto;
-		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
-	}
-
-
 	@Autowired
 	private SupplyTypeRepository supplyTypeRepository;
 

@@ -54,7 +54,6 @@ public class SpecificObjectsConverterService {
 			.field("name","spec.name")
 			.field("optional","spec.optional")
 			.field("max_qty","spec.max_qty")
-			.field("primarySpec","spec.primarySpec")
 			.byDefault()
 			.customize(new CustomMapper<WSpecDTO, ServiceTypeSpec>() {
 				

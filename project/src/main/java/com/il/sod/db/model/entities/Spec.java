@@ -36,11 +36,9 @@ public class Spec implements IEntity<Integer> {
 	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	private Set<SpecsValue> specsValues;
 
-	private int optional;
+	private boolean optional;
 	
 	private int max_qty;
-	
-	private boolean primarySpec;
 	
 	private int deleted;
 	
@@ -153,11 +151,11 @@ public class Spec implements IEntity<Integer> {
 		return this;
 	}
 
-	public int getOptional() {
+	public boolean isOptional() {
 		return optional;
 	}
 
-	public void setOptional(int optional) {
+	public void setOptional(boolean optional) {
 		this.optional = optional;
 	}
 
@@ -167,14 +165,6 @@ public class Spec implements IEntity<Integer> {
 
 	public void setMax_qty(int max_qty) {
 		this.max_qty = max_qty;
-	}
-
-	public boolean isPrimarySpec() {
-		return primarySpec;
-	}
-
-	public void setPrimarySpec(boolean primarySpec) {
-		this.primarySpec = primarySpec;
 	}
 
 	public int getDeleted() {

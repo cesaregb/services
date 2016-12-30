@@ -25,6 +25,7 @@ import javax.ws.rs.core.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -42,10 +43,10 @@ public class ClientService extends AbstractServiceMutations {
 	protected ClientRepository clientRepository;
 	
 	@Autowired
-	protected ClientTypeRepository clientTypeRepository;
+	private ClientTypeRepository clientTypeRepository;
 
 	@Autowired
-	protected ClientDAO clientDAO;
+	private ClientDAO clientDAO;
 
 	@POST
 	@ApiOperation(value = "Create Client", response = ClientDTO.class)
@@ -105,7 +106,7 @@ public class ClientService extends AbstractServiceMutations {
     @ApiResponses(value = {
             @ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
             @ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-    public Response reactivateCient(@PathParam("email") String email) throws SODAPIException {
+    public Response reactivateClient(@PathParam("email") String email) throws SODAPIException {
         Client entity = clientDAO.findByEmail(email);
         if (entity == null){
             throw new SODAPIException(Response.Status.NOT_FOUND, "Client not found with email: "+email+" ");
@@ -199,8 +200,8 @@ public class ClientService extends AbstractServiceMutations {
 
 	private void assignDependencyToChilds(Client entity) {
 		if (entity.getAddresses() != null)
-			entity.getAddresses().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
+			entity.getAddresses().stream().filter(Objects::nonNull).forEach(a -> a.setClient(entity));
 		if (entity.getClientPaymentInfos() != null)
-			entity.getClientPaymentInfos().stream().filter(a -> a != null).forEach(a -> a.setClient(entity));
+			entity.getClientPaymentInfos().stream().filter(Objects::nonNull).forEach(a -> a.setClient(entity));
 	}
 }
