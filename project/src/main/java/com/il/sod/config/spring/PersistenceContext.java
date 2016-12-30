@@ -1,6 +1,7 @@
 package com.il.sod.config.spring;
 
 import com.il.sod.config.Constants;
+import com.typesafe.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,7 +30,9 @@ import static com.il.sod.config.Constants.PROPERTY_NAME_ENTITYMANAGER_PACKAGES_T
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.il.sod.db.model.repositories")
 public class PersistenceContext {
-	final static Logger LOGGER = LoggerFactory.getLogger(PersistenceContext.class);
+	private final static Logger LOGGER = LoggerFactory.getLogger(PersistenceContext.class);
+	private static final String SECURITY_DB_USER = "security.dbUser";
+	private static final String SECURITY_DB_PASSWORD = "security.dbPassword";
 
 	@Resource
 	private Environment env;
@@ -37,15 +40,13 @@ public class PersistenceContext {
 	@Value("${db.url}")
 	private String dbUrl;
 
-	@Value("${db.username}")
-	private String username;
-
-	@Value("${db.password}")
-	private String password;
-
 	@Resource
 	@Qualifier("dataSourceInfo")
 	private Map<String, String> dataSourceInfo;
+
+	@Resource
+	@Qualifier("envConfig")
+	private Config envConfig;
 	
 	// @Bean(destroyMethod = "close")
 	@Bean
@@ -54,11 +55,13 @@ public class PersistenceContext {
 		dataSource.setDriverClassName(env.getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER));
 		if (dataSourceInfo != null
 				&& (dataSourceInfo.containsKey("valid")
-				&& Objects.equals(dataSourceInfo.get("valid"), "1"))) {
+				&& Objects.equals(dataSourceInfo.get("valid"), "1"))){
 			dataSource.setUrl(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_URL));
 			dataSource.setUsername(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_USER));
 			dataSource.setPassword(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_PASSWORD));
 		}else{
+			final String username = Constants.envConfig.getString(SECURITY_DB_USER);
+			final String password = Constants.envConfig.getString(SECURITY_DB_PASSWORD);
 			dataSource.setUrl(dbUrl);
 			dataSource.setUsername(username);
 			dataSource.setPassword(password);

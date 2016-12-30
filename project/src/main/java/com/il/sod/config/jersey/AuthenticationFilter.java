@@ -3,8 +3,6 @@ package com.il.sod.config.jersey;
 import com.il.sod.config.Constants;
 import com.il.sod.config.JWTSingleton;
 import com.il.sod.rest.dto.GeneralResponseMessage;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 import org.glassfish.jersey.internal.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +41,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	private static final String AUTHENTICATION_SCHEME_BASIC = "Basic";
 	private static final String AUTHENTICATION_SCHEME_BEARER = "Bearer";
 
-	private final Config envConfig = ConfigFactory.load().getConfig(Constants.COM_IL_SOD_APPLICATION);
-
 	/**
 	 * Auth filter.
 	 * NOTE Endpoints can be:
@@ -71,7 +67,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 		Method method = resourceInfo.getResourceMethod();
 
 		// get and log the allowed ips.
-		List<String> ips = envConfig.getStringList("security.ips");
+		List<String> ips = Constants.envConfig.getStringList("security.ips");
 //		LOGGER.info("***** AuthenticationFilter\n ips with access: ");
 //		ips.forEach(LOGGER::info);
 		LOGGER.info("Request IP Address:" + servletRequest.getRemoteAddr());
@@ -182,8 +178,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	 */
 	private boolean isUserAllowed(final String username, final String password, final Set<String> rolesSet) {
 		// TODO handle pwd as char-array
-		final String systemUser = envConfig.getString("security.user");
-		final String systemPwd = envConfig.getString("security.password");
+		final String systemUser = Constants.envConfig.getString("security.user");
+		final String systemPwd = Constants.envConfig.getString("security.password");
 		LOGGER.info("[isUserAllowed] ***********************");
 		LOGGER.info("\nusername: {} \tpassword: {} ", username, password);
 		LOGGER.info("\nsystemUser: {} \tsystemPwd: {} ", systemUser, systemPwd);
