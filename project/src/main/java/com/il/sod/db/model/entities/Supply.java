@@ -17,7 +17,7 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQuery(name="Supply.findAll", query="SELECT p FROM Supply p")
-public class Supply implements IEntity<Integer> {
+public class Supply extends SoftDeleteEntity implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id

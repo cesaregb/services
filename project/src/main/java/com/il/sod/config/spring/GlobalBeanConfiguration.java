@@ -23,6 +23,7 @@ public class GlobalBeanConfiguration {
 
 		map.put("valid", "0");
 		if (System.getenv(Constants.DOCKER_ENV_FLAG) != null){
+			// If we are getting the info from docker
 			LOGGER.info("***************************");
 			LOGGER.info("getting data from env: " );
 			LOGGER.info(System.getenv(Constants.PROPERTY_NAME_DB_URL) + " \n" + System.getenv(Constants.PROPERTY_NAME_DB_USER));

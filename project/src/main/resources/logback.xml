@@ -105,6 +105,7 @@
 	<!--</logger>-->
 
 	<logger name="org.hibernate.SQL" additivity="false" level="DEBUG">
+		<!--<appender-ref ref="STDOUT" />-->
 		<appender-ref ref="SQLROLLINGFILE" />
 	</logger>
 

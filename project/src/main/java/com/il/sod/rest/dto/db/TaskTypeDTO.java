@@ -1,12 +1,12 @@
 package com.il.sod.rest.dto.db;
 
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import java.util.Set;
+
 @JsonInclude(Include.NON_NULL)
-public class TaskTypeDTO {
+public class TaskTypeDTO extends DeletableDTO{
 	private int idTaskType;
 	private String description;
 	private String name;

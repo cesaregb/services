@@ -1,14 +1,12 @@
 package com.il.sod.db.model.repositories;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.il.sod.db.model.entities.Supply;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.il.sod.db.model.entities.Supply;
+import java.util.List;
 
-public interface SupplyRepository extends JpaRepository<Supply, Integer> {
+public interface SupplyRepository extends DeletableRepository<Supply, Integer> {
 	
 	@Query("SELECT p FROM Supply p WHERE p.supplyType.idSupplyType=:idSupplyType")
 	List<Supply> findByIdSupplyType(@Param("idSupplyType") Integer idSupplyType);

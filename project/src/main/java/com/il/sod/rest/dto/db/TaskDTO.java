@@ -1,6 +1,6 @@
 package com.il.sod.rest.dto.db;
 
-public class TaskDTO {
+public class TaskDTO extends DeletableDTO{
 	private int idTask;
 	private String description;
 	private String name;

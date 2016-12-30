@@ -8,6 +8,7 @@ import com.il.sod.mapper.SupplyMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.SupplyDTO;
+import com.il.sod.rest.dto.predicates.DeletablePredicate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class SupplyService extends AbstractServiceMutations {
 		if (entity == null){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
-		this.deleteEntity(supplyRepository, entity.getId());
+		this.softDeleteEntity(supplyRepository, entity.getId());
 		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
@@ -78,7 +79,9 @@ public class SupplyService extends AbstractServiceMutations {
 		List<SupplyDTO> list = entityList.stream().map((i) -> {
 			SupplyDTO dto = SupplyMapper.INSTANCE.map(i);
 			return dto;
-		}).collect(Collectors.toList());
+		})
+				.filter(DeletablePredicate.isActive())
+				.collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
 

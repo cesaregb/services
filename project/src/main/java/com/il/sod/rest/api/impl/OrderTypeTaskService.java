@@ -23,55 +23,47 @@ import java.util.stream.Collectors;
 @RolesAllowed("ADMIN")
 @Path("/orders/order-type/order-type-task")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/orders/order-type/order-type-task", tags = { "orders" })
+@Api(value = "/orders/order-type/order-type-task", tags = {"orders"})
 public class OrderTypeTaskService extends AbstractServiceMutations {
+
 	@Autowired
-	OrderTypeTaskRepository orderTypeTaskRepository;
+	private OrderTypeTaskRepository orderTypeTaskRepository;
 
 	@POST
-	@ApiOperation(value = "Create Service Type", response = OrderTypeTaskDTO.class)
+	@ApiOperation(value = "Create Order Type Task", response = OrderTypeTaskDTO.class)
 	public Response saveOrderTypeTask(OrderTypeTaskDTO dto) throws SODAPIException {
-
-			OrderTypeTask entity = OrderMapper.INSTANCE.map(dto);
-			this.saveEntity(orderTypeTaskRepository, entity);
-			dto = OrderMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+		OrderTypeTask entity = OrderMapper.INSTANCE.map(dto);
+		this.saveEntity(orderTypeTaskRepository, entity);
+		dto = OrderMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
 	@PUT
-	@ApiOperation(value = "Update Service Type", response = OrderTypeTaskDTO.class)
+	@ApiOperation(value = "Update Order Type Task", response = OrderTypeTaskDTO.class)
 	public Response updateOrderTypeTask(OrderTypeTaskDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	private Response updateEntity(OrderTypeTaskDTO dto) throws SODAPIException {
-
-			OrderTypeTask entity = OrderMapper.INSTANCE.map(dto);
-			this.updateEntity(orderTypeTaskRepository, entity);
-			dto = OrderMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
-
+		OrderTypeTask entity = OrderMapper.INSTANCE.map(dto);
+		this.updateEntity(orderTypeTaskRepository, entity);
+		dto = OrderMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
 	@Path("/{id}")
-	@ApiOperation(value = "Create Service Type", response = OrderTypeTaskDTO.class)
+	@ApiOperation(value = "Create Order Type Task", response = OrderTypeTaskDTO.class)
 	public Response deleteOrderTypeTask(@PathParam("id") Integer id) throws SODAPIException {
-
-			OrderTypeTask entity = orderTypeTaskRepository.findOne(id);
-			if (entity == null){
-				throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
-			}
-			this.deleteEntity(orderTypeTaskRepository, entity.getIdOrderTypeTask());
-			return castEntityAsResponse(
-					new GeneralResponseMessage(true, "Entity deleted"),
-					Response.Status.OK);
-
+		OrderTypeTask entity = orderTypeTaskRepository.findOne(id);
+		if (entity == null) {
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
+		}
+		this.deleteEntity(orderTypeTaskRepository, entity.getIdOrderTypeTask());
+		return castEntityAsResponse(
+				new GeneralResponseMessage(true, "Entity deleted"),
+				Response.Status.OK);
 	}
 
 	@GET
-	@ApiOperation(value = "Get Service Type list", response = OrderTypeTaskDTO.class, responseContainer = "List")
+	@ApiOperation(value = "Get Order Type Task list", response = OrderTypeTaskDTO.class, responseContainer = "List")
 	public Response getOrderTypeTaskList() throws SODAPIException {
 		List<OrderTypeTask> rentityList = this.getEntityList(orderTypeTaskRepository);
 		List<OrderTypeTaskDTO> list = rentityList.stream().map((i) -> {
