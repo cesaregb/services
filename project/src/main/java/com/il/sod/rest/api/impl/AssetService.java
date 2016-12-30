@@ -8,6 +8,7 @@ import com.il.sod.mapper.AssetMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.AssetDTO;
+import com.il.sod.rest.dto.predicates.DeletablePredicate;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -58,7 +59,7 @@ public class AssetService extends AbstractServiceMutations {
 		if (entity == null){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
-		this.deleteEntity(assetRepository, entity.getId());
+		this.softDeleteEntity(assetRepository, entity.getId());
 		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
@@ -70,7 +71,9 @@ public class AssetService extends AbstractServiceMutations {
 		List<AssetDTO> list = entityList.stream().map((i) -> {
 			AssetDTO dto = AssetMapper.INSTANCE.map(i);
 			return dto;
-		}).collect(Collectors.toList());
+		})
+				.filter(DeletablePredicate.isActive())
+				.collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
 

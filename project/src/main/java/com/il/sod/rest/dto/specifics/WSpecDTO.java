@@ -1,20 +1,19 @@
 package com.il.sod.rest.dto.specifics;
 
+import com.il.sod.rest.dto.KeyValueSpecs;
+
 import java.util.List;
 import java.util.Map;
-
-import com.il.sod.rest.dto.KeyValueSpecs;
 
 public class WSpecDTO {
 	private int idSpecs;
 	private String description;
 	private String name;
 	private Map<Integer, List<KeyValueSpecs<Integer, String>>> options;
-	private int optional;
+	private boolean optional;
 	private int max_qty;
 	private double price;
-	private boolean primarySpec;
-	
+
 	public int getIdSpecs() {
 		return idSpecs;
 	}
@@ -32,12 +31,6 @@ public class WSpecDTO {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public int getOptional() {
-		return optional;
-	}
-	public void setOptional(int optional) {
-		this.optional = optional;
 	}
 	public int getMax_qty() {
 		return max_qty;
@@ -57,10 +50,12 @@ public class WSpecDTO {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public boolean isPrimarySpec() {
-		return primarySpec;
+
+	public boolean isOptional() {
+		return optional;
 	}
-	public void setPrimarySpec(boolean primarySpec) {
-		this.primarySpec = primarySpec;
+
+	public void setOptional(boolean optional) {
+		this.optional = optional;
 	}
 }

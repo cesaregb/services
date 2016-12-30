@@ -2,7 +2,7 @@ package com.il.sod.rest.dto.db;
 
 import java.util.Set;
 
-public class EmployeeTypeDTO {
+public class EmployeeTypeDTO extends DeletableDTO {
 	private int idEmployeeType;
 	private String description;
 	private String name;

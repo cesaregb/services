@@ -3,8 +3,6 @@ package com.il.sod.config.jersey;
 import com.il.sod.config.Constants;
 import com.il.sod.config.JWTSingleton;
 import com.il.sod.rest.dto.GeneralResponseMessage;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 import org.glassfish.jersey.internal.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +41,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	private static final String AUTHENTICATION_SCHEME_BASIC = "Basic";
 	private static final String AUTHENTICATION_SCHEME_BEARER = "Bearer";
 
-	private final Config envConfig = ConfigFactory.load().getConfig(Constants.COM_IL_SOD_APPLICATION);
-
 	/**
 	 * Auth filter.
 	 * NOTE Endpoints can be:
@@ -71,14 +67,14 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 		Method method = resourceInfo.getResourceMethod();
 
 		// get and log the allowed ips.
-		List<String> ips = envConfig.getStringList("security.ips");
-		LOGGER.info("***** AuthenticationFilter\n ips with access: ");
-		ips.forEach(LOGGER::info);
+		List<String> ips = Constants.envConfig.getStringList("security.ips");
+//		LOGGER.info("***** AuthenticationFilter\n ips with access: ");
+//		ips.forEach(LOGGER::info);
 		LOGGER.info("Request IP Address:" + servletRequest.getRemoteAddr());
 
 		String requestedURLMethod = requestContext.getUriInfo().getPath();
 		String requesterIp = servletRequest.getRemoteAddr();
-		LOGGER.info("[Request Info] http method: " + reqMethod + " \nrequested Method: " + requestedURLMethod + "\nJava Method:" + method.getName());
+		LOGGER.info("[Request Info] http method: " + reqMethod + " \trequested Method: " + requestedURLMethod + "\tJava Method:" + method.getName());
 
 		// the request is comming from a known ip.
 		if (ips.contains(requesterIp)){
@@ -113,7 +109,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 				.replace(AUTHENTICATION_SCHEME_BEARER, "");
 
 		if (JWTSingleton.INSTANCE.isValidToken(authToken)){
-			LOGGER.info("Authentication granted! Token {} ", authToken);
+			LOGGER.debug("Authentication granted! Token {} ", authToken);
 			return;
 		}
 
@@ -129,7 +125,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 		if (method.isAnnotationPresent(PermitAll.class)
 				|| requestedURLMethod.toLowerCase().equals("swagger.json")
 				|| reqMethod.toUpperCase().equals("OPTIONS")){
-			LOGGER.info("Authentication not needed!");
+			LOGGER.debug("Authentication not needed!");
 			return;
 		}
 
@@ -181,10 +177,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	 * @return
 	 */
 	private boolean isUserAllowed(final String username, final String password, final Set<String> rolesSet) {
-		// TODO handle pwd as chararray
-
-		final String systemUser = envConfig.getString("security.user");
-		final String systemPwd = envConfig.getString("security.password");
+		// TODO handle pwd as char-array
+		final String systemUser = Constants.envConfig.getString("security.user");
+		final String systemPwd = Constants.envConfig.getString("security.password");
 		LOGGER.info("[isUserAllowed] ***********************");
 		LOGGER.info("\nusername: {} \tpassword: {} ", username, password);
 		LOGGER.info("\nsystemUser: {} \tsystemPwd: {} ", systemUser, systemPwd);

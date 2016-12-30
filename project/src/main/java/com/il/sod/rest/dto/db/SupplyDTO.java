@@ -1,6 +1,6 @@
 package com.il.sod.rest.dto.db;
 
-public class SupplyDTO {
+public class SupplyDTO extends DeletableDTO {
 	private int idSupply;
 	private String description;
 	private String name;

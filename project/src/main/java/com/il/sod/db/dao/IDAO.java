@@ -10,7 +10,7 @@ public interface IDAO<T, ID extends Serializable> {
 	
 	public void setRepository(JpaRepository<T, ID> repository);
 	public T create(T entity);
-	public T delete(ID id) throws SODAPIException ;
+	public boolean delete(ID id) throws SODAPIException ;
 	public T sofDelete(ID id) throws SODAPIException;
 	public List<T> findAll();
 	public List<T> findAllActive();

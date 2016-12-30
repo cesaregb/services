@@ -6,6 +6,7 @@ import com.il.sod.db.model.repositories.DeletableRepository;
 import com.il.sod.exception.SODAPIException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,15 +44,19 @@ public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID> {
 	}
 
 	@Override
+	@Modifying
 	@Transactional
-	public T delete(ID id) throws SODAPIException {
-		T deletedT = repository.findOne(id);
-		if (deletedT == null){
+	public boolean delete(ID id) throws SODAPIException {
+		T deleteEntity = repository.findOne(id);
+		if (deleteEntity == null){
 			throw new SODAPIException("item not found in the db");
 		}
-		repository.delete(deletedT);
+		repository.delete(deleteEntity);
 		repository.flush();
-		return deletedT;
+
+		// make sure it was deleted
+		deleteEntity = repository.findOne(id);
+		return deleteEntity == null;
 	}
 
 	@Override

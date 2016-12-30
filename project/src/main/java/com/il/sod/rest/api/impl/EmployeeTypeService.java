@@ -7,6 +7,7 @@ import com.il.sod.mapper.EmployeeMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.EmployeeTypeDTO;
+import com.il.sod.rest.dto.predicates.DeletablePredicate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,19 +24,18 @@ import java.util.stream.Collectors;
 @RolesAllowed("ADMIN")
 @Path("/employees/employee-type")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/employees/employee-type", tags = { "employees" })
+@Api(value = "/employees/employee-type", tags = {"employees"})
 public class EmployeeTypeService extends AbstractServiceMutations {
 	@Autowired
-	EmployeeTypeRepository employeeTypeRepository;
+	private EmployeeTypeRepository employeeTypeRepository;
 
 	@POST
 	@ApiOperation(value = "Create Employee Type", response = EmployeeTypeDTO.class)
 	public Response saveEmployeeType(EmployeeTypeDTO dto) throws SODAPIException {
-
-			EmployeeType entity = EmployeeMapper.INSTANCE.map(dto);
-			this.saveEntity(employeeTypeRepository, entity);
-			dto = EmployeeMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+		EmployeeType entity = EmployeeMapper.INSTANCE.map(dto);
+		this.saveEntity(employeeTypeRepository, entity);
+		dto = EmployeeMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -53,10 +53,10 @@ public class EmployeeTypeService extends AbstractServiceMutations {
 	@ApiOperation(value = "Delete Task Type", response = GeneralResponseMessage.class)
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		EmployeeType entity = employeeTypeRepository.findOne(Integer.valueOf(id));
-		if (entity == null){
+		if (entity == null) {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
-		this.deleteEntity(employeeTypeRepository, entity.getId());
+		this.softDeleteEntity(employeeTypeRepository, entity.getId());
 		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
@@ -68,7 +68,9 @@ public class EmployeeTypeService extends AbstractServiceMutations {
 		List<EmployeeTypeDTO> list = rentityList.stream().map((i) -> {
 			EmployeeTypeDTO dto = EmployeeMapper.INSTANCE.map(i);
 			return dto;
-		}).collect(Collectors.toList());
+		})
+				.filter(DeletablePredicate.isActive())
+				.collect(Collectors.toList());
 		return castEntityAsResponse(list);
 	}
 

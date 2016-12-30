@@ -12,7 +12,7 @@ import java.util.Set;
  */
 @Entity
 @NamedQuery(name="SupplyType.findAll", query="SELECT p FROM SupplyType p")
-public class SupplyType implements IEntity<Integer> {
+public class SupplyType extends SoftDeleteEntity implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id

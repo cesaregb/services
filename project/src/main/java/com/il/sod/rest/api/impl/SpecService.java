@@ -4,7 +4,6 @@ import com.il.sod.db.dao.impl.SpecsValueDAO;
 import com.il.sod.db.model.entities.Spec;
 import com.il.sod.db.model.entities.SpecsValue;
 import com.il.sod.db.model.repositories.SpecRepository;
-import com.il.sod.db.model.repositories.SpecsValueRepository;
 import com.il.sod.db.model.repositories.SupplyTypeRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.SpecsMapper;
@@ -14,8 +13,6 @@ import com.il.sod.rest.dto.db.SpecDTO;
 import com.il.sod.rest.dto.db.SpecsValueDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,27 +36,19 @@ public class SpecService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Spec", response = SpecDTO.class)
 	public Response saveSpec(SpecDTO dto) throws SODAPIException {
-
-			Spec entity = SpecsMapper.INSTANCE.map(dto);
-			this.saveEntity(specRepository, entity);
-			dto = SpecsMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
-
+		Spec entity = SpecsMapper.INSTANCE.map(dto);
+		this.saveEntity(specRepository, entity);
+		dto = SpecsMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Spec", response = SpecDTO.class)
 	public Response updateSpec(SpecDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	private Response updateEntity(SpecDTO dto) throws SODAPIException {
-
-			Spec entity = SpecsMapper.INSTANCE.map(dto);
-			this.updateEntity(specRepository, entity);
-			dto = SpecsMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
-
+		Spec entity = SpecsMapper.INSTANCE.map(dto);
+		this.updateEntity(specRepository, entity);
+		dto = SpecsMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -86,34 +75,9 @@ public class SpecService extends AbstractServiceMutations {
 		return castEntityAsResponse(list);
 	}
 
-	@GET
-	@Path("/byNotPrimary")
-	@ApiOperation(value = "Get Spec list Not Primary", response = SpecDTO.class, responseContainer = "List")
-	public Response getSpecList() throws SODAPIException {
-		List<Spec> entityList = specRepository.findAllNotPrimary();
-
-		List<SpecDTO> list = entityList.stream().map((i) -> {
-			SpecDTO dto = SpecsMapper.INSTANCE.map(i);
-			return dto;
-		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
-	}
-
-	@GET
-	@Path("/byPrimary")
-	@ApiOperation(value = "Get Spec list Primary", response = SpecDTO.class, responseContainer = "List")
-	public Response getSpecListByPrimary() throws SODAPIException {
-		List<Spec> entityList = specRepository.findAllPrimary();
-		List<SpecDTO> list = entityList.stream().map((i) -> {
-			SpecDTO dto = SpecsMapper.INSTANCE.map(i);
-			return dto;
-		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
-	}
-
-
 	@Autowired
-	SupplyTypeRepository supplyTypeRepository;
+	private SupplyTypeRepository supplyTypeRepository;
+
 	@Autowired
 	private SpecsValueDAO specsValueDAO;
 	@GET

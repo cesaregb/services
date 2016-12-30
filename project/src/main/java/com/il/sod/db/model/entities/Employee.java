@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @NamedQuery(name="Employee.findAll", query="SELECT e FROM Employee e")
-public class Employee implements IEntity<Integer> {
+public class Employee extends SoftDeleteEntity implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
