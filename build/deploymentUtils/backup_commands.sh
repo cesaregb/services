@@ -7,6 +7,8 @@ db_password="Welcome1"
 
 now="$(date +'%d_%m_%Y_%H_%M_%S')"
 
+cloud_database_url="soddb.ca6bb5j2bui8.us-east-1.rds.amazonaws.com:3306";
+
 filename="db_backup_$now".gz
 
 backupfolder="/Users/cesaregb/dev/BKPs/sod_db"

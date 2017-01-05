@@ -33,6 +33,7 @@ public class PersistenceContext {
 	private final static Logger LOGGER = LoggerFactory.getLogger(PersistenceContext.class);
 	private static final String SECURITY_DB_USER = "security.dbUser";
 	private static final String SECURITY_DB_PASSWORD = "security.dbPassword";
+	private static final String GENERAL_DB_URL = "general.dbUrl";
 
 	@Resource
 	private Environment env;
@@ -56,19 +57,22 @@ public class PersistenceContext {
 		if (dataSourceInfo != null
 				&& (dataSourceInfo.containsKey("valid")
 				&& Objects.equals(dataSourceInfo.get("valid"), "1"))){
+			// information from docker
 			dataSource.setUrl(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_URL));
 			dataSource.setUsername(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_USER));
 			dataSource.setPassword(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_PASSWORD));
 		}else{
 			final String username = Constants.envConfig.getString(SECURITY_DB_USER);
 			final String password = Constants.envConfig.getString(SECURITY_DB_PASSWORD);
-			dataSource.setUrl(dbUrl);
+			final String dbUrlInfo = (Constants.envConfig.getString(GENERAL_DB_URL)!=null)?Constants.envConfig.getString(GENERAL_DB_URL):dbUrl;
+			dataSource.setUrl(dbUrlInfo);
 			dataSource.setUsername(username);
 			dataSource.setPassword(password);
 		}
 		LOGGER.info("******** DB Info");
 		LOGGER.info("dbUrl: " + dataSource.getUrl());
 		LOGGER.info("username: " + dataSource.getUsername());
+		LOGGER.info("username: " + dataSource.getPassword());
 		LOGGER.info("*************");
 
 		return dataSource;

@@ -36,6 +36,8 @@ public class ApplicationConfig extends ResourceConfig {
         packages("io.swagger.jaxrs.listing,"
         		+ "com.il.sod.exception,"
         		+ SERVICES_PACKAGE);
+
+		LOGGER.info("[ApplicationConfig] TestToken: >> {} << ", JWTSingleton.INSTANCE.createJWT("Test-Requests", Constants.BASIC_AUTH, 1));
     }
 	
 	/* Swagger configuratoin */

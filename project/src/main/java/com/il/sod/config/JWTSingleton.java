@@ -71,9 +71,6 @@ public enum JWTSingleton {
 //				.setSigningKey(DatatypeConverter.parseBase64Binary(apiKey.getSecret()))
 //				.parseClaimsJws(jwt).getBody();
 
-		System.out.println("TOken"+ token);
-
-
 		if (token == null || token.length() == 0) {
 			return false;
 		}
