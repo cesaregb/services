@@ -1,5 +1,5 @@
 # To build:
-# docker build -t interactivelabs/services -f Dockerfile .
+# docker build -t interactivelabs/services:dev -f Dockerfile .
 #
 # To publish:
   # docker logn
@@ -47,7 +47,7 @@ RUN cd /usr && tar --strip-components 1 -xzf /tmp/node-v0.12.3-linux-x64.tar.gz
 
 #User IL = Interactive labs
 ENV BASE_USER il
-ENV USER_HOME /home/$BASE_USER
+ENV USER_HOME /home/${BASE_USER}
 
 # Create our user
 RUN useradd ${BASE_USER}
@@ -68,7 +68,7 @@ COPY /project ${MODULE_SOURCE}/project
 # make doceng the owner of all the source files, so when mvn clean install package runs it can create the target/classes dir
 RUN chown -R ${BASE_USER}:${BASE_USER} ${MODULE_SOURCE}
 
-USER $BASE_USER
+USER ${BASE_USER}
 
 # logstasg!
 #change workingdir to work and prepare the image
@@ -88,7 +88,6 @@ ADD logstash.conf ${USER_HOME}
 
 CMD ${USER_HOME}/logstash-2.1.1/bin/logstash -f ${USER_HOME}/logstash.conf
 # /home/il/logstash-2.1.1/bin/logstash -f /home/il/logstash.conf
-
 
 # Build the registration services now
 WORKDIR ${MODULE_SOURCE}/project
