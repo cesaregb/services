@@ -66,48 +66,6 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `sod_db`.`SocialNetworks`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`SocialNetworks` ;
-
-CREATE TABLE IF NOT EXISTS `sod_db`.`SocialNetworks` (
-  `idSocialNetworks` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NULL DEFAULT NULL,
-  `domain` VARCHAR(45) NULL DEFAULT NULL,
-  PRIMARY KEY (`idSocialNetworks`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `sod_db`.`AccessKey`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`AccessKey` ;
-
-CREATE TABLE IF NOT EXISTS `sod_db`.`AccessKey` (
-  `idAccessKey` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `idClient` INT(10) UNSIGNED NOT NULL,
-  `idSocialNetworks` INT(10) UNSIGNED NOT NULL,
-  `token` VARCHAR(100) NULL DEFAULT NULL,
-  `tokenSecre` VARCHAR(250) NULL DEFAULT NULL,
-  PRIMARY KEY (`idAccessKey`),
-  INDEX `fk_AccessKey_Clients1_idx` (`idClient` ASC),
-  INDEX `fk_AccessKey_SocialNetworks1_idx` (`idSocialNetworks` ASC),
-  CONSTRAINT `fk_AccessKey_Clients1`
-    FOREIGN KEY (`idClient`)
-    REFERENCES `sod_db`.`Clients` (`idClient`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_AccessKey_SocialNetworks1`
-    FOREIGN KEY (`idSocialNetworks`)
-    REFERENCES `sod_db`.`SocialNetworks` (`idSocialNetworks`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
 -- Table `sod_db`.`Address`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `sod_db`.`Address` ;
@@ -1098,26 +1056,6 @@ CREATE TABLE IF NOT EXISTS `sod_db`.`ServiceTypeTask` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 5
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `sod_db`.`SocialNetworkData`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sod_db`.`SocialNetworkData` ;
-
-CREATE TABLE IF NOT EXISTS `sod_db`.`SocialNetworkData` (
-  `idSocialNetworkData` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `data` LONGTEXT NULL DEFAULT NULL,
-  `idAccessKey` INT(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`idSocialNetworkData`),
-  INDEX `fk_SocialNetworkData_AccessKey1_idx` (`idAccessKey` ASC),
-  CONSTRAINT `fk_SocialNetworkData_AccessKey1`
-    FOREIGN KEY (`idAccessKey`)
-    REFERENCES `sod_db`.`AccessKey` (`idAccessKey`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 

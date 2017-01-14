@@ -1,6 +1,5 @@
 package com.il.sod.rest.api;
 
-import com.il.sod.db.dao.SocialNetworkServiceDAO;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.TestDto;
@@ -42,9 +41,6 @@ public class Health extends AbstractService {
 	@Autowired
 	MyService myService;
 	
-	@Autowired
-	private SocialNetworkServiceDAO shopServiceDAO;
-	
 	@Value("${db.url}")
 	private String dbUrl;
 	
@@ -64,7 +60,6 @@ public class Health extends AbstractService {
 		LOGGER.info("dbUrl: " + dbUrl + " == " + " dbDriver: " + dbDriver + " == " + System.getProperty("spring.profiles.active"));
 		LOGGER.info("myValue: " + env.getProperty("myValue"));
 //		LOGGER.info("env: " + env.getRequiredProperty("db.driver")  + " == " + env.getRequiredProperty("db.url"));
-		LOGGER.info("shopServiceDAO: " + shopServiceDAO.findById(6) );
 		LOGGER.info("********************************");
 		
 		return new GeneralResponseMessage(true, "from the resource: " + dbUrl);

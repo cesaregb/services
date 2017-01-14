@@ -9,13 +9,10 @@ import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.OrderMapper;
 import com.il.sod.mapper.TaskMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
-import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderDTO;
 import com.il.sod.rest.dto.specifics.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +64,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 	
 	@GET
 	@Path("/orderTypes")
-	@ApiOperation(value = "Get Address list", response = WServiceCategoryDTO.class, responseContainer = "List")
+	@ApiOperation(value = "Get List of type of orders [completed]", response = WServiceCategoryDTO.class, responseContainer = "List")
 	public Response getOrderTypes() throws SODAPIException {
 		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
 		List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());

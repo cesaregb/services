@@ -46,22 +46,15 @@ public class ProductService extends AbstractServiceMutations {
 		this.saveEntity(productRepository, entity);
 		dto = ProductMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.CREATED);
-
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Product", response = ProductDTO.class)
 	public Response updateProduct(ProductDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	private Response updateEntity(ProductDTO dto) throws SODAPIException {
-
 		Product entity = ProductMapper.INSTANCE.map(dto);
 		this.updateEntity(productRepository, entity);
 		dto = ProductMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.OK);
-
 	}
 
 	@DELETE
