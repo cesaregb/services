@@ -6,8 +6,8 @@ import com.il.sod.db.model.entities.ServiceSpec;
 import com.il.sod.mapper.ServiceMapper;
 import com.il.sod.mapper.UIMapper;
 import com.il.sod.rest.dto.db.ServiceDTO;
-import com.il.sod.rest.dto.specifics.UIServiceDTO;
-import com.il.sod.rest.dto.specifics.UISpecDTO;
+import com.il.sod.rest.dto.parse.UIServiceDTO;
+import com.il.sod.rest.dto.parse.UISpecDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;

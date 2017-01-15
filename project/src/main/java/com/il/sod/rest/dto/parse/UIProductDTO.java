@@ -1,4 +1,4 @@
-package com.il.sod.rest.dto.specifics;
+package com.il.sod.rest.dto.parse;
 
 public class UIProductDTO {
 	private int idProduct;

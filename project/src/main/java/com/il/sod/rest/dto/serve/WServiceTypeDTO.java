@@ -1,4 +1,4 @@
-package com.il.sod.rest.dto.specifics;
+package com.il.sod.rest.dto.serve;
 
 import com.il.sod.rest.dto.db.ProductDTO;
 

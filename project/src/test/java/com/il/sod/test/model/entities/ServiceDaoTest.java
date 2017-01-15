@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.il.sod.converter.services.SpecificObjectsConverterService;
 import com.il.sod.db.model.entities.ServiceCategory;
 import com.il.sod.db.model.repositories.ServiceCategoryRepository;
-import com.il.sod.rest.dto.specifics.WServiceCategoryDTO;
+import com.il.sod.rest.dto.serve.WServiceCategoryDTO;
 import com.il.sod.test.config.SpringTestConfiguration;
 
 public class ServiceDaoTest extends SpringTestConfiguration{

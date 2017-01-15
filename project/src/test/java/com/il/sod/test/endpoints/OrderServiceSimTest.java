@@ -1,9 +1,10 @@
 package com.il.sod.test.endpoints;
 
 import com.il.sod.rest.api.web.impl.AppOrdersService;
-import com.il.sod.rest.dto.specifics.UIOrderDTO;
-import com.il.sod.rest.dto.specifics.UIServiceDTO;
-import com.il.sod.rest.dto.specifics.UISpecDTO;
+import com.il.sod.rest.dto.parse.UIOrderDTO;
+import com.il.sod.rest.dto.parse.UIServiceDTO;
+import com.il.sod.rest.dto.parse.UISpecDTO;
+import com.il.sod.rest.dto.parse.UITransportDTO;
 import com.il.sod.test.config.SpringTestConfiguration;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,11 @@ public class OrderServiceSimTest extends SpringTestConfiguration{
     	UIOrderDTO oi = new UIOrderDTO();
     	oi.setIdClient(1);
     	oi.setTotal(35d);
-    	oi.setIdAddressPickup(1);
-    	oi.setIdAddressDeliver(1);
-    	oi.setPickUpDate(new Date());
-    	oi.setDeliveryDate(new Date());
+	    List<UITransportDTO> lTransport = new ArrayList<>();
+	    lTransport.add(new UITransportDTO(1, new Date(), 0, 100));
+	    lTransport.add(new UITransportDTO(1, new Date(), 1, 10));
+	    oi.setTransport(lTransport);
+
     	List<UIServiceDTO> services = new ArrayList<>();
     	UIServiceDTO e = new UIServiceDTO();
     	e.setIdServiceType(1);
