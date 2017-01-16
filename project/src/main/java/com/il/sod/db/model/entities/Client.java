@@ -240,6 +240,9 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	}
 
 	public Set<ClientBag> getClientBags() {
+		if (this.clientBags == null){
+			this.clientBags = new HashSet<>();
+		}
 		return this.clientBags;
 	}
 

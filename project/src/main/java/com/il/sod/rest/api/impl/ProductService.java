@@ -73,7 +73,7 @@ public class ProductService extends AbstractServiceMutations {
 	@ApiOperation(value = "Get Product list", response = ProductDTO.class, responseContainer = "List")
 	public Response getProductList(@QueryParam("name") String name,
 	                               @QueryParam("idProductType") String idProductType) throws SODAPIException {
-		List<Product> rentityList = null;
+		List<Product> rentityList;
 		if (!StringUtils.isEmpty(name)) {
 			rentityList = productDAO.findByName(name);
 		} else if (!StringUtils.isEmpty(idProductType)) {
