@@ -97,7 +97,6 @@ public class ClientDaoTest extends SpringTestConfiguration{
     	List<Client> r = genericDaoImpl.findAll();
     	for (Client c : r){
     		System.out.println("email: " + c.getEmail());
-    		System.out.println("size: " + c.getAccessKeys().size());
     	}
     	return true;
     }

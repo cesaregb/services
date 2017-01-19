@@ -11,7 +11,7 @@ import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderDTO;
 import com.il.sod.rest.dto.specifics.OrderTasksInfoDTO;
 import com.il.sod.rest.dto.specifics.ServiceTasksInfoDTO;
-import com.il.sod.rest.dto.specifics.UIOrderDTO;
+import com.il.sod.rest.dto.parse.UIOrderDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

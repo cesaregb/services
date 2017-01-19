@@ -28,8 +28,6 @@ public enum ClientMapper {
 			.fieldMap("addresses", "addresses").converter("addressDTOConverter").mapNulls(false).mapNullsInReverse(true).add()
 			.fieldMap("clientPaymentInfos", "clientPaymentInfos").converter("clientPaymentInfoSetConverter").mapNulls(false).mapNullsInReverse(true).add()
 			.fieldMap("clientBags", "clientBags").converter("clientBagSetConverter").mapNulls(false).mapNullsInReverse(true).add()
-			.field("idClientType","clientType.idClientType")
-				// IMPORTANT!!
 			.exclude("orders")
 			.byDefault()
 			.customize(new CustomMapper<ClientDTO, Client>() {

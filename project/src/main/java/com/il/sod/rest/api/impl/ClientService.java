@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @Component
 @RolesAllowed("ADMIN")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "clients", tags = { "clients" })
+@Api(value = "clients", tags = {"clients"})
 @Path("/clients")
 public class ClientService extends AbstractServiceMutations {
 
@@ -41,7 +41,7 @@ public class ClientService extends AbstractServiceMutations {
 
 	@Autowired
 	protected ClientRepository clientRepository;
-	
+
 	@Autowired
 	private ClientTypeRepository clientTypeRepository;
 
@@ -52,19 +52,20 @@ public class ClientService extends AbstractServiceMutations {
 	@ApiOperation(value = "Create Client", response = ClientDTO.class)
 	public Response saveClient(ClientDTO dto) throws SODAPIException {
 
-		if (dto.getIdClientType() == null || dto.getIdClientType() == 0){
+		if (dto.getIdClientType() == null || dto.getIdClientType() == 0) {
 			final String localMessage = "Client Type should not be empty";
 			LOGGER.error(localMessage);
 			throw new SODAPIException(Response.Status.BAD_REQUEST, localMessage);
 		}
 
-		if (clientDAO.findByEmail(dto.getEmail()) != null){
+		if (clientDAO.findByEmail(dto.getEmail()) != null) {
 			final String localMesage = "Email already associated with another User ";
 			LOGGER.error(localMesage);
 			throw new SODAPIException(Response.Status.BAD_REQUEST, localMesage);
 		}
 
 		Client entity = ClientMapper.INSTANCE.map(dto);
+		clientTypeRepository.findOne(dto.getIdClientType()).addClient(entity);
 		assignDependencyToChilds(entity);
 		this.saveEntity(clientRepository, entity);
 		dto = ClientMapper.INSTANCE.map(entity);
@@ -77,22 +78,23 @@ public class ClientService extends AbstractServiceMutations {
 		// find existing one.
 		Client entity = clientDAO.findByEmail(dto.getEmail());
 
-		if (entity != null && entity.getDeleted() > 0){
-            throw new SODAPIException(Response.Status.NOT_FOUND, "Client deleted, please request admin to activate.");
+		if (entity == null ) {
+			throw new SODAPIException(Response.Status.NOT_FOUND, "Client doesnt exist.");
 		}
 
-		if (entity == null){
-			LOGGER.info("Note update, call saveClient");
-			return this.saveClient(dto);
-		}else{ // Update entity
-			dto.setIdClient(entity.getId());// assign because we are seeking from email not id.
-			LOGGER.info("Update entity");
-			// remove dependencies to be udated..
-			entity.getClientType().removeClient(entity);
-			entity = ClientMapper.INSTANCE.map(dto, entity);
-			LOGGER.info("***** Client ID " + entity.getId());
-			clientTypeRepository.findOne(dto.getIdClientType()).addClient(entity);
+		if (entity.getDeleted() > 0) {
+			throw new SODAPIException(Response.Status.NOT_FOUND, "Client deleted, please request admin to activate.");
 		}
+
+
+		// in case we changed the client type...  we need to remove it and add it again
+		dto.setIdClient(entity.getId());// assign because we are seeking from email not id.
+
+		// remove dependencies to be udated..
+		entity.getClientType().removeClient(entity);
+		entity = ClientMapper.INSTANCE.map(dto, entity);
+		LOGGER.info("***** Client ID " + entity.getId());
+		clientTypeRepository.findOne(dto.getIdClientType()).addClient(entity);
 
 		assignDependencyToChilds(entity);
 		this.updateEntity(clientRepository, entity);
@@ -100,23 +102,23 @@ public class ClientService extends AbstractServiceMutations {
 		return castEntityAsResponse(dto, Response.Status.OK);
 	}
 
-    @PUT
-    @Path("/reactivate/{email}")
-    @ApiOperation(value = "Reactivate Client", response = ClientDTO.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-            @ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class) })
-    public Response reactivateClient(@PathParam("email") String email) throws SODAPIException {
-        Client entity = clientDAO.findByEmail(email);
-        if (entity == null){
-            throw new SODAPIException(Response.Status.NOT_FOUND, "Client not found with email: "+email+" ");
-        }
-        LOGGER.info("Update entity");
-        entity.setDeleted(0);
-        this.updateEntity(clientRepository, entity);
-        ClientDTO dto = ClientMapper.INSTANCE.map(entity);
-        return castEntityAsResponse(dto, Response.Status.OK);
-    }
+	@PUT
+	@Path("/reactivate/{email}")
+	@ApiOperation(value = "Reactivate Client", response = ClientDTO.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class)})
+	public Response reactivateClient(@PathParam("email") String email) throws SODAPIException {
+		Client entity = clientDAO.findByEmail(email);
+		if (entity == null) {
+			throw new SODAPIException(Response.Status.NOT_FOUND, "Client not found with email: " + email + " ");
+		}
+		LOGGER.info("Update entity");
+		entity.setDeleted(0);
+		this.updateEntity(clientRepository, entity);
+		ClientDTO dto = ClientMapper.INSTANCE.map(entity);
+		return castEntityAsResponse(dto, Response.Status.OK);
+	}
 
 
 	@DELETE
@@ -124,7 +126,7 @@ public class ClientService extends AbstractServiceMutations {
 	@ApiOperation(value = "Delete Client", response = GeneralResponseMessage.class)
 	public Response deleteItem(@PathParam("id") String clientId) throws SODAPIException {
 		Client entity = clientRepository.findOne(Integer.valueOf(clientId));
-		if (entity == null){
+		if (entity == null) {
 			throw new SODAPIException(Response.Status.NOT_FOUND, "Client not found");
 		}
 		this.softDeleteEntity(clientRepository, entity.getIdClient());
@@ -143,51 +145,51 @@ public class ClientService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Client list by filter UNIQUE[ phone, idAddress, email, token]", response = ClientDTO.class)
 	public Response getClientsByFilter(@Context UriInfo uriInfo,
-									   @QueryParam("idAddress") String idAddress,
-									   @QueryParam("phone") String phone,
-									   @QueryParam("token") String token,
-									   @QueryParam("email") String email,
-									   @QueryParam("lastName") String lastName,
-									   @QueryParam("name") String name,
-									   @QueryParam("twitter") String twitter,
-									   @QueryParam("loginID") String loginID,
-									   @QueryParam("rfc") String rfc,
-									   @QueryParam("razonSocial") String razonSocial,
-									   @QueryParam("idClientType") String idClientType) throws SODAPIException {
+	                                   @QueryParam("idAddress") String idAddress,
+	                                   @QueryParam("phone") String phone,
+	                                   @QueryParam("token") String token,
+	                                   @QueryParam("email") String email,
+	                                   @QueryParam("lastName") String lastName,
+	                                   @QueryParam("name") String name,
+	                                   @QueryParam("twitter") String twitter,
+	                                   @QueryParam("loginID") String loginID,
+	                                   @QueryParam("rfc") String rfc,
+	                                   @QueryParam("razonSocial") String razonSocial,
+	                                   @QueryParam("idClientType") String idClientType) throws SODAPIException {
 
 		MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
 
 
 		// logging
-        Iterator<String> it;
-		if (!queryParams.isEmpty()){
-            it = queryParams.keySet().iterator();
-            while(it.hasNext()){
-                String theKey = it.next();
-                LOGGER.info(theKey + " : " + queryParams.getFirst(theKey));
-            }
-        }
+		Iterator<String> it;
+		if (!queryParams.isEmpty()) {
+			it = queryParams.keySet().iterator();
+			while (it.hasNext()) {
+				String theKey = it.next();
+				LOGGER.info(theKey + " : " + queryParams.getFirst(theKey));
+			}
+		}
 
 		List<Client> entities = null;
 		if (StringUtils.isNotEmpty(phone)) {
 			entities = clientDAO.findByPhone(phone);
-		}else if (StringUtils.isNotEmpty(idAddress)){
+		} else if (StringUtils.isNotEmpty(idAddress)) {
 			entities = clientDAO.findByAddress(Integer.valueOf(idAddress));
-		}else if (StringUtils.isNotEmpty(token)){
+		} else if (StringUtils.isNotEmpty(token)) {
 			entities = clientDAO.findByToken(token);
-		}else if (!queryParams.isEmpty()){
+		} else if (!queryParams.isEmpty()) {
 			List<ClientSpecification> filterList = new ArrayList<>();
 			it = queryParams.keySet().iterator();
-			while(it.hasNext()){
+			while (it.hasNext()) {
 				String theKey = it.next();
-				if (!theKey.toLowerCase().equals(PHONE_TXT)){
+				if (!theKey.toLowerCase().equals(PHONE_TXT)) {
 					ClientSpecification spec = new ClientSpecification(new SearchCriteria(theKey, ":", queryParams.getFirst(theKey)));
 					filterList.add(spec);
 				}
 			}
 			SpecificationsBuilder<Client, ClientSpecification> builder = new SpecificationsBuilder<>(filterList);
 			entities = clientRepository.findAll(builder.build());
-		}else{
+		} else {
 			entities = this.getEntityList(clientRepository);
 		}
 
@@ -199,9 +201,20 @@ public class ClientService extends AbstractServiceMutations {
 	}
 
 	private void assignDependencyToChilds(Client entity) {
-		if (entity.getAddresses() != null)
+		if (entity.getAddresses() != null) {
 			entity.getAddresses().stream().filter(Objects::nonNull).forEach(a -> a.setClient(entity));
-		if (entity.getClientPaymentInfos() != null)
-			entity.getClientPaymentInfos().stream().filter(Objects::nonNull).forEach(a -> a.setClient(entity));
+		}
+
+		if (entity.getClientPaymentInfos() != null) {
+			entity.getClientPaymentInfos().stream()
+					.filter(Objects::nonNull)
+					.forEach(a -> a.setClient(entity));
+		}
+
+		if (entity.getClientBags() != null) {
+			entity.getClientBags().stream()
+					.filter(Objects::nonNull)
+					.forEach(a -> a.setClient(entity));
+		}
 	}
 }

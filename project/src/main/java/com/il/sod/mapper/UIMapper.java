@@ -1,7 +1,7 @@
 package com.il.sod.mapper;
 
 import com.il.sod.db.model.entities.Service;
-import com.il.sod.rest.dto.specifics.UIServiceDTO;
+import com.il.sod.rest.dto.parse.UIServiceDTO;
 import ma.glasnost.orika.MapperFacade;
 
 public enum UIMapper {

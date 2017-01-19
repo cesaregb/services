@@ -46,22 +46,15 @@ public class ProductService extends AbstractServiceMutations {
 		this.saveEntity(productRepository, entity);
 		dto = ProductMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.CREATED);
-
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Product", response = ProductDTO.class)
 	public Response updateProduct(ProductDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	private Response updateEntity(ProductDTO dto) throws SODAPIException {
-
 		Product entity = ProductMapper.INSTANCE.map(dto);
 		this.updateEntity(productRepository, entity);
 		dto = ProductMapper.INSTANCE.map(entity);
 		return castEntityAsResponse(dto, Response.Status.OK);
-
 	}
 
 	@DELETE
@@ -80,7 +73,7 @@ public class ProductService extends AbstractServiceMutations {
 	@ApiOperation(value = "Get Product list", response = ProductDTO.class, responseContainer = "List")
 	public Response getProductList(@QueryParam("name") String name,
 	                               @QueryParam("idProductType") String idProductType) throws SODAPIException {
-		List<Product> rentityList = null;
+		List<Product> rentityList;
 		if (!StringUtils.isEmpty(name)) {
 			rentityList = productDAO.findByName(name);
 		} else if (!StringUtils.isEmpty(idProductType)) {

@@ -29,14 +29,14 @@ public class ClientDTO extends DeletableDTO{
 	@ApiModelProperty(hidden=true)
 	@JsonProperty(access = Access.READ_ONLY)
 	private String defaultPayment;
-	private Set<Integer> orders;
-	private Set<AddressDTO> addresses;
 	private Date created;
 	private Date updated;
+	private Set<Integer> orders;
+	private Set<AddressDTO> addresses;
 	private Set<ClientPaymentInfoDTO> clientPaymentInfos;
-	private int deleted;
 	private Set<ClientBagDTO> clientBags;
-	
+	private int deleted;
+
 	public int getIdClient() {
 		return idClient;
 	}

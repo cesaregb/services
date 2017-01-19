@@ -16,15 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping data for table `AccessKey`
---
-
-LOCK TABLES `AccessKey` WRITE;
-/*!40000 ALTER TABLE `AccessKey` DISABLE KEYS */;
-/*!40000 ALTER TABLE `AccessKey` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `Address`
 --
 
@@ -397,24 +388,6 @@ LOCK TABLES `ServiceTypeTask` WRITE;
 /*!40000 ALTER TABLE `ServiceTypeTask` DISABLE KEYS */;
 INSERT INTO `ServiceTypeTask` VALUES (1,1,2,1,10),(2,1,5,2,10),(3,2,2,1,10),(4,2,5,2,10);
 /*!40000 ALTER TABLE `ServiceTypeTask` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `SocialNetworkData`
---
-
-LOCK TABLES `SocialNetworkData` WRITE;
-/*!40000 ALTER TABLE `SocialNetworkData` DISABLE KEYS */;
-/*!40000 ALTER TABLE `SocialNetworkData` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `SocialNetworks`
---
-
-LOCK TABLES `SocialNetworks` WRITE;
-/*!40000 ALTER TABLE `SocialNetworks` DISABLE KEYS */;
-/*!40000 ALTER TABLE `SocialNetworks` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
