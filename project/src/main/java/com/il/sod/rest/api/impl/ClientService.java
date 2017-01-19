@@ -65,6 +65,7 @@ public class ClientService extends AbstractServiceMutations {
 		}
 
 		Client entity = ClientMapper.INSTANCE.map(dto);
+		clientTypeRepository.findOne(dto.getIdClientType()).addClient(entity);
 		assignDependencyToChilds(entity);
 		this.saveEntity(clientRepository, entity);
 		dto = ClientMapper.INSTANCE.map(entity);
@@ -77,24 +78,23 @@ public class ClientService extends AbstractServiceMutations {
 		// find existing one.
 		Client entity = clientDAO.findByEmail(dto.getEmail());
 
-		if (entity != null && entity.getDeleted() > 0) {
+		if (entity == null ) {
+			throw new SODAPIException(Response.Status.NOT_FOUND, "Client doesnt exist.");
+		}
+
+		if (entity.getDeleted() > 0) {
 			throw new SODAPIException(Response.Status.NOT_FOUND, "Client deleted, please request admin to activate.");
 		}
 
-		if (entity == null) {
-			LOGGER.info("Note update, call saveClient");
-			return this.saveClient(dto);
-		} else { // Update entity
-			// in case we changed the client type...  we need to remove it and add it again
-			dto.setIdClient(entity.getId());// assign because we are seeking from email not id.
-			LOGGER.info("Update entity");
-			// remove dependencies to be udated..
-			entity.getClientType().removeClient(entity);
-			entity = ClientMapper.INSTANCE.map(dto, entity);
-			LOGGER.info("***** Client ID " + entity.getId());
 
-			clientTypeRepository.findOne(dto.getIdClientType()).addClient(entity);
-		}
+		// in case we changed the client type...  we need to remove it and add it again
+		dto.setIdClient(entity.getId());// assign because we are seeking from email not id.
+
+		// remove dependencies to be udated..
+		entity.getClientType().removeClient(entity);
+		entity = ClientMapper.INSTANCE.map(dto, entity);
+		LOGGER.info("***** Client ID " + entity.getId());
+		clientTypeRepository.findOne(dto.getIdClientType()).addClient(entity);
 
 		assignDependencyToChilds(entity);
 		this.updateEntity(clientRepository, entity);
