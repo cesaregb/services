@@ -1,11 +1,11 @@
-package com.il.sod.test.endpoints;
+package com.il.sod.endpoints;
 
 import com.il.sod.rest.api.web.impl.AppOrdersService;
 import com.il.sod.rest.dto.parse.UIOrderDTO;
 import com.il.sod.rest.dto.parse.UIServiceDTO;
 import com.il.sod.rest.dto.parse.UISpecDTO;
 import com.il.sod.rest.dto.parse.UITransportDTO;
-import com.il.sod.test.config.SpringTestConfiguration;
+import com.il.sod.config.SpringTestConfiguration;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

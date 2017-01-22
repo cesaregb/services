@@ -1,4 +1,4 @@
-package com.il.sod.test.config;
+package com.il.sod.config;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;

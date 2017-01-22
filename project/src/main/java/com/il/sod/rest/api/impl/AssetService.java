@@ -3,6 +3,7 @@ package com.il.sod.rest.api.impl;
 import com.il.sod.db.model.entities.Asset;
 import com.il.sod.db.model.repositories.AssetRepository;
 import com.il.sod.db.model.repositories.AssetTypeRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.AssetMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -38,7 +39,7 @@ public class AssetService extends AbstractServiceMutations {
 		Asset entity = AssetMapper.INSTANCE.map(dto);
 		this.saveEntity(assetRepository, entity);
 		dto = AssetMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
@@ -47,7 +48,7 @@ public class AssetService extends AbstractServiceMutations {
 		Asset entity = AssetMapper.INSTANCE.map(dto);
 		this.updateEntity(assetRepository, entity);
 		dto = AssetMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 
@@ -60,7 +61,7 @@ public class AssetService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.softDeleteEntity(assetRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -74,7 +75,7 @@ public class AssetService extends AbstractServiceMutations {
 		})
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 }

@@ -3,6 +3,7 @@ package com.il.sod.rest.api.impl;
 import com.il.sod.db.dao.IEmployeeDAO;
 import com.il.sod.db.model.entities.Employee;
 import com.il.sod.db.model.repositories.EmployeeRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.EmployeeMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -41,7 +42,7 @@ public class EmployeeService extends AbstractServiceMutations {
 		Employee entity = EmployeeMapper.INSTANCE.map(dto);
 		this.saveEntity(employeeRepository, entity);
 		dto = EmployeeMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -51,7 +52,7 @@ public class EmployeeService extends AbstractServiceMutations {
 		Employee entity = EmployeeMapper.INSTANCE.map(dto);
 		this.updateEntity(employeeRepository, entity);
 		dto = EmployeeMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -63,7 +64,7 @@ public class EmployeeService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.softDeleteEntity(employeeRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -79,7 +80,7 @@ public class EmployeeService extends AbstractServiceMutations {
 		List<EmployeeDTO> list = entityList.stream().map(EmployeeMapper.INSTANCE::map)
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 	@GET
@@ -91,6 +92,6 @@ public class EmployeeService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.NO_CONTENT, "No employee found");
 		}
 		EmployeeDTO dto = EmployeeMapper.INSTANCE.map(employee);
-		return castEntityAsResponse(dto);
+		return ConvertUtils.castEntityAsResponse(dto);
 	}
 }

@@ -1,8 +1,8 @@
-package com.il.sod.test.model.entities;
+package com.il.sod.model.entities;
 
 import com.il.sod.db.model.entities.Supply;
 import com.il.sod.db.model.repositories.SupplyRepository;
-import com.il.sod.test.config.SpringTestConfiguration;
+import com.il.sod.config.SpringTestConfiguration;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

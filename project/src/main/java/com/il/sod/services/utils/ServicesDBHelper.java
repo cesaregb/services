@@ -1,16 +1,16 @@
-package com.il.sod.rest.api.helper;
+package com.il.sod.services.utils;
 
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.exception.SODAPIException;
-import com.il.sod.rest.api.AbstractService;
 import com.il.sod.rest.dto.GenericDBDTO;
+import com.il.sod.services.cruds.EntityServicesBase;
 
 import javax.ws.rs.core.Response;
 
 public class ServicesDBHelper {
-	
-	AbstractService mCallback;
+
+	EntityServicesBase mCallback;
 	
 	public static int TYPE_ADDRESS = 0;
 	public static int TYPE_PAYMENT_METHOD = 2;
@@ -19,7 +19,7 @@ public class ServicesDBHelper {
 //		public <T> T getEntity(JpaRepository<T, Integer> repository, Integer id);
 //    }
     
-	public ServicesDBHelper(AbstractService service){
+	public ServicesDBHelper(EntityServicesBase service){
 		mCallback = service;
 	}
 	

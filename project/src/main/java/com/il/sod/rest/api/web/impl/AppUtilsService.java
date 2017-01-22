@@ -6,6 +6,7 @@ import com.il.sod.db.model.repositories.MenuRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.db.MenuDTO;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -44,7 +45,7 @@ public class AppUtilsService extends AbstractServiceMutations {
 	public Response getMenu() throws SODAPIException {
 		List<Menu> entities = menuRepository.findAllByOrderByOrderAsc();
 		List<MenuDTO> dtos = entities.stream().map(i -> {return specificObjectsConverterService.map(i);}).collect(Collectors.toList());
-		return this.castEntityAsResponse(dtos);
+		return ConvertUtils.castEntityAsResponse(dtos);
 	}
 
 	@GET
@@ -58,6 +59,6 @@ public class AppUtilsService extends AbstractServiceMutations {
 				.filter(i -> i.getAccessLevel() >= accessL)
 				.map(i -> {return specificObjectsConverterService.map(i);})
 				.collect(Collectors.toList());
-		return this.castEntityAsResponse(dtos);
+		return ConvertUtils.castEntityAsResponse(dtos);
 	}
 }

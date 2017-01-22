@@ -18,6 +18,7 @@ import com.il.sod.rest.dto.db.AddressDTO;
 import com.il.sod.rest.dto.db.AddressGenericDTO;
 import com.il.sod.rest.dto.db.AddressRouteDTO;
 import com.il.sod.rest.dto.db.StopDTO;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class StopsService extends AbstractServiceMutations {
 		assignDependencyToChilds(entity);
 		this.saveEntity(stopRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
@@ -84,7 +85,7 @@ public class StopsService extends AbstractServiceMutations {
 
 		this.updateEntity(stopRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -98,7 +99,7 @@ public class StopsService extends AbstractServiceMutations {
 		Route route = entity.getRoute();
 		route.removeStop(entity);
 		this.saveEntity(routesRepository, route);
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -110,7 +111,7 @@ public class StopsService extends AbstractServiceMutations {
 			StopDTO dto = RoutesMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 
 	}
 
@@ -120,7 +121,7 @@ public class StopsService extends AbstractServiceMutations {
 	public Response getStopById(@PathParam("stopId") String stopId) throws SODAPIException {
 		Stop entity = this.getEntity(stopRepository, Integer.valueOf(stopId));
 		StopDTO dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto);
+		return ConvertUtils.castEntityAsResponse(dto);
 	}
 
 	@GET
@@ -130,11 +131,11 @@ public class StopsService extends AbstractServiceMutations {
 		if (Integer.valueOf(type) == Constants.ADDRESS_ROUTE_TYPE){
 			AddressRoute entity = this.getEntity(addressRouteRepository, Integer.valueOf(id));
 			AddressRouteDTO dto = RoutesMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto);
+			return ConvertUtils.castEntityAsResponse(dto);
 		}else if (Integer.valueOf(type) == Constants.ADDRESS_CLIENT_TYPE){
 			Address entity = this.getEntity(addressRepository, Integer.valueOf(id));
 			AddressDTO dto = ClientMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto);
+			return ConvertUtils.castEntityAsResponse(dto);
 		}
 		throw new SODAPIException(Response.Status.BAD_REQUEST, "Not valid type");
 	}

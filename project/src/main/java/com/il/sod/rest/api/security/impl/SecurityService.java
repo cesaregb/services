@@ -6,6 +6,7 @@ import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.SecurityKeyDto;
 import com.il.sod.rest.dto.db.MenuDTO;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class SecurityService extends AbstractServiceMutations {
 	public Response authClient(@PathParam("appId") String appId) throws SODAPIException {
 		SecurityKeyDto dto = new SecurityKeyDto();
 		dto.setToken(JWTSingleton.INSTANCE.createJWT(appId, Constants.BASIC_AUTH, 1));
-		LOGGER.info("[authClient] info: {}", this.castEntityAsString(dto));
-		return this.castEntityAsResponse(dto);
+		LOGGER.info("[authClient] info: {}", ConvertUtils.castEntityAsString(dto));
+		return ConvertUtils.castEntityAsResponse(dto);
 	}
 }

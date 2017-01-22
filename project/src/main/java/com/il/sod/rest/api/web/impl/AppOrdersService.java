@@ -16,6 +16,7 @@ import com.il.sod.rest.dto.parse.UIServiceDTO;
 import com.il.sod.rest.dto.parse.UISpecDTO;
 import com.il.sod.rest.dto.serve.WServiceCategoryDTO;
 import com.il.sod.rest.dto.serve.WServiceTypeDTO;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.CollectionUtils;
@@ -73,7 +74,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 	public Response getOrderTypes() throws SODAPIException {
 		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
 		List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
-		return this.castEntityAsResponse(result);
+		return ConvertUtils.castEntityAsResponse(result);
 	}
 
 	@GET
@@ -88,7 +89,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 			cat.setServiceTypes(serviceTypes);
 		}
 
-		return this.castEntityAsResponse(result);
+		return ConvertUtils.castEntityAsResponse(result);
 	}
 
 	
@@ -102,7 +103,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 			OrderDTO dto = OrderMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 	
 	@POST
@@ -205,9 +206,9 @@ public class AppOrdersService extends AbstractServiceMutations {
 		LOGGER.info("Order Saved!");
 		
 		result = OrderMapper.INSTANCE.map(orderEntity);
-		LOGGER.info("Object mapper, response:" + this.castEntityAsString(result));
+		LOGGER.info("Object mapper, response:" + ConvertUtils.castEntityAsString(result));
 		
-		return castEntityAsResponse(result, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(result, Response.Status.CREATED);
 	}
 
 	/**

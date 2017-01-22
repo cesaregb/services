@@ -1,4 +1,4 @@
-package com.il.sod.test.model.entities;
+package com.il.sod.model.entities;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,7 +11,7 @@ import com.il.sod.converter.services.SpecificObjectsConverterService;
 import com.il.sod.db.model.entities.ServiceCategory;
 import com.il.sod.db.model.repositories.ServiceCategoryRepository;
 import com.il.sod.rest.dto.serve.WServiceCategoryDTO;
-import com.il.sod.test.config.SpringTestConfiguration;
+import com.il.sod.config.SpringTestConfiguration;
 
 public class ServiceDaoTest extends SpringTestConfiguration{
 	

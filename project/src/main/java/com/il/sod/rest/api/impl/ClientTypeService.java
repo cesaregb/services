@@ -5,6 +5,7 @@ import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.entities.ClientType;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.db.model.repositories.ClientTypeRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ClientMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -47,7 +48,7 @@ public class ClientTypeService extends AbstractServiceMutations {
 			ClientType entity = ClientMapper.INSTANCE.map(dto);
 			this.saveEntity(clientTypeRepository, entity);
 			dto = ClientMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -62,7 +63,7 @@ public class ClientTypeService extends AbstractServiceMutations {
 			ClientType entity = ClientMapper.INSTANCE.map(dto);
 			this.updateEntity(clientTypeRepository, entity);
 			dto = ClientMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 
 	}
 
@@ -82,7 +83,7 @@ public class ClientTypeService extends AbstractServiceMutations {
 			}
 
 			this.softDeleteEntity(clientTypeRepository, entity.getId());
-			return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+			return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 
 	}
@@ -95,7 +96,7 @@ public class ClientTypeService extends AbstractServiceMutations {
 			ClientTypeDTO dto = ClientMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 	@POST
@@ -115,7 +116,7 @@ public class ClientTypeService extends AbstractServiceMutations {
 				this.saveEntity(clientRepository, clientEntity);
 				result.add(ClientMapper.INSTANCE.map(clientTypeEntity));
 			});
-			return castEntityAsResponse(result, Response.Status.OK);
+			return ConvertUtils.castEntityAsResponse(result, Response.Status.OK);
 
 	}
 

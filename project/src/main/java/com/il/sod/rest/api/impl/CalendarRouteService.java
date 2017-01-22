@@ -9,6 +9,7 @@ import com.il.sod.mapper.RoutesMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.CalendarRouteDTO;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class CalendarRouteService extends AbstractServiceMutations {
 		CalendarRoute entity = RoutesMapper.INSTANCE.map(dto);
 		this.saveEntity(calendarRouteRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
@@ -50,7 +51,7 @@ public class CalendarRouteService extends AbstractServiceMutations {
 		CalendarRoute entity = RoutesMapper.INSTANCE.map(dto);
 		this.updateEntity(calendarRouteRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -64,7 +65,7 @@ public class CalendarRouteService extends AbstractServiceMutations {
 		Route route = entity.getRoute();
 		route.removeCalendarRoute(entity);
 		this.saveEntity(routesRepository, route);
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -76,7 +77,7 @@ public class CalendarRouteService extends AbstractServiceMutations {
 			CalendarRouteDTO dto = RoutesMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 
 	}
 }

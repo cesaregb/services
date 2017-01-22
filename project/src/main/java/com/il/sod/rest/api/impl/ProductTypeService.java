@@ -2,6 +2,7 @@ package com.il.sod.rest.api.impl;
 
 import com.il.sod.db.model.entities.ProductType;
 import com.il.sod.db.model.repositories.ProductTypeRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ProductMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -36,7 +37,7 @@ public class ProductTypeService extends AbstractServiceMutations {
 		ProductType entity = ProductMapper.INSTANCE.map(dto);
 		this.saveEntity(productTypeRepository, entity);
 		dto = ProductMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -46,7 +47,7 @@ public class ProductTypeService extends AbstractServiceMutations {
 		ProductType entity = ProductMapper.INSTANCE.map(dto);
 		this.updateEntity(productTypeRepository, entity);
 		dto = ProductMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -64,7 +65,7 @@ public class ProductTypeService extends AbstractServiceMutations {
 		}
 
 		this.softDeleteEntity(productTypeRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -76,7 +77,7 @@ public class ProductTypeService extends AbstractServiceMutations {
 				.map(ProductMapper.INSTANCE::map)
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 }

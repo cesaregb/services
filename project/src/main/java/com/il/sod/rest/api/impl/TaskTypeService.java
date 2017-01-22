@@ -5,6 +5,7 @@ import com.il.sod.db.model.entities.Task;
 import com.il.sod.db.model.entities.TaskType;
 import com.il.sod.db.model.repositories.TaskRepository;
 import com.il.sod.db.model.repositories.TaskTypeRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.TaskMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -42,7 +43,7 @@ public class TaskTypeService extends AbstractServiceMutations {
 		TaskType entity = TaskMapper.INSTANCE.map(dto);
 		this.saveEntity(taskTypeRepository, entity);
 		dto = TaskMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -52,7 +53,7 @@ public class TaskTypeService extends AbstractServiceMutations {
 		TaskType entity = TaskMapper.INSTANCE.map(dto);
 		this.updateEntity(taskTypeRepository, entity);
 		dto = TaskMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -64,7 +65,7 @@ public class TaskTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.softDeleteEntity(taskTypeRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -76,7 +77,7 @@ public class TaskTypeService extends AbstractServiceMutations {
 				.map(TaskMapper.INSTANCE::map)
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 
@@ -94,7 +95,7 @@ public class TaskTypeService extends AbstractServiceMutations {
 		TaskType newParent = taskTypeRepository.findOne(id);
 		newParent.addTask(child);
 		taskTypeRepository.save(newParent);
-		return castEntityAsResponse(newParent, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(newParent, Response.Status.OK);
 	}
 
 }

@@ -10,9 +10,10 @@ import ma.glasnost.orika.converter.ConverterFactory;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public enum ClientMapper {
+public enum ClientMapper implements MapperMarker{
 
 	INSTANCE;
+
 	private final MapperFacade mapperFacade;
 
 	private ClientMapper() {

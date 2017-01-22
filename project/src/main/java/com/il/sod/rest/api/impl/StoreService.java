@@ -7,6 +7,7 @@ import com.il.sod.mapper.StoreInfoMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.StoreDTO;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class StoreService extends AbstractServiceMutations {
 		Store entity = StoreInfoMapper.INSTANCE.map(dto);
 		this.saveEntity(storeRepository, entity);
 		dto = StoreInfoMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
@@ -44,7 +45,7 @@ public class StoreService extends AbstractServiceMutations {
 		Store entity = StoreInfoMapper.INSTANCE.map(dto);
 		this.updateEntity(storeRepository, entity);
 		dto = StoreInfoMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -56,7 +57,7 @@ public class StoreService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.deleteEntity(storeRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -68,7 +69,7 @@ public class StoreService extends AbstractServiceMutations {
 			StoreDTO dto = StoreInfoMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 	@GET
@@ -78,7 +79,7 @@ public class StoreService extends AbstractServiceMutations {
 		Store entity = storeRepository.findOne(id);
 		StoreDTO result = StoreInfoMapper.INSTANCE.map(entity);
 		result.getDistanceInfos();
-		return castEntityAsResponse(result);
+		return ConvertUtils.castEntityAsResponse(result);
 	}
 
 }

@@ -7,6 +7,7 @@ import com.il.sod.db.model.repositories.*;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.serve.WServiceCategoryDTO;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -64,7 +65,7 @@ public class OrderInfoService extends AbstractServiceMutations {
 
 		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
 		List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
-		return this.castEntityAsResponse(result);
+		return ConvertUtils.castEntityAsResponse(result);
 	}
 	
 

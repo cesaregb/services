@@ -4,6 +4,7 @@ import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.TestDto;
 import com.il.sod.services.MyService;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -78,7 +79,7 @@ public class Health extends AbstractService {
 	@Path("/admin_service")
 	@ApiOperation(value = "Test")
 	public GeneralResponseMessage secureMethod(InputStream is) throws SODAPIException{
-		TestDto tst = this.getJsonISAsObject(is, TestDto.class);
+		TestDto tst = ConvertUtils.getJsonISAsObject(is, TestDto.class);
 		return new GeneralResponseMessage(true, "ok your ar an admin!! good for you!! " + tst.getVal());
 	}	
 }

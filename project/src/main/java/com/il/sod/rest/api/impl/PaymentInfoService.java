@@ -2,6 +2,7 @@ package com.il.sod.rest.api.impl;
 
 import com.il.sod.db.model.entities.PaymentInfo;
 import com.il.sod.db.model.repositories.PaymentInfoRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.PaymentMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -37,7 +38,7 @@ public class PaymentInfoService extends AbstractServiceMutations {
 			PaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
 			this.saveEntity(paymentInfoRepository, entity);
 			dto = PaymentMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -52,7 +53,7 @@ public class PaymentInfoService extends AbstractServiceMutations {
 			PaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
 			this.updateEntity(paymentInfoRepository, entity);
 			dto = PaymentMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 
 	}
 
@@ -66,7 +67,7 @@ public class PaymentInfoService extends AbstractServiceMutations {
 		}
 
 		this.deleteEntity(paymentInfoRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "PaymentInfo deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "PaymentInfo deleted"),
 				Response.Status.OK);
 
 	}
@@ -79,7 +80,7 @@ public class PaymentInfoService extends AbstractServiceMutations {
 			PaymentInfoDTO dto = PaymentMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 	@GET
@@ -91,7 +92,7 @@ public class PaymentInfoService extends AbstractServiceMutations {
 		}
 		PaymentInfo pi = this.getEntity(paymentInfoRepository, Integer.valueOf(idPaymentInfo));
 		PaymentInfoDTO piDto = PaymentMapper.INSTANCE.map(pi);
-		return castEntityAsResponse(piDto);
+		return ConvertUtils.castEntityAsResponse(piDto);
 	}
 
 }

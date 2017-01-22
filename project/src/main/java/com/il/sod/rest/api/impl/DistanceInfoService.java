@@ -7,10 +7,9 @@ import com.il.sod.mapper.StoreInfoMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.DistanceInfoDTO;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +37,7 @@ public class DistanceInfoService extends AbstractServiceMutations {
 			DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
 			this.saveEntity(distanceInfoRepository, entity);
 			dto = StoreInfoMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -53,7 +52,7 @@ public class DistanceInfoService extends AbstractServiceMutations {
 			DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
 			this.updateEntity(distanceInfoRepository, entity);
 			dto = StoreInfoMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 
 	}
 
@@ -66,7 +65,7 @@ public class DistanceInfoService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.deleteEntity(distanceInfoRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -78,7 +77,7 @@ public class DistanceInfoService extends AbstractServiceMutations {
 			DistanceInfoDTO dto = StoreInfoMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 }

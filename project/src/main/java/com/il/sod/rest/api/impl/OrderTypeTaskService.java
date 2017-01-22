@@ -7,6 +7,7 @@ import com.il.sod.mapper.OrderMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderTypeTaskDTO;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class OrderTypeTaskService extends AbstractServiceMutations {
 		OrderTypeTask entity = OrderMapper.INSTANCE.map(dto);
 		this.saveEntity(orderTypeTaskRepository, entity);
 		dto = OrderMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -45,7 +46,7 @@ public class OrderTypeTaskService extends AbstractServiceMutations {
 		OrderTypeTask entity = OrderMapper.INSTANCE.map(dto);
 		this.updateEntity(orderTypeTaskRepository, entity);
 		dto = OrderMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -57,7 +58,7 @@ public class OrderTypeTaskService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.deleteEntity(orderTypeTaskRepository, entity.getIdOrderTypeTask());
-		return castEntityAsResponse(
+		return ConvertUtils.castEntityAsResponse(
 				new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
@@ -70,7 +71,7 @@ public class OrderTypeTaskService extends AbstractServiceMutations {
 			OrderTypeTaskDTO dto = OrderMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 }

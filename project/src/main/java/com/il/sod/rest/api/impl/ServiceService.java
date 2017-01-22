@@ -7,6 +7,7 @@ import com.il.sod.mapper.ServiceMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.ServiceDTO;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class ServiceService extends AbstractServiceMutations {
 			Service entity = ServiceMapper.INSTANCE.map(dto);
 			this.saveEntity(serviceRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -46,7 +47,7 @@ public class ServiceService extends AbstractServiceMutations {
 			Service entity = ServiceMapper.INSTANCE.map(dto);
 			this.updateEntity(serviceRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 
 	}
 
@@ -56,7 +57,7 @@ public class ServiceService extends AbstractServiceMutations {
 
 			Service entity = ServiceMapper.INSTANCE.map(dto);
 			this.deleteEntity(serviceRepository, entity.getIdService());
-			return castEntityAsResponse(
+			return ConvertUtils.castEntityAsResponse(
 					new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 
@@ -70,7 +71,7 @@ public class ServiceService extends AbstractServiceMutations {
 			ServiceDTO dto = ServiceMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 }

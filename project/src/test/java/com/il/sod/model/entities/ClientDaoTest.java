@@ -1,4 +1,4 @@
-package com.il.sod.test.model.entities;
+package com.il.sod.model.entities;
 
 import com.il.sod.db.dao.IDAO;
 import com.il.sod.db.dao.impl.ClientDAO;
@@ -6,7 +6,7 @@ import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.db.model.repositories.ClientSpecification;
 import com.il.sod.db.model.repositories.SearchCriteria;
-import com.il.sod.test.config.SpringTestConfiguration;
+import com.il.sod.config.SpringTestConfiguration;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

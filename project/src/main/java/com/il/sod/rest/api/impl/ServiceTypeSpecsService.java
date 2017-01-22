@@ -2,6 +2,7 @@ package com.il.sod.rest.api.impl;
 
 import com.il.sod.db.model.entities.ServiceTypeSpec;
 import com.il.sod.db.model.repositories.ServiceTypeSpecRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ServiceMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -36,7 +37,7 @@ public class ServiceTypeSpecsService extends AbstractServiceMutations {
 			ServiceTypeSpec entity = ServiceMapper.INSTANCE.map(dto);
 			this.saveEntity(serviceTypeSpecRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -47,7 +48,7 @@ public class ServiceTypeSpecsService extends AbstractServiceMutations {
 			ServiceTypeSpec entity = ServiceMapper.INSTANCE.map(dto);
 			this.updateEntity(serviceTypeSpecRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 
 	}
 
@@ -60,7 +61,7 @@ public class ServiceTypeSpecsService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.deleteEntity(serviceTypeSpecRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -72,7 +73,7 @@ public class ServiceTypeSpecsService extends AbstractServiceMutations {
 			ServiceTypeSpecDTO dto = ServiceMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 	@GET
@@ -86,7 +87,7 @@ public class ServiceTypeSpecsService extends AbstractServiceMutations {
 			return dto;
 		}).collect(Collectors.toList());
 
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 }

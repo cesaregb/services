@@ -1,13 +1,14 @@
-package com.il.sod.test.endpoints;
+package com.il.sod.endpoints;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.il.sod.config.SpringTestConfiguration;
 import com.il.sod.config.jersey.JacksonObjectMapperProvider;
 import com.il.sod.db.dao.IDAO;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.BaseMapper;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.util.RestUtil;
-import com.il.sod.test.config.SpringTestConfiguration;
+import com.il.sod.services.utils.ConvertUtils;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,7 +32,7 @@ public class ServiceSimTestAbstract extends SpringTestConfiguration{
 	}
 	
 	public Response castEntityAsResponse(Object entity) throws SODAPIException {
-		return castEntityAsResponse(entity, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(entity, Response.Status.OK);
 	}
 	
 	public Response castEntityAsResponse(Object entity, Status status) throws SODAPIException {
