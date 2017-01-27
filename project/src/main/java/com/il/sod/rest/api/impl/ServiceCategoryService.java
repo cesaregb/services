@@ -2,6 +2,7 @@ package com.il.sod.rest.api.impl;
 
 import com.il.sod.db.model.entities.ServiceCategory;
 import com.il.sod.db.model.repositories.ServiceCategoryRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ServiceMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -35,7 +36,7 @@ public class ServiceCategoryService extends AbstractServiceMutations {
 		ServiceCategory entity = ServiceMapper.INSTANCE.map(dto);
 		this.saveEntity(serviceCategoryRepository, entity);
 		dto = ServiceMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -50,7 +51,7 @@ public class ServiceCategoryService extends AbstractServiceMutations {
 		ServiceCategory entity = ServiceMapper.INSTANCE.map(dto);
 		this.updateEntity(serviceCategoryRepository, entity);
 		dto = ServiceMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 
 	}
 
@@ -63,7 +64,7 @@ public class ServiceCategoryService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.deleteEntity(serviceCategoryRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -75,7 +76,7 @@ public class ServiceCategoryService extends AbstractServiceMutations {
 			ServiceCategoryDTO dto = ServiceMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 }

@@ -9,9 +9,10 @@ import com.il.sod.mapper.OrderMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderDTO;
+import com.il.sod.rest.dto.parse.UIOrderDTO;
 import com.il.sod.rest.dto.specifics.OrderTasksInfoDTO;
 import com.il.sod.rest.dto.specifics.ServiceTasksInfoDTO;
-import com.il.sod.rest.dto.specifics.UIOrderDTO;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class OrderService extends AbstractServiceMutations {
 			Order entity = OrderMapper.INSTANCE.map(dto);
 			this.saveEntity(orderRepository, entity);
 			dto = OrderMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -63,7 +64,7 @@ public class OrderService extends AbstractServiceMutations {
 			Order entity = OrderMapper.INSTANCE.map(dto);
 			this.updateEntity(orderRepository, entity);
 			dto = OrderMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 
 	}
 
@@ -73,7 +74,7 @@ public class OrderService extends AbstractServiceMutations {
 
 			Order entity = OrderMapper.INSTANCE.map(dto);
 			this.deleteEntity(orderRepository, entity.getIdOrder());
-			return castEntityAsResponse(
+			return ConvertUtils.castEntityAsResponse(
 					new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 
@@ -87,7 +88,7 @@ public class OrderService extends AbstractServiceMutations {
 			OrderDTO dto = orderConverterService.convert(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 	@GET
@@ -95,7 +96,7 @@ public class OrderService extends AbstractServiceMutations {
 	@ApiOperation(value = "Get Order by status ", response = OrderDTO.class, responseContainer = "List")
 	public Response getOrdersByStatus(@PathParam("status") int status) throws SODAPIException {
 		List<OrderDTO> dto = ordersDAO.findByStatus(status).stream().map( o -> orderConverterService.convert(o)).collect(Collectors.toList());
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@GET
@@ -103,7 +104,7 @@ public class OrderService extends AbstractServiceMutations {
 	@ApiOperation(value = "Get Order by id", response = OrderDTO.class)
 	public Response getOrderById(@PathParam("orderId") String orderId) throws SODAPIException {
 		OrderDTO dto = OrderMapper.INSTANCE.map(this.getEntity(orderRepository, Integer.valueOf(orderId)));
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@GET
@@ -119,7 +120,7 @@ public class OrderService extends AbstractServiceMutations {
 			r.setServiceTasks(i.getServiceTasks());
 			return r;}).collect(Collectors.toSet());
 		result.setServices(services);
-		return castEntityAsResponse(result, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(result, Response.Status.OK);
 	}
 
 	@Deprecated
@@ -128,7 +129,7 @@ public class OrderService extends AbstractServiceMutations {
 	@ApiOperation(value = "Get Order in Edit object mode.", response = OrderTasksInfoDTO.class)
 	public Response getOrder4Edit(@PathParam("orderId") String orderId) throws SODAPIException {
 		UIOrderDTO result = orderConverterService.convert2UI(this.getEntity(orderRepository, Integer.valueOf(orderId)));
-		return castEntityAsResponse(result, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(result, Response.Status.OK);
 	}
 
 }

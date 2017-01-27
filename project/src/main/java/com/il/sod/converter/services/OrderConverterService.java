@@ -4,12 +4,14 @@ import com.il.sod.db.model.entities.Order;
 import com.il.sod.mapper.OrderMapper;
 import com.il.sod.rest.dto.db.OrderDTO;
 import com.il.sod.rest.dto.db.ServiceDTO;
-import com.il.sod.rest.dto.specifics.UIOrderDTO;
-import com.il.sod.rest.dto.specifics.UIServiceDTO;
-import com.il.sod.rest.dto.specifics.WPaymentInfoDTO;
+import com.il.sod.rest.dto.parse.UIOrderDTO;
+import com.il.sod.rest.dto.parse.UIServiceDTO;
+import com.il.sod.rest.dto.parse.UITransportDTO;
+import com.il.sod.rest.dto.serve.WPaymentInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,12 +48,15 @@ public class OrderConverterService {
 			result.setIdOrder(entity.getId());
 			result.setIdClient(entity.getClient().getId());
 			result.setComments(entity.getComments());
-			result.setIdAddressPickup(entity.getIdAddressPickup());
-			result.setIdAddressDeliver(entity.getIdAddressDeliver());
+
+			// TODO Validate transport for NPE
+			List<UITransportDTO> lTransport = new ArrayList<>();
+			lTransport.add(new UITransportDTO(entity.getIdAddressPickup(), entity.getPickUpDate(), 0, 0));
+			lTransport.add(new UITransportDTO(entity.getIdAddressDeliver(), entity.getDeliverDate(), 1, 0));
+			result.setTransport(lTransport);
+
 			result.setTotal(entity.getTotal());
 			result.setTotalServices(entity.getTotalServices());
-			result.setPickUpDate(entity.getPickUpDate());
-			result.setDeliveryDate(entity.getDeliverDate());
 			WPaymentInfoDTO paymentInfo = new WPaymentInfoDTO();
 			if (entity.getPaymentInfo() != null){
 				paymentInfo.setType(entity.getPaymentInfo().getType());

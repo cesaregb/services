@@ -3,6 +3,7 @@ package com.il.sod.rest.api.impl;
 import com.il.sod.db.model.entities.Supply;
 import com.il.sod.db.model.repositories.SupplyRepository;
 import com.il.sod.db.model.repositories.SupplyTypeRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.SupplyMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -40,7 +41,7 @@ public class SupplyService extends AbstractServiceMutations {
 			Supply entity = SupplyMapper.INSTANCE.map(dto);
 			this.saveEntity(supplyRepository, entity);
 			dto = SupplyMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -55,7 +56,7 @@ public class SupplyService extends AbstractServiceMutations {
 			Supply entity = SupplyMapper.INSTANCE.map(dto);
 			this.updateEntity(supplyRepository, entity);
 			dto = SupplyMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 
 	}
 
@@ -68,7 +69,7 @@ public class SupplyService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.softDeleteEntity(supplyRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -82,7 +83,7 @@ public class SupplyService extends AbstractServiceMutations {
 		})
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 }

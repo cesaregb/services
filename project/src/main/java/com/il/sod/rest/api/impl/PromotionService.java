@@ -9,6 +9,7 @@ import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.PromotionDTO;
 import com.il.sod.rest.dto.predicates.DeletablePredicate;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +43,7 @@ public class PromotionService extends AbstractServiceMutations {
 			Promotion entity = PromotionMapper.INSTANCE.map(dto);
 			this.saveEntity(promotionRepository, entity);
 			dto = PromotionMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -57,7 +58,7 @@ public class PromotionService extends AbstractServiceMutations {
 			Promotion entity = PromotionMapper.INSTANCE.map(dto);
 			this.updateEntity(promotionRepository, entity);
 			dto = PromotionMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 
 	}
 
@@ -71,7 +72,7 @@ public class PromotionService extends AbstractServiceMutations {
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not found");
 			}
 			this.softDeleteEntity(promotionRepository, entity.getId());
-			return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+			return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 
 
@@ -90,6 +91,6 @@ public class PromotionService extends AbstractServiceMutations {
 				.map(PromotionMapper.INSTANCE::map)
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 }

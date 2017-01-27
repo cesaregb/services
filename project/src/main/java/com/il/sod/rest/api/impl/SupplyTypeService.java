@@ -4,6 +4,7 @@ import com.il.sod.db.model.entities.Supply;
 import com.il.sod.db.model.entities.SupplyType;
 import com.il.sod.db.model.repositories.SupplyRepository;
 import com.il.sod.db.model.repositories.SupplyTypeRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.SupplyMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -38,7 +39,7 @@ public class SupplyTypeService extends AbstractServiceMutations {
 		SupplyType entity = SupplyMapper.INSTANCE.map(dto);
 		this.saveEntity(supplyTypeRepository, entity);
 		dto = SupplyMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -48,7 +49,7 @@ public class SupplyTypeService extends AbstractServiceMutations {
 		SupplyType entity = SupplyMapper.INSTANCE.map(dto);
 		this.updateEntity(supplyTypeRepository, entity);
 		dto = SupplyMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -60,7 +61,7 @@ public class SupplyTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.softDeleteEntity(supplyTypeRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -74,7 +75,7 @@ public class SupplyTypeService extends AbstractServiceMutations {
 		})
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 	@Autowired
@@ -91,7 +92,7 @@ public class SupplyTypeService extends AbstractServiceMutations {
 		SupplyType newParent = supplyTypeRepository.findOne(id);
 		newParent.addSupply(child);
 		supplyTypeRepository.save(newParent);
-		return castEntityAsResponse(newParent, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(newParent, Response.Status.OK);
 	}
 
 }

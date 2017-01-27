@@ -2,12 +2,34 @@ package com.il.sod.rest.dto.db;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.google.common.base.Objects;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 import java.util.Set;
 
 public class ClientDTO extends DeletableDTO{
+	public ClientDTO() { }
+
+	public ClientDTO(int idClient, String email, String lastName, String name, String twitter, String rfc, String razonSocial, Integer idClientType, String mobilePhone, String homePhone, String otherPhone, Set<AddressDTO> addresses, Set<ClientPaymentInfoDTO> clientPaymentInfos, Set<ClientBagDTO> clientBags) {
+		this.idClient = idClient;
+		this.email = email;
+		this.lastName = lastName;
+		this.name = name;
+		this.password = password;
+		this.twitter = twitter;
+		this.rfc = rfc;
+		this.razonSocial = razonSocial;
+		this.idClientType = idClientType;
+		this.mobilePhone = mobilePhone;
+		this.homePhone = homePhone;
+		this.otherPhone = otherPhone;
+		this.addresses = addresses;
+		this.clientPaymentInfos = clientPaymentInfos;
+		this.clientBags = clientBags;
+	}
+
 	private int idClient;
 	private String email;
 	private String lastName;
@@ -29,14 +51,14 @@ public class ClientDTO extends DeletableDTO{
 	@ApiModelProperty(hidden=true)
 	@JsonProperty(access = Access.READ_ONLY)
 	private String defaultPayment;
-	private Set<Integer> orders;
-	private Set<AddressDTO> addresses;
 	private Date created;
 	private Date updated;
+	private Set<Integer> orders;
+	private Set<AddressDTO> addresses;
 	private Set<ClientPaymentInfoDTO> clientPaymentInfos;
-	private int deleted;
 	private Set<ClientBagDTO> clientBags;
-	
+	private int deleted;
+
 	public int getIdClient() {
 		return idClient;
 	}
@@ -178,5 +200,58 @@ public class ClientDTO extends DeletableDTO{
 
 	public void setOtherPhone(String otherPhone) {
 		this.otherPhone = otherPhone;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)
+				.append("idClient", idClient)
+				.append("email", email)
+				.append("lastName", lastName)
+				.append("name", name)
+				.append("password", password)
+				.append("twitter", twitter)
+				.append("loginID", loginID)
+				.append("rfc", rfc)
+				.append("razonSocial", razonSocial)
+				.append("idClientType", idClientType)
+				.append("mobilePhone", mobilePhone)
+				.append("homePhone", homePhone)
+				.append("otherPhone", otherPhone)
+				.append("defaultAddress", defaultAddress)
+				.append("defaultPayment", defaultPayment)
+				.append("created", created)
+				.append("updated", updated)
+				.append("orders", orders)
+				.append("addresses", addresses)
+				.append("clientPaymentInfos", clientPaymentInfos)
+				.append("clientBags", clientBags)
+				.append("deleted", deleted)
+				.toString();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ClientDTO clientDTO = (ClientDTO) o;
+		return idClient == clientDTO.idClient &&
+				deleted == clientDTO.deleted &&
+				Objects.equal(email, clientDTO.email) &&
+				Objects.equal(lastName, clientDTO.lastName) &&
+				Objects.equal(name, clientDTO.name) &&
+				Objects.equal(twitter, clientDTO.twitter) &&
+				Objects.equal(loginID, clientDTO.loginID) &&
+				Objects.equal(rfc, clientDTO.rfc) &&
+				Objects.equal(razonSocial, clientDTO.razonSocial) &&
+				Objects.equal(idClientType, clientDTO.idClientType) &&
+				Objects.equal(mobilePhone, clientDTO.mobilePhone) &&
+				Objects.equal(homePhone, clientDTO.homePhone) &&
+				Objects.equal(otherPhone, clientDTO.otherPhone);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(idClient, email, lastName, name, twitter, loginID, rfc, razonSocial, idClientType, mobilePhone, homePhone, otherPhone, deleted);
 	}
 }

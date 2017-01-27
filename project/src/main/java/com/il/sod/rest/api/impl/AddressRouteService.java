@@ -9,6 +9,7 @@ import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.AddressDTO;
 import com.il.sod.rest.dto.db.AddressRouteDTO;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class AddressRouteService extends AbstractServiceMutations {
 		AddressRoute entity = RoutesMapper.INSTANCE.map(dto);
 		this.saveEntity(addressRouteRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
@@ -51,7 +52,7 @@ public class AddressRouteService extends AbstractServiceMutations {
 		AddressRoute entity = RoutesMapper.INSTANCE.map(dto);
 		this.updateEntity(addressRouteRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -59,7 +60,7 @@ public class AddressRouteService extends AbstractServiceMutations {
 	public Response deleteAddressRoute(AddressRouteDTO dto) throws SODAPIException {
 		AddressRoute entity = RoutesMapper.INSTANCE.map(dto);
 		this.deleteEntity(addressRouteRepository, entity.getIdAddressRoute());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -73,7 +74,7 @@ public class AddressRouteService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "AddressRoute not found");
 		}
 		this.deleteEntity(addressRouteRepository, Integer.valueOf(id));
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -85,7 +86,7 @@ public class AddressRouteService extends AbstractServiceMutations {
 			AddressRouteDTO dto = RoutesMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 	@GET
@@ -94,7 +95,7 @@ public class AddressRouteService extends AbstractServiceMutations {
 	public Response getById(@PathParam("id") String id) throws SODAPIException {
 		AddressRoute entity = this.getEntity(addressRouteRepository, Integer.valueOf(id));
 		AddressRouteDTO dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto);
+		return ConvertUtils.castEntityAsResponse(dto);
 	}
 
 }

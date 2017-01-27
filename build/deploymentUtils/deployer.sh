@@ -7,7 +7,7 @@ current_time=$(date "+%Y.%m.%d-%H.%M.%S")
 # clean docker
 docker volume rm $(docker volume ls -qf dangling=true)
 docker rm -v $(docker ps -aq)
-docker rmi $(docker images --quiet --filter "dangling=true")
+docker rmi $(docker images -q)
 echo "[Info] Docker images have been cleaned!! ${current_time}"
 
 if [ $1 = "deploy_services" ]; then

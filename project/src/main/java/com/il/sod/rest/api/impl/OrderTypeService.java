@@ -2,6 +2,7 @@ package com.il.sod.rest.api.impl;
 
 import com.il.sod.db.model.entities.OrderType;
 import com.il.sod.db.model.repositories.OrderTypeRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.OrderMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -38,7 +39,7 @@ public class OrderTypeService extends AbstractServiceMutations {
 		OrderType entity = OrderMapper.INSTANCE.map(dto);
 		this.saveEntity(orderTypeRepository, entity);
 		dto = OrderMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
@@ -47,7 +48,7 @@ public class OrderTypeService extends AbstractServiceMutations {
 		OrderType entity = OrderMapper.INSTANCE.map(dto);
 		entity = this.updateEntity(orderTypeRepository, entity);
 		dto = OrderMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -59,7 +60,7 @@ public class OrderTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.softDeleteEntity(orderTypeRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -73,7 +74,7 @@ public class OrderTypeService extends AbstractServiceMutations {
 				.collect(Collectors.toList());
 
 		list.forEach(System.out::println);
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 
@@ -103,6 +104,6 @@ public class OrderTypeService extends AbstractServiceMutations {
 		orderType = this.saveEntity(orderTypeRepository, orderType);
 		dto = OrderMapper.INSTANCE.map(orderType);
 
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 }

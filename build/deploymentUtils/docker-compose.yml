@@ -4,14 +4,14 @@ db:
     - "27017:27017"
   command: "--smallfiles --logpath=/dev/null"
 services:
-  image: interactivelabs/services:dev
+  image: interactivelabs/services
   command: mvn compile exec:java
   ports:
     - "8080:8080"
   env_file:
     - ./common.env
 web:
-  image: interactivelabs/process-admin:dev
+  image: interactivelabs/process-admin
   command: npm start
   volumes:
     - "./node_app:/myapp"

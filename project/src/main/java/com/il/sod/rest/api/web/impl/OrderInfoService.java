@@ -6,12 +6,10 @@ import com.il.sod.db.model.entities.ServiceCategory;
 import com.il.sod.db.model.repositories.*;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractServiceMutations;
-import com.il.sod.rest.dto.GeneralResponseMessage;
-import com.il.sod.rest.dto.specifics.WServiceCategoryDTO;
+import com.il.sod.rest.dto.serve.WServiceCategoryDTO;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +65,7 @@ public class OrderInfoService extends AbstractServiceMutations {
 
 		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
 		List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
-		return this.castEntityAsResponse(result);
+		return ConvertUtils.castEntityAsResponse(result);
 	}
 	
 

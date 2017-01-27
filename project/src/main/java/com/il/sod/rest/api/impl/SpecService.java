@@ -5,6 +5,7 @@ import com.il.sod.db.model.entities.Spec;
 import com.il.sod.db.model.entities.SpecsValue;
 import com.il.sod.db.model.repositories.SpecRepository;
 import com.il.sod.db.model.repositories.SupplyTypeRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.SpecsMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -39,7 +40,7 @@ public class SpecService extends AbstractServiceMutations {
 		Spec entity = SpecsMapper.INSTANCE.map(dto);
 		this.saveEntity(specRepository, entity);
 		dto = SpecsMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
@@ -48,7 +49,7 @@ public class SpecService extends AbstractServiceMutations {
 		Spec entity = SpecsMapper.INSTANCE.map(dto);
 		this.updateEntity(specRepository, entity);
 		dto = SpecsMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -60,7 +61,7 @@ public class SpecService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.deleteEntity(specRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -72,7 +73,7 @@ public class SpecService extends AbstractServiceMutations {
 			SpecDTO dto = SpecsMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 	@Autowired
@@ -90,7 +91,7 @@ public class SpecService extends AbstractServiceMutations {
 			SpecsValueDTO dto = SpecsMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 }

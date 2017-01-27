@@ -5,6 +5,7 @@ import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.entities.ClientPaymentInfo;
 import com.il.sod.db.model.repositories.ClientPaymentInfoRepository;
 import com.il.sod.db.model.repositories.ClientRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ClientMapper;
 import com.il.sod.mapper.PaymentMapper;
@@ -64,7 +65,7 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 		client.addClientPaymentInfo(entity);
 		client = this.saveEntity(clientRepository, client);
 		dto = ClientMapper.INSTANCE.map(client.getPaymentInfo(entity));
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
@@ -77,7 +78,7 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 		ClientPaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
 		this.updateEntity(clientPaymentInfoRepository, entity);
 		dto = PaymentMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 
 	}
 
@@ -92,7 +93,7 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 		Client cEntity = entity.getClient();
 		cEntity.removeClientPaymentInfo(entity);
 		this.saveEntity(clientRepository, cEntity);
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -110,7 +111,7 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 		}
 
 		List<ClientPaymentInfoDTO> list = entityList.stream().map(PaymentMapper.INSTANCE::map).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 
 	}
 
@@ -123,7 +124,7 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 		}
 		ClientPaymentInfo pi = this.getEntity(clientPaymentInfoRepository, Integer.valueOf(idClientPaymentInfo));
 		ClientPaymentInfoDTO piDto = PaymentMapper.INSTANCE.map(pi);
-		return castEntityAsResponse(piDto);
+		return ConvertUtils.castEntityAsResponse(piDto);
 	}
 
 }

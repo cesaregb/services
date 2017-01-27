@@ -5,6 +5,7 @@ import com.il.sod.db.model.entities.SpecsValue;
 import com.il.sod.db.model.repositories.SpecRepository;
 import com.il.sod.db.model.repositories.SpecsValueRepository;
 import com.il.sod.db.model.repositories.SupplyTypeRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.SpecsMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -46,7 +47,7 @@ public class SpecsValueService extends AbstractServiceMutations {
 		}
 		this.saveEntity(specsValueRepository, entity);
 		dto = SpecsMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
@@ -58,7 +59,7 @@ public class SpecsValueService extends AbstractServiceMutations {
 		}
 		this.updateEntity(specsValueRepository, entity);
 		dto = SpecsMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 
 	}
 
@@ -78,13 +79,13 @@ public class SpecsValueService extends AbstractServiceMutations {
 		// test successful delete...
 		entity = specsValueRepository.findOne(Integer.valueOf(id));
 		if (entity == null){
-			return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+			return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 		}else{
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item cannot be deleted, please contact administrator");
 		}
 //      if (this.deleteEntity(specsValueRepository, Integer.valueOf(id))){
-//			return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+//			return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 //					Response.Status.OK);
 //		}else{
 //			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item cannot be deleted, it must have a relationship");
@@ -100,6 +101,6 @@ public class SpecsValueService extends AbstractServiceMutations {
 			SpecsValueDTO dto = SpecsMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 }

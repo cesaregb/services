@@ -343,16 +343,14 @@ class ClientDTOConverter extends BidirectionalConverter<Set<Client>, Set<ClientD
 
 	@Override
 	public Set<Client> convertFrom(Set<ClientDTO> source, Type<Set<Client>> type) {
-//		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-		return null;
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }
 
 class AddressDTOConverter extends BidirectionalConverter<Set<Address>, Set<AddressDTO>> {
 	@Override
 	public Set<Address> convertFrom(Set<AddressDTO> source, Type<Set<Address>> arg1) {
-//		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-		return null;
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 
 	@Override
@@ -370,8 +368,7 @@ class ClientBagSetConverter extends BidirectionalConverter<Set<ClientBag>, Set<C
 
 	@Override
 	public Set<ClientBag> convertFrom(Set<ClientBagDTO> source, Type<Set<ClientBag>> type) {
-//		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-		return null;
+		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 }
 
@@ -390,8 +387,7 @@ class ClientBagSetConverter extends BidirectionalConverter<Set<ClientBag>, Set<C
 class ClientPaymentInfoSetConverter extends BidirectionalConverter<Set<ClientPaymentInfo>, Set<ClientPaymentInfoDTO>> {
 	@Override
 	public Set<ClientPaymentInfo> convertFrom(Set<ClientPaymentInfoDTO> source, Type<Set<ClientPaymentInfo>> arg1) {
-//		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-		return null;
+		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 
 	@Override

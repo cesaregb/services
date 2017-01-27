@@ -9,13 +9,16 @@ import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.OrderMapper;
 import com.il.sod.mapper.TaskMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
-import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderDTO;
-import com.il.sod.rest.dto.specifics.*;
+import com.il.sod.rest.dto.parse.UIOrderDTO;
+import com.il.sod.rest.dto.parse.UIProductDTO;
+import com.il.sod.rest.dto.parse.UIServiceDTO;
+import com.il.sod.rest.dto.parse.UISpecDTO;
+import com.il.sod.rest.dto.serve.WServiceCategoryDTO;
+import com.il.sod.rest.dto.serve.WServiceTypeDTO;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,11 +70,11 @@ public class AppOrdersService extends AbstractServiceMutations {
 	
 	@GET
 	@Path("/orderTypes")
-	@ApiOperation(value = "Get Address list", response = WServiceCategoryDTO.class, responseContainer = "List")
+	@ApiOperation(value = "Get List of type of orders [completed]", response = WServiceCategoryDTO.class, responseContainer = "List")
 	public Response getOrderTypes() throws SODAPIException {
 		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
 		List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
-		return this.castEntityAsResponse(result);
+		return ConvertUtils.castEntityAsResponse(result);
 	}
 
 	@GET
@@ -86,7 +89,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 			cat.setServiceTypes(serviceTypes);
 		}
 
-		return this.castEntityAsResponse(result);
+		return ConvertUtils.castEntityAsResponse(result);
 	}
 
 	
@@ -100,7 +103,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 			OrderDTO dto = OrderMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 	
 	@POST
@@ -108,22 +111,23 @@ public class AppOrdersService extends AbstractServiceMutations {
 	public Response saveOrder(UIOrderDTO orderInputDto) throws SODAPIException {
 		OrderDTO result = null;
 		
-		// get order type. 
-		int orderType = 4;
-		if (orderInputDto.getPickUpDate() != null && orderInputDto.getDeliveryDate() != null){
-			orderType = 1;
-		}else if (orderInputDto.getPickUpDate() != null){
-			orderType = 2;
-		}else if (orderInputDto.getDeliveryDate() != null){
-			orderType = 3;
+		// get order type.
+		int orderType = orderInputDto.getIdOrderType();
+		if (orderType == 0){
+			orderType = calculateOrderType(orderInputDto);
 		}
+
 		
 		Order orderEntity = new Order();
 		orderEntity.setComments(orderInputDto.getComments());
-		orderEntity.setIdAddressPickup(orderInputDto.getIdAddressPickup());
-		orderEntity.setPickUpDate(orderInputDto.getPickUpDate());
-		orderEntity.setIdAddressDeliver(orderInputDto.getIdAddressDeliver());
-		orderEntity.setDeliverDate(orderInputDto.getDeliveryDate());
+
+
+		// TODO validate both transport for null
+		orderEntity.setIdAddressPickup(orderInputDto.getTransport().get(0).getIdAddress());
+		orderEntity.setPickUpDate(orderInputDto.getTransport().get(0).getDate());
+		orderEntity.setIdAddressDeliver(orderInputDto.getTransport().get(1).getIdAddress());
+		orderEntity.setDeliverDate(orderInputDto.getTransport().get(1).getDate());
+
 		orderEntity.setTotalServices(orderInputDto.getTotalServices());
 		orderEntity.setTotal(orderInputDto.getTotal());
 		orderEntity.setStatus(Constants.ORDER_CREATED);
@@ -202,9 +206,27 @@ public class AppOrdersService extends AbstractServiceMutations {
 		LOGGER.info("Order Saved!");
 		
 		result = OrderMapper.INSTANCE.map(orderEntity);
-		LOGGER.info("Object mapper, response:" + this.castEntityAsString(result));
+		LOGGER.info("Object mapper, response:" + ConvertUtils.castEntityAsString(result));
 		
-		return castEntityAsResponse(result, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(result, Response.Status.CREATED);
+	}
+
+	/**
+	 * In case we dont send in the order Type kind of hardcode it.
+	 * @param orderInputDto
+	 * @return
+	 */
+	private int calculateOrderType(UIOrderDTO orderInputDto) {
+		int orderType;
+		orderType = 4;
+		if (orderInputDto.getTransport().get(0).getIdAddress() == 0){
+			orderType = 1;
+		}else if (orderInputDto.getTransport().get(0).getIdAddress() > 0){
+			orderType = 2;
+		}else if (orderInputDto.getTransport().get(1).getIdAddress() == 0){
+			orderType = 3;
+		}
+		return orderType;
 	}
 
 }

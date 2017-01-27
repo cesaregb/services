@@ -4,6 +4,7 @@ import com.il.sod.db.model.entities.Address;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.AddressRepository;
 import com.il.sod.db.model.repositories.ClientRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ClientMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -43,6 +44,9 @@ public class AddressService extends AbstractServiceMutations {
 	@Autowired
 	protected ClientRepository clientRepository;
 
+	public AddressService() {
+	}
+
 	@POST
 	@ApiOperation(value = "Create Address", response = AddressDTO.class)
 	public Response saveAddress(AddressDTO dto) throws SODAPIException {
@@ -58,7 +62,7 @@ public class AddressService extends AbstractServiceMutations {
 		client.addAddress(entity);
 		client = this.saveEntity(clientRepository, client);
 		dto = ClientMapper.INSTANCE.map(client.getAddress(entity));
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
@@ -69,7 +73,7 @@ public class AddressService extends AbstractServiceMutations {
 		entity = ClientMapper.INSTANCE.map(dto, entity);
 		this.updateEntity(addressRepository, entity);
 		dto = ClientMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -86,7 +90,7 @@ public class AddressService extends AbstractServiceMutations {
 		cEntity.removeAddress(entity);
 		this.saveEntity(clientRepository, cEntity);
 		
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"), Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"), Response.Status.OK);
 	}
 
 	@GET
@@ -114,7 +118,7 @@ public class AddressService extends AbstractServiceMutations {
 		}
 
 		List<AddressDTO> list = rentityList.stream().map(ClientMapper.INSTANCE::map).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 
 	}
 
@@ -124,7 +128,7 @@ public class AddressService extends AbstractServiceMutations {
 	public Response getById(@PathParam("id") String id) throws SODAPIException {
 		Address entity = this.getEntity(addressRepository, Integer.valueOf(id));
 		AddressDTO dto = ClientMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto);
+		return ConvertUtils.castEntityAsResponse(dto);
 	}
 
 }

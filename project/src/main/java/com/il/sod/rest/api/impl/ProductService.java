@@ -3,6 +3,7 @@ package com.il.sod.rest.api.impl;
 import com.il.sod.db.dao.impl.ProductDAO;
 import com.il.sod.db.model.entities.Product;
 import com.il.sod.db.model.repositories.ProductRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ProductMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -45,23 +46,16 @@ public class ProductService extends AbstractServiceMutations {
 		Product entity = ProductMapper.INSTANCE.map(dto);
 		this.saveEntity(productRepository, entity);
 		dto = ProductMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
-
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Product", response = ProductDTO.class)
 	public Response updateProduct(ProductDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	private Response updateEntity(ProductDTO dto) throws SODAPIException {
-
 		Product entity = ProductMapper.INSTANCE.map(dto);
 		this.updateEntity(productRepository, entity);
 		dto = ProductMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
-
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -73,14 +67,14 @@ public class ProductService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not found");
 		}
 		this.softDeleteEntity(productRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"), Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"), Response.Status.OK);
 	}
 
 	@GET
 	@ApiOperation(value = "Get Product list", response = ProductDTO.class, responseContainer = "List")
 	public Response getProductList(@QueryParam("name") String name,
 	                               @QueryParam("idProductType") String idProductType) throws SODAPIException {
-		List<Product> rentityList = null;
+		List<Product> rentityList;
 		if (!StringUtils.isEmpty(name)) {
 			rentityList = productDAO.findByName(name);
 		} else if (!StringUtils.isEmpty(idProductType)) {
@@ -95,7 +89,7 @@ public class ProductService extends AbstractServiceMutations {
 				.map(ProductMapper.INSTANCE::map)
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 	@POST
@@ -112,7 +106,7 @@ public class ProductService extends AbstractServiceMutations {
 			spSet.addAll(list);
 		}
 		List<ProductDTO> list = new ArrayList<>(spSet);
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 }

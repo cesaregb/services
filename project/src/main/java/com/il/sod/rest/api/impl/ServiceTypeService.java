@@ -4,6 +4,7 @@ import com.il.sod.db.model.entities.ProductType;
 import com.il.sod.db.model.entities.ServiceType;
 import com.il.sod.db.model.repositories.ProductTypeRepository;
 import com.il.sod.db.model.repositories.ServiceTypeRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ServiceMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -47,7 +48,7 @@ public class ServiceTypeService extends AbstractServiceMutations {
 		ServiceType entity = ServiceMapper.INSTANCE.map(dto);
 		this.saveEntity(serviceTypeRepository, entity);
 		dto = converter.map(entity, ServiceTypeDTO.class);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
@@ -56,7 +57,7 @@ public class ServiceTypeService extends AbstractServiceMutations {
 		ServiceType entity = ServiceMapper.INSTANCE.map(dto);
 		this.updateEntity(serviceTypeRepository, entity);
 		dto = converter.map(entity, ServiceTypeDTO.class);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -68,7 +69,7 @@ public class ServiceTypeService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.deleteEntity(serviceTypeRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -80,7 +81,7 @@ public class ServiceTypeService extends AbstractServiceMutations {
 			ServiceTypeDTO dto = ServiceMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 	@GET
@@ -89,7 +90,7 @@ public class ServiceTypeService extends AbstractServiceMutations {
 	public Response getServiceType(@PathParam("id") String id) throws SODAPIException {
 		ServiceType st = serviceTypeRepository.findOne(Integer.valueOf(id));
 		ServiceTypeDTO dto = ServiceMapper.INSTANCE.map(st);
-		return castEntityAsResponse(dto);
+		return ConvertUtils.castEntityAsResponse(dto);
 	}
 
 	@GET
@@ -98,7 +99,7 @@ public class ServiceTypeService extends AbstractServiceMutations {
 	public Response getPublicServiceType() throws SODAPIException {
 		List<ServiceType> listEntities = serviceTypeRepository.findAllPublic();
 		List<ServiceTypeDTO> listResult = listEntities.stream().map(i -> ServiceMapper.INSTANCE.map(i)).collect(Collectors.toList());
-		return castEntityAsResponse(listResult);
+		return ConvertUtils.castEntityAsResponse(listResult);
 	}
 
 	@POST
@@ -121,7 +122,7 @@ public class ServiceTypeService extends AbstractServiceMutations {
 		this.saveEntity(serviceTypeRepository, serviceType);
 
 		ServiceTypeDTO dto = ServiceMapper.INSTANCE.map( serviceType );
-		return castEntityAsResponse(dto);
+		return ConvertUtils.castEntityAsResponse(dto);
 	}
 
 }

@@ -5,6 +5,7 @@ import com.il.sod.db.model.entities.*;
 import com.il.sod.db.model.repositories.OrderRepository;
 import com.il.sod.db.model.repositories.TaskRepository;
 import com.il.sod.db.model.repositories.TaskTypeRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.TaskMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -66,7 +67,7 @@ public class TaskService extends AbstractServiceMutations {
 		this.saveEntity(taskRepository, entity);
 
 		dto = TaskMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -76,7 +77,7 @@ public class TaskService extends AbstractServiceMutations {
 		Task entity = TaskMapper.INSTANCE.map(dto);
 		this.updateEntity(taskRepository, entity);
 		dto = TaskMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 //	private TaskType getTaskType(Task entity, int idTaskType) {
@@ -96,7 +97,7 @@ public class TaskService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.softDeleteEntity(taskRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -117,7 +118,7 @@ public class TaskService extends AbstractServiceMutations {
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());
 
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 	@GET
@@ -169,7 +170,7 @@ public class TaskService extends AbstractServiceMutations {
 		resultList.remove(insertPosition);
 
 
-		return castEntityAsResponse(resultList);
+		return ConvertUtils.castEntityAsResponse(resultList);
 	}
 
 }

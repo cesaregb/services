@@ -2,6 +2,7 @@ package com.il.sod.rest.api.impl;
 
 import com.il.sod.db.model.entities.ServiceTypeTask;
 import com.il.sod.db.model.repositories.ServiceTypeTaskRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ServiceMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -36,7 +37,7 @@ public class ServiceTypeTaskService extends AbstractServiceMutations {
 			ServiceTypeTask entity = ServiceMapper.INSTANCE.map(dto);
 			this.saveEntity(serviceTypeSpecRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.CREATED);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
@@ -47,7 +48,7 @@ public class ServiceTypeTaskService extends AbstractServiceMutations {
 			ServiceTypeTask entity = ServiceMapper.INSTANCE.map(dto);
 			this.updateEntity(serviceTypeSpecRepository, entity);
 			dto = ServiceMapper.INSTANCE.map(entity);
-			return castEntityAsResponse(dto, Response.Status.OK);
+			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 
 	}
 
@@ -60,7 +61,7 @@ public class ServiceTypeTaskService extends AbstractServiceMutations {
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found: "+id+" ");
 			}
 			this.deleteEntity(serviceTypeSpecRepository, id);
-			return castEntityAsResponse(
+			return ConvertUtils.castEntityAsResponse(
 					new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 
@@ -74,7 +75,7 @@ public class ServiceTypeTaskService extends AbstractServiceMutations {
 			ServiceTypeTaskDTO dto = ServiceMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 }

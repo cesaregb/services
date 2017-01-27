@@ -2,6 +2,7 @@ package com.il.sod.rest.api.impl;
 
 import com.il.sod.db.model.entities.Route;
 import com.il.sod.db.model.repositories.RoutesRepository;
+import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.RoutesMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -36,7 +37,7 @@ public class RoutesService extends AbstractServiceMutations {
 		Route entity = RoutesMapper.INSTANCE.map(dto);
 		this.saveEntity(routesRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
@@ -45,7 +46,7 @@ public class RoutesService extends AbstractServiceMutations {
 		Route entity = RoutesMapper.INSTANCE.map(dto);
 		this.updateEntity(routesRepository, entity);
 		dto = RoutesMapper.INSTANCE.map(entity);
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -57,7 +58,7 @@ public class RoutesService extends AbstractServiceMutations {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Route not found");
 		}
 		this.deleteEntity(routesRepository, entity.getId());
-		return castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 				Response.Status.OK);
 	}
 
@@ -69,7 +70,7 @@ public class RoutesService extends AbstractServiceMutations {
 			RouteDTO dto = RoutesMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(list);
 
 	}
 
@@ -78,6 +79,6 @@ public class RoutesService extends AbstractServiceMutations {
 	@ApiOperation(value = "Get Route by id", response = RouteDTO.class)
 	public Response getRouteById(@PathParam("id") String id) throws SODAPIException {
 		RouteDTO dto = RoutesMapper.INSTANCE.map(this.getEntity(routesRepository, Integer.valueOf(id)));
-		return castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 }

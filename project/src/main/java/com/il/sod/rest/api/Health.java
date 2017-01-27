@@ -1,10 +1,10 @@
 package com.il.sod.rest.api;
 
-import com.il.sod.db.dao.SocialNetworkServiceDAO;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.TestDto;
 import com.il.sod.services.MyService;
+import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -42,9 +42,6 @@ public class Health extends AbstractService {
 	@Autowired
 	MyService myService;
 	
-	@Autowired
-	private SocialNetworkServiceDAO shopServiceDAO;
-	
 	@Value("${db.url}")
 	private String dbUrl;
 	
@@ -64,7 +61,6 @@ public class Health extends AbstractService {
 		LOGGER.info("dbUrl: " + dbUrl + " == " + " dbDriver: " + dbDriver + " == " + System.getProperty("spring.profiles.active"));
 		LOGGER.info("myValue: " + env.getProperty("myValue"));
 //		LOGGER.info("env: " + env.getRequiredProperty("db.driver")  + " == " + env.getRequiredProperty("db.url"));
-		LOGGER.info("shopServiceDAO: " + shopServiceDAO.findById(6) );
 		LOGGER.info("********************************");
 		
 		return new GeneralResponseMessage(true, "from the resource: " + dbUrl);
@@ -83,7 +79,7 @@ public class Health extends AbstractService {
 	@Path("/admin_service")
 	@ApiOperation(value = "Test")
 	public GeneralResponseMessage secureMethod(InputStream is) throws SODAPIException{
-		TestDto tst = this.getJsonISAsObject(is, TestDto.class);
+		TestDto tst = ConvertUtils.getJsonISAsObject(is, TestDto.class);
 		return new GeneralResponseMessage(true, "ok your ar an admin!! good for you!! " + tst.getVal());
 	}	
 }

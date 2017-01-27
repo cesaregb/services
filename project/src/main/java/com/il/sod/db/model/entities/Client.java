@@ -38,10 +38,6 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	private String homePhone;
 	private String otherPhone;
 
-	//bi-directional many-to-one association to AccessKey
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
-	private Set<AccessKey> accessKeys;
-
 	//bi-directional many-to-one association to Address
 	@OneToMany(mappedBy="client", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
 	@JsonManagedReference
@@ -121,28 +117,6 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 
 	public void setTwitter(String twitter) {
 		this.twitter = twitter;
-	}
-
-	public Set<AccessKey> getAccessKeys() {
-		return this.accessKeys;
-	}
-
-	public void setAccessKeys(Set<AccessKey> accessKeys) {
-		this.accessKeys = accessKeys;
-	}
-
-	public AccessKey addAccessKey(AccessKey accessKey) {
-		getAccessKeys().add(accessKey);
-		accessKey.setClient(this);
-
-		return accessKey;
-	}
-
-	public AccessKey removeAccessKey(AccessKey accessKey) {
-		getAccessKeys().remove(accessKey);
-		accessKey.setClient(null);
-
-		return accessKey;
 	}
 
 	public Set<Address> getAddresses() {
@@ -266,6 +240,9 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 	}
 
 	public Set<ClientBag> getClientBags() {
+		if (this.clientBags == null){
+			this.clientBags = new HashSet<>();
+		}
 		return this.clientBags;
 	}
 
