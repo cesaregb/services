@@ -92,6 +92,7 @@ public class ClientSvTest extends SpringTestConfiguration {
 	@Test
 	public void addAddress() throws Exception {
 		List<Client> c = clientRepository.findAll();
+
 	}
 
 }
