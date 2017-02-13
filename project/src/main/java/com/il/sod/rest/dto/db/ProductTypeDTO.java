@@ -9,6 +9,12 @@ public class ProductTypeDTO extends DeletableDTO{
 	private Set<ProductDTO> products;
 	private Set<Integer> serviceTypes;
 
+	public ProductTypeDTO() {}
+
+	public ProductTypeDTO(int idProductType) {
+		this.idProductType = idProductType;
+	}
+
 	public int getIdProductType() {
 		return idProductType;
 	}

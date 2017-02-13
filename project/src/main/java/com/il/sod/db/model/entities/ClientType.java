@@ -3,6 +3,7 @@ package com.il.sod.db.model.entities;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -56,6 +57,9 @@ public class ClientType implements IEntity<Integer> {
 	}
 
 	public Set<Client> getClients() {
+		if (this.clients == null){
+			this.clients = new HashSet<>();
+		}
 		return this.clients;
 	}
 

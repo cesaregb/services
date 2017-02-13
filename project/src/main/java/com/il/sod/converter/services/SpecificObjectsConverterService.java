@@ -43,24 +43,18 @@ public class SpecificObjectsConverterService {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(WServiceTypeDTO.class, ServiceType.class)
-			.fieldMap("specs", "serviceTypeSpecs").converter("wSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("specs", "specs").converter("wSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("products", "productTypes").converter("productTepe2ProductSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 			
-		BaseMapper.MAPPER_FACTORY.classMap(WSpecDTO.class, ServiceTypeSpec.class)
-			.field("idSpecs","spec.idSpecs")
-			.field("description","spec.description")
-			.field("name","spec.name")
-			.field("optional","spec.optional")
-			.field("max_qty","spec.max_qty")
+		BaseMapper.MAPPER_FACTORY.classMap(WSpecDTO.class, Spec.class)
 			.byDefault()
-			.customize(new CustomMapper<WSpecDTO, ServiceTypeSpec>() {
+			.customize(new CustomMapper<WSpecDTO, Spec>() {
 				
 				@Override
-				public void mapBtoA(ServiceTypeSpec entity, WSpecDTO dto, MappingContext context) {
+				public void mapBtoA(Spec spec, WSpecDTO dto, MappingContext context) {
 					Map<Integer, List<KeyValueSpecs<Integer, String>>> options = new HashMap<Integer, List<KeyValueSpecs<Integer, String>>>();
-					Spec spec = entity.getSpec();
 					for (SpecsValue specValue : spec.getSpecsValues()){
 						options.putIfAbsent(specValue.getSpec().getId(), new ArrayList<>());
 						KeyValueSpecs<Integer, String> kv = new KeyValueSpecs<Integer, String>();
@@ -109,11 +103,11 @@ public class SpecificObjectsConverterService {
 		return this.mapperFacade.map(entity, WServiceTypeDTO.class);
 	}
 	
-	public ServiceTypeSpec map(WSpecDTO dto) {
-		return this.mapperFacade.map(dto, ServiceTypeSpec.class);
+	public Spec map(WSpecDTO dto) {
+		return this.mapperFacade.map(dto, Spec.class);
 	}
 	
-	public WSpecDTO map(ServiceTypeSpec entity) {
+	public WSpecDTO map(Spec entity) {
 		return this.mapperFacade.map(entity, WSpecDTO.class);
 	}
 	
@@ -138,14 +132,14 @@ class WServiceTypeSetConverter extends BidirectionalConverter<Set<ServiceType>, 
 	}
 }
 
-class WSpecSetConverter extends BidirectionalConverter<Set<ServiceTypeSpec>, Set<WSpecDTO>> {
+class WSpecSetConverter extends BidirectionalConverter<Set<Spec>, Set<WSpecDTO>> {
 	@Override
-	public Set<ServiceTypeSpec> convertFrom(Set<WSpecDTO> source, Type<Set<ServiceTypeSpec>> arg1) {
+	public Set<Spec> convertFrom(Set<WSpecDTO> source, Type<Set<Spec>> arg1) {
 		return source.stream().map(item -> (new SpecificObjectsConverterService()).map(item)).collect(Collectors.toSet());
 	}
 
 	@Override
-	public Set<WSpecDTO> convertTo(Set<ServiceTypeSpec> source, Type<Set<WSpecDTO>> arg1) {
+	public Set<WSpecDTO> convertTo(Set<Spec> source, Type<Set<WSpecDTO>> arg1) {
 		return source.stream().map(item -> (new SpecificObjectsConverterService()).map(item)).collect(Collectors.toSet());
 	}
 	

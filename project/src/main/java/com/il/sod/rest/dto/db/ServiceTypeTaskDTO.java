@@ -9,7 +9,13 @@ public class ServiceTypeTaskDTO {
 	private int sortingOrder;
 	private int time;
 	private String taskTypeName;
-	
+
+	public ServiceTypeTaskDTO() {}
+
+	public ServiceTypeTaskDTO(int idServiceTypeTask) {
+		this.idServiceTypeTask = idServiceTypeTask;
+	}
+
 	public int getIdServiceTypeTask() {
 		return idServiceTypeTask;
 	}

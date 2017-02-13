@@ -1171,15 +1171,13 @@ DROP TABLE IF EXISTS `ServiceTypeSpecs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ServiceTypeSpecs` (
-  `idServiceTypeSpecs` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `idServiceType` int(10) unsigned NOT NULL,
   `idSpecs` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`idServiceTypeSpecs`),
   KEY `fk_ServiceTypeSpecs_Specs1_idx` (`idSpecs`),
   KEY `fk_ServiceTypeSpecs_ServiceType1_idx` (`idServiceType`),
   CONSTRAINT `fk_ServiceTypeSpecs_ServiceType1` FOREIGN KEY (`idServiceType`) REFERENCES `ServiceType` (`idServiceType`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_ServiceTypeSpecs_Specs1` FOREIGN KEY (`idSpecs`) REFERENCES `Specs` (`idSpecs`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1188,7 +1186,7 @@ CREATE TABLE `ServiceTypeSpecs` (
 
 LOCK TABLES `ServiceTypeSpecs` WRITE;
 /*!40000 ALTER TABLE `ServiceTypeSpecs` DISABLE KEYS */;
-INSERT INTO `ServiceTypeSpecs` VALUES (1,1,1),(2,1,2),(3,2,1),(4,2,2),(5,3,5),(6,4,5),(7,5,2),(8,5,3),(9,5,4),(10,5,1),(11,1,4),(12,7,6);
+INSERT INTO `ServiceTypeSpecs` VALUES (1,1),(1,2),(2,1),(2,2),(3,5),(4,5),(5,2),(5,3),(5,4),(5,1),(1,4),(7,6);
 /*!40000 ALTER TABLE `ServiceTypeSpecs` ENABLE KEYS */;
 UNLOCK TABLES;
 

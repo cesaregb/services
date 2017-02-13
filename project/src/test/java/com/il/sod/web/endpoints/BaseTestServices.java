@@ -1,4 +1,4 @@
-package com.il.sod.endpoints;
+package com.il.sod.web.endpoints;
 
 import com.il.sod.rest.util.PropertyHandler;
 import org.junit.Assert;
