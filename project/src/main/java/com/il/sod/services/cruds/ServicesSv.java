@@ -1,13 +1,7 @@
 package com.il.sod.services.cruds;
 
-import com.il.sod.db.model.entities.ProductType;
-import com.il.sod.db.model.entities.ServiceType;
-import com.il.sod.db.model.entities.ServiceTypeTask;
-import com.il.sod.db.model.entities.Spec;
-import com.il.sod.db.model.repositories.ProductTypeRepository;
-import com.il.sod.db.model.repositories.ServiceTypeRepository;
-import com.il.sod.db.model.repositories.ServiceTypeTaskRepository;
-import com.il.sod.db.model.repositories.SpecRepository;
+import com.il.sod.db.model.entities.*;
+import com.il.sod.db.model.repositories.*;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ServiceMapper;
 import com.il.sod.rest.api.impl.ServiceTypeService;
@@ -46,6 +40,9 @@ public class ServicesSv extends EntityServicesBase {
 	@Autowired
 	SpecRepository specRepository;
 
+	@Autowired
+	TaskRepository taskRepository;
+
 	public ServiceTypeDTO saveServiceType(ServiceTypeDTO dto) throws SODAPIException {
 		ServiceType entity = ServiceMapper.INSTANCE.map(dto);
 		this.saveEntity(serviceTypeRepository, entity);
@@ -59,10 +56,7 @@ public class ServicesSv extends EntityServicesBase {
 	}
 
 	public void deleteItem(int id) throws SODAPIException {
-		ServiceType entity = serviceTypeRepository.findOne(id);
-		if (entity == null) {
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
-		}
+		ServiceType entity = getServiceTypeEntity(id);
 		this.deleteEntity(serviceTypeRepository, entity.getId());
 	}
 
@@ -91,25 +85,23 @@ public class ServicesSv extends EntityServicesBase {
 	}
 
 	public ServiceTypeDTO addProducts(int idServiceType, List<ProductTypeDTO> listDto) throws SODAPIException {
-		ServiceType serviceType = serviceTypeRepository.findOne(idServiceType);
+		ServiceType serviceType = getServiceTypeEntity(idServiceType);
 
-		if (serviceType == null) {
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
-		}
-
-		Set<Integer> listIds = listDto.stream().map(ProductTypeDTO::getIdProductType).collect(Collectors.toSet());
+		Set<Integer> listIds = listDto.stream()
+				.map(ProductTypeDTO::getIdProductType)
+				.collect(Collectors.toSet());
 
 		List<ProductType> toRemove = serviceType.getProductTypes()
 				.stream()
-				.filter(s -> !listIds.contains(s.getIdProductType()))
+				.filter(s -> !listIds.contains(s.getId()))
 				.collect(Collectors.toList());
 
 		toRemove.forEach(serviceType::removeProductType);
 
-		for (ProductTypeDTO specDTO : listDto) {
-			ProductType productType = productTypeRepository.findOne(specDTO.getIdProductType());
+		for (ProductTypeDTO dto : listDto) {
+			ProductType productType = productTypeRepository.findOne(dto.getIdProductType());
 			if (productType == null) {
-				throw new SODAPIException(Response.Status.BAD_REQUEST, "ProductType not found %s ", specDTO.getIdProductType());
+				throw new SODAPIException(Response.Status.BAD_REQUEST, "ProductType not found %s ", dto.getIdProductType());
 			}
 			serviceType.addProductType(productType);
 		}
@@ -118,11 +110,7 @@ public class ServicesSv extends EntityServicesBase {
 	}
 
 	public ServiceTypeDTO addSpecs(int idServiceType, List<SpecDTO> listDto) throws SODAPIException {
-		ServiceType serviceType = serviceTypeRepository.findOne(idServiceType);
-		if (serviceType == null) {
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
-		}
-
+		ServiceType serviceType = getServiceTypeEntity(idServiceType);
 		Set<Integer> listIds = listDto.stream().map(SpecDTO::getIdSpecs).collect(Collectors.toSet());
 		List<Spec> toRemove = serviceType.getSpecs()
 				.stream()
@@ -130,6 +118,7 @@ public class ServicesSv extends EntityServicesBase {
 				.collect(Collectors.toList());
 
 		toRemove.forEach(serviceType::removeSpec);
+
 		for (SpecDTO specDTO : listDto) {
 			Spec spec = specRepository.findOne(specDTO.getIdSpecs());
 			if (spec == null) {
@@ -141,33 +130,39 @@ public class ServicesSv extends EntityServicesBase {
 		return ServiceMapper.INSTANCE.map(serviceType);
 	}
 
-
 	public ServiceTypeDTO addServiceTypeTask(int idServiceType, List<ServiceTypeTaskDTO> listDto) throws SODAPIException {
+		serviceTypeTaskRepository.removeByServiceType(idServiceType);
+		List<ServiceTypeTask> toRemove = serviceTypeTaskRepository.findByServiceType(idServiceType);
+		System.out.format("toRemove.size(): [%s] %n", toRemove.size());
+
+		ServiceType serviceType = getServiceTypeEntity(idServiceType);
+
+		System.out.format("serviceType.getServiceTypeTasks().size(): [%s] %n", serviceType.getServiceTypeTasks().size());
+
+		for (ServiceTypeTaskDTO serviceTypeTaskDTO : listDto) {
+			if (serviceTypeTaskDTO.getTask() == null || serviceTypeTaskDTO.getTask().getIdTask() < 1){
+				throw new SODAPIException(Response.Status.BAD_REQUEST, "one or more Tasks are not valid ");
+			}
+			Task task = taskRepository.findOne(serviceTypeTaskDTO.getTask().getIdTask());
+			if (task == null) {
+				throw new SODAPIException(Response.Status.BAD_REQUEST, "task not found %s ", serviceTypeTaskDTO.getTask().getIdTask());
+			}
+			ServiceTypeTask serviceTypeTask = ServiceMapper.INSTANCE.map(serviceTypeTaskDTO);
+			serviceTypeTask.setServiceType(serviceType);
+			serviceTypeTask.setTask(task);
+
+			serviceType.addServiceTypeTask(serviceTypeTask);
+		}
+		serviceType = serviceTypeRepository.save(serviceType);
+		return ServiceMapper.INSTANCE.map(serviceType);
+	}
+
+	private ServiceType getServiceTypeEntity(int idServiceType) throws SODAPIException {
 		ServiceType serviceType = serviceTypeRepository.findOne(idServiceType);
 		if (serviceType == null) {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
-
-		Set<Integer> listIds = listDto.stream().map(ServiceTypeTaskDTO::getIdServiceType)
-				.collect(Collectors.toSet());
-
-		List<ServiceTypeTask> toRemove = serviceType.getServiceTypeTasks()
-				.stream()
-				.filter(s -> !listIds.contains(s.getId()))
-				.collect(Collectors.toList());
-
-		toRemove.forEach(serviceType::removeServiceTypeTask);
-
-		for (ServiceTypeTaskDTO serviceTypeTaskDTO : listDto) {
-			ServiceTypeTask serviceTypeTask = serviceTypeTaskRepository.findOne(serviceTypeTaskDTO.getIdServiceTypeTask());
-			if (serviceTypeTask == null) {
-				throw new SODAPIException(Response.Status.BAD_REQUEST, "ServiceTypeTask not found %s ", serviceTypeTaskDTO.getIdServiceTypeTask());
-			}
-			System.out.println("ADDING");
-			serviceType.addServiceTypeTask(serviceTypeTask);
-		}
-		serviceTypeRepository.save(serviceType);
-		return ServiceMapper.INSTANCE.map(serviceType);
+		return serviceType;
 	}
 
 }

@@ -90,14 +90,14 @@ public class ServiceTypeService extends AbstractServiceMutations {
 
 	@POST
 	@Path("/addSpecs/{idServiceType}")
-	@ApiOperation(value = "Add Products to Service Type", response = ServiceDTO.class)
+	@ApiOperation(value = "Add Specs to Service Type", response = ServiceDTO.class)
 	public Response addSpecs(@PathParam("idServiceType") int idServiceType,  List<SpecDTO> listDto) throws SODAPIException {
 		return ConvertUtils.castEntityAsResponse(servicesSv.addSpecs(idServiceType, listDto));
 	}
 
 	@POST
-	@Path("/addSpecs/{idServiceType}")
-	@ApiOperation(value = "Add Products to Service Type", response = ServiceDTO.class)
+	@Path("/addTasks/{idServiceType}")
+	@ApiOperation(value = "Add Tasks to Service Type", response = ServiceDTO.class)
 	public Response addServiceTypeTask(@PathParam("idServiceType") int idServiceType,  List<ServiceTypeTaskDTO> listDto) throws SODAPIException {
 		return ConvertUtils.castEntityAsResponse(servicesSv.addServiceTypeTask(idServiceType, listDto));
 	}

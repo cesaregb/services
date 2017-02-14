@@ -1,10 +1,7 @@
 package com.il.sod.services.crud;
 
 import com.il.sod.config.SpringTestConfiguration;
-import com.il.sod.rest.dto.db.ProductTypeDTO;
-import com.il.sod.rest.dto.db.ServiceTypeDTO;
-import com.il.sod.rest.dto.db.ServiceTypeTaskDTO;
-import com.il.sod.rest.dto.db.SpecDTO;
+import com.il.sod.rest.dto.db.*;
 import com.il.sod.services.cruds.ServicesSv;
 import org.junit.Assert;
 import org.junit.Test;
@@ -47,33 +44,49 @@ public class ServicesSvTest extends SpringTestConfiguration {
 	}
 
 	@Test
-	public void testAddProducTypes() throws Exception{
+	public void testAddProductTypes() throws Exception{
 		List<ProductTypeDTO> list = new ArrayList<>();
-		list.add(new ProductTypeDTO(19));
+		list.add(new ProductTypeDTO(8));
 		servicesSv.addProducts(8, list);
+		ServiceTypeDTO dto = servicesSv.getServiceTypeList(8).get(0);
+		Assert.assertTrue(dto.getProductTypes().size() == 1);
+
+		list = new ArrayList<>();
+		list.add(new ProductTypeDTO(8));
+		list.add(new ProductTypeDTO(9));
+		list.add(new ProductTypeDTO(10));
+		servicesSv.addProducts(8, list);
+		dto = servicesSv.getServiceTypeList(8).get(0);
+		Assert.assertTrue(dto.getProductTypes().size() == 3);
+
+		list = new ArrayList<>();
+		list.add(new ProductTypeDTO(10));
+		servicesSv.addProducts(8, list);
+		dto = servicesSv.getServiceTypeList(8).get(0);
+		Assert.assertTrue(dto.getProductTypes().size() == 1);
 	}
 
 
 	@Test
 	public void testAddServiceTypeTask() throws Exception{
 		List<ServiceTypeTaskDTO> list = new ArrayList<>();
-		list.add(new ServiceTypeTaskDTO(1));
-		list.add(new ServiceTypeTaskDTO(2));
+		list.add(new ServiceTypeTaskDTO(new TaskDTO(1)));
+		list.add(new ServiceTypeTaskDTO(new TaskDTO(2)));
 		servicesSv.addServiceTypeTask(8, list);
 		ServiceTypeDTO dto = servicesSv.getServiceTypeList(8).get(0);
 		System.out.format("dto.getServiceTypeTasks().size(): [%s] %n", dto.getServiceTypeTasks().size());
 		Assert.assertTrue(dto.getServiceTypeTasks().size() == 2);
 
 		list = new ArrayList<>();
-		list.add(new ServiceTypeTaskDTO(1));
-		list.add(new ServiceTypeTaskDTO(2));
-		list.add(new ServiceTypeTaskDTO(3));
+		list.add(new ServiceTypeTaskDTO(new TaskDTO(1)));
+		list.add(new ServiceTypeTaskDTO(new TaskDTO(2)));
+		list.add(new ServiceTypeTaskDTO(new TaskDTO(3)));
 		servicesSv.addServiceTypeTask(8, list);
 		dto = servicesSv.getServiceTypeList(8).get(0);
 		Assert.assertTrue(dto.getServiceTypeTasks().size() == 3);
-
+//
 		list = new ArrayList<>();
-		list.add(new ServiceTypeTaskDTO(1));
+		list.add(new ServiceTypeTaskDTO(new TaskDTO(1)));
 		servicesSv.addServiceTypeTask(8, list);
 		dto = servicesSv.getServiceTypeList(8).get(0);
 		Assert.assertTrue(dto.getServiceTypeTasks().size() == 1);

@@ -10,7 +10,13 @@ public class TaskDTO extends DeletableDTO{
 	//for generica usage.
 	private int typeTask = 0; // 0 = order; 1 = service
 	private int idParent = 0; // idOrder or idService.
-	
+
+	public TaskDTO() {}
+
+	public TaskDTO(int idTask) {
+		this.idTask = idTask;
+	}
+
 	public int getIdTask() {
 		return idTask;
 	}

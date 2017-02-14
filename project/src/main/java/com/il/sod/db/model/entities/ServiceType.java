@@ -31,7 +31,7 @@ public class ServiceType implements IEntity<Integer> {
 
 
 	//bi-directional many-to-many association to ServiceType
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "ServiceTypeSpecs"
 			, joinColumns = {
@@ -47,7 +47,7 @@ public class ServiceType implements IEntity<Integer> {
 	private Set<Service> services;
 
 	//bi-directional many-to-one association to ServiceTypeTask
-	@OneToMany(mappedBy = "serviceType", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "serviceType", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<ServiceTypeTask> serviceTypeTasks;
 
 	//bi-directional many-to-one association to ServiceCategory
@@ -56,7 +56,7 @@ public class ServiceType implements IEntity<Integer> {
 	private ServiceCategory serviceCategory;
 
 	//bi-directional many-to-many association to ServiceType
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 			name="ServiceTypeProductType"
 			, joinColumns={
@@ -169,14 +169,12 @@ public class ServiceType implements IEntity<Integer> {
 	public ServiceTypeTask addServiceTypeTask(ServiceTypeTask serviceTypeTask) {
 		getServiceTypeTasks().add(serviceTypeTask);
 		serviceTypeTask.setServiceType(this);
-
 		return serviceTypeTask;
 	}
 
 	public ServiceTypeTask removeServiceTypeTask(ServiceTypeTask serviceTypeTask) {
 		getServiceTypeTasks().remove(serviceTypeTask);
 		serviceTypeTask.setServiceType(null);
-
 		return serviceTypeTask;
 	}
 
@@ -218,14 +216,16 @@ public class ServiceType implements IEntity<Integer> {
 		this.productTypes = productTypes;
 	}
 
-	public void addProductType(ProductType productType) {
+	public ProductType addProductType(ProductType productType) {
 		getProductTypes().add(productType);
 		productType.getServiceTypes().add(this);
+		return productType;
 	}
 
-	public void removeProductType(ProductType productType) {
-		getServiceTypeTasks().remove(productType);
+	public ProductType removeProductType(ProductType productType) {
+		getProductTypes().remove(productType);
 		productType.getServiceTypes().remove(this);
+		return productType;
 	}
 
 	public boolean isCalculator() {

@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.google.common.base.Objects;
 
 
 /**
@@ -189,5 +190,21 @@ public class Task extends SoftDeleteEntity  implements IEntity<Integer> {
 	public Task setId(Integer id) {
 		this.idTask = id;
 		return this;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Task task = (Task) o;
+		return idTask == task.idTask &&
+				Objects.equal(description, task.description) &&
+				Objects.equal(name, task.name) &&
+				Objects.equal(taskType, task.taskType);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(idTask, description, name, taskType);
 	}
 }

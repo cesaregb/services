@@ -12,8 +12,8 @@ public class ServiceTypeTaskDTO {
 
 	public ServiceTypeTaskDTO() {}
 
-	public ServiceTypeTaskDTO(int idServiceTypeTask) {
-		this.idServiceTypeTask = idServiceTypeTask;
+	public ServiceTypeTaskDTO(TaskDTO task) {
+		this.task = task;
 	}
 
 	public int getIdServiceTypeTask() {
