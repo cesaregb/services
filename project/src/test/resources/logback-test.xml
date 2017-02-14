@@ -105,9 +105,9 @@
 	</logger>
 
 	<!--<logger name="org.hibernate.type" additivity="false" >-->
-	<!--<level value="TRACE" />-->
-	<!--<appender-ref ref="SQLROLLINGFILE" />-->
-	<!--<appender-ref ref="STDOUT" />-->
+		<!--<level value="TRACE" />-->
+		<!--<appender-ref ref="SQLROLLINGFILE" />-->
+		<!--<appender-ref ref="STDOUT" />-->
 	<!--</logger>-->
 
 	<logger name="org.hibernate.type.descriptor.sql.BasicBinder" additivity="false">
@@ -126,7 +126,7 @@
 	</logger>
 
 	<!--<root level="INFO">-->
-	<!--<appender-ref ref="STDOUT" />-->
+		<!--<appender-ref ref="STDOUT" />-->
 	<!--</root>-->
 
 	<!-- INFO || TRACE || DEBUG || OFF || ${logback.loglevel} -->

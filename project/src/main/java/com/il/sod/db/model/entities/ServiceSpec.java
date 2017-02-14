@@ -40,6 +40,7 @@ public class ServiceSpec implements IEntity<Integer> {
 	@JoinColumn(name="idSpecs")
 	@JsonBackReference
 	private Spec spec;
+
 	private int quantity;
 	private float specPrice; 
 	private float serviceIncrement; 

@@ -1,5 +1,7 @@
 package com.il.sod.rest.dto.db;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.List;
 import java.util.Set;
 
@@ -10,7 +12,7 @@ public class ServiceTypeDTO {
 	private double price;
 	private int time;
 	private Set<Integer> services;
-	private Set<ServiceTypeSpecDTO> serviceTypeSpecs;
+	private Set<SpecDTO> specs;
 	private List<ServiceTypeTaskDTO> serviceTypeTasks;
 	private int idServiceCategory;
 	private String serviceTypeCategoryName;
@@ -53,12 +55,6 @@ public class ServiceTypeDTO {
 	public void setTime(int time) {
 		this.time = time;
 	}
-	public Set<ServiceTypeSpecDTO> getServiceTypeSpecs() {
-		return serviceTypeSpecs;
-	}
-	public void setServiceTypeSpecs(Set<ServiceTypeSpecDTO> serviceTypeSpecs) {
-		this.serviceTypeSpecs = serviceTypeSpecs;
-	}
 	public int getIdServiceCategory() {
 		return idServiceCategory;
 	}
@@ -95,5 +91,28 @@ public class ServiceTypeDTO {
 
 	public void setCalculator(boolean calculator) {
 		this.calculator = calculator;
+	}
+
+	public Set<SpecDTO> getSpecs() {
+		return specs;
+	}
+
+	public void setSpecs(Set<SpecDTO> specs) {
+		this.specs = specs;
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("idServiceType", idServiceType)
+				.add("description", description)
+				.add("name", name)
+				.add("price", price)
+				.add("time", time)
+				.add("services", services)
+				.add("idServiceCategory", idServiceCategory)
+				.add("serviceTypeCategoryName", serviceTypeCategoryName)
+				.add("calculator", calculator)
+				.toString();
 	}
 }

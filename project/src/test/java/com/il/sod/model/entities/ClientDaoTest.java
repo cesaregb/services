@@ -2,9 +2,12 @@ package com.il.sod.model.entities;
 
 import com.il.sod.db.dao.IDAO;
 import com.il.sod.db.dao.impl.ClientDAO;
+import com.il.sod.db.model.entities.Address;
 import com.il.sod.db.model.entities.Client;
+import com.il.sod.db.model.entities.ClientType;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.db.model.repositories.ClientSpecification;
+import com.il.sod.db.model.repositories.ClientTypeRepository;
 import com.il.sod.db.model.repositories.SearchCriteria;
 import com.il.sod.config.SpringTestConfiguration;
 import org.junit.Ignore;
@@ -13,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.List;
+import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
@@ -27,6 +32,9 @@ public class ClientDaoTest extends SpringTestConfiguration{
 	
 	@Autowired
 	ClientRepository clientRepository;
+
+	@Autowired
+	ClientTypeRepository clientTypeRepository;
 	
     @Ignore
     @Test
@@ -65,7 +73,6 @@ public class ClientDaoTest extends SpringTestConfiguration{
 			System.out.println("c: " + c.getName() + " " + c.getLastName());
 			assertEquals("name not valid", "Name", c.getName());
 		}
-		
     }
     
     @Test
@@ -80,17 +87,41 @@ public class ClientDaoTest extends SpringTestConfiguration{
     		assertEquals("name not valid", "Name", c.getName());
     	}
     }
-    
-    public boolean create(){
-    	Client entity = new Client();
-    	entity.setEmail("email");
-    	entity.setName("name");
-    	entity.setLastName("last name");
-    	entity.setTwitter("twiiter");
-		genericDaoImpl.create(entity);
-    	return true;
+
+    @Test
+    public void IMPORT_CLIENTS() throws Exception{
+	    String fileName = "Clients.csv";
+	    ClassLoader classLoader = ClientDaoTest.class.getClassLoader();
+	    File file = new File(classLoader.getResource(fileName).getFile());
+	    Scanner in = new Scanner(file);
+
+	    ClientType clientType = clientTypeRepository.findOne(1);
+
+	    String input;
+	    while(in.hasNextLine() && !((input = in.nextLine()).equals(""))){
+		    String[] fields = input.split(",");
+		    if (fields.length > 0){
+			    String name = (fields.length > 0)?fields[0]:"";
+			    String address = (fields.length > 1)?fields[1]:"";
+			    String phone = (fields.length > 2)?fields[2]:"";
+
+			    String[] nameParts = name.split("\\s+");
+			    String firstName = nameParts[0];
+				String lastName = (nameParts.length > 1)?nameParts[1]:"";
+
+			    Client client = new Client();
+			    client.setName(firstName);
+			    client.setLastName(lastName);
+			    clientType.addClient(client);
+			    Address addressObj = new Address();
+			    addressObj.setAddress(address);
+			    client.addAddress(addressObj);
+			    client.setHomePhone(phone);
+			    clientRepository.save(client);
+		    }
+	    }
     }
-    
+
     @Transactional
     public boolean findAll(){
     	System.out.println("Hola!!!!");

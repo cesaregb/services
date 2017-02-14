@@ -1,9 +1,13 @@
 package com.il.sod.db.model.entities;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.google.common.base.Objects;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -29,20 +33,28 @@ public class Spec implements IEntity<Integer> {
 	private Set<ServiceSpec> serviceSpecs;
 
 	//bi-directional many-to-one association to ServiceTypeSpec
-	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER)
-	private Set<ServiceTypeSpec> serviceTypeSpecs;
-	
+	@ManyToMany(mappedBy="specs", fetch=FetchType.EAGER)
+	private Set<ServiceType> serviceTypes;
+
 	//bi-directional many-to-one association to SpecsValue
-	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
+	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Set<SpecsValue> specsValues;
 
 	private boolean optional;
-	
-	private int max_qty;
+
+	@Column(name="max_qty")
+	private int maxQty;
 	
 	private int deleted;
 	
 	public Spec() {
+	}
+
+	public Spec(String name, String description, boolean optional, int maxQty) {
+		this.description = description;
+		this.name = name;
+		this.optional = optional;
+		this.maxQty = maxQty;
 	}
 
 	public int getIdSpecs() {
@@ -94,31 +106,6 @@ public class Spec implements IEntity<Integer> {
 		return serviceSpec;
 	}
 
-	public Set<ServiceTypeSpec> getServiceTypeSpecs() {
-		return this.serviceTypeSpecs;
-	}
-
-	public void setServiceTypeSpecs(Set<ServiceTypeSpec> serviceTypeSpecs) {
-		this.serviceTypeSpecs = serviceTypeSpecs;
-	}
-
-	public ServiceTypeSpec addServiceTypeSpec(ServiceTypeSpec serviceTypeSpec) {
-		if (serviceTypeSpecs == null){
-			serviceTypeSpecs = new HashSet<>();
-		}
-		getServiceTypeSpecs().add(serviceTypeSpec);
-		serviceTypeSpec.setSpec(this);
-
-		return serviceTypeSpec;
-	}
-
-	public ServiceTypeSpec removeServiceTypeSpec(ServiceTypeSpec serviceTypeSpec) {
-		getServiceTypeSpecs().remove(serviceTypeSpec);
-		serviceTypeSpec.setSpec(null);
-
-		return serviceTypeSpec;
-	}
-	
 	public Set<SpecsValue> getSpecsValues() {
 		return this.specsValues;
 	}
@@ -140,6 +127,17 @@ public class Spec implements IEntity<Integer> {
 		return specsValue;
 	}
 
+	public Set<ServiceType> getServiceTypes() {
+		if (serviceTypes == null){
+			serviceTypes = new HashSet<>();
+		}
+		return serviceTypes;
+	}
+
+	public void setServiceTypes(Set<ServiceType> serviceTypes) {
+		this.serviceTypes = serviceTypes;
+	}
+
 	@Override
 	public Integer getId() {
 		return this.idSpecs;
@@ -159,12 +157,12 @@ public class Spec implements IEntity<Integer> {
 		this.optional = optional;
 	}
 
-	public int getMax_qty() {
-		return max_qty;
+	public int getMaxQty() {
+		return maxQty;
 	}
 
-	public void setMax_qty(int max_qty) {
-		this.max_qty = max_qty;
+	public void setMaxQty(int max_qty) {
+		this.maxQty = max_qty;
 	}
 
 	public int getDeleted() {
@@ -173,5 +171,36 @@ public class Spec implements IEntity<Integer> {
 
 	public void setDeleted(int deleted) {
 		this.deleted = deleted;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Spec spec = (Spec) o;
+		return idSpecs == spec.idSpecs &&
+				optional == spec.optional &&
+				maxQty == spec.maxQty &&
+				deleted == spec.deleted &&
+				Objects.equal(description, spec.description) &&
+				Objects.equal(name, spec.name);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(idSpecs, description, name, optional, maxQty, deleted);
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)
+				.append("idSpecs", idSpecs)
+				.append("description", description)
+				.append("name", name)
+				.append("specsValues", specsValues)
+				.append("optional", optional)
+				.append("maxQty", maxQty)
+				.append("deleted", deleted)
+				.toString();
 	}
 }

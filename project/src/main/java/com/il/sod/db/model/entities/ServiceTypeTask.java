@@ -1,19 +1,15 @@
 package com.il.sod.db.model.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
+import com.google.common.base.Objects;
+
+import javax.persistence.*;
 
 
 /**
  * The persistent class for the ServiceTypeTask database table.
  *
  */
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @NamedQuery(name="ServiceTypeTask.findAll", query="SELECT s FROM ServiceTypeTask s")
 public class ServiceTypeTask implements IEntity<Integer> {
@@ -24,12 +20,12 @@ public class ServiceTypeTask implements IEntity<Integer> {
 	private int idServiceTypeTask;
 
 	//bi-directional many-to-one association to ServiceType
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="idServiceType")
 	private ServiceType serviceType;
 
 	//bi-directional many-to-one association to Task
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name="idTask")
 	private Task task;
 	
@@ -88,5 +84,19 @@ public class ServiceTypeTask implements IEntity<Integer> {
 
 	public void setTime(int time) {
 		this.time = time;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ServiceTypeTask that = (ServiceTypeTask) o;
+		return Objects.equal(serviceType, that.serviceType) &&
+				Objects.equal(task, that.task);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(serviceType, task);
 	}
 }

@@ -1,5 +1,8 @@
 package com.il.sod.db.model.entities;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -7,15 +10,15 @@ import java.util.Set;
 
 /**
  * The persistent class for the ServiceType database table.
- *
  */
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
-@NamedQuery(name="ServiceType.findAll", query="SELECT s FROM ServiceType s")
+@NamedQuery(name = "ServiceType.findAll", query = "SELECT s FROM ServiceType s")
 public class ServiceType implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idServiceType;
 
 	private String description;
@@ -26,30 +29,56 @@ public class ServiceType implements IEntity<Integer> {
 
 	private Integer time;
 
+
+	//bi-directional many-to-many association to ServiceType
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "ServiceTypeSpecs"
+			, joinColumns = {
+			@JoinColumn(name = "idServiceType")
+	}
+			, inverseJoinColumns = {
+			@JoinColumn(name = "idSpecs")
+	})
+	private Set<Spec> specs;
+
 	//bi-directional many-to-one association to Service
-	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "serviceType", fetch = FetchType.EAGER)
 	private Set<Service> services;
 
-	//bi-directional many-to-one association to ServiceTypeSpec
-	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
-	private Set<ServiceTypeSpec> serviceTypeSpecs;
-
 	//bi-directional many-to-one association to ServiceTypeTask
-	@OneToMany(mappedBy="serviceType", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "serviceType", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<ServiceTypeTask> serviceTypeTasks;
-	
+
 	//bi-directional many-to-one association to ServiceCategory
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="idServiceCategory")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "idServiceCategory")
 	private ServiceCategory serviceCategory;
 
-	//bi-directional many-to-many association to ProductType
-	@ManyToMany(mappedBy="serviceTypes", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	//bi-directional many-to-many association to ServiceType
+	@ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(
+			name="ServiceTypeProductType"
+			, joinColumns={
+			@JoinColumn(name="idServiceType")
+	}
+			, inverseJoinColumns={
+			@JoinColumn(name="idProductType")
+	})
 	private Set<ProductType> productTypes;
 
 	private boolean calculator;
-	
+
 	public ServiceType() {
+	}
+
+	public ServiceType(String name, String description, double price, Integer time, ServiceCategory serviceCategory, boolean calculator) {
+		this.description = description;
+		this.name = name;
+		this.price = price;
+		this.time = time;
+		this.serviceCategory = serviceCategory;
+		this.calculator = calculator;
 	}
 
 	public int getIdServiceType() {
@@ -106,26 +135,27 @@ public class ServiceType implements IEntity<Integer> {
 		return service;
 	}
 
-	public Set<ServiceTypeSpec> getServiceTypeSpecs() {
-		return this.serviceTypeSpecs;
+	public Set<Spec> getSpecs() {
+		if (specs == null) {
+			specs = new HashSet<>();
+		}
+		return specs;
 	}
 
-	public void setServiceTypeSpecs(Set<ServiceTypeSpec> serviceTypeSpecs) {
-		this.serviceTypeSpecs = serviceTypeSpecs;
+	public void setSpecs(Set<Spec> specs) {
+		this.specs = specs;
 	}
 
-	public ServiceTypeSpec addServiceTypeSpec(ServiceTypeSpec serviceTypeSpec) {
-		getServiceTypeSpecs().add(serviceTypeSpec);
-		serviceTypeSpec.setServiceType(this);
-
-		return serviceTypeSpec;
+	public Spec addSpec(Spec specs) {
+		getSpecs().add(specs);
+		specs.getServiceTypes().add(this);
+		return specs;
 	}
 
-	public ServiceTypeSpec removeServiceTypeSpec(ServiceTypeSpec serviceTypeSpec) {
-		getServiceTypeSpecs().remove(serviceTypeSpec);
-		serviceTypeSpec.setServiceType(null);
-
-		return serviceTypeSpec;
+	public Spec removeSpec(Spec specs) {
+		getSpecs().remove(specs);
+		specs.getServiceTypes().remove(this);
+		return specs;
 	}
 
 	public Set<ServiceTypeTask> getServiceTypeTasks() {
@@ -139,17 +169,15 @@ public class ServiceType implements IEntity<Integer> {
 	public ServiceTypeTask addServiceTypeTask(ServiceTypeTask serviceTypeTask) {
 		getServiceTypeTasks().add(serviceTypeTask);
 		serviceTypeTask.setServiceType(this);
-
 		return serviceTypeTask;
 	}
 
 	public ServiceTypeTask removeServiceTypeTask(ServiceTypeTask serviceTypeTask) {
 		getServiceTypeTasks().remove(serviceTypeTask);
 		serviceTypeTask.setServiceType(null);
-
 		return serviceTypeTask;
 	}
-	
+
 	@Override
 	public Integer getId() {
 		return this.idServiceType;
@@ -178,7 +206,7 @@ public class ServiceType implements IEntity<Integer> {
 	}
 
 	public Set<ProductType> getProductTypes() {
-		if (productTypes == null){
+		if (productTypes == null) {
 			productTypes = new HashSet<>();
 		}
 		return productTypes;
@@ -188,14 +216,16 @@ public class ServiceType implements IEntity<Integer> {
 		this.productTypes = productTypes;
 	}
 
-	public void addProductType(ProductType productType) {
+	public ProductType addProductType(ProductType productType) {
 		getProductTypes().add(productType);
 		productType.getServiceTypes().add(this);
+		return productType;
 	}
 
-	public void removeProductType(ProductType productType) {
-		getServiceTypeTasks().remove(productType);
+	public ProductType removeProductType(ProductType productType) {
+		getProductTypes().remove(productType);
 		productType.getServiceTypes().remove(this);
+		return productType;
 	}
 
 	public boolean isCalculator() {
@@ -232,5 +262,47 @@ public class ServiceType implements IEntity<Integer> {
 		result = 31 * result + (int) (temp ^ (temp >>> 32));
 		result = 31 * result + (time != null ? time.hashCode() : 0);
 		return result;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+				.append("idServiceType", idServiceType)
+				.append("description", description)
+				.append("name", name)
+				.append("price", price)
+				.append("time", time)
+				.append("specs", specs)
+				.append("productTypes", productTypes)
+				.append("calculator", calculator)
+				.toString();
+	}
+
+	public boolean containsSpec(int idSpec){
+		for (Spec s :
+				getSpecs()) {
+			if (s.getId() == idSpec){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean containsProductType(int idProductType){
+		for (ProductType pt :
+				getProductTypes()) {
+			if (pt.getId() == idProductType){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean containsServiceTypeTask(int idServiceTypeTask){
+		for (ServiceTypeTask stt :
+				getServiceTypeTasks()) {
+			if (stt.getId() == idServiceTypeTask) return true;
+		}
+		return false;
 	}
 }

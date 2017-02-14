@@ -7,7 +7,13 @@ public class SODAPIException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	Response.Status status = Response.Status.INTERNAL_SERVER_ERROR; 
-	
+
+	// TODO implement formatter
+	public SODAPIException(Response.Status status, String message, Object... messageSubstitutions) {
+		super(message);
+		this.status = status;
+	}
+
 	public SODAPIException(Response.Status status, String message) {
 		super(message);
 		this.status = status;
