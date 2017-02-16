@@ -94,6 +94,9 @@ public class Order implements IEntity<Integer> {
 	@OneToMany(mappedBy="order", fetch=FetchType.EAGER)
 	private Set<OrderPromotion> orderPromotions;
 
+	private double pickUpPrice;
+	private double deliverPrice;
+
 	public Order() {
 	}
 
@@ -311,5 +314,21 @@ public class Order implements IEntity<Integer> {
 		orderPromotion.setOrder(null);
 
 		return orderPromotion;
+	}
+
+	public double getPickUpPrice() {
+		return pickUpPrice;
+	}
+
+	public void setPickUpPrice(double pickUpPrice) {
+		this.pickUpPrice = pickUpPrice;
+	}
+
+	public double getDeliverPrice() {
+		return deliverPrice;
+	}
+
+	public void setDeliverPrice(double deliverPrice) {
+		this.deliverPrice = deliverPrice;
 	}
 }

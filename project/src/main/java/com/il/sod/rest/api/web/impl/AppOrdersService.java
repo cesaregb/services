@@ -109,7 +109,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Save order", response = OrderDTO.class)
 	public Response saveOrder(UIOrderDTO orderInputDto) throws SODAPIException {
-		OrderDTO result = null;
+		OrderDTO result;
 		
 		// get order type.
 		int orderType = orderInputDto.getIdOrderType();
@@ -117,16 +117,16 @@ public class AppOrdersService extends AbstractServiceMutations {
 			orderType = calculateOrderType(orderInputDto);
 		}
 
-		
 		Order orderEntity = new Order();
 		orderEntity.setComments(orderInputDto.getComments());
-
 
 		// TODO validate both transport for null
 		orderEntity.setIdAddressPickup(orderInputDto.getTransport().get(0).getIdAddress());
 		orderEntity.setPickUpDate(orderInputDto.getTransport().get(0).getDate());
+		orderEntity.setPickUpPrice(orderInputDto.getTransport().get(0).getPrice());
 		orderEntity.setIdAddressDeliver(orderInputDto.getTransport().get(1).getIdAddress());
 		orderEntity.setDeliverDate(orderInputDto.getTransport().get(1).getDate());
+		orderEntity.setDeliverPrice(orderInputDto.getTransport().get(1).getPrice());
 
 		orderEntity.setTotalServices(orderInputDto.getTotalServices());
 		orderEntity.setTotal(orderInputDto.getTotal());
