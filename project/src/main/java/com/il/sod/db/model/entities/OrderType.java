@@ -28,7 +28,7 @@ public class OrderType extends SoftDeleteEntity implements IEntity<Integer> {
 	private Set<OrderTypeTask> orderTypeTask;
 
 	//bi-directional many-to-one association to Order
-	@OneToMany(mappedBy="orderType", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="orderType", fetch=FetchType.LAZY)
 	@JsonManagedReference
 	private Set<Order> orders;
 	

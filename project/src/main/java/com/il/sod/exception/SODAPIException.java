@@ -6,21 +6,23 @@ public class SODAPIException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	Response.Status status = Response.Status.INTERNAL_SERVER_ERROR; 
+	Response.Status status = Response.Status.INTERNAL_SERVER_ERROR;
+	String message;
 
 	// TODO implement formatter
 	public SODAPIException(Response.Status status, String message, Object... messageSubstitutions) {
-		super(message);
+		this.message = String.format(message, messageSubstitutions);
 		this.status = status;
 	}
 
 	public SODAPIException(Response.Status status, String message) {
-		super(message);
+		this.message = message;
 		this.status = status;
 	}
 	
 	public SODAPIException(Response.Status status, String message, Exception e) {
-		super(message, e);
+		super(e);
+		this.message = message;
 		this.status = status;
 	}
 	
@@ -43,6 +45,16 @@ public class SODAPIException extends Exception {
 
 	public void setStatus(Response.Status status) {
 		this.status = status;
+	}
+
+	// Overrides Exception's getMessage()
+	@Override
+	public String getMessage(){
+		if (message != null){
+			return message;
+		}else {
+			return "Error in the server.... ups";
+		}
 	}
 
 }

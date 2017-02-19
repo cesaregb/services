@@ -84,7 +84,7 @@ public class ServicesSvTest extends SpringTestConfiguration {
 		servicesSv.addServiceTypeTask(8, list);
 		dto = servicesSv.getServiceTypeList(8).get(0);
 		Assert.assertTrue(dto.getServiceTypeTasks().size() == 3);
-//
+
 		list = new ArrayList<>();
 		list.add(new ServiceTypeTaskDTO(new TaskDTO(1)));
 		servicesSv.addServiceTypeTask(8, list);

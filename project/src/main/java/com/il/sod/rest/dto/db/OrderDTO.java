@@ -27,7 +27,10 @@ public class OrderDTO {
 	// flat information.
 	private String clientName;
 	private String orderTypeName;
-	private double completed; 
+	private double completed;
+
+	private double pickUpPrice;
+	private double deliverPrice;
 	
 	
 	public int getIdOrder() {
@@ -166,5 +169,21 @@ public class OrderDTO {
 	}
 	public void setPaymentInfo(PaymentInfoDTO paymentInfo) {
 		this.paymentInfo = paymentInfo;
+	}
+
+	public double getPickUpPrice() {
+		return pickUpPrice;
+	}
+
+	public void setPickUpPrice(double pickUpPrice) {
+		this.pickUpPrice = pickUpPrice;
+	}
+
+	public double getDeliverPrice() {
+		return deliverPrice;
+	}
+
+	public void setDeliverPrice(double deliverPrice) {
+		this.deliverPrice = deliverPrice;
 	}
 }

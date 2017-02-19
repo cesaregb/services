@@ -180,7 +180,8 @@ public class Address implements IEntity<Integer> {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Address address1 = (Address) o;
-		return prefered == address1.prefered &&
+		return idAddress == address1.idAddress &&
+				prefered == address1.prefered &&
 				factura == address1.factura &&
 				Objects.equal(address, address1.address) &&
 				Objects.equal(address2, address1.address2) &&
@@ -189,26 +190,7 @@ public class Address implements IEntity<Integer> {
 				Objects.equal(state, address1.state) &&
 				Objects.equal(zipcode, address1.zipcode) &&
 				Objects.equal(comments, address1.comments) &&
-				Objects.equal(lat.stripTrailingZeros(), address1.lat.stripTrailingZeros()) &&
-				Objects.equal(lng.stripTrailingZeros(), address1.lng.stripTrailingZeros());
+				Objects.equal(lat, address1.lat) &&
+				Objects.equal(lng, address1.lng);
 	}
-
-	@Override
-	public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.add("address", address)
-				.add("address2", address2)
-				.add("city", city)
-				.add("country", country)
-				.add("state", state)
-				.add("zipcode", zipcode)
-				.add("comments", comments)
-				.add("prefered", prefered)
-				.add("factura", factura)
-				.add("lat", lat)
-				.add("lng", lng)
-				.toString();
-	}
-
-
 }

@@ -1,97 +1,294 @@
-Aida Ruiz,Colegio Becquer,3313612762
-Aide Elena Martinez,Sochicalco 5955,36313494
-Anahi,Restaurantes Atemai,
-Angel Gutierrez,av.del pinar,31204063
-Angelica huerta,"Av, del pinar 3447",36311011
-Antonio topete,Ciber,
-Arnulfo,penisnula2749 int 12,
-Arnulfo,Peninsula 2749 12,
-Avig,Av. del pinar 3498,3312227469
-Barben shop,18 de marzo 1875,3317628487
-Barben shop,18 de Marzo 1875 -B,3317628487
-Benjamin,Peten5484,3418863925
-Benjamin Bravo,Bahia Acapulco 2988-9,31884038
-Berenice Ramirez,Tomas Balcazar,3312482014
-Berenice Ramirez,Tomas Balcazar,3312482014
-Berenice Ramirez,Tomas Balcazar,3312482014
-Carlos Huerta,av. del pinar 3447,3631101
-Carmen Chavez,Cancun 5908,36323262
-Carmen Chavez,Cancun 5908,36323262
-Carmen Chavez,Cancun 5908,36323262
-Daniela,Tula 5736,3331159620
-Delia Nuno,Av. Del pinar 3340,19840612
-Delia Nuno,Av. del pinar 3340,19840612
-Delia Nuno,Avenida del pinar 3340 int ,19840612
-Delia Zanudo,Av. Del pinar 3340,19840612
-Delia Zanudo,Av. Del pinar 3340,19840612
-Delia Zanudo,Av. Del pinar 3340,19840612
-Dulce Maria,Avenida del pinar 3240,
-Elsa,Rio mezquitic 1154,3312160856
-Elsa,Rio mezquitic 1154,3312160856
-Elsa,Rio Mezquitic1154,3312160856
-Elsa,Rio Mezquitic1154,3312160856
-Elsa,Rio Mezquitic1154,3312160856
-Elvia  Limon,Av. del  Pinar 3353,36312992
-Emilio perez,av. Del pinar3340 int.334,3312310818
-Emilio perez,av. Del pinar3340 int.334, 
-Emilio perez,Avenida del pinar 3340 int 334,3312310818
-Emilio perez,Avenida del pinar 3340 int 334,3312310818
-Estela Caballero,Copilco1501,3317193667
-Fernando  ,Okina Suhi,35636380
-Fernando Avalos,Rio Texcaquesco658,35636380
-Gabi,Corona Boreal 4223,311101020
-Hector Rivera,av. del pinar 3340-int.334,3313118811
-Hector Rivera,Av. del Pinal 3340,331311814
-Jaquelin Seguridad,Lopez Mateos Sur 5871,19834905
-Jaquelin Seguridad,av. lopez mateos sur,19834905
-Laura Navarete,Bonampak 3190,3315028487
-Laura Navarete,Bonampack3190,3315028487
-Laura Navarete,bonampack 3190,3315028487
-Laura Pulido,Isac newton,36341686
-Leticia   Sanchez,Santa Ana Norte ,3331966018
-leticia gonzalez,av. del pinar3366,36320419
-Leticia Gonzalez,av. del pinar3366,36320419
-Leticia Gonzalez,Av del pinar  3366,36320419
-Lizbeth,PLaya Bucerias 5601,3335075904
-Lizbeth,PLaya Bucerias 5601,
-Lourdes,cuicuilco 1270,36468333
-Lourdes Mora,Copilco 5946,331089347
-Lupita,av.del pinar 3256,36328675
-Lupita,av.del pinar 3256,36328675
-ManuelChavez Perez,Lopez Mateos Sur,15293032
-Margarita Gonzalez,  ,3311949300
-Maria Antonia,Galilelo Galilei,38558266 y 3315649534
-Maria Elena Castillo,Bonampack 3318,36323236
-Maria Elena Castillo,Bonampack 3318,36323236
-Maria Elena Castillo,bonampack 3318,36323236
-Maria GUadalupe,Sierra Mazamitla,3331047686
-Maria Guadalupe,Rio Cuitzle5668,3331047686
-Mariel Elena,Cancun 1806,36315665
-Martha Chavez,Corona Boreal 4223,3311101020
-Nicolas Bonneal,cancun 5912,36319792
-Nicolas Bonneal,cancun 5912,36319792
-Pablo Lopez,Aztlan 3335,3315115680
-Pablo Lopez,AZtlan 3335,3315115680
-Pedro Martinez,Aztlan,36311024
-Rita Arreola,aztlan 3335,36320406
-Rita Arreola,Aztlan 3335,36320406
-Rita Arreola,AZtlan 3335,36320406
-Roberto,Torre335 INt231,
-Roberto,Torre335 INt231,
-Rocio,Av del pinar ,3310655042
-Rocio,Cancun 1907,3310655042
-Rocio  ,"Av, del pinar 1540",
-Rocio Guerrero,Cancun1907,2066870329
-Rodolfo Gallegos,Camini al iteso 8900,13805356
-Rosa Hernandez,Playa Brucelas5589,20143088
-Rosario Jaramillo,Teotihuacan 2808,36341137 y 333662592
-Rosario Vargas,Av. del Pinar,
-Sandra Mejia,Cancun B,
-Sofia Aviles,Mision Santo Thomas,3319838264
-Teresa Quezada,"Av, del Pinar 1822",31204063
-Teresa Quezada,Pinar de la calma 1822,31204063
-Vania Barrera,Colegio Becker,3334812587
-Vecino 15,peninsula 2749 15,
-Vecino 15,peninsula 2749 15,
-Vecino 15,Peninsula int 15,Vecino
-Vecino 15,pensinsula 2749 15,
+Nombre,Direccion,Telefono,
+Aida Ruiz,Colegio Becquer,3313612762,
+Aide Elena Martinez,Sochicalco 5955,36313494,
+Anahi,Restaurantes Atemai,,
+Angel Gutierrez,av.del pinar,31204063,
+Angelica huerta,"Av, del pinar 3447",36311011,
+Antonio topete,Ciber,36320337,
+Arnulfo,penisnula2749 int 12,3312859808,
+Avig,Av. del pinar 3498,3312227469,
+Barben shop Yendri,18 de marzo 1875-B,3317628487,
+Benjamin,Peten5484,3418863925,
+Benjamin Bravo,Bahia Acapulco 2988-9,31884038,
+Berenice Ramirez,Tomas Balcazar,3312482014,
+Carlos Huerta,av. del pinar 3447,3631101,
+Carmen Chavez,Cancun 5908,36323262,
+Daniela,Tula 5736,3331159620,
+Delia Nuno,Av. Del pinar 3340,19840612,
+Dulce Maria,Avenida del pinar 3240,3338443360,
+Elsa,Rio mezquitic 1154,3312160856,
+Elvia  Limon,Av. del  Pinar 3353,36312992,
+Emilio perez,av. Del pinar3340 int.334,3312310818,
+Estela Caballero,Copilco1501,3317193667,
+Fernando Avalos,Rio Texcaquesco658,35636380,
+Gabi,Corona Boreal 4223,311101020,
+Hector Rivera,av. del pinar 3340-int.334,3313118811,
+Silva Ep94,Lopez Mateos Sur 5871,19834905,
+Laura Navarete,Bonampak 3190,3315028487,
+Laura Pulido,Isac newton 4105,36341686,
+Leticia   Sanchez,Santa Ana Norte ,3331966018,
+leticia gonzalez,av. del pinar3366,36320419,
+Lizbeth,PLaya Bucerias 5601,3335075904,
+Lourdes, ,36468333,
+Lourdes Mora,Copilco 5946,331089347,
+Lupita,av.del pinar 3256,36328675,
+ManuelChavez Perez,Lopez Mateos Sur 5871,3315293032,
+Margarita Gonzalez,Av. del pinar 3340 interior 314,3311949300,
+Maria Elena Castillo,Bonampack 3318,36323236,
+Maria Guadalupe,Rio Cuitzle5668,3331047686,
+Maria Elena,Cancun 1806,36315665,
+Martha Chavez,Corona Boreal 4223,3311101020,
+Nicolas Bonneal,cancun 5912,36319792,
+Pablo Lopez,Aztlan 3335,3315115680,
+Pedro Martinez,Aztlan 1975,36311024,
+Rita Arreola,aztlan 3335,36320406,
+Roberto, Aztlan Torre335 INt231,3315282254,
+Rocio,Cancun 1907,3310655042,
+Rocio Guerrero,Cancun1907,2066870329,
+Rodolfo Gallegos,Camino al iteso 8900,13805356,
+Rosa Hernandez,Playa Brucelas5589,20143088,
+Rosario Jaramillo,Teotihuacan 2808,36341137,
+Sandra Mejia,Cancun B,,
+Teresa Quezada,"Av, del Pinar 1822",31204063,
+Vania Barrera,Colegio Becker,3334812587,
+Ronal,peninsula 2749 15,3321735971,
+Rosario Garibay,Av. del pinar 2889,36318931,
+maricela Placencia,Rio Nilo 7922,36813770,
+Claudia ramirez,Loma Linda8043,3322265741,
+Martha Santana,Rio santiago 5738,31331308,
+cecilio lechuga,hotel hoLI day,,
+MARIA DEL REFUGIO,AV. PINAR 3340 int 313,36321706,
+Estela  ,"Araceli Zouza 5140 A, Paseos del Sol",36152219,
+Carmen murillo,uxmal 1409,36325200,
+maria teresa,mazamitla 1922,15811773,
+Lic Lorena,Av. del tesoro,31351092,
+Abel castro,rio lerma 1898,3318079364,
+Jorge,teotihuacan2966,3318931865,
+herandy,Mariano Otero 1354,3318957534,
+robert,acuatix,,
+Elvia  Limon,Av. del  Pinar 3353,36312992,
+martha ,uxmal 1410,36322275,
+Silvia Flores,Av. del pinar 3310,3313264077,
+silvia alyve spa Fabiola,obsidiana 2887,96271672,
+Rodolfo Rodriguez,Aztlan 3335,3312705060,
+Adriana Gallardo,Cancun  1905,3339016115,
+Alejandra,"Morelos 2262, entre duque de Rivas y av. Vallarta", 667 229 0837,
+Alejandra Cardona,Aztlan 3335,3312705060,
+Rosalba Camarena,Avenida del pinar 3316,36312813,
+Angelica Chacht,Sierra Mazamitla 5581,4421240242,
+Jose Luis,av. del pinar 1908,,
+Ferando Flores,Av. del Tesoro 981 int. 202,8182063145,
+Norma medina,teotihuacan 1906,36312722,
+Jose Morales,Valle de Atejamac  2118,3311932000,
+mari paz,parroquia santo niño de atocho,36312741,
+Gladis palafox,Andador Xochicalco 5966,3314799837,
+Lupita,Peten 5912,39446921,
+Maria Guadalupe Troncoso,Avenida del pinar 3329,39446921,
+Erick Gonzalez,Avenida del pinar 3340 int 332,7222478789,
+Yolanda,"Rio Colotlan 2084, entre cuitzmala y santiago",36321733,
+Dolores Gomez,"Tlatelolco 3344, int 12, colonia Diaz Ordaz",5527037658,
+Elizabeth,volcan cofre de perote 5057. Casa 2,3319560199,
+Carlos cossio,"jaime Rivera 3081, paseos del sol",3310221313,
+Elsa,Rio Mezquitic 1154,3312160856,
+Sravan Varanasi,Av. del pinar 3498,3339646504,
+Ana Gonzalez,Cancun 1890,15813543,
+Joel ,Mariano Otero 1354,3314380020,
+Joe Gutierrez,Quick Plaza del sol,3315548493,
+Martha Chavez,corona boreal ,3311101020,
+Marco Zanudo,Av. del pinar 3340,19840612,
+Blanca Pelayo,Volcan Paricutin  5526 interior 21,,
+Ana  ,Tuxtla 5914,24007030,
+Maria asuncion garcia,Chicomostock 3044,36312262,
+Jorge Alvirde,Bonampack3318,36323236,
+Noe Aquino,Av. del Pinar 1974,36312144,
+Cecilia Becerra,Cuicuilco 1795,3310976924,
+coisa,av.del pinar 3223,36325121,
+martha gallegos ,aztlan 1805,36311790,
+carolina,"aldama 83105, Gavilanes",5551086930,
+MARIA ELENA,AZTLAN 1950,,
+catalina,Cuicuilco 1813,36340007,
+Miguel Pantoja,Rio Santiago 5814,36314818,
+mariana,cuicuilco 1936,3331494855,
+rosa hernandez,playa bucerias 5589,20143088,
+Rosa maria Miyar,Aurora Boreal 3937 int 3,31331209,
+Pamela Paz,av. del pinar 3044 dep3,3317434183,
+Bety,cacaco 1726,3310750525,
+Julieta  Sanchez,Av. del Pinar 3050 int'8,3314860833,
+marco,bonanpack 5955,2293313394,
+Ivan Lopez,Primo Feliciano Velazquez 761,3315992618,
+Alvaro Chimal,Peten 5918,36312226,
+Lili Alvarado,,4521010515,
+paola,Bonampack 3424 int 13,4371034642,
+Lupita Barragan ,Colegio Becker,,
+Javier,Av. del pinar 2857,3322209516,
+Sergio Quintero,Echeverria,3322612839,
+cecilia wuilian,esturion 3071,3334400938,
+Eduardo Alain,,3921088569,
+Angel ,Tuxtla5892,36317003,
+Rosario Giles,ixtepete 3492 int 4,3315111331,
+Luz Maria Castro,Ixtepete 3285,6441346257,
+pablo Arrieta,Av. del Pinar 3230,11178137,
+guillermina rosales,rio mexquitic 1147,15811016,
+Raj,Avenida del Pinar 3498,33221927,
+Vianey Navarrete,Cancun 1788,3331662530,
+carolina aguilar,cisne 1249 colonia morelos entre cardenal y dos de abril,3335963470,
+Axel Nuniez Ramirez,la burreteria,5531194748,
+Elizabeth Rios,Cuicuilco1974,3334530414,
+ana valles,rio tuxpan 894,31350022,
+rafael roman,av del pinar 3340,39446923,39446921
+Coni Sanchez,"Av, del pinar 3253",33436763,
+Guillermo Vecino,peninsula 2749 int 10,,
+alfonso,av del pinar 3340 1,5585508289,
+jorge Rodriguez,copan 5755,3335762203,
+Hugo Quirarte,Av. del PInar 2805-b8,3331566757,
+Rosario,Tula 5715,36314496,
+Maria Luisa,cancun 5906,36346799,
+Ana Aceves,Tuxtla 5914 int 1,3310954693,
+victor montanez,av del pinar 3340,3314413919,
+roberto chacon,laguna 15fraccionamiento loreto,3314359420,
+Samuel Leyva,Aztlan 3335,16666926,
+Susana,Aztlan 3335 int213,36327658,
+Lourdes Lechuga,Tical 1615,,
+jorge luis corrales,cancun 5908,36323262,
+Cecilia a la  Torre,Andador Mayapan 3362 in 31,3317740706,
+Diego,"Martillo 2139, Alamo Industrial",3321494527,
+charly,isla mexcala4921 int23,3321061418,
+Rodney Anthony ESpinoza Herrera,galileo galiley3608,3312120018,
+guillermo,cuicuilco3396,3313111016,
+Alejandra Perez,Cancun 1745,3317814240,
+Sara Sabido,Bonampack 1948,3312416956,
+B-Box Securyti,turqueza 2531,3322613050,
+Maribel,Av. del pinar 2805,3313183601,
+Nidia Chavez,Aztlan 3335 inte 133,3331379811,
+SECURITY,MORELOS 2368,36155301,
+juan carlos hernandez,aztlan 3335 int 222,3310384254,
+Brenda Salas,av padre javier scheifler 719 int 9,3311083137,
+Pinal y Suazo,Mariano Otero  5654,31336090,
+Asociacion del cerro del tesosro,Avenida del Tesoro 5781,(33)31-35-10-92,
+Isela,Quebrada 3282 A int 12,6242247499,
+Diana,Quebrada 3282 A int 12,6242247499,
+Samuel Nava,,3221175698,
+Martha Gonzalez,Rio Colotlan 1651,36310556,
+Gloria Villasenor,"Litoral 2510, entre diamante y barlovento",36710687,
+Cristina Nuño,Av. del Pinar 1776,36322915,
+Pinal y Suazo,Galerias,,
+qute,Plaza del Sol,31336090,
+Carola Madero,molina 2876,6441267979,
+Concepcion,Aztlan 3335 132,3334975640,
+Cluadia Ramirez,Peten 5918,36312226,
+Emmanuel Ramirez,Claudio Tolomeo,3411620055,
+Hilda Guzman,prolongacion las Fuentes 3012,36319301,
+Eduardo Dominguez,,3921088569,
+Cristina Becerra,Cuicuilco 1795,31335170,
+Walter Pinal,rio atengo 1839,8117184635,
+cesar Rivera,av faro 2778,3336625357,
+Leo Preciado,av del pinar 3447,36311011,
+ivan,peninsula 2727 interior 1,3334685288,
+Carlos Ruiz,,8331409194,
+elia contreras,chicomostok 1615,36311719,
+nancy arias,michoacan 144 colonia el mante,3310201592,
+Angeles Vazquez,Rio Santiago 5932,33446862,
+Lorena vazquez,peten 5903,3315195865,
+Rauf Hamden,Teotihuacan 1922,15811773,
+Alejandro Aguilera,Av. del pinar 1766,3311937312,
+enrique moncayo,,31338415,
+juan moreno,sierra de mazamitla 5895int 1,36322992,
+yolanda,cuicuilco1285,15420620,
+Isabela,cancun 1788,3318014067,
+Sandra Moncayo,Aztlan,,
+sonia sandobal,cancun 5977,36314532,
+margarita vega,av las fuentes 99,23020824,
+lizeth,Av. Cruz sur 2447,3338095321,
+luceli ,,,
+manish,,3316310237,
+alfredo,av del pinar 1776,3312691510,
+Supercito,Aztlan ,,
+gabriela tejeda,aztlan 3282,3311937203,
+eusebio,Vistas a la catedral 3041,3339558631,
+Silvia Rosales,Faro 2768,18118566,
+Olga,Cancun 1440,,
+Alejandra Arrieta,Av. del pinar 3230,3318208235,
+Laura Gomez,Quebrada 2714 2,3338094645,
+Aldo Caltelum,"Av. del pinar , tajin",3315479629,
+Uma ,Sagitario 5598 interior 302,,
+Gonzalo Diaz,,,
+Berny,Andador coba 3333 int 12,36318116,
+Eduardo perez,Teotihuacan 1939,3313598761,
+Monica Barrigo,Av. del Pinar  3427,3333590091,
+Karla Flores,Sierra Mazamitla 5895 int 1,36322992,
+Irlanda,,3310204453,
+mario,aztlan 1889,36323161,
+Jorge Rodriguez,,3335762203,
+Alberto Preciado,Av. del Pinar 3447,36311011,
+Jordi Acosto,Bonampack 3307,33 2134 7127,
+julio silva,privada de las gardenias sur 11 el moral,3332012719,
+Adriana Rodriguez,Rio Santiago 5923,36322790,
+claudia Parra,peten 5918,36312226,
+felipe romero,av del pinar 3032,5539272921,
+Senora Villa,aztlan 1822,36311830,
+susana palacios,av del pinar 1908,3313994878,
+Ismael,Bonampack 3307,3310802839,
+Juan,Tortas Alex,36328085,
+manuel verdugo,av del pinar esquina con tajin,3315479629,
+juan iglesias,av del pinar esquina con tajin,3334861684,
+norma adame,av del pinar 3350,3331063907,
+Pina Navarro,Peten 5921,,
+rodrigo viramontes,av del pinar 3340,36311846,3315879384
+Buena Mesa,,,
+Ivan mariscal,Tajin 5898 dep 6 3 piso,6441175280,
+paulina alcala,bonanpak 3424 int 3d,4371031030,
+Rodolfo Gonzalez,av del pinar,6441010893,
+Maria Macias,Aztlan 3335-113,3314242134,
+efren,,3321562516,
+Tomas,,,
+Jaime Rodriguez,Av. del Pinar 3223,36325121,
+Sandy,"can mayor 3522, entre carnero y pedro simon laplace",3339739967,
+lupita ruvalcava,aztlan 1799,3311080695,
+lore buen rostro,cancum 1835,36346446,
+habram aguirre,,6691370274,
+pablo cameruta,av del pinar 24,3331007611,
+Andrea Escobar,Av. dle PInar 3340,4473949978,
+julio cesar mendez,sierra tapalpa 176-,3310151562,
+Rosa Maria,Teotihuacan 3313,36348461,
+Daniela Gutierrez,,,
+Esteban Barbosa,av valle de atemajac 2028,36316561,
+sara gomez,av del pinar 3340,3322021521,
+anabel mora,ixtepete 1834,3318898012,
+alma delia lopez,av del pinar 1621,,
+luciano,rio lerma 1898,8332389287,
+valeria perez,aztlan 3335,3310384254,
+"Barbento, alejandro",Cruz del sur 4508 'B,36324775,
+Guadalupe Fernandez,Teotihuacan 1894,36311888,
+yamile,lapiz laszuli 3037,3321160625,
+esthela,av del pinar 3381,3317444777,
+nicol madera,ixtepete 3285 int a,6441389606,
+jesus diaz castellon,sierra de mazamitla 5521,3334538156,
+señor alberto,av del pinar 3447,36311011,
+Jose Rodriguez,Teotihuacan 3329,,
+Norma lamadrid,pinar 3032 int 1,36327222,
+german marquez,rio atengo 2085,36312381,3314324722
+Samanta Castelo,Tical 1458,3322627190,
+Nataly,Teotihuacan,3335997760,
+Araceli mercado,"Obsidiana2747, entre Onix y Turqueza",33 3122 7614,
+Anabel Nolasco,Bonampack 1972,3338141561,
+gabriela ruiz,,4561124347,
+gonzalo diaz,sochicalco 5961,36341337,
+maria elena valencia,,36310727,
+marisol rivera,ixtepete 3479,3312912323,
+miguel gonzalez,,,
+emanuel salgado,peten 5840,3332006230,
+carlos contreras,peten 5840,3314142050,
+Gerardo,,,
+Alicia Espinoza,Teotihuacan 1666,36327367,
+leopoldo silva,cancun 3224,3310627216,
+laura placencia,credomatik,,
+maria teresa gonzalez,teotiuhacan 1922,15811773,
+Miguel Angel,Sierra Mazamitla 5883,3318273896,
+Omar,,,
+ Maestra Lupita,Colegio Becker,,
+Diego Rodriguez,Auhetes 1740,3339562034,
+Paty,Teotihuacan 1806,3314764177,
+Viswa,Av. del Pinar ,3321107046,
+Eduardo  Duran,Senderos de monteverde 181,3331050314,
+Manoj,Av. dle PInar 3498 int. 8,3339500734,
+Sarai,Cancun Tienda,,
