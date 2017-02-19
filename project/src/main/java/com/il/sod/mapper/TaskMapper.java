@@ -40,11 +40,6 @@ public enum TaskMapper {
 			.byDefault()
 			.register();
 		
-		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeTask.class, OrderTask.class)
-			.exclude("id")
-			.byDefault()
-			.register();
-		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceTypeTask.class, ServiceTask.class)
 			.exclude("id")
 			.byDefault()
@@ -77,10 +72,6 @@ public enum TaskMapper {
 	
 	public TaskTypeDTO map(TaskType entity) {
 		return this.mapperFacade.map(entity, TaskTypeDTO.class);
-	}
-	
-	public OrderTask map(OrderTypeTask entity){
-		return this.mapperFacade.map(entity, OrderTask.class);
 	}
 	
 	public ServiceTask map(ServiceTypeTask entity){

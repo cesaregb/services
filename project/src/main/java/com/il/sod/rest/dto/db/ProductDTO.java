@@ -7,6 +7,7 @@ public class ProductDTO extends DeletableDTO{
 	private double price;
 	private int idProductType;
 	private String typeName;
+	private int quantity;
 
 	public int getIdProduct() {
 		return idProduct;
@@ -54,6 +55,14 @@ public class ProductDTO extends DeletableDTO{
 
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 	@Override

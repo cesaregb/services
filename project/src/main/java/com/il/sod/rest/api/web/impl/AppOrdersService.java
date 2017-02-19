@@ -7,7 +7,6 @@ import com.il.sod.db.model.entities.*;
 import com.il.sod.db.model.repositories.*;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.OrderMapper;
-import com.il.sod.mapper.TaskMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.db.OrderDTO;
 import com.il.sod.rest.dto.parse.UIOrderDTO;
@@ -67,6 +66,9 @@ public class AppOrdersService extends AbstractServiceMutations {
 	
 	@Autowired
 	SpecificObjectsConverterService specificObjectsConverterService;
+
+	@Autowired
+	OrderTaskRepository orderTaskRepository;
 	
 	@GET
 	@Path("/orderTypes")
@@ -124,6 +126,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 		orderEntity.setIdAddressPickup(orderInputDto.getTransport().get(0).getIdAddress());
 		orderEntity.setPickUpDate(orderInputDto.getTransport().get(0).getDate());
 		orderEntity.setPickUpPrice(orderInputDto.getTransport().get(0).getPrice());
+
 		orderEntity.setIdAddressDeliver(orderInputDto.getTransport().get(1).getIdAddress());
 		orderEntity.setDeliverDate(orderInputDto.getTransport().get(1).getDate());
 		orderEntity.setDeliverPrice(orderInputDto.getTransport().get(1).getPrice());
@@ -132,16 +135,21 @@ public class AppOrdersService extends AbstractServiceMutations {
 		orderEntity.setTotal(orderInputDto.getTotal());
 		orderEntity.setStatus(Constants.ORDER_CREATED);
 		// get client 
-		Client client =  clientRepository.findOne(orderInputDto.getIdClient());
+		Client client =  clientRepository.findAllIncludeOrders(orderInputDto.getIdClient());
+		if (client == null) {
+			throw new SODAPIException(Response.Status.NOT_FOUND, "Client not found {%d}", orderInputDto.getIdClient());
+		}
 		orderEntity.setClient(client);
 
 		// get order type 
-		OrderType ot = this.getEntity(orderTypeRepository, orderType);
+		OrderType ot = orderTypeRepository.findOne(orderType);
 		orderEntity.setOrderType(ot);
 		
 		// add order tasks. 
 		for (OrderTypeTask ott : ot.getOrderTypeTask()){
-			OrderTask orderTask = TaskMapper.INSTANCE.map(ott);
+			OrderTask orderTask = new OrderTask();
+			orderTask.setTask(ott.getTask());
+			orderTask.setSortingOrder(ott.getSortingOrder());
 			orderTask.setOrder(orderEntity);
 			orderEntity.addOrderTask(orderTask);
 		}
@@ -202,7 +210,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 		}
 		
 		// cast order 
-		this.saveEntity(orderRepository, orderEntity);
+		orderEntity = orderRepository.save(orderEntity);
 		LOGGER.info("Order Saved!");
 		
 		result = OrderMapper.INSTANCE.map(orderEntity);

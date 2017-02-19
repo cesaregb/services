@@ -1,15 +1,13 @@
 package com.il.sod.rest.dto.db;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 
 import java.util.List;
-import java.util.Set;
 
 public class OrderTypeDTO extends DeletableDTO{
 	private int idOrderType;
 	private String description;
 	private String name;
-	private Set<Integer> orders;
 	private List<OrderTypeTaskDTO> orderTypeTask;
 	private Integer transportInfo;
 	public int getIdOrderType() {
@@ -30,12 +28,6 @@ public class OrderTypeDTO extends DeletableDTO{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Set<Integer> getOrders() {
-		return orders;
-	}
-	public void setOrders(Set<Integer> orders) {
-		this.orders = orders;
-	}
 
 	public List<OrderTypeTaskDTO> getOrderTypeTask() {
 		return orderTypeTask;
@@ -55,14 +47,13 @@ public class OrderTypeDTO extends DeletableDTO{
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 				.add("idOrderType", idOrderType)
 				.add("description", description)
 				.add("name", name)
+				.add("orderTypeTask", orderTypeTask)
 				.add("transportInfo", transportInfo)
-				.add("deleted", getDeleted())
 				.toString();
 	}
-
 }
 

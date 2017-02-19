@@ -116,7 +116,7 @@ public class ClientDaoTest extends SpringTestConfiguration{
 			    Address addressObj = new Address();
 			    addressObj.setAddress(address);
 			    client.addAddress(addressObj);
-			    client.setHomePhone(phone);
+			    client.setMobilePhone(phone);
 			    clientRepository.save(client);
 		    }
 	    }

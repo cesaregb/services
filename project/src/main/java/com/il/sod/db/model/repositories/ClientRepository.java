@@ -16,8 +16,12 @@ public interface ClientRepository extends DeletableRepository<Client, Integer>, 
 	
 	@Query("SELECT c FROM Client c join c.addresses a WHERE a.idAddress=:idAddress")
 	public List<Client> findByAddress(@Param("idAddress") Integer idAddress);
-	
-	public List<Client> findByMobilePhone(String phone);
+
+	@Query("SELECT c FROM Client c WHERE c.mobilePhone LIKE :phone or c.homePhone LIKE :phone or c.otherPhone LIKE :phone")
+	public List<Client> findByPhone(String phone);
 
 	public List<Client> findByLoginID(String loginId);
+
+	@Query("SELECT c FROM Client c left join fetch c.orders a WHERE c.idClient=:idClient")
+	public Client findAllIncludeOrders(@Param("idClient") int idClient);
 }

@@ -29,12 +29,12 @@ public class ClientDAO{
 	public List<Client> findByLoginID(String loginId) {
 		return clientRepository.findByLoginID(loginId);
 	}
-	
+
 	public List<Client> findByAddress(Integer idAddress) {
 		return clientRepository.findByAddress(idAddress);
 	}
 	
 	public List<Client> findByPhone(String phone) {
-		return clientRepository.findByMobilePhone("%" + phone + "%");
+		return clientRepository.findByPhone("%" + phone + "%");
 	}
 }

@@ -28,14 +28,13 @@ public enum OrderMapper {
 		converterFactory.registerConverter("orderTaskSetConverter", new OrderTaskSetConverter());
 		converterFactory.registerConverter("orderTypeTaskSetConverter", new OrderTypeTasketConverter());
 		converterFactory.registerConverter("clientConverter", new ClientConverter());
-		converterFactory.registerConverter("assetTaskOrderSetConverter", new AssetTaskOrderSetConverter());
-		converterFactory.registerConverter("employeeTaskOrderSetConverter", new EmployeeTaskOrderSetConverter());
+//		converterFactory.registerConverter("assetTaskOrderSetConverter", new AssetTaskOrderSetConverter());
+//		converterFactory.registerConverter("employeeTaskOrderSetConverter", new EmployeeTaskOrderSetConverter());
 		converterFactory.registerConverter("serviceTypeSetConverter", new ServiceTypeSetConverter());
 		converterFactory.registerConverter("serviceSet2IntConverter", new ServiceSet2IntConverter());
 		converterFactory.registerConverter("serviceSetConverter", new ServiceSetConverter());
 
 		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeDTO.class, OrderType.class)
-				.fieldMap("orders", "orders").converter("orderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("orderTypeTask", "orderTypeTask").converter("orderTypeTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.byDefault()
 				.register();
@@ -52,9 +51,12 @@ public enum OrderMapper {
 				.field("idOrderType", "orderType.idOrderType")
 				.byDefault().register();
 
+		// TODO enable asset and employees once is used.
+//		.fieldMap("assetTaskOrders", "assetTaskOrders").converter("assetTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+//	    .fieldMap("employeeTaskOrders", "employeeTaskOrders").converter("employeeTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 		BaseMapper.MAPPER_FACTORY.classMap(OrderTaskDTO.class, OrderTask.class)
-				.fieldMap("assetTaskOrders", "assetTaskOrders").converter("assetTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-				.fieldMap("employeeTaskOrders", "employeeTaskOrders").converter("employeeTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+				.exclude("assetTaskOrders")
+				.exclude("employeeTaskOrders")
 				.field("idOrder", "order.idOrder")
 				.field("idTask", "task.idTask")
 				.field("taskName", "task.name")

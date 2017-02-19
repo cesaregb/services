@@ -24,19 +24,19 @@ class OrderSetConverter extends BidirectionalConverter<Set<Order>, Set<Integer>>
 
 	@Override
 	public Set<Integer> convertTo(Set<Order> source, Type<Set<Integer>> destT) {
-		return source.stream().map(p -> p.getId()).collect(Collectors.toSet());
+		return source.stream().map(Order::getId).collect(Collectors.toSet());
 	}
 }
 
 class OrderTaskSetConverter extends BidirectionalConverter<Set<OrderTask>, Set<OrderTaskDTO>> {
 	@Override
 	public Set<OrderTask> convertFrom(Set<OrderTaskDTO> source, Type<Set<OrderTask>> arg1) {
-		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+		return source.stream().map(OrderMapper.INSTANCE::map).collect(Collectors.toSet());
 	}
 
 	@Override
 	public Set<OrderTaskDTO> convertTo(Set<OrderTask> source, Type<Set<OrderTaskDTO>> arg1) {
-		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+		return source.stream().map(OrderMapper.INSTANCE::map).collect(Collectors.toSet());
 	}
 }
 
