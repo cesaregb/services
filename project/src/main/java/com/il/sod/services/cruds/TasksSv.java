@@ -1,5 +1,6 @@
 package com.il.sod.services.cruds;
 
+import com.il.sod.config.Constants;
 import com.il.sod.db.dao.impl.TaskDAO;
 import com.il.sod.db.model.entities.*;
 import com.il.sod.db.model.repositories.*;
@@ -28,6 +29,9 @@ import java.util.stream.Collectors;
 @org.springframework.stereotype.Service
 public class TasksSv extends EntityServicesBase {
 	private final static Logger LOGGER = LoggerFactory.getLogger(TaskService.class);
+
+	private static int ACTION_INIT = 1;
+	private static int ACTION_END = 2;
 
 	@Autowired
 	TaskRepository taskRepository;
@@ -143,31 +147,38 @@ public class TasksSv extends EntityServicesBase {
 
 	public OrderDTO taskAction(TaskDTO dto, int action, int idOrder) throws SODAPIException {
 		// find task regardless of what is ti
-		final int taskId = dto.getIdTask();
-		if (dto.getTypeTask() == TaskDTO.TypeTaskOps.Order.getValue()) {
-			// if is an order task
-			Order order = orderRepository.findOne(dto.getIdParent());
+		final int idTask = dto.getIdTask();
+		Order order = orderRepository.findOne(dto.getIdParent());
+		if (order == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Order not found %s", idOrder);
+		}
+
+		if (dto.getTypeTask() == Constants.TypeTaskOps.Order.getValue()) {
+			// ORDER TASK
 			OrderTask orderTask = order.getOrderTasks()
 					.stream()
-					.filter(t-> t.getTask().getId() == taskId).findFirst().get();
-			if (action == 0){
+					.filter(t-> t.getTask().getId() == idTask).findFirst().get();
+			if (action == ACTION_INIT){
 				orderTask.setStarted(new Date());
+				orderTask.setStatus(Constants.TaskAction.Working.getValue());
 			} else {
 				orderTask.setEnded(new Date());
-				orderTask.setStatus(1);
+				orderTask.setStatus(Constants.TaskAction.End.getValue());
 			}
 			orderTaskRepository.save(orderTask);
 		} else {
-			// if is a service task
+			// SERVICE TASK
 			Service service = serviceRepository.findOne(dto.getIdParent());
 			ServiceTask serviceTask = service.getServiceTasks()
 					.stream()
-					.filter(t-> t.getTask().getId() == taskId).findFirst().get();
-			if (action == 0){
+					.filter(t-> t.getTask().getId() == idTask).findFirst().get();
+
+			if (action == ACTION_INIT){
 				serviceTask.setStarted(new Date());
+				serviceTask.setStatus(Constants.TaskAction.Working.getValue());
 			} else {
 				serviceTask.setEnded(new Date());
-				serviceTask.setStatus(1);
+				serviceTask.setStatus(Constants.TaskAction.End.getValue());
 			}
 			serviceTaskRepository.save(serviceTask);
 		}

@@ -1,19 +1,11 @@
 package com.il.sod.mapper;
 
-import com.il.sod.db.model.entities.AssetTaskOrder;
-import com.il.sod.db.model.entities.EmployeeTaskOrder;
-import com.il.sod.db.model.entities.Order;
-import com.il.sod.db.model.entities.OrderTask;
-import com.il.sod.db.model.entities.OrderType;
-import com.il.sod.db.model.entities.OrderTypeTask;
-import com.il.sod.rest.dto.db.AssetTaskOrderDTO;
-import com.il.sod.rest.dto.db.EmployeeTaskOrderDTO;
-import com.il.sod.rest.dto.db.OrderDTO;
-import com.il.sod.rest.dto.db.OrderTaskDTO;
-import com.il.sod.rest.dto.db.OrderTypeDTO;
-import com.il.sod.rest.dto.db.OrderTypeTaskDTO;
-
+import com.il.sod.config.Constants;
+import com.il.sod.db.model.entities.*;
+import com.il.sod.rest.dto.db.*;
+import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.converter.ConverterFactory;
 
 public enum OrderMapper {
@@ -60,7 +52,16 @@ public enum OrderMapper {
 				.field("idOrder", "order.idOrder")
 				.field("idTask", "task.idTask")
 				.field("taskName", "task.name")
-				.byDefault().register();
+				.byDefault()
+				.customize(new CustomMapper<OrderTaskDTO, OrderTask>() {
+					@Override
+					public void mapBtoA(OrderTask entity, OrderTaskDTO dto, MappingContext context) {
+						dto.setTask(TaskMapper.INSTANCE.map(entity.getTask()));
+						dto.getTask().setTypeTask(Constants.TypeTaskOps.Order.getValue());
+						dto.getTask().setIdParent(entity.getOrder().getId());
+					}
+				})
+				.register();
 
 
 		BaseMapper.MAPPER_FACTORY.classMap(AssetTaskOrderDTO.class, AssetTaskOrder.class)

@@ -102,7 +102,9 @@ public class OrdersSv extends EntityServicesBase {
 		ServiceTasksInfoDTO serviceTI = new ServiceTasksInfoDTO();
 		serviceTI.setName(service.getName());
 		serviceTI.setIdService(service.getIdService());
-		Set<ServiceTaskDTO> serviceTaskDTOS = service.getServiceTasks().stream().map(ServiceMapper.INSTANCE::map).collect(Collectors.toSet());
+		Set<ServiceTaskDTO> serviceTaskDTOS = service.getServiceTasks()
+				.stream()
+				.map(ServiceMapper.INSTANCE::map).collect(Collectors.toSet());
 		serviceTI.setServiceTasks(serviceTaskDTOS);
 		return serviceTI;
 	}

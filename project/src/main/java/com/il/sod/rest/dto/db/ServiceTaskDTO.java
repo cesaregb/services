@@ -11,6 +11,7 @@ public class ServiceTaskDTO {
 	private Set<EmployeeTaskServiceDTO> employeeTaskServices;
 	private int idService;
 	private int idTask;
+	private TaskDTO task;
 	private Date started;
 	private Date ended;
 	private int status;
@@ -88,5 +89,13 @@ public class ServiceTaskDTO {
 	}
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
+	}
+
+	public TaskDTO getTask() {
+		return task;
+	}
+
+	public void setTask(TaskDTO task) {
+		this.task = task;
 	}
 }

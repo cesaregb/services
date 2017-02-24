@@ -70,16 +70,4 @@ public class TaskDTO extends DeletableDTO{
 		this.idParent = idParent;
 	}
 
-	public enum TypeTaskOps{
-		Order(0),
-		Service(1);
-
-		private int val = 0;
-		private TypeTaskOps(int val){
-			this.val = val;
-		}
-		public int getValue(){
-			return this.val;
-		}
-	}
 }

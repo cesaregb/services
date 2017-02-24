@@ -60,7 +60,7 @@ public class TaskService extends AbstractServiceMutations {
 	}
 
 	@PUT
-	@Path("/idOrder/{idOrder}/action/{action}")
+	@Path("/idOrder/{idOrder}/action/{action}/")
 	@ApiOperation(value = "Start finish task", response = TaskDTO.class)
 	public Response taskAction(@PathParam("idOrder") int idOrder, @PathParam("action") int action, TaskDTO dto) throws SODAPIException {
 		return ConvertUtils.castEntityAsResponse(tasksSv.taskAction(dto, action, idOrder), Response.Status.OK);
