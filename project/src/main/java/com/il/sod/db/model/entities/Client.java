@@ -320,6 +320,15 @@ public class Client extends SoftDeleteEntity implements IEntity<Integer> {
 		return null;
 	}
 
+	@Transient
+	public String getFullName(){
+		StringBuilder sb = new StringBuilder();
+		this.lastName = (this.lastName!=null)?this.lastName:"";
+		this.name = (this.name!=null)?this.name:"";
+		sb.append(this.name).append(" ").append(this.lastName);
+		return sb.toString();
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

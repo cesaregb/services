@@ -76,6 +76,18 @@ public class Constants {
 		}
 	}
 
+	public enum TaskAction{
+		Init(0),
+		End(1);
+		private int val = 0;
+		TaskAction(int val){
+			this.val = val;
+		}
+		public int getValue(){
+			return this.val;
+		}
+	}
+
 	// Property for getting the state of the typesafe config
 	public static final String COM_IL_SOD_APPLICATION = "com.il.sod.application";
 

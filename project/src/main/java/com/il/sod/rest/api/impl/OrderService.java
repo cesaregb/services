@@ -71,7 +71,7 @@ public class OrderService extends AbstractServiceMutations {
 	@GET
 	@Path("/tasks/{orderId}")
 	@ApiOperation(value = "Get Task list for order", response = OrderTasksInfoDTO.class)
-	public Response getOrderTaskInfo(@PathParam("orderId") String orderId) throws SODAPIException {
+	public Response getOrderTaskInfo(@PathParam("orderId") int orderId) throws SODAPIException {
 		return ConvertUtils.castEntityAsResponse(ordersSv.getOrderTaskInfo(orderId), Response.Status.OK);
 	}
 

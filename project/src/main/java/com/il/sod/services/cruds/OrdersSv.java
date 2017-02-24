@@ -6,7 +6,10 @@ import com.il.sod.db.model.entities.Order;
 import com.il.sod.db.model.repositories.OrderRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.OrderMapper;
+import com.il.sod.mapper.ServiceMapper;
 import com.il.sod.rest.dto.db.OrderDTO;
+import com.il.sod.rest.dto.db.OrderTaskDTO;
+import com.il.sod.rest.dto.db.ServiceTaskDTO;
 import com.il.sod.rest.dto.parse.UIOrderDTO;
 import com.il.sod.rest.dto.specifics.OrderTasksInfoDTO;
 import com.il.sod.rest.dto.specifics.ServiceTasksInfoDTO;
@@ -72,18 +75,36 @@ public class OrdersSv extends EntityServicesBase {
 		return OrderMapper.INSTANCE.map(this.getEntity(orderRepository, Integer.valueOf(orderId)));
 	}
 
-	public OrderTasksInfoDTO getOrderTaskInfo(String orderId) throws SODAPIException {
-		OrderDTO dto = OrderMapper.INSTANCE.map(this.getEntity(orderRepository, Integer.valueOf(orderId)));
+	public OrderTasksInfoDTO getOrderTaskInfo(int orderId) throws SODAPIException {
+		Order order = this.getEntity(orderRepository, orderId);
 		OrderTasksInfoDTO result = new OrderTasksInfoDTO();
-		result.setOrderTasks(dto.getOrderTasks());
-		Set<ServiceTasksInfoDTO> services = dto.getServices().stream().map(i -> {
-			ServiceTasksInfoDTO r = new ServiceTasksInfoDTO();
-			r.setIdService(i.getIdService());
-			r.setServiceTasks(i.getServiceTasks());
-			return r;
-		}).collect(Collectors.toSet());
+		result.setIdOrder(orderId);
+		result.setIdClient(order.getClient().getId());
+		result.setClientName(order.getClient().getFullName());
+		result.setOrderTypeName(order.getOrderType().getName());
+
+		Set<OrderTaskDTO> orderTasks = order.getOrderTasks().stream()
+				.map(OrderMapper.INSTANCE::map)
+				.collect(Collectors.toSet());
+		result.setOrderTasks(orderTasks);
+
+		Set<ServiceTasksInfoDTO> services = order.getServices()
+				.stream()
+				.map(this::getServiceTasksInfoDTO)
+				.collect(Collectors.toSet());
+
 		result.setServices(services);
+
 		return result;
+	}
+
+	private ServiceTasksInfoDTO getServiceTasksInfoDTO(com.il.sod.db.model.entities.Service service) {
+		ServiceTasksInfoDTO serviceTI = new ServiceTasksInfoDTO();
+		serviceTI.setName(service.getName());
+		serviceTI.setIdService(service.getIdService());
+		Set<ServiceTaskDTO> serviceTaskDTOS = service.getServiceTasks().stream().map(ServiceMapper.INSTANCE::map).collect(Collectors.toSet());
+		serviceTI.setServiceTasks(serviceTaskDTOS);
+		return serviceTI;
 	}
 
 	public UIOrderDTO getOrder4Edit(String orderId) throws SODAPIException {
