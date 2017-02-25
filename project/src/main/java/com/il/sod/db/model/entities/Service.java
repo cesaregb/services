@@ -72,8 +72,6 @@ public class Service implements IEntity<Integer> {
 	@JsonBackReference
 	private Order order;
 	
-	private int nTasks;
-	
 	private int currentTask;
 	
 	//bi-directional many-to-one association to ServiceComment
@@ -221,14 +219,6 @@ public class Service implements IEntity<Integer> {
 		this.order = order;
 	}
 
-	public int getnTasks() {
-		return nTasks;
-	}
-
-	public void setnTasks(int nTasks) {
-		this.nTasks = nTasks;
-	}
-	
 	public Set<ServiceComment> getServiceComments() {
 		return this.serviceComments;
 	}

@@ -1,6 +1,7 @@
 package com.il.sod.services.cruds;
 
 import com.il.sod.config.Constants;
+import com.il.sod.db.dao.impl.OrdersDAO;
 import com.il.sod.db.dao.impl.TaskDAO;
 import com.il.sod.db.model.entities.*;
 import com.il.sod.db.model.repositories.*;
@@ -31,7 +32,6 @@ public class TasksSv extends EntityServicesBase {
 	private final static Logger LOGGER = LoggerFactory.getLogger(TaskService.class);
 
 	private static int ACTION_INIT = 1;
-	private static int ACTION_END = 2;
 
 	@Autowired
 	TaskRepository taskRepository;
@@ -53,6 +53,9 @@ public class TasksSv extends EntityServicesBase {
 
 	@Autowired
 	TaskDAO taskDAO;
+
+	@Autowired
+	OrdersDAO ordersDAO;
 
 	public TaskDTO saveTask(TaskDTO dto) throws SODAPIException {
 		if (dto.getIdTaskType() == 0) {
@@ -157,7 +160,9 @@ public class TasksSv extends EntityServicesBase {
 			// ORDER TASK
 			OrderTask orderTask = order.getOrderTasks()
 					.stream()
-					.filter(t-> t.getTask().getId() == idTask).findFirst().get();
+					.filter(t-> t.getTask().getId() == idTask).findFirst()
+					.orElseThrow(() -> new SODAPIException(Response.Status.BAD_REQUEST, "No task were found with id {}", idTask));
+
 			if (action == ACTION_INIT){
 				orderTask.setStarted(new Date());
 				orderTask.setStatus(Constants.TaskAction.Working.getValue());
@@ -166,12 +171,14 @@ public class TasksSv extends EntityServicesBase {
 				orderTask.setStatus(Constants.TaskAction.End.getValue());
 			}
 			orderTaskRepository.save(orderTask);
-		} else {
+
+		} else if (dto.getTypeTask() == Constants.TypeTaskOps.Service.getValue()) {
 			// SERVICE TASK
 			Service service = serviceRepository.findOne(dto.getIdParent());
 			ServiceTask serviceTask = service.getServiceTasks()
 					.stream()
-					.filter(t-> t.getTask().getId() == idTask).findFirst().get();
+					.filter(t-> t.getTask().getId() == idTask).findFirst()
+					.orElseThrow(() -> new SODAPIException(Response.Status.BAD_REQUEST, "No task were found with id {}", idTask));;
 
 			if (action == ACTION_INIT){
 				serviceTask.setStarted(new Date());
@@ -181,7 +188,16 @@ public class TasksSv extends EntityServicesBase {
 				serviceTask.setStatus(Constants.TaskAction.End.getValue());
 			}
 			serviceTaskRepository.save(serviceTask);
+		}else{
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Task Type not valid should be in [1, 2] actual {%s}", dto.getTypeTask());
 		}
+
+		// If order is finished, save that value.
+		if (ordersDAO.getCompletedPercent(idOrder) >= 100){
+			order.setStatus(Constants.ORDER_STATUS_FINISHED);
+			orderRepository.save(order);
+		}
+
 		return OrderMapper.INSTANCE.map(orderRepository.findOne(idOrder));
 	}
 

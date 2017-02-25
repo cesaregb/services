@@ -19,11 +19,11 @@ public class TasksSvTest extends SpringTestConfiguration {
 
 	@Test
 	public void testAction() throws Exception{
-		TaskDTO dto = new TaskDTO(4,TaskDTO.TypeTaskOps.Order.getValue(),1);
+		TaskDTO dto = new TaskDTO(4,Constants.TypeTaskOps.Order.getValue(),1);
 		OrderDTO order = tasksSv.taskAction(dto, Constants.TaskAction.Init.getValue(), 1);
 		System.out.println(order.toString());
 
-		dto = new TaskDTO(2,TaskDTO.TypeTaskOps.Service.getValue(),1);
+		dto = new TaskDTO(2,Constants.TypeTaskOps.Service.getValue(),1);
 		order = tasksSv.taskAction(dto, Constants.TaskAction.End.getValue(), 1);
 		System.out.println(order.toString());
 	}
