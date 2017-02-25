@@ -1,5 +1,7 @@
 package com.il.sod.rest.dto.db;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.Date;
 import java.util.Set;
 
@@ -185,5 +187,33 @@ public class OrderDTO {
 
 	public void setDeliverPrice(double deliverPrice) {
 		this.deliverPrice = deliverPrice;
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("idOrder", idOrder)
+				.add("comments", comments)
+				.add("idAddressDeliver", idAddressDeliver)
+				.add("idAddressPickup", idAddressPickup)
+				.add("pickUpDate", pickUpDate)
+				.add("deliverDate", deliverDate)
+				.add("totalServices", totalServices)
+				.add("total", total)
+				.add("status", status)
+				.add("client", client)
+				.add("idOrderType", idOrderType)
+				.add("orderTasks", orderTasks)
+				.add("created", created)
+				.add("updated", updated)
+				.add("time", time)
+				.add("createdBy", createdBy)
+				.add("deleted", deleted)
+				.add("clientName", clientName)
+				.add("orderTypeName", orderTypeName)
+				.add("completed", completed)
+				.add("pickUpPrice", pickUpPrice)
+				.add("deliverPrice", deliverPrice)
+				.toString();
 	}
 }

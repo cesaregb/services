@@ -1,11 +1,12 @@
 package com.il.sod.rest.dto.specifics;
 
-import java.util.Set;
-
 import com.il.sod.rest.dto.db.ServiceTaskDTO;
+
+import java.util.Set;
 
 public class ServiceTasksInfoDTO {
 	private int idService;
+	private String name;
 	private Set<ServiceTaskDTO> serviceTasks;
 	private int idOrder;
 	
@@ -27,5 +28,12 @@ public class ServiceTasksInfoDTO {
 	public void setIdOrder(int idOrder) {
 		this.idOrder = idOrder;
 	}
-	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

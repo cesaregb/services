@@ -664,7 +664,6 @@ CREATE TABLE `Service` (
   `updated` datetime DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   `idOrder` int(10) unsigned NOT NULL,
-  `nTasks` int(11) DEFAULT '0' COMMENT '# numero de tasks o pasos',
   `currentTask` int(11) DEFAULT NULL,
   `deleted` int(11) DEFAULT '0',
   `price` double DEFAULT '0',

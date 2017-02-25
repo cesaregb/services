@@ -1,8 +1,11 @@
 package com.il.sod.mapper;
 
+import com.il.sod.config.Constants;
 import com.il.sod.db.model.entities.*;
 import com.il.sod.rest.dto.db.*;
+import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.converter.ConverterFactory;
 
 public enum ServiceMapper {
@@ -58,17 +61,28 @@ public enum ServiceMapper {
 			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceTaskDTO.class, ServiceTask.class)
+			.exclude("task")
 			.fieldMap("assetTaskServices", "assetTaskServices").converter("assetTaskServiceSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.fieldMap("employeeTaskServices", "employeeTaskServices").converter("employeeTaskServiceSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.field("idService", "service.idService")
 			.field("idTask", "task.idTask")
 			.field("taskName", "task.name")
-			.byDefault().register();
+			.byDefault()
+				.customize(new CustomMapper<ServiceTaskDTO, ServiceTask>() {
+					@Override
+					public void mapBtoA(ServiceTask entity, ServiceTaskDTO dto, MappingContext context) {
+						dto.setTask(TaskMapper.INSTANCE.map(entity.getTask()));
+						dto.getTask().setTypeTask(Constants.TypeTaskOps.Service.getValue());
+						dto.getTask().setIdParent(entity.getService().getId());
+					}
+				})
+			.register();
 		
 		BaseMapper.MAPPER_FACTORY.classMap(AssetTaskServiceDTO.class, AssetTaskService.class)
 			.field("idAsset", "asset.idAsset")
 			.field("idServiceTask", "serviceTask.idServiceTask")
-			.byDefault().register();
+			.byDefault()
+			.register();
 
 		BaseMapper.MAPPER_FACTORY.classMap(EmployeeTaskServiceDTO.class, EmployeeTaskService.class)
 			.field("idServiceTask", "serviceTask.idServiceTask")
