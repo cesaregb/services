@@ -71,7 +71,13 @@ public class TasksSv extends EntityServicesBase {
 	}
 
 	public TaskDTO updateTask(TaskDTO dto) throws SODAPIException {
+		if (taskRepository.findOne(dto.getIdTask()) == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Task not found [%s]", dto.getIdTask());
+		}
+
 		Task entity = TaskMapper.INSTANCE.map(dto);
+		LOGGER.info("entity: {} ", entity.toString());
+
 		this.updateEntity(taskRepository, entity);
 		return TaskMapper.INSTANCE.map(entity);
 	}
@@ -151,7 +157,7 @@ public class TasksSv extends EntityServicesBase {
 	public OrderDTO taskAction(TaskDTO dto, int action, int idOrder) throws SODAPIException {
 		// find task regardless of what is ti
 		final int idTask = dto.getIdTask();
-		Order order = orderRepository.findOne(dto.getIdParent());
+		Order order = orderRepository.findOne(idOrder);
 		if (order == null){
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Order not found %s", idOrder);
 		}

@@ -50,14 +50,20 @@ public class ServicesSv extends EntityServicesBase {
 	}
 
 	public ServiceTypeDTO updateServiceType(ServiceTypeDTO dto) throws SODAPIException {
-		ServiceType entity = ServiceMapper.INSTANCE.map(dto);
+
+		ServiceType entity = serviceTypeRepository.findOne(dto.getIdServiceType());
+		if (entity == null){
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Service Type not found not found [%s]", dto.getIdServiceType());
+		}
+		entity = ServiceMapper.INSTANCE.map(dto, entity);
 		this.updateEntity(serviceTypeRepository, entity);
 		return converter.map(entity, ServiceTypeDTO.class);
 	}
 
-	public void deleteItem(int id) throws SODAPIException {
+	public boolean deleteItem(int id) throws SODAPIException {
 		ServiceType entity = getServiceTypeEntity(id);
 		this.deleteEntity(serviceTypeRepository, entity.getId());
+		return true;
 	}
 
 	public List<ServiceTypeDTO> getServiceTypeList(@QueryParam("idServiceType") int idServiceType) throws SODAPIException {

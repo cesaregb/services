@@ -1,5 +1,7 @@
 package com.il.sod.rest.dto.db;
 
+import com.google.common.base.MoreObjects;
+
 public class TaskDTO extends DeletableDTO{
 	private int idTask;
 	private String description;
@@ -70,4 +72,16 @@ public class TaskDTO extends DeletableDTO{
 		this.idParent = idParent;
 	}
 
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("idTask", idTask)
+				.add("description", description)
+				.add("name", name)
+				.add("idTaskType", idTaskType)
+				.add("taskTypeName", taskTypeName)
+				.add("typeTask", typeTask)
+				.add("idParent", idParent)
+				.toString();
+	}
 }
