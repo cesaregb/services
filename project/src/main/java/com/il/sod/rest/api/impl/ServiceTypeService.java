@@ -56,8 +56,7 @@ public class ServiceTypeService extends AbstractServiceMutations {
 	@Path("/{id}")
 	@ApiOperation(value = "Delete", response = GeneralResponseMessage.class)
 	public Response deleteItem(@PathParam("id") int id) throws SODAPIException {
-		servicesSv.deleteItem(id);
-		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(servicesSv.deleteItem(id), "Entity deleted"),
 				Response.Status.OK);
 	}
 

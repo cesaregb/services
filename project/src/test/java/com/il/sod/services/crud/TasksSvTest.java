@@ -28,4 +28,18 @@ public class TasksSvTest extends SpringTestConfiguration {
 		System.out.println(order.toString());
 	}
 
+	@Test
+	public void testUpdateTask() throws Exception{
+		TaskDTO dto = new TaskDTO();
+		dto.setDeleted(0);
+		dto.setIdTask(15);
+		dto.setDescription("dddddd");
+		dto.setName("ddddddddd");
+		dto.setIdTaskType(1);
+		dto.setTypeTask(0);
+		dto.setIdParent(0);
+		TaskDTO dto2 = tasksSv.updateTask(dto);
+		System.out.println(dto2.toString());
+	}
+
 }
