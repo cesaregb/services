@@ -1,5 +1,7 @@
 package com.il.sod.db.model.entities;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -127,5 +129,19 @@ public class SpecsValue implements IEntity<Integer> {
 
 	public void setCostType(int costType) {
 		this.costType = costType;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)
+				.append("idSpecsValues", idSpecsValues)
+				.append("idSupplyType", idSupplyType)
+				.append("type", type)
+				.append("value", value)
+				.append("prefered", prefered)
+				.append("serviceIncrement", serviceIncrement)
+				.append("specPrice", specPrice)
+				.append("costType", costType)
+				.toString();
 	}
 }

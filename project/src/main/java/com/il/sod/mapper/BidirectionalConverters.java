@@ -24,19 +24,19 @@ class OrderSetConverter extends BidirectionalConverter<Set<Order>, Set<Integer>>
 
 	@Override
 	public Set<Integer> convertTo(Set<Order> source, Type<Set<Integer>> destT) {
-		return source.stream().map(p -> p.getId()).collect(Collectors.toSet());
+		return source.stream().map(Order::getId).collect(Collectors.toSet());
 	}
 }
 
 class OrderTaskSetConverter extends BidirectionalConverter<Set<OrderTask>, Set<OrderTaskDTO>> {
 	@Override
 	public Set<OrderTask> convertFrom(Set<OrderTaskDTO> source, Type<Set<OrderTask>> arg1) {
-		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+		return source.stream().map(OrderMapper.INSTANCE::map).collect(Collectors.toSet());
 	}
 
 	@Override
 	public Set<OrderTaskDTO> convertTo(Set<OrderTask> source, Type<Set<OrderTaskDTO>> arg1) {
-		return source.stream().map(item -> OrderMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+		return source.stream().map(OrderMapper.INSTANCE::map).collect(Collectors.toSet());
 	}
 }
 
@@ -108,17 +108,6 @@ class EmployeeTaskOrderSetConverter
 //*******************
 // Service Mapper
 //*******************
-class ServiceTypeSpecSetConverter extends BidirectionalConverter<Set<ServiceTypeSpec>, Set<ServiceTypeSpecDTO>> {
-	@Override
-	public Set<ServiceTypeSpec> convertFrom(Set<ServiceTypeSpecDTO> source, Type<Set<ServiceTypeSpec>> arg1) {
-		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-	}
-	@Override
-	public Set<ServiceTypeSpecDTO> convertTo(Set<ServiceTypeSpec> source, Type<Set<ServiceTypeSpecDTO>> arg1) {
-		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-	}
-}
-
 //class ServiceTypeTas2IntkSetConverter extends BidirectionalConverter<Set<ServiceTypeTask>, Set<Integer>> {
 //	@Override
 //	public Set<ServiceTypeTask> convertFrom(Set<Integer> source, Type<Set<ServiceTypeTask>> arg1) {
@@ -245,15 +234,27 @@ class ServiceTypeSet2IntConverter extends BidirectionalConverter<Set<ServiceType
 	}
 }
 
-class SpecConverter extends BidirectionalConverter<Spec, SpecDTO> {
+//class SpecConverter extends BidirectionalConverter<Spec, SpecDTO> {
+//	@Override
+//	public Spec convertFrom(SpecDTO source, Type<Spec> arg1) {
+//		return SpecsMapper.INSTANCE.map(source);
+//	}
+//
+//	@Override
+//	public SpecDTO convertTo(Spec source, Type<SpecDTO> arg1) {
+//		return SpecsMapper.INSTANCE.map(source);
+//	}
+//}
+
+class SpecSetConverter extends BidirectionalConverter<Set<Spec>, Set<SpecDTO>> {
 	@Override
-	public Spec convertFrom(SpecDTO source, Type<Spec> arg1) {
-		return SpecsMapper.INSTANCE.map(source);
+	public Set<SpecDTO> convertTo(Set<Spec> source, Type<Set<SpecDTO>> type) {
+		return source.stream().map(SpecsMapper.INSTANCE::map).collect(Collectors.toSet());
 	}
 
 	@Override
-	public SpecDTO convertTo(Spec source, Type<SpecDTO> arg1) {
-		return SpecsMapper.INSTANCE.map(source);
+	public Set<Spec> convertFrom(Set<SpecDTO> source, Type<Set<Spec>> type) {
+		return source.stream().map(SpecsMapper.INSTANCE::map).collect(Collectors.toSet());
 	}
 }
 

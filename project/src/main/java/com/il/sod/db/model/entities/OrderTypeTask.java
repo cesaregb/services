@@ -41,8 +41,7 @@ public class OrderTypeTask implements IEntity<Integer> {
 	
 	private int sortingOrder;
 
-	public OrderTypeTask() {
-	}
+	public OrderTypeTask() { }
 
 	public int getIdOrderTypeTask() {
 		return this.idOrderTypeTask;
@@ -67,6 +66,7 @@ public class OrderTypeTask implements IEntity<Integer> {
 	public void setTask(Task task) {
 		this.task = task;
 	}
+
 	@Override
 	public Integer getId() {
 		return this.idOrderTypeTask;

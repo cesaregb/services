@@ -4,7 +4,7 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
 public class Constants {
-
+	// TODO clean options not used.
 	private Constants() { }
 
 	// Auth profiles.
@@ -42,8 +42,8 @@ public class Constants {
 	public static final int SPEC_TYPE_VALUES = 1;
 	
 	
-	// order status 
-	public static final int ORDER_CREATED = 0; 
+	// order status
+	public static final int ORDER_CREATED = 0;
 	public static final int ORDER_PICKED_UP = 1; 
 	public static final int ORDER_STARTED = 2; 
 	public static final int ORDER_FINISHED = 3; 
@@ -75,6 +75,34 @@ public class Constants {
 			return this.val;
 		}
 	}
+
+	public enum TaskAction{
+		Init(0),
+		Working(1),
+		End(2);
+		private int val = 0;
+		TaskAction(int val){
+			this.val = val;
+		}
+		public int getValue(){
+			return this.val;
+		}
+	}
+
+	public enum TypeTaskOps{
+		Order(0),
+		Service(1);
+
+		private int val = 0;
+		TypeTaskOps(int val){
+			this.val = val;
+		}
+		public int getValue(){
+			return this.val;
+		}
+	}
+
+	public static final int ORDER_STATUS_FINISHED = 1;
 
 	// Property for getting the state of the typesafe config
 	public static final String COM_IL_SOD_APPLICATION = "com.il.sod.application";

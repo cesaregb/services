@@ -1,5 +1,6 @@
 package com.il.sod.converter.services;
 
+import com.il.sod.db.dao.impl.OrdersDAO;
 import com.il.sod.db.model.entities.Order;
 import com.il.sod.mapper.OrderMapper;
 import com.il.sod.rest.dto.db.OrderDTO;
@@ -8,6 +9,8 @@ import com.il.sod.rest.dto.parse.UIOrderDTO;
 import com.il.sod.rest.dto.parse.UIServiceDTO;
 import com.il.sod.rest.dto.parse.UITransportDTO;
 import com.il.sod.rest.dto.serve.WPaymentInfoDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +21,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderConverterService {
+	private final static Logger LOGGER = LoggerFactory.getLogger(OrderConverterService.class);
 	
 	@Autowired
 	ServiceConverterService serviceConverterService;
+
+	@Autowired
+	OrdersDAO ordersDAO;
 	
 	public OrderDTO convert(Order entity){
 		OrderDTO result = OrderMapper.INSTANCE.map(entity);
@@ -29,16 +36,11 @@ public class OrderConverterService {
 		result.setOrderTypeName(entity.getOrderType().getName());
 		
 		// override services to use the custom converter 
-		Set<ServiceDTO> r = entity.getServices().stream().map(s -> serviceConverterService.convert(s)).collect(Collectors.toSet());
-		result.setServices(r);
-		
-		if (result.getOrderTasks().size() > 0){
-			int sumStatus = result.getOrderTasks().stream().mapToInt(ot -> ot.getStatus()).sum();
-			double completed = ((sumStatus * 100) / result.getOrderTasks().size());
-			result.setCompleted(completed);
-		}else{
-			result.setCompleted(0);	
-		}
+		Set<ServiceDTO> setService = entity.getServices()
+				.stream().map(s -> serviceConverterService.convert(s))
+				.collect(Collectors.toSet());
+		result.setServices(setService);
+		result.setCompleted(ordersDAO.getCompletedPercent(entity.getId()));
 		return result;
 	}
 	

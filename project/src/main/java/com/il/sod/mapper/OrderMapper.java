@@ -1,19 +1,11 @@
 package com.il.sod.mapper;
 
-import com.il.sod.db.model.entities.AssetTaskOrder;
-import com.il.sod.db.model.entities.EmployeeTaskOrder;
-import com.il.sod.db.model.entities.Order;
-import com.il.sod.db.model.entities.OrderTask;
-import com.il.sod.db.model.entities.OrderType;
-import com.il.sod.db.model.entities.OrderTypeTask;
-import com.il.sod.rest.dto.db.AssetTaskOrderDTO;
-import com.il.sod.rest.dto.db.EmployeeTaskOrderDTO;
-import com.il.sod.rest.dto.db.OrderDTO;
-import com.il.sod.rest.dto.db.OrderTaskDTO;
-import com.il.sod.rest.dto.db.OrderTypeDTO;
-import com.il.sod.rest.dto.db.OrderTypeTaskDTO;
-
+import com.il.sod.config.Constants;
+import com.il.sod.db.model.entities.*;
+import com.il.sod.rest.dto.db.*;
+import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.converter.ConverterFactory;
 
 public enum OrderMapper {
@@ -28,14 +20,13 @@ public enum OrderMapper {
 		converterFactory.registerConverter("orderTaskSetConverter", new OrderTaskSetConverter());
 		converterFactory.registerConverter("orderTypeTaskSetConverter", new OrderTypeTasketConverter());
 		converterFactory.registerConverter("clientConverter", new ClientConverter());
-		converterFactory.registerConverter("assetTaskOrderSetConverter", new AssetTaskOrderSetConverter());
-		converterFactory.registerConverter("employeeTaskOrderSetConverter", new EmployeeTaskOrderSetConverter());
+//		converterFactory.registerConverter("assetTaskOrderSetConverter", new AssetTaskOrderSetConverter());
+//		converterFactory.registerConverter("employeeTaskOrderSetConverter", new EmployeeTaskOrderSetConverter());
 		converterFactory.registerConverter("serviceTypeSetConverter", new ServiceTypeSetConverter());
 		converterFactory.registerConverter("serviceSet2IntConverter", new ServiceSet2IntConverter());
 		converterFactory.registerConverter("serviceSetConverter", new ServiceSetConverter());
 
 		BaseMapper.MAPPER_FACTORY.classMap(OrderTypeDTO.class, OrderType.class)
-				.fieldMap("orders", "orders").converter("orderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("orderTypeTask", "orderTypeTask").converter("orderTypeTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.byDefault()
 				.register();
@@ -52,13 +43,25 @@ public enum OrderMapper {
 				.field("idOrderType", "orderType.idOrderType")
 				.byDefault().register();
 
+		// TODO enable asset and employees once is used.
+//		.fieldMap("assetTaskOrders", "assetTaskOrders").converter("assetTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+//	    .fieldMap("employeeTaskOrders", "employeeTaskOrders").converter("employeeTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 		BaseMapper.MAPPER_FACTORY.classMap(OrderTaskDTO.class, OrderTask.class)
-				.fieldMap("assetTaskOrders", "assetTaskOrders").converter("assetTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-				.fieldMap("employeeTaskOrders", "employeeTaskOrders").converter("employeeTaskOrderSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+				.exclude("assetTaskOrders")
+				.exclude("employeeTaskOrders")
 				.field("idOrder", "order.idOrder")
 				.field("idTask", "task.idTask")
 				.field("taskName", "task.name")
-				.byDefault().register();
+				.byDefault()
+				.customize(new CustomMapper<OrderTaskDTO, OrderTask>() {
+					@Override
+					public void mapBtoA(OrderTask entity, OrderTaskDTO dto, MappingContext context) {
+						dto.setTask(TaskMapper.INSTANCE.map(entity.getTask()));
+						dto.getTask().setTypeTask(Constants.TypeTaskOps.Order.getValue());
+						dto.getTask().setIdParent(entity.getOrder().getId());
+					}
+				})
+				.register();
 
 
 		BaseMapper.MAPPER_FACTORY.classMap(AssetTaskOrderDTO.class, AssetTaskOrder.class)

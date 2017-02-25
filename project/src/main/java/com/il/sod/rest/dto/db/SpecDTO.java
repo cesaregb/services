@@ -7,10 +7,17 @@ public class SpecDTO {
 	private String description;
 	private String name;
 	private Set<SpecsValueDTO> specsValues;
+	private Set<Integer> serviceTypes;
 	private boolean optional;
-	private int max_qty;
+	private int maxQty;
 	private int deleted;
-	
+
+	public SpecDTO() {}
+
+	public SpecDTO(int idSpecs) {
+		this.idSpecs = idSpecs;
+	}
+
 	public int getIdSpecs() {
 		return idSpecs;
 	}
@@ -35,11 +42,11 @@ public class SpecDTO {
 	public void setSpecsValues(Set<SpecsValueDTO> specsValues) {
 		this.specsValues = specsValues;
 	}
-	public int getMax_qty() {
-		return max_qty;
+	public int getMaxQty() {
+		return maxQty;
 	}
-	public void setMax_qty(int max_qty) {
-		this.max_qty = max_qty;
+	public void setMaxQty(int maxQty) {
+		this.maxQty = maxQty;
 	}
 	public int getDeleted() {
 		return deleted;
@@ -54,5 +61,13 @@ public class SpecDTO {
 
 	public void setOptional(boolean optional) {
 		this.optional = optional;
+	}
+
+	public Set<Integer> getServiceTypes() {
+		return serviceTypes;
+	}
+
+	public void setServiceTypes(Set<Integer> serviceTypes) {
+		this.serviceTypes = serviceTypes;
 	}
 }

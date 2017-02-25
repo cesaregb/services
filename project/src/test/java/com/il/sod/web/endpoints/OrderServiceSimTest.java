@@ -1,4 +1,4 @@
-package com.il.sod.endpoints;
+package com.il.sod.web.endpoints;
 
 import com.il.sod.rest.api.web.impl.AppOrdersService;
 import com.il.sod.rest.dto.parse.UIOrderDTO;

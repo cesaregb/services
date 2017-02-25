@@ -63,7 +63,15 @@ public class ClientSv extends EntityServicesBase{
 
 	public ClientDTO updateClient(ClientDTO dto) throws SODAPIException {
 		// find existing one.
-		Client entity = clientDAO.findByEmail(dto.getEmail());
+		Client entity = clientRepository.findOne(dto.getIdClient());
+		if (entity != null){
+			Client testClient = clientDAO.findByEmail(dto.getEmail());
+			if (testClient != null && testClient.getId() != dto.getIdClient()){
+				throw new SODAPIException(Response.Status.NOT_FOUND, "Email is currently used by client " + testClient.getName());
+			}
+		}else{
+			entity = clientDAO.findByEmail(dto.getEmail());
+		}
 
 		if (entity == null ) {
 			throw new SODAPIException(Response.Status.NOT_FOUND, "Client doesnt exist.");

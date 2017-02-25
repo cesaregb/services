@@ -1,17 +1,11 @@
 package com.il.sod.rest.api.impl;
 
-import com.il.sod.converter.services.OrderConverterService;
-import com.il.sod.db.dao.impl.OrdersDAO;
-import com.il.sod.db.model.entities.Order;
-import com.il.sod.db.model.repositories.OrderRepository;
 import com.il.sod.exception.SODAPIException;
-import com.il.sod.mapper.OrderMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderDTO;
-import com.il.sod.rest.dto.parse.UIOrderDTO;
 import com.il.sod.rest.dto.specifics.OrderTasksInfoDTO;
-import com.il.sod.rest.dto.specifics.ServiceTasksInfoDTO;
+import com.il.sod.services.cruds.OrdersSv;
 import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,105 +16,63 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
 @Path("/orders")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/orders", tags = { "orders" })
+@Api(value = "/orders", tags = {"orders"})
 public class OrderService extends AbstractServiceMutations {
 
 	@Autowired
-	OrderRepository orderRepository;
-
-	@Autowired
-	OrdersDAO ordersDAO;
-
-	@Autowired
-	OrderConverterService orderConverterService;
+	OrdersSv ordersSv;
 
 	@POST
 	@ApiOperation(value = "Create Order Type", response = OrderDTO.class)
 	public Response saveOrder(OrderDTO dto) throws SODAPIException {
-
-			Order entity = OrderMapper.INSTANCE.map(dto);
-			this.saveEntity(orderRepository, entity);
-			dto = OrderMapper.INSTANCE.map(entity);
-			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
-
+		return ConvertUtils.castEntityAsResponse(ordersSv.saveOrder(dto), Response.Status.CREATED);
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Order Type", response = OrderDTO.class)
 	public Response updateOrder(OrderDTO dto) throws SODAPIException {
-		return updateEntity(dto);
+		return ConvertUtils.castEntityAsResponse(ordersSv.updateOrder(dto), Response.Status.OK);
 	}
 
-	private Response updateEntity(OrderDTO dto) throws SODAPIException {
-
-			Order entity = OrderMapper.INSTANCE.map(dto);
-			this.updateEntity(orderRepository, entity);
-			dto = OrderMapper.INSTANCE.map(entity);
-			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
-
-	}
-
+	//TODO by param
 	@DELETE
 	@ApiOperation(value = "Create Order Type", response = OrderDTO.class)
 	public Response deleteOrder(OrderDTO dto) throws SODAPIException {
-
-			Order entity = OrderMapper.INSTANCE.map(dto);
-			this.deleteEntity(orderRepository, entity.getIdOrder());
-			return ConvertUtils.castEntityAsResponse(
-					new GeneralResponseMessage(true, "Entity deleted"),
-					Response.Status.OK);
-
+		return ConvertUtils.castEntityAsResponse(
+				new GeneralResponseMessage(ordersSv.deleteOrder(dto), "Entity deleted"),
+				Response.Status.OK);
 	}
 
 	@GET
 	@ApiOperation(value = "Get Order Type list", response = OrderDTO.class, responseContainer = "List")
 	public Response getOrderList() throws SODAPIException {
-		List<Order> rentityList = this.getEntityList(orderRepository);
-		List<OrderDTO> list = rentityList.stream().map((i) -> {
-			OrderDTO dto = orderConverterService.convert(i);
-			return dto;
-		}).collect(Collectors.toList());
-		return ConvertUtils.castEntityAsResponse(list);
+		return ConvertUtils.castEntityAsResponse(ordersSv.getOrderList());
 	}
 
 	@GET
 	@Path("/byStatus/{status}")
 	@ApiOperation(value = "Get Order by status ", response = OrderDTO.class, responseContainer = "List")
 	public Response getOrdersByStatus(@PathParam("status") int status) throws SODAPIException {
-		List<OrderDTO> dto = ordersDAO.findByStatus(status).stream().map( o -> orderConverterService.convert(o)).collect(Collectors.toList());
-		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(ordersSv.getOrdersByStatus(status), Response.Status.OK);
 	}
 
 	@GET
 	@Path("/byId/{orderId}")
 	@ApiOperation(value = "Get Order by id", response = OrderDTO.class)
 	public Response getOrderById(@PathParam("orderId") String orderId) throws SODAPIException {
-		OrderDTO dto = OrderMapper.INSTANCE.map(this.getEntity(orderRepository, Integer.valueOf(orderId)));
-		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(ordersSv.getOrderById(orderId), Response.Status.OK);
 	}
 
 	@GET
 	@Path("/tasks/{orderId}")
 	@ApiOperation(value = "Get Task list for order", response = OrderTasksInfoDTO.class)
-	public Response getOrderTaskInfo(@PathParam("orderId") String orderId) throws SODAPIException {
-		OrderDTO dto = OrderMapper.INSTANCE.map(this.getEntity(orderRepository, Integer.valueOf(orderId)));
-		OrderTasksInfoDTO result = new OrderTasksInfoDTO();
-		result.setOrderTasks(dto.getOrderTasks());
-		Set<ServiceTasksInfoDTO> services = dto.getServices().stream().map(i->{
-			ServiceTasksInfoDTO r = new ServiceTasksInfoDTO();
-			r.setIdService(i.getIdService());
-			r.setServiceTasks(i.getServiceTasks());
-			return r;}).collect(Collectors.toSet());
-		result.setServices(services);
-		return ConvertUtils.castEntityAsResponse(result, Response.Status.OK);
+	public Response getOrderTaskInfo(@PathParam("orderId") int orderId) throws SODAPIException {
+		return ConvertUtils.castEntityAsResponse(ordersSv.getOrderTaskInfo(orderId), Response.Status.OK);
 	}
 
 	@Deprecated
@@ -128,8 +80,7 @@ public class OrderService extends AbstractServiceMutations {
 	@Path("/forEdit/{orderId}")
 	@ApiOperation(value = "Get Order in Edit object mode.", response = OrderTasksInfoDTO.class)
 	public Response getOrder4Edit(@PathParam("orderId") String orderId) throws SODAPIException {
-		UIOrderDTO result = orderConverterService.convert2UI(this.getEntity(orderRepository, Integer.valueOf(orderId)));
-		return ConvertUtils.castEntityAsResponse(result, Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(ordersSv.getOrder4Edit(orderId), Response.Status.OK);
 	}
 
 }

@@ -8,14 +8,14 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- Schema sod_db
 -- -----------------------------------------------------
 -- This is the initial_scheema for the service on demand application
--- 
+--
 DROP SCHEMA IF EXISTS `sod_db` ;
 
 -- -----------------------------------------------------
 -- Schema sod_db
 --
 -- This is the initial_scheema for the service on demand application
--- 
+--
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `sod_db` DEFAULT CHARACTER SET utf8 ;
 USE `sod_db` ;
@@ -1268,4 +1268,3 @@ USE `sod_db`;
 INSERT INTO `sod_db`.`CalendarRoute` (`idCalendarRoute`, `day`, `time`, `idRoutes`) VALUES (1, 1, '9:30', 1);
 
 COMMIT;
-

@@ -1,22 +1,22 @@
 package com.il.sod.mapper;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.il.sod.db.model.entities.ServiceSpec;
+import com.il.sod.db.model.entities.ServiceType;
 import com.il.sod.db.model.entities.Spec;
 import com.il.sod.db.model.entities.SpecsValue;
 import com.il.sod.db.model.repositories.SupplyTypeRepository;
 import com.il.sod.rest.dto.db.ServiceSpecDTO;
 import com.il.sod.rest.dto.db.SpecDTO;
 import com.il.sod.rest.dto.db.SpecsValueDTO;
-
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.converter.ConverterFactory;
 import ma.glasnost.orika.metadata.Type;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public enum SpecsMapper {
 
@@ -28,9 +28,11 @@ public enum SpecsMapper {
 	private SpecsMapper() {
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
 		converterFactory.registerConverter("specsValueConverter", new SpecsValueConverter());
-		
+		converterFactory.registerConverter("serviceTypesConverter", new ServiceTypesConverter());
+
 		BaseMapper.MAPPER_FACTORY.classMap(SpecDTO.class, Spec.class)
 			.fieldMap("specsValues", "specsValues").converter("specsValueConverter").mapNulls(true).mapNullsInReverse(true).add()
+			.fieldMap("serviceTypes", "serviceTypes").converter("serviceTypesConverter").mapNulls(true).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
 		
@@ -98,5 +100,18 @@ class SpecsValueConverter extends BidirectionalConverter<Set<SpecsValue>, Set<Sp
 	@Override
 	public Set<SpecsValueDTO> convertTo(Set<SpecsValue> source, Type<Set<SpecsValueDTO>> arg1) {
 		return source.stream().map(item -> SpecsMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+	}
+}
+
+
+class ServiceTypesConverter extends BidirectionalConverter<Set<ServiceType>, Set<Integer>> {
+	@Override
+	public Set<Integer> convertTo(Set<ServiceType> source, Type<Set<Integer>> type) {
+		return source.stream().map(item -> item.getId()).collect(Collectors.toSet());
+	}
+
+	@Override
+	public Set<ServiceType> convertFrom(Set<Integer> integers, Type<Set<ServiceType>> type) {
+		return null;
 	}
 }

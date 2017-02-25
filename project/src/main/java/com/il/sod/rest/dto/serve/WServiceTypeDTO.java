@@ -66,4 +66,5 @@ public class WServiceTypeDTO {
 	public void setCalculator(boolean calculator) {
 		this.calculator = calculator;
 	}
+
 }

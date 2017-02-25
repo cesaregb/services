@@ -1,5 +1,7 @@
 package com.il.sod.rest.dto.db;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.Date;
 import java.util.Set;
 
@@ -27,7 +29,10 @@ public class OrderDTO {
 	// flat information.
 	private String clientName;
 	private String orderTypeName;
-	private double completed; 
+	private double completed;
+
+	private double pickUpPrice;
+	private double deliverPrice;
 	
 	
 	public int getIdOrder() {
@@ -166,5 +171,49 @@ public class OrderDTO {
 	}
 	public void setPaymentInfo(PaymentInfoDTO paymentInfo) {
 		this.paymentInfo = paymentInfo;
+	}
+
+	public double getPickUpPrice() {
+		return pickUpPrice;
+	}
+
+	public void setPickUpPrice(double pickUpPrice) {
+		this.pickUpPrice = pickUpPrice;
+	}
+
+	public double getDeliverPrice() {
+		return deliverPrice;
+	}
+
+	public void setDeliverPrice(double deliverPrice) {
+		this.deliverPrice = deliverPrice;
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("idOrder", idOrder)
+				.add("comments", comments)
+				.add("idAddressDeliver", idAddressDeliver)
+				.add("idAddressPickup", idAddressPickup)
+				.add("pickUpDate", pickUpDate)
+				.add("deliverDate", deliverDate)
+				.add("totalServices", totalServices)
+				.add("total", total)
+				.add("status", status)
+				.add("client", client)
+				.add("idOrderType", idOrderType)
+				.add("orderTasks", orderTasks)
+				.add("created", created)
+				.add("updated", updated)
+				.add("time", time)
+				.add("createdBy", createdBy)
+				.add("deleted", deleted)
+				.add("clientName", clientName)
+				.add("orderTypeName", orderTypeName)
+				.add("completed", completed)
+				.add("pickUpPrice", pickUpPrice)
+				.add("deliverPrice", deliverPrice)
+				.toString();
 	}
 }

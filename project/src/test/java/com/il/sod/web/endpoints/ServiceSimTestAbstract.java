@@ -1,4 +1,4 @@
-package com.il.sod.endpoints;
+package com.il.sod.web.endpoints;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.il.sod.config.SpringTestConfiguration;

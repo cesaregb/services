@@ -38,11 +38,11 @@ public class OrderTask implements IEntity<Integer> {
 	private int sortingOrder;
 
 	//bi-directional many-to-one association to AssetTaskOrder
-	@OneToMany(mappedBy="orderTask", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="orderTask", fetch=FetchType.LAZY)
 	private Set<AssetTaskOrder> assetTaskOrders;
 
 	//bi-directional many-to-one association to EmployeeTaskOrder
-	@OneToMany(mappedBy="orderTask", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="orderTask", fetch=FetchType.LAZY)
 	private Set<EmployeeTaskOrder> employeeTaskOrders;
 
 	//bi-directional many-to-one association to Task

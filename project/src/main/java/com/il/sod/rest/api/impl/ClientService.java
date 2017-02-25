@@ -35,7 +35,7 @@ public class ClientService extends AbstractServiceMutations {
 	ClientSv clientSv;
 
 	@POST
-	@ApiOperation(value = "Create Client", response = ClientDTO.class)
+	@ApiOperation(value = "Create Client por mientras ", response = ClientDTO.class)
 	public Response saveClient(ClientDTO dto) throws SODAPIException {
 		return ConvertUtils.castEntityAsResponse(clientSv.saveClient(dto), Response.Status.CREATED);
 	}

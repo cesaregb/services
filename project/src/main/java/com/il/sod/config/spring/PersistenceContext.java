@@ -48,7 +48,7 @@ public class PersistenceContext {
 	@Resource
 	@Qualifier("envConfig")
 	private Config envConfig;
-	
+
 	// @Bean(destroyMethod = "close")
 	@Bean
 	DataSource dataSource() {
@@ -56,15 +56,15 @@ public class PersistenceContext {
 		dataSource.setDriverClassName(env.getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER));
 		if (dataSourceInfo != null
 				&& (dataSourceInfo.containsKey("valid")
-				&& Objects.equals(dataSourceInfo.get("valid"), "1"))){
+				&& Objects.equals(dataSourceInfo.get("valid"), "1"))) {
 			// information from docker
 			dataSource.setUrl(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_URL));
 			dataSource.setUsername(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_USER));
 			dataSource.setPassword(dataSourceInfo.get(Constants.PROPERTY_NAME_DB_PASSWORD));
-		}else{
+		} else {
 			final String username = Constants.envConfig.getString(SECURITY_DB_USER);
 			final String password = Constants.envConfig.getString(SECURITY_DB_PASSWORD);
-			final String dbUrlInfo = (Constants.envConfig.getString(GENERAL_DB_URL)!=null)?Constants.envConfig.getString(GENERAL_DB_URL):dbUrl;
+			final String dbUrlInfo = (Constants.envConfig.getString(GENERAL_DB_URL) != null) ? Constants.envConfig.getString(GENERAL_DB_URL) : dbUrl;
 			dataSource.setUrl(dbUrlInfo);
 			dataSource.setUsername(username);
 			dataSource.setPassword(password);
@@ -91,11 +91,9 @@ public class PersistenceContext {
 		Properties jpaProperties = new Properties();
 
 		jpaProperties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
-		jpaProperties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
-		// jpaProperties.put("hibernate.hbm2ddl.auto",
-		// env.getRequiredProperty("hibernate.hbm2ddl.auto"));
-		// jpaProperties.put("hibernate.format_sql",
-		// env.getRequiredProperty("hibernate.format_sql"));
+		// Important to avoid having it in console all the time...!!!!
+//		jpaProperties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
+		jpaProperties.put("hibernate.format_sql", env.getRequiredProperty("hibernate.format_sql"));
 
 		entityManagerFactoryBean.setJpaProperties(jpaProperties);
 

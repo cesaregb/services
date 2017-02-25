@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @RolesAllowed("ADMIN")
 @Path("/services/service-type/service-type-task")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/services/service-type/service-type-task", tags = { "services" })
+@Api(value = "/services/service-type/service-type-task", tags = {"services"})
 public class ServiceTypeTaskService extends AbstractServiceMutations {
 
 	@Autowired
@@ -33,37 +33,32 @@ public class ServiceTypeTaskService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Service Type", response = ServiceTypeTaskDTO.class)
 	public Response saveServiceTypeTask(ServiceTypeTaskDTO dto) throws SODAPIException {
-
-			ServiceTypeTask entity = ServiceMapper.INSTANCE.map(dto);
-			this.saveEntity(serviceTypeSpecRepository, entity);
-			dto = ServiceMapper.INSTANCE.map(entity);
-			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
-
+		ServiceTypeTask entity = ServiceMapper.INSTANCE.map(dto);
+		this.saveEntity(serviceTypeSpecRepository, entity);
+		dto = ServiceMapper.INSTANCE.map(entity);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Service Type", response = ServiceTypeTaskDTO.class)
 	public Response updateServiceTypeTask(ServiceTypeTaskDTO dto) throws SODAPIException {
-
-			ServiceTypeTask entity = ServiceMapper.INSTANCE.map(dto);
-			this.updateEntity(serviceTypeSpecRepository, entity);
-			dto = ServiceMapper.INSTANCE.map(entity);
-			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
-
+		ServiceTypeTask entity = ServiceMapper.INSTANCE.map(dto);
+		this.updateEntity(serviceTypeSpecRepository, entity);
+		dto = ServiceMapper.INSTANCE.map(entity);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
 	@Path("/{id}")
 	@ApiOperation(value = "Delete Service Type", response = ServiceTypeTaskDTO.class)
 	public Response deleteServiceTypeTask(@PathParam("id") Integer id) throws SODAPIException {
-
-			if (serviceTypeSpecRepository.findOne(id) == null){
-				throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found: "+id+" ");
-			}
-			this.deleteEntity(serviceTypeSpecRepository, id);
-			return ConvertUtils.castEntityAsResponse(
-					new GeneralResponseMessage(true, "Entity deleted"),
-					Response.Status.OK);
+		if (serviceTypeSpecRepository.findOne(id) == null) {
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found: " + id + " ");
+		}
+		this.deleteEntity(serviceTypeSpecRepository, id);
+		return ConvertUtils.castEntityAsResponse(
+				new GeneralResponseMessage(true, "Entity deleted"),
+				Response.Status.OK);
 
 	}
 

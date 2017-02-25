@@ -12,6 +12,7 @@ public class OrderTaskDTO {
 	private Set<EmployeeTaskOrderDTO> employeeTaskOrders;
 	private int idOrder;
 	private int idTask;
+	private TaskDTO task;
 	private int status;
 	private Date started;
 	private Date ended;
@@ -90,5 +91,13 @@ public class OrderTaskDTO {
 
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
+	}
+
+	public TaskDTO getTask() {
+		return task;
+	}
+
+	public void setTask(TaskDTO task) {
+		this.task = task;
 	}
 }

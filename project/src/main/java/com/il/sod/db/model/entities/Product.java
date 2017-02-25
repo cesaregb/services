@@ -35,6 +35,14 @@ public class Product extends SoftDeleteEntity implements IEntity<Integer>{
 	public Product() {
 	}
 
+
+	public Product(String name, int maxQty, double price, ProductType productType) {
+		this.maxQty = maxQty;
+		this.name = name;
+		this.price = price;
+		this.productType = productType;
+	}
+
 	public int getIdProduct() {
 		return this.idProduct;
 	}

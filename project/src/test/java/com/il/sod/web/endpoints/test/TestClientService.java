@@ -1,16 +1,15 @@
-package com.il.sod.endpoints.test;
+package com.il.sod.web.endpoints.test;
 
-import static com.jayway.restassured.RestAssured.given;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.il.sod.web.endpoints.BaseTestServices;
+import com.jayway.restassured.http.ContentType;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.il.sod.endpoints.BaseTestServices;
-import com.jayway.restassured.http.ContentType;
+import static com.jayway.restassured.RestAssured.given;
 
 public class TestClientService extends BaseTestServices{
 	

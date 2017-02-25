@@ -1,5 +1,8 @@
 package com.il.sod.db.model.entities;
 
+import com.google.common.base.Objects;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,20 +29,16 @@ public class ProductType extends SoftDeleteEntity implements IEntity<Integer> {
 	@OneToMany(mappedBy="productType", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Set<Product> products;
 
-	//bi-directional many-to-many association to ServiceType
-	@ManyToMany(fetch=FetchType.EAGER)
-	@JoinTable(
-			name="ServiceTypeProductType"
-			, joinColumns={
-			@JoinColumn(name="idProductType")
-	}
-			, inverseJoinColumns={
-			@JoinColumn(name="idServiceType")
-	}
-	)
+	//bi-directional many-to-many association to ProductType
+	@ManyToMany(mappedBy = "productTypes", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<ServiceType> serviceTypes;
 
 	public ProductType() {
+	}
+
+	public ProductType(String name, String description) {
+		this.description = description;
+		this.name = name;
 	}
 
 	public int getIdProductType() {
@@ -102,22 +101,16 @@ public class ProductType extends SoftDeleteEntity implements IEntity<Integer> {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof ProductType)) return false;
-
+		if (o == null || getClass() != o.getClass()) return false;
 		ProductType that = (ProductType) o;
-
-		if (idProductType != that.idProductType) return false;
-		if (description != null ? !description.equals(that.description) : that.description != null) return false;
-		return name != null ? name.equals(that.name) : that.name == null;
-
+		return idProductType == that.idProductType &&
+				Objects.equal(description, that.description) &&
+				Objects.equal(name, that.name);
 	}
 
 	@Override
 	public int hashCode() {
-		int result = idProductType;
-		result = 31 * result + (description != null ? description.hashCode() : 0);
-		result = 31 * result + (name != null ? name.hashCode() : 0);
-		return result;
+		return Objects.hashCode(idProductType, description, name);
 	}
 
 	@Override
@@ -131,4 +124,13 @@ public class ProductType extends SoftDeleteEntity implements IEntity<Integer> {
 		return this;
 	}
 
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)
+				.append("idProductType", idProductType)
+				.append("description", description)
+				.append("name", name)
+				.append("products", products)
+				.toString();
+	}
 }
