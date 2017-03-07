@@ -25,7 +25,7 @@ import javax.ws.rs.Path;
 		@Tag(name = "orders", description = "Order Layer Services"),
 		@Tag(name = "services", description = "Service Layer Services"),
 		@Tag(name = "payment", description = "Payment Services Client and Orders"),
-		@Tag(name = "routes", description = "Route Information,... not user related..."),
+//		@Tag(name = "routes", description = "Route Information,... not user related..."),
 		@Tag(name = "products", description = "Products, similar to specs but different!! LOL "),
 		@Tag(name = "promotions", description = "Promotions, promotion handling  "),
 		@Tag(name = "auth", description = "Auth services "),

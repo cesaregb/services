@@ -8,7 +8,7 @@ import com.il.sod.db.model.repositories.*;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.OrderMapper;
 import com.il.sod.mapper.TaskMapper;
-import com.il.sod.rest.api.impl.TaskService;
+import com.il.sod.rest.api.model.TaskService;
 import com.il.sod.rest.dto.db.OrderDTO;
 import com.il.sod.rest.dto.db.TaskDTO;
 import com.il.sod.rest.dto.predicates.DeletablePredicate;

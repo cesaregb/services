@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class LoggingAspect {
 	private final Logger LOGGER = LoggerFactory.getLogger(LoggingAspect.class);
 	
-	@Pointcut("within(com.il.sod.rest.api.impl..*) || within(com.il.sod.services..*)")
+	@Pointcut("within(com.il.sod.rest.api.model..*) || within(com.il.sod.services..*)")
 	public void loggingPointcut() {
 	}
 

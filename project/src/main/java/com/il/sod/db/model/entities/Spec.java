@@ -37,7 +37,7 @@ public class Spec implements IEntity<Integer> {
 	private Set<ServiceType> serviceTypes;
 
 	//bi-directional many-to-one association to SpecsValue
-	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
 	private Set<SpecsValue> specsValues;
 
 	private boolean optional;

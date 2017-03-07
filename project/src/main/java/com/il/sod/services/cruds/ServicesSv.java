@@ -4,7 +4,7 @@ import com.il.sod.db.model.entities.*;
 import com.il.sod.db.model.repositories.*;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ServiceMapper;
-import com.il.sod.rest.api.impl.ServiceTypeService;
+import com.il.sod.rest.api.model.ServiceTypeService;
 import com.il.sod.rest.dto.db.ProductTypeDTO;
 import com.il.sod.rest.dto.db.ServiceTypeDTO;
 import com.il.sod.rest.dto.db.ServiceTypeTaskDTO;
