@@ -96,6 +96,7 @@ public class Order implements IEntity<Integer> {
 
 	private double pickUpPrice;
 	private double deliverPrice;
+	private double discount;
 
 	public Order() {
 	}
@@ -330,5 +331,13 @@ public class Order implements IEntity<Integer> {
 
 	public void setDeliverPrice(double deliverPrice) {
 		this.deliverPrice = deliverPrice;
+	}
+
+	public double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(double discount) {
+		this.discount = discount;
 	}
 }

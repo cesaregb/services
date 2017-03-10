@@ -18,6 +18,7 @@ import com.il.sod.rest.dto.specifics.ServiceTasksInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -91,7 +92,9 @@ public class OrdersSv extends EntityServicesBase {
 		Set<OrderTaskDTO> orderTasks = order.getOrderTasks().stream()
 				.map(OrderMapper.INSTANCE::map)
 				.collect(Collectors.toSet());
+
 		result.setOrderTasks(orderTasks);
+
 		Set<ServiceTasksInfoDTO> services = order.getServices()
 				.stream()
 				.map(this::getServiceTasksInfoDTO)
@@ -108,8 +111,11 @@ public class OrdersSv extends EntityServicesBase {
 		serviceTI.setIdService(service.getIdService());
 		Set<ServiceTaskDTO> serviceTaskDTOS = service.getServiceTasks()
 				.stream()
-				.map(ServiceMapper.INSTANCE::map).collect(Collectors.toSet());
+				.map(ServiceMapper.INSTANCE::map)
+				.sorted(Comparator.comparingInt(ServiceTaskDTO::getIdTask))
+				.collect(Collectors.toSet());
 		serviceTI.setServiceTasks(serviceTaskDTOS);
+		serviceTI.setIdOrder(service.getOrder().getId());
 		return serviceTI;
 	}
 
