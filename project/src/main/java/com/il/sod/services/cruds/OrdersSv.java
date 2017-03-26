@@ -2,7 +2,9 @@ package com.il.sod.services.cruds;
 
 import com.il.sod.converter.services.OrderConverterService;
 import com.il.sod.db.dao.impl.OrdersDAO;
+import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.entities.Order;
+import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.db.model.repositories.OrderRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.OrderMapper;
@@ -16,6 +18,7 @@ import com.il.sod.rest.dto.specifics.ServiceTasksInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,6 +38,9 @@ public class OrdersSv extends EntityServicesBase {
 
 	@Autowired
 	OrderConverterService orderConverterService;
+
+	@Autowired
+	ClientRepository clientRepository;
 
 	public OrderDTO saveOrder(OrderDTO dto) throws SODAPIException {
 		Order entity = OrderMapper.INSTANCE.map(dto);
@@ -56,19 +62,17 @@ public class OrdersSv extends EntityServicesBase {
 
 	public List<OrderDTO> getOrderList() throws SODAPIException {
 		List<Order> rentityList = this.getEntityList(orderRepository);
-		List<OrderDTO> list = rentityList.stream().map((i) -> {
+		return rentityList.stream().map((i) -> {
 			OrderDTO dto = orderConverterService.convert(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return list;
 	}
 
 	public List<OrderDTO> getOrdersByStatus(int status) throws SODAPIException {
-		List<OrderDTO> dto = ordersDAO.findByStatus(status)
+		return ordersDAO.findByStatus(status)
 				.stream()
 				.map(o -> orderConverterService.convert(o))
 				.collect(Collectors.toList());
-		return dto;
 	}
 
 	public OrderDTO getOrderById(String orderId) throws SODAPIException {
@@ -86,6 +90,7 @@ public class OrdersSv extends EntityServicesBase {
 		Set<OrderTaskDTO> orderTasks = order.getOrderTasks().stream()
 				.map(OrderMapper.INSTANCE::map)
 				.collect(Collectors.toSet());
+
 		result.setOrderTasks(orderTasks);
 
 		Set<ServiceTasksInfoDTO> services = order.getServices()
@@ -94,7 +99,6 @@ public class OrdersSv extends EntityServicesBase {
 				.collect(Collectors.toSet());
 
 		result.setServices(services);
-
 		return result;
 	}
 
@@ -104,13 +108,22 @@ public class OrdersSv extends EntityServicesBase {
 		serviceTI.setIdService(service.getIdService());
 		Set<ServiceTaskDTO> serviceTaskDTOS = service.getServiceTasks()
 				.stream()
-				.map(ServiceMapper.INSTANCE::map).collect(Collectors.toSet());
+				.map(ServiceMapper.INSTANCE::map)
+				.sorted(Comparator.comparingInt(ServiceTaskDTO::getIdTask))
+				.collect(Collectors.toSet());
 		serviceTI.setServiceTasks(serviceTaskDTOS);
+		serviceTI.setIdOrder(service.getOrder().getId());
 		return serviceTI;
 	}
 
 	public UIOrderDTO getOrder4Edit(String orderId) throws SODAPIException {
 		return orderConverterService.convert2UI(this.getEntity(orderRepository, Integer.valueOf(orderId)));
+	}
+
+	public List<OrderDTO> getOrdersByClient(int idClient) throws SODAPIException {
+		Client client = this.getEntity(clientRepository, idClient);
+		List<Order> rentityList = orderRepository.findByClient(client);
+		return rentityList.stream().map(OrderMapper.INSTANCE::map).collect(Collectors.toList());
 	}
 
 }

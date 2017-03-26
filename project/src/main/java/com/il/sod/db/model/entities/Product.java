@@ -24,7 +24,7 @@ public class Product extends SoftDeleteEntity implements IEntity<Integer>{
 	private double price;
 
 	//bi-directional many-to-one association to ServiceProduct
-	@OneToMany(mappedBy="product", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="product", fetch=FetchType.LAZY)
 	private Set<ServiceProduct> serviceProducts;
 
 	//bi-directional many-to-one association to ProductType

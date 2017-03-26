@@ -163,12 +163,12 @@ class ServiceSpecSetConverter extends BidirectionalConverter<Set<ServiceSpec>, S
 class ServiceTaskSetConverter extends BidirectionalConverter<Set<ServiceTask>, Set<ServiceTaskDTO>> {
 	@Override
 	public Set<ServiceTask> convertFrom(Set<ServiceTaskDTO> source, Type<Set<ServiceTask>> arg1) {
-		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+		return source.stream().map(ServiceMapper.INSTANCE::map).collect(Collectors.toSet());
 	}
 
 	@Override
 	public Set<ServiceTaskDTO> convertTo(Set<ServiceTask> source, Type<Set<ServiceTaskDTO>> arg1) {
-		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+		return source.stream().map(ServiceMapper.INSTANCE::map).collect(Collectors.toSet());
 	}
 }
 
@@ -176,7 +176,7 @@ class AssetTaskServiceSetConverter extends BidirectionalConverter<Set<AssetTaskS
 
 	@Override
 	public Set<AssetTaskService> convertFrom(Set<AssetTaskServiceDTO> source, Type<Set<AssetTaskService>> arg1) {
-		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+		return source.stream().map(ServiceMapper.INSTANCE::map).collect(Collectors.toSet());
 	}
 
 	@Override
@@ -206,7 +206,7 @@ class OrderTypeSetConverter extends BidirectionalConverter<Set<OrderType>, Set<I
 
 	@Override
 	public Set<Integer> convertTo(Set<OrderType> source, Type<Set<Integer>> arg1) {
-		return source.stream().map(p -> p.getId()).collect(Collectors.toSet());
+		return source.stream().map(OrderType::getId).collect(Collectors.toSet());
 	}
 }
 
@@ -225,7 +225,7 @@ class ServiceTypeSetConverter extends BidirectionalConverter<Set<ServiceType>, S
 class ServiceTypeSet2IntConverter extends BidirectionalConverter<Set<ServiceType>, Set<Integer>> {
 	@Override
 	public Set<Integer> convertTo(Set<ServiceType> source, Type<Set<Integer>> type) {
-		return source.stream().map(p -> p.getId()).collect(Collectors.toSet());
+		return source.stream().map(ServiceType::getId).collect(Collectors.toSet());
 	}
 
 	@Override

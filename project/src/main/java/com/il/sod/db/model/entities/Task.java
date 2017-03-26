@@ -36,21 +36,21 @@ public class Task extends SoftDeleteEntity  implements IEntity<Integer> {
 	private String name;
 
 	//bi-directional many-to-one association to OrderTask
-	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="task", fetch=FetchType.LAZY)
 	private Set<OrderTask> orderTasks;
 
 	//bi-directional many-to-one association to OrderTemplateTask
-	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="task", fetch=FetchType.LAZY)
 	@JsonManagedReference
 	private Set<OrderTypeTask> orderTemplateTasks;
 
 	//bi-directional many-to-one association to ServiceTask
-	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="task", fetch=FetchType.LAZY)
 	@JsonManagedReference
 	private Set<ServiceTask> serviceTasks;
 
 	//bi-directional many-to-one association to ServiceTypeTask
-	@OneToMany(mappedBy="task", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="task", fetch=FetchType.LAZY)
 	@JsonManagedReference
 	private Set<ServiceTypeTask> serviceTypeTasks;
 

@@ -59,6 +59,11 @@ public class ClientDTO extends DeletableDTO{
 	private Set<ClientBagDTO> clientBags;
 	private int deleted;
 
+	public String getFullName(){
+		StringBuilder sb = new StringBuilder(this.name).append(" ").append(this.lastName);
+		return sb.toString();
+	}
+
 	public int getIdClient() {
 		return idClient;
 	}

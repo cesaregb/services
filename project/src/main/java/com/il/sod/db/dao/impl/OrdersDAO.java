@@ -22,12 +22,12 @@ public class OrdersDAO {
 		return orderRepository.findByStatus(status);
 	}
 
-	public double getCompletedPercent(int idOrder){
-		Order order = orderRepository.findOne(idOrder);
+	public double getCompletedPercent(Order order){
 		double nTasks = 0d;
 		if (!Collections.isEmpty(order.getOrderTasks())){
 			nTasks += order.getOrderTasks().size();
 		}
+
 		if (!Collections.isEmpty(order.getServices())){
 			nTasks += order.getServices()
 					.stream()
@@ -41,12 +41,14 @@ public class OrdersDAO {
 
 		sumStatus += order.getServices()
 				.stream()
-				.mapToLong(s-> s.getServiceTasks().stream().filter(t-> t.getStatus() == 2).count())
+				.mapToLong(s-> s.getServiceTasks()
+						.stream()
+						.filter(t-> t.getStatus() == 2).count())
 				.sum();
 
 
 		double completed = ((sumStatus / nTasks) * 100);
-		LOGGER.info("Order: {} completed {}% ", idOrder, completed);
+		LOGGER.info("Order: {} completed {}% ", order.getId(), completed);
 		return completed;
 	}
 

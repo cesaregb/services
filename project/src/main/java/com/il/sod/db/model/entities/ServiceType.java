@@ -43,7 +43,7 @@ public class ServiceType implements IEntity<Integer> {
 	private Set<Spec> specs;
 
 	//bi-directional many-to-one association to Service
-	@OneToMany(mappedBy = "serviceType", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "serviceType", fetch = FetchType.LAZY)
 	private Set<Service> services;
 
 	//bi-directional many-to-one association to ServiceTypeTask

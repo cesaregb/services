@@ -33,8 +33,8 @@ public class OrderDTO {
 
 	private double pickUpPrice;
 	private double deliverPrice;
-	
-	
+	private double discount;
+
 	public int getIdOrder() {
 		return idOrder;
 	}
@@ -187,6 +187,14 @@ public class OrderDTO {
 
 	public void setDeliverPrice(double deliverPrice) {
 		this.deliverPrice = deliverPrice;
+	}
+
+	public double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(double discount) {
+		this.discount = discount;
 	}
 
 	@Override
