@@ -33,23 +33,18 @@ public class Service implements IEntity<Integer> {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idService;
-
 	private String description;
-
 	private String name;
-
 	private double price;
 	private double specsPrice;
 	private double productsPrice;
 	private double totalPrice;
-
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created;
-	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updated;
-
 	private int time;
+	private int deleted;
 
 	//bi-directional many-to-one association to ServiceType
 	@ManyToOne
@@ -67,7 +62,7 @@ public class Service implements IEntity<Integer> {
 	private Set<ServiceTask> serviceTasks;
 	
 	//bi-directional many-to-one association to Order
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="idOrder")
 	@JsonBackReference
 	private Order order;
@@ -77,15 +72,12 @@ public class Service implements IEntity<Integer> {
 	//bi-directional many-to-one association to ServiceComment
 	@OneToMany(mappedBy="service", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Set<ServiceComment> serviceComments;
-	
-	private int deleted;
-	
+
 	//bi-directional many-to-one association to ServiceProduct
 	@OneToMany(mappedBy="service", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private Set<ServiceProduct> serviceProducts;
 
-	public Service() {
-	}
+	public Service() { }
 
 	public int getIdService() {
 		return this.idService;

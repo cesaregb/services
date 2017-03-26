@@ -1,5 +1,6 @@
 package com.il.sod.db.model.entities;
 
+import com.google.common.base.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.Entity;
@@ -129,6 +130,27 @@ public class SpecsValue implements IEntity<Integer> {
 
 	public void setCostType(int costType) {
 		this.costType = costType;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		SpecsValue that = (SpecsValue) o;
+		return idSpecsValues == that.idSpecsValues &&
+				idSupplyType == that.idSupplyType &&
+				type == that.type &&
+				prefered == that.prefered &&
+				Double.compare(that.serviceIncrement, serviceIncrement) == 0 &&
+				Double.compare(that.specPrice, specPrice) == 0 &&
+				costType == that.costType &&
+				Objects.equal(value, that.value) &&
+				Objects.equal(spec, that.spec);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(idSpecsValues, idSupplyType, type, value, prefered, spec, serviceIncrement, specPrice, costType);
 	}
 
 	@Override

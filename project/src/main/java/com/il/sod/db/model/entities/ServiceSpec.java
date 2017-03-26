@@ -44,7 +44,6 @@ public class ServiceSpec implements IEntity<Integer> {
 	private int quantity;
 	private float specPrice; 
 	private float serviceIncrement; 
-	
 	private String selectedValue;
 
 	public ServiceSpec() {

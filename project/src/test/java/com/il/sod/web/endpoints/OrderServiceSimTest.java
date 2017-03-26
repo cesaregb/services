@@ -1,6 +1,6 @@
 package com.il.sod.web.endpoints;
 
-import com.il.sod.rest.api.web.impl.AppOrdersService;
+import com.il.sod.rest.api.actions.AppOrdersService;
 import com.il.sod.rest.dto.parse.UIOrderDTO;
 import com.il.sod.rest.dto.parse.UIServiceDTO;
 import com.il.sod.rest.dto.parse.UISpecDTO;
