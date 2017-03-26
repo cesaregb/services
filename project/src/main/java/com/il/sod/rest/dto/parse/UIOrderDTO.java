@@ -10,6 +10,7 @@ public class UIOrderDTO {
 	private int idClient;
 	private double totalServices;
 	private double total;
+	private double discount;
 	private String comments;
 
 	private List<UITransportDTO> transport;
@@ -64,12 +65,18 @@ public class UIOrderDTO {
 	public void setIdOrderType(int idOrderType) {
 		this.idOrderType = idOrderType;
 	}
-
 	public List<UITransportDTO> getTransport() {
 		return transport;
 	}
-
 	public void setTransport(List<UITransportDTO> transport) {
 		this.transport = transport;
+	}
+
+	public double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(double discount) {
+		this.discount = discount;
 	}
 }

@@ -2,6 +2,7 @@ package com.il.sod.converter.services;
 
 import com.il.sod.db.dao.impl.OrdersDAO;
 import com.il.sod.db.model.entities.Order;
+import com.il.sod.db.model.repositories.ServiceRepository;
 import com.il.sod.mapper.OrderMapper;
 import com.il.sod.rest.dto.db.OrderDTO;
 import com.il.sod.rest.dto.db.ServiceDTO;
@@ -9,8 +10,6 @@ import com.il.sod.rest.dto.parse.UIOrderDTO;
 import com.il.sod.rest.dto.parse.UIServiceDTO;
 import com.il.sod.rest.dto.parse.UITransportDTO;
 import com.il.sod.rest.dto.serve.WPaymentInfoDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +20,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderConverterService {
-	private final static Logger LOGGER = LoggerFactory.getLogger(OrderConverterService.class);
-	
-	@Autowired
-	ServiceConverterService serviceConverterService;
 
 	@Autowired
-	OrdersDAO ordersDAO;
+	private ServiceConverterService serviceConverterService;
+
+	@Autowired
+	private OrdersDAO ordersDAO;
+
+	@Autowired
+	private ServiceRepository serviceRepository;
 	
 	public OrderDTO convert(Order entity){
 		OrderDTO result = OrderMapper.INSTANCE.map(entity);
@@ -35,12 +36,14 @@ public class OrderConverterService {
 		result.setClientName(result.getClient().getName() + " " + result.getClient().getLastName());
 		result.setOrderTypeName(entity.getOrderType().getName());
 		
-		// override services to use the custom converter 
-		Set<ServiceDTO> setService = entity.getServices()
+		// override services to use the custom converter
+		List<com.il.sod.db.model.entities.Service> services = serviceRepository.findByOrder(result.getIdOrder());
+
+		Set<ServiceDTO> setService = services
 				.stream().map(s -> serviceConverterService.convert(s))
 				.collect(Collectors.toSet());
 		result.setServices(setService);
-		result.setCompleted(ordersDAO.getCompletedPercent(entity.getId()));
+		result.setCompleted(ordersDAO.getCompletedPercent(entity));
 		return result;
 	}
 	

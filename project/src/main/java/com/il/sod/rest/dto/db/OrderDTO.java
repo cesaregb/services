@@ -34,8 +34,7 @@ public class OrderDTO {
 	private double pickUpPrice;
 	private double deliverPrice;
 	private double discount;
-	
-	
+
 	public int getIdOrder() {
 		return idOrder;
 	}

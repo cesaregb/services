@@ -3,6 +3,7 @@
 */.project
 */.settings/
 */log/
+**/bkp_prod
 
 # Intellij
 .idea/

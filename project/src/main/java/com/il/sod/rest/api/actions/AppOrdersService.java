@@ -120,6 +120,9 @@ public class AppOrdersService extends AbstractServiceMutations {
 		orderEntity.setTotal(orderInputDto.getTotal());
 		orderEntity.setStatus(Constants.ORDER_CREATED);
 
+		//Todo check discount
+		orderEntity.setDiscount(orderInputDto.getDiscount());
+
 		// get client
 		Client client =  clientRepository.findAllIncludeOrders(orderInputDto.getIdClient());
 		if (client == null) {

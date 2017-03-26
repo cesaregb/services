@@ -22,7 +22,7 @@ public class ServiceProduct implements IEntity<Integer> {
 	private int quantity;
 
 	//bi-directional many-to-one association to Service
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="idService")
 	private Service service;
 

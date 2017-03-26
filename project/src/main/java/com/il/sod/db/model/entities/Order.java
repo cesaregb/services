@@ -91,7 +91,7 @@ public class Order implements IEntity<Integer> {
 	private int deleted;
 
 	//bi-directional many-to-one association to OrderPromotion
-	@OneToMany(mappedBy="order", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="order", fetch=FetchType.LAZY)
 	private Set<OrderPromotion> orderPromotions;
 
 	private double pickUpPrice;

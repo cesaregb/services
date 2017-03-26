@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class ServiceConverterService {
 	
 	public ServiceDTO convert(Service entity){
+		// TODO, do we need to ajust something..
 		ServiceDTO result = ServiceMapper.INSTANCE.map( entity );
 //		Set<SpecDTO> specs = entity.getServiceSpecs().stream().map(item -> SpecsMapper.INSTANCE.map(item.getSpec())).collect(Collectors.toSet());
 //		result.setSpecs(specs);

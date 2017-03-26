@@ -33,12 +33,12 @@ public class ServiceTask implements IEntity<Integer> {
 	private String comments;
 
 	//bi-directional many-to-one association to AssetTaskService
-	@OneToMany(mappedBy="serviceTask", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="serviceTask", fetch=FetchType.LAZY)
 	@JsonManagedReference
 	private Set<AssetTaskService> assetTaskServices;
 
 	//bi-directional many-to-one association to EmployeeTaskService
-	@OneToMany(mappedBy="serviceTask", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="serviceTask", fetch=FetchType.LAZY)
 	@JsonManagedReference
 	private Set<EmployeeTaskService> employeeTaskServices;
 

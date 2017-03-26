@@ -199,7 +199,7 @@ public class TasksSv extends EntityServicesBase {
 		}
 
 		// If order is finished, save that value.
-		if (ordersDAO.getCompletedPercent(idOrder) >= 100){
+		if (ordersDAO.getCompletedPercent(order) >= 100){
 			order.setStatus(Constants.ORDER_STATUS_FINISHED);
 			orderRepository.save(order);
 		}

@@ -62,19 +62,17 @@ public class OrdersSv extends EntityServicesBase {
 
 	public List<OrderDTO> getOrderList() throws SODAPIException {
 		List<Order> rentityList = this.getEntityList(orderRepository);
-		List<OrderDTO> list = rentityList.stream().map((i) -> {
+		return rentityList.stream().map((i) -> {
 			OrderDTO dto = orderConverterService.convert(i);
 			return dto;
 		}).collect(Collectors.toList());
-		return list;
 	}
 
 	public List<OrderDTO> getOrdersByStatus(int status) throws SODAPIException {
-		List<OrderDTO> dto = ordersDAO.findByStatus(status)
+		return ordersDAO.findByStatus(status)
 				.stream()
 				.map(o -> orderConverterService.convert(o))
 				.collect(Collectors.toList());
-		return dto;
 	}
 
 	public OrderDTO getOrderById(String orderId) throws SODAPIException {
@@ -101,7 +99,6 @@ public class OrdersSv extends EntityServicesBase {
 				.collect(Collectors.toSet());
 
 		result.setServices(services);
-
 		return result;
 	}
 

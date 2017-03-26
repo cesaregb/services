@@ -23,9 +23,9 @@ public enum ServiceMapper {
 		converterFactory.registerConverter("orderTypeSetConverter", new OrderTypeSetConverter());
 		converterFactory.registerConverter("serviceTypeSetConverter", new ServiceTypeSetConverter());
 		converterFactory.registerConverter("specSetConverter", new SpecSetConverter());
-		converterFactory.registerConverter("assetTaskServiceSetConverter", new AssetTaskServiceSetConverter());
+//		converterFactory.registerConverter("assetTaskServiceSetConverter", new AssetTaskServiceSetConverter());
+//		converterFactory.registerConverter("employeeTaskServiceSetConverter", new EmployeeTaskServiceSetConverter());
 		converterFactory.registerConverter("productTypeSetConverter", new ProductTypeSetConverter());
-		converterFactory.registerConverter("employeeTaskServiceSetConverter", new EmployeeTaskServiceSetConverter());
 		converterFactory.registerConverter("serviceProductDTOSetConverter", new ServiceProductDTOSetConverter());
 
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceDTO.class, Service.class)
@@ -35,7 +35,7 @@ public enum ServiceMapper {
 				.fieldMap("serviceProducts", "serviceProducts").converter("serviceProductDTOSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.field("idServiceCategory", "serviceType.serviceCategory.idServiceCategory")
 				.field("idServiceType", "serviceType.idServiceType")
-				.field("idOrder", "order.idOrder")
+//				.field("idOrder", "order.idOrder")
 				.byDefault()
 				.register();
 
@@ -64,8 +64,10 @@ public enum ServiceMapper {
 
 		BaseMapper.MAPPER_FACTORY.classMap(ServiceTaskDTO.class, ServiceTask.class)
 				.exclude("task")
-				.fieldMap("assetTaskServices", "assetTaskServices").converter("assetTaskServiceSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-				.fieldMap("employeeTaskServices", "employeeTaskServices").converter("employeeTaskServiceSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+				.exclude("assetTaskServices")
+				.exclude("employeeTaskServices")
+//				.fieldMap("assetTaskServices", "assetTaskServices").converter("assetTaskServiceSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+//				.fieldMap("employeeTaskServices", "employeeTaskServices").converter("employeeTaskServiceSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.field("idService", "service.idService")
 				.field("idTask", "task.idTask")
 				.field("taskName", "task.name")

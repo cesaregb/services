@@ -29,7 +29,7 @@ public class Spec implements IEntity<Integer> {
 	private String name;
 
 	//bi-directional many-to-one association to ServiceSpec
-	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="spec", fetch=FetchType.LAZY)
 	private Set<ServiceSpec> serviceSpecs;
 
 	//bi-directional many-to-one association to ServiceTypeSpec

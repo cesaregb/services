@@ -87,16 +87,12 @@ public class PersistenceContext {
 		entityManagerFactoryBean.setDataSource(dataSource);
 		entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		entityManagerFactoryBean.setPackagesToScan(PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN);
-
 		Properties jpaProperties = new Properties();
-
 		jpaProperties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
 		// Important to avoid having it in console all the time...!!!!
 //		jpaProperties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
 		jpaProperties.put("hibernate.format_sql", env.getRequiredProperty("hibernate.format_sql"));
-
 		entityManagerFactoryBean.setJpaProperties(jpaProperties);
-
 		return entityManagerFactoryBean;
 	}
 
