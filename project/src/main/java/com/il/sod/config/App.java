@@ -15,6 +15,12 @@ public class App {
 	final static Logger LOGGER = LoggerFactory.getLogger(App.class);
 	
 	public static void main(String[] args) {
+//		System.out.println("******************************");
+//		System.out.println("******************************");
+//		findNamesOfConfiguredAppenders().forEach(System.out::println);
+//		System.out.println("******************************");
+//		System.out.println("******************************");
+
 		Integer port = Integer.valueOf(PropertyHandler.getInstance().getValue(ApplicationConfig.PARAM_PORT));
 		Server server = new Server(port);
 
@@ -38,16 +44,32 @@ public class App {
 		staticServlet.setInitParameter("resourceBase", "src/main/webapp");
 		staticServlet.setInitParameter("pathInfoOnly", "true");
 
-
 		try {
 			server.start();
 			server.join();
 		} catch (Throwable t) {
 			t.printStackTrace(System.err);
 		}
+
 	}
-	
-	public static String getProfile(){
+
+//	static List<String> findNamesOfConfiguredAppenders() {
+//		LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+//		List<String> strList = new ArrayList<String>();
+//		for (ch.qos.logback.classic.Logger log : lc.getLoggerList()) {
+//			if(log.getLevel() != null || hasAppenders(log)) {
+//				strList.add(log.getName());
+//			}
+//		}
+//		return strList;
+//	}
+//
+//	static boolean hasAppenders(ch.qos.logback.classic.Logger logger) {
+//		Iterator<Appender<ILoggingEvent>> it = logger.iteratorForAppenders();
+//		return it.hasNext();
+//	}
+
+	static String getProfile(){
 		String profile = (System.getProperty("spring.profiles.active") != null)
 				? System.getProperty("spring.profiles.active") : System.getenv(Constants.ENV_APP_PROFILE);
         if (profile != null) {
