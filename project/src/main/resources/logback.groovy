@@ -1,8 +1,8 @@
-import ch.qos.logback.classic.encoder.PatternLayoutEncoder
 import ch.qos.logback.core.ConsoleAppender
 import ch.qos.logback.core.rolling.FixedWindowRollingPolicy
 import ch.qos.logback.core.rolling.RollingFileAppender
 import ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy
+import com.il.sod.logging.CustomLayoutWrappingEncoder
 import groovy.transform.Field
 
 import static ch.qos.logback.classic.Level.*
@@ -15,10 +15,10 @@ import static ch.qos.logback.classic.Level.*
  * @param defValue
  * @return
  */
-def getSystemProperty(String val, String defValue){
+def getSystemProperty(String val, String defValue) {
 	def result = System.getProperty(val)
 	if (result != null) return result
-	result = (System.getenv(val) != null ) ? System.getenv(val) : defValue;
+	result = (System.getenv(val) != null) ? System.getenv(val) : defValue;
 	return result;
 }
 
@@ -27,64 +27,46 @@ def getSystemProperty(String val, String defValue){
 
 /**
  * Pattern:
-	 * %d{yyyy-MM-dd_HH:mm:ss.SSS} - 2017-04-01_14:12:04.757
-	 * %-5level - TRACE
-	 * %logger{30} - com.oracle.tests.LoggerTest
-	 * {} Replace with Log type oriented information
-	 * %msg - Logged Message
-	 * %n - Breakline
+ * %d{yyyy-MM-dd_HH:mm:ss.SSS} - 2017-04-01_14:12:04.757
+ * %-5level - TRACE
+ * %logger{30} - com.oracle.tests.LoggerTest
+ *{} Replace with Log type oriented information
+ * %msg - Logged Message
+ * %n - Breakline
  */
-@Field String defaultPattern = "%d{yyyy-MM-dd_HH:mm:ss.SSS} %-5level %logger{90}{} - %msg%n"
+@Field String defaultPattern = "%d{yyyy-MM-dd_HH:mm:ss.SSS} %-5level %logger{16} {} - %msg%n"
 
 /**
  * Add system appenders
  * @return
  */
-def addAppenders(){
-
-	// pattern used for the project, this will print between brackets the mdc map used within the app to add context
-	def allPattern = defaultPattern.replace("{}", "")
-	// pattern used for the project, this will print between brackets the mdc map used within the app to add context
-	def appPattern = defaultPattern.replace("{}", " [%mdc]")
-	// pattern used for the database info, will add a constant [sql] to the output
-	def sqlPattern = defaultPattern.replace("{}", " [sql]")
-	// pattern used for the dependencies info, will add a constant [frameworks] to the output
-	def dependencyPattern = defaultPattern.replace("{}", " [frameworks]")
-
-	addAppender(1, "STDOUT", allPattern)
-	addAppender(1, "APP_STDOUT", appPattern)
-	addAppender(1, "SQL_STDOUT", sqlPattern)
-	addAppender(1, "FW_STDOUT", dependencyPattern)
-
-
-	addAppender(2, "SQL_FILE", sqlPattern)
-	addAppender(2, "APP_FILE", appPattern)
-	addAppender(2, "FW_FILE", dependencyPattern)
-}
-
-def addAppender(int type, String name, String _pattern){
-	if (type == 1){
-		appender(name, ConsoleAppender) {
-			encoder(PatternLayoutEncoder) {
-				pattern = _pattern
-			}
+def addAppenders() {
+	Map<String, String> map = new HashMap<>();
+	map.put("oracle.doceng.selfpub", "[APP]")
+	map.put("ma.glasnost.orika", "[FW]")
+	map.put("io.swagger", "[FW]")
+	map.put("org.hibernate", "[DB]")
+	appender("STDOUT", ConsoleAppender) {
+		encoder(CustomLayoutWrappingEncoder) {
+			pattern = defaultPattern
+			componentTag = map
 		}
-	}else{
-		appender(name, RollingFileAppender) {
-			file = "${WEBAPP_DIR}/log/${baseName}.log"
-			encoder(PatternLayoutEncoder) {
-				pattern = _pattern
-			}
-			rollingPolicy(FixedWindowRollingPolicy) {
-				FileNamePattern = "${WEBAPP_DIR}/log/${baseName}.%i.log.zip"
-				minIndex = 1
-				maxIndex = 9
-			}
-			triggeringPolicy(SizeBasedTriggeringPolicy) {
-				maxFileSize = "20MB"
-			}
-			append = true
+	}
+	appender("ROLLING_FILE", RollingFileAppender) {
+		file = "${WEBAPP_DIR}/log/${baseName}.log"
+		encoder(CustomLayoutWrappingEncoder) {
+			pattern = defaultPattern
+			componentTag = map
 		}
+		rollingPolicy(FixedWindowRollingPolicy) {
+			FileNamePattern = "${WEBAPP_DIR}/log/${baseName}.%i.log.zip"
+			minIndex = 1
+			maxIndex = 9
+		}
+		triggeringPolicy(SizeBasedTriggeringPolicy) {
+			maxFileSize = "20MB"
+		}
+		append = true
 	}
 }
 
@@ -93,7 +75,6 @@ def addAppender(int type, String name, String _pattern){
  * Logic to set the Logging (Loggin natural) LEVEL to sout
  */
 def soutLevelVal = getSystemProperty("soutLevelVal", "ALL")
-println "soutLevelVal: " + soutLevelVal
 @Field soutLevel = ALL
 switch (soutLevelVal) {
 	case "ERROR": soutLevel = ERROR; break
@@ -104,38 +85,35 @@ switch (soutLevelVal) {
 	default: soutLevel = ALL
 }
 
-println "soutLevel: " + soutLevel.toString()
-
 /**
  * Logic to set the type of applications logging to sout
  * 1 = all (default)
  * 2 = app + sql (jpa)
  * 3 = app
  */
-@Field int stoutType = Integer.valueOf( getSystemProperty("stoutType", "1") )
+@Field int stoutType = Integer.valueOf(getSystemProperty("stoutType", "1"))
 
-def addLoggers(){
-	logger("com.il.sod", ALL, ["APP_FILE"], true)
-	logger("org.hibernate.SQL", ALL, ["SQL_FILE"], true)
-	logger("org.hibernate.type.descriptor.sql.BasicBinder", TRACE, ["SQL_FILE"], true)
-
-
-	logger("com.il.sod", soutLevel, ["APP_STDOUT"], false)
-
+def addLoggers() {
+	def sqlAppenders = ["ROLLING_FILE"];
 	if ( stoutType < 3 ) {
-		logger("org.hibernate.SQL", soutLevel, ["SQL_STDOUT"], false)
-		logger("org.hibernate.type.descriptor.sql.BasicBinder", soutLevel, ["SQL_STDOUT"], false)
+		sqlAppenders = ["ROLLING_FILE", "STDOUT"];
 	}
 
+	logger("oracle.doceng.selfpub", ALL, ["ROLLING_FILE", "STDOUT"], false)
+	logger("org.hibernate.SQL", DEBUG, sqlAppenders, false)
+	logger("org.hibernate.type.descriptor.sql.BasicBinder", TRACE, sqlAppenders, false)
+
+	def fwAppenders = ["ROLLING_FILE"]
 	if ( stoutType == 1 ){
-		String[] frameworks = ["ma.glasnost.orika", "io.swagger", "org.springframework"]
-		for (String fw : frameworks ){
-			logger(fw, soutLevel, ["FW_STDOUT"], false)
-		}
+		fwAppenders = ["ROLLING_FILE", "STDOUT"]
 	}
 
+	String[] frameworks = ["ma.glasnost.orika", "io.swagger"]
+	for (String fw : frameworks ){
+		logger(fw, soutLevel, fwAppenders, false)
+	}
 
-	root(OFF, ["STDOUT"])
+	root(ERROR, ["STDOUT"])
 }
 
 addAppenders()
