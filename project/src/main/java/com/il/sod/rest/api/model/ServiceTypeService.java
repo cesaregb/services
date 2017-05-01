@@ -13,19 +13,21 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.*;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
 @SuppressWarnings("Duplicates")
-@Component
+@RestController
 @RolesAllowed("ADMIN")
-@Path("/services/service-type")
-@Produces(MediaType.APPLICATION_JSON)
+@RequestMapping(value = "/services/service-type", produces = MediaType.APPLICATION_JSON)
  @Api(value = "/services/service-type", tags = { "services" })
 public class ServiceTypeService extends AbstractServiceMutations {
 
@@ -34,70 +36,58 @@ public class ServiceTypeService extends AbstractServiceMutations {
 	@Autowired
 	ServicesSv servicesSv;
 
-	@Autowired
-	ProductTypeRepository productTypeRepository;
-
-	@Autowired
-	SpecRepository specRepository;
-
-	@POST
+	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "Create Service Type", response = ServiceTypeDTO.class)
 	public Response saveServiceType(ServiceTypeDTO dto) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(servicesSv.saveServiceType(dto), Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(servicesSv.saveServiceType(dto), HttpStatus.CREATED);
 	}
 
-	@PUT
+	@RequestMapping(method = RequestMethod.PUT)
 	@ApiOperation(value = "Update Service Type", response = ServiceTypeDTO.class)
 	public Response updateServiceType(ServiceTypeDTO dto) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(servicesSv.updateServiceType(dto), Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(servicesSv.updateServiceType(dto), HttpStatus.OK);
 	}
 
-	@DELETE
-	@Path("/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
 	@ApiOperation(value = "Delete", response = GeneralResponseMessage.class)
-	public Response deleteItem(@PathParam("id") int id) throws SODAPIException {
+	public Response deleteItem(@PathVariable("id") int id) throws SODAPIException {
 		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(servicesSv.deleteItem(id), "Entity deleted"),
-				Response.Status.OK);
+				HttpStatus.OK);
 	}
 
-	@GET
+	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get Service Type list", response = ServiceTypeDTO.class, responseContainer = "List")
 	public Response getServiceTypeList(@QueryParam("idServiceType") int idServiceType) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(servicesSv.getServiceTypeList(idServiceType), Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(servicesSv.getServiceTypeList(idServiceType), HttpStatus.OK);
 	}
 
-	@GET
-	@Path("/byId/{id}")
+	@RequestMapping(method = RequestMethod.GET, value = "/byId/{id}")
 	@ApiOperation(value = "Get Service Type list", response = ServiceTypeDTO.class)
-	public Response getServiceType(@PathParam("id") int id) throws SODAPIException {
+	public Response getServiceType(@PathVariable("id") int id) throws SODAPIException {
 		return ConvertUtils.castEntityAsResponse(servicesSv.getServiceType(id));
 	}
 
-	@GET
-	@Path("/byCalculator")
+	@RequestMapping(method = RequestMethod.GET, value = "/byCalculator")
 	@ApiOperation(value = "Get Service Type list", response = ServiceTypeDTO.class, responseContainer = "List")
 	public Response getPublicServiceType() throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(servicesSv.getPublicServiceType(), Response.Status.OK);
+		return ConvertUtils.castEntityAsResponse(servicesSv.getPublicServiceType(), HttpStatus.OK);
 	}
 
-	@POST
-	@Path("/addProducts/{idServiceType}")
+	@RequestMapping(method = RequestMethod.POST, value = "/addProducts/{idServiceType}")
 	@ApiOperation(value = "Add Products to Service Type", response = ServiceDTO.class)
-	public Response addProducts(@PathParam("idServiceType") int idServiceType,  List<ProductTypeDTO> listDto) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(servicesSv.addProducts(idServiceType, listDto), Response.Status.OK);
+	public Response addProducts(@PathVariable("idServiceType") int idServiceType,  List<ProductTypeDTO> listDto) throws SODAPIException {
+		return ConvertUtils.castEntityAsResponse(servicesSv.addProducts(idServiceType, listDto), HttpStatus.OK);
 	}
 
-	@POST
-	@Path("/addSpecs/{idServiceType}")
+	@RequestMapping(method = RequestMethod.POST, value = "/addSpecs/{idServiceType}")
 	@ApiOperation(value = "Add Specs to Service Type", response = ServiceDTO.class)
-	public Response addSpecs(@PathParam("idServiceType") int idServiceType,  List<SpecDTO> listDto) throws SODAPIException {
+	public Response addSpecs(@PathVariable("idServiceType") int idServiceType,  List<SpecDTO> listDto) throws SODAPIException {
 		return ConvertUtils.castEntityAsResponse(servicesSv.addSpecs(idServiceType, listDto));
 	}
 
-	@POST
-	@Path("/addTasks/{idServiceType}")
+	@RequestMapping(method = RequestMethod.POST, value = "/addTasks/{idServiceType}")
 	@ApiOperation(value = "Add Tasks to Service Type", response = ServiceDTO.class)
-	public Response addServiceTypeTask(@PathParam("idServiceType") int idServiceType,  List<ServiceTypeTaskDTO> listDto) throws SODAPIException {
+	public Response addServiceTypeTask(@PathVariable("idServiceType") int idServiceType,  List<ServiceTypeTaskDTO> listDto) throws SODAPIException {
 		return ConvertUtils.castEntityAsResponse(servicesSv.addServiceTypeTask(idServiceType, listDto));
 	}
 

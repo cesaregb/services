@@ -2,7 +2,6 @@ package com.il.sod.rest.api.model;
 
 import com.il.sod.db.model.entities.ClientBag;
 import com.il.sod.db.model.repositories.ClientBagRepository;
-import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ClientMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -11,73 +10,65 @@ import com.il.sod.rest.dto.db.ClientBagDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@RestController
 @RolesAllowed("ADMIN")
-@Path("/clients/client-bag")
-@Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/clients/client-bag", tags = { "clients" })
+@RequestMapping(value = "/clients/client-bag", produces = MediaType.APPLICATION_JSON)
+@Api(value = "/clients/client-bag", tags = {"clients"})
 public class ClientBagService extends AbstractServiceMutations {
 
 	@Autowired
 	ClientBagRepository clientBagRepository;
 
-	@POST
+	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "Create Client Bag", response = ClientBagDTO.class)
-	public Response saveClientBag(ClientBagDTO dto) throws SODAPIException {
-
-			ClientBag entity = ClientMapper.INSTANCE.map(dto);
-			this.saveEntity(clientBagRepository, entity);
-			dto = ClientMapper.INSTANCE.map(entity);
-			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
+	public ResponseEntity<ClientBagDTO> saveClientBag(ClientBagDTO dto) throws SODAPIException {
+		ClientBag entity = ClientMapper.INSTANCE.map(dto);
+		this.saveEntity(clientBagRepository, entity);
+		dto = ClientMapper.INSTANCE.map(entity);
+		return new ResponseEntity<>(dto, HttpStatus.CREATED);
 
 	}
 
-	@PUT
+	@RequestMapping(method = RequestMethod.PUT)
 	@ApiOperation(value = "Update Client Bag", response = ClientBagDTO.class)
-	public Response updateClientBag(ClientBagDTO dto) throws SODAPIException {
-		return updateEntity(dto);
+	public ResponseEntity<ClientBagDTO> updateClientBag(ClientBagDTO dto) throws SODAPIException {
+		ClientBag entity = ClientMapper.INSTANCE.map(dto);
+		this.updateEntity(clientBagRepository, entity);
+		dto = ClientMapper.INSTANCE.map(entity);
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 
-	private Response updateEntity(ClientBagDTO dto) throws SODAPIException {
 
-			ClientBag entity = ClientMapper.INSTANCE.map(dto);
-			this.updateEntity(clientBagRepository, entity);
-			dto = ClientMapper.INSTANCE.map(entity);
-			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
-
-	}
-
-	@DELETE
-	@Path("/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
 	@ApiOperation(value = "Delete Item", response = GeneralResponseMessage.class)
-	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
+	public ResponseEntity<GeneralResponseMessage> deleteItem(@PathVariable("id") String id) throws SODAPIException {
 		ClientBag entity = clientBagRepository.findOne(Integer.valueOf(id));
-		if (entity == null){
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
+		if (entity == null) {
+			throw new SODAPIException(HttpStatus.BAD_REQUEST, "Item not found");
 		}
 		this.deleteEntity(clientBagRepository, entity.getId());
-		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
-				Response.Status.OK);
+		return new ResponseEntity<>(new GeneralResponseMessage(true, "Entity deleted"),
+				HttpStatus.OK);
 	}
 
-	@GET
+	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get Client Bag list", response = ClientBagDTO.class, responseContainer = "List")
-	public Response getClientBagList() throws SODAPIException {
+	public ResponseEntity<List<ClientBagDTO>> getClientBagList() throws SODAPIException {
 		List<ClientBag> rentityList = clientBagRepository.findAll();
-		List<ClientBagDTO> list = rentityList.stream().map((i) -> {
-			ClientBagDTO dto = ClientMapper.INSTANCE.map(i);
-			return dto;
-		}).collect(Collectors.toList());
-		return ConvertUtils.castEntityAsResponse(list);
+		List<ClientBagDTO> list = rentityList.stream().map(ClientMapper.INSTANCE::map).collect(Collectors.toList());
+		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
 }

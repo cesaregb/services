@@ -10,22 +10,20 @@ import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@RestController
 @RolesAllowed("ADMIN")
-@Path("/app-utils")
-@Produces(MediaType.APPLICATION_JSON)
+@RequestMapping(value = "/app-utils", produces = MediaType.APPLICATION_JSON)
 @Api(value = "/app-utils", tags = { "app-utils" })
 public class AppUtilsService extends AbstractServiceMutations {
 	
@@ -35,8 +33,7 @@ public class AppUtilsService extends AbstractServiceMutations {
 	@Autowired
 	SpecificObjectsConverterService specificObjectsConverterService;
 
-	@GET
-	@Path("/menu")
+	@RequestMapping(method = RequestMethod.GET, value = "/menu")
 	@ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
 	public Response getMenu() throws SODAPIException {
 		List<Menu> entities = menuRepository.findAllByOrderByOrderAsc();
@@ -44,10 +41,9 @@ public class AppUtilsService extends AbstractServiceMutations {
 		return ConvertUtils.castEntityAsResponse(dtos);
 	}
 
-	@GET
-	@Path("/menu/{accessLevel}")
+	@RequestMapping(method = RequestMethod.GET, value = "/menu/{accessLevel}")
 	@ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
-	public Response getMenu(@PathParam("accessLevel") String accessLevel) throws SODAPIException {
+	public Response getMenu(@PathVariable("accessLevel") String accessLevel) throws SODAPIException {
 		List<Menu> entities = menuRepository.findAll();
 		// TODO create enum for handling roles.
 		final int accessL = (accessLevel.equals("admin"))?1:2;

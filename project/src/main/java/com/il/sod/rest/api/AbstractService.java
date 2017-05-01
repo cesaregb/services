@@ -9,11 +9,9 @@ import io.swagger.annotations.Tag;
 import ma.glasnost.orika.MapperFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.Path;
-
-@Component
 @SwaggerDefinition(tags = { @Tag(name = "clients", description = "Client Layer services"),
 		@Tag(name = "app-utils", description = "Utilities of the site - store"),
 		@Tag(name = "app-orders", description = "Services used by web-app"),
@@ -30,7 +28,9 @@ import javax.ws.rs.Path;
 		@Tag(name = "promotions", description = "Promotions, promotion handling  "),
 		@Tag(name = "auth", description = "Auth services "),
 		@Tag(name = "health", description = "Validate API + MODEL Healt") })
-@Path("/v1")
+
+@RestController
+@RequestMapping(value = "/api", produces = "application/json")
 @SuppressWarnings("all")
 public abstract class AbstractService
 		extends EntityServicesBase /* hack to migrate logic to services..  */ {

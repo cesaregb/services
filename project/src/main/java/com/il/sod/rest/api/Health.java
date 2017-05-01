@@ -2,34 +2,22 @@ package com.il.sod.rest.api;
 
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.dto.GeneralResponseMessage;
-import com.il.sod.rest.dto.TestDto;
 import com.il.sod.services.MyService;
-import com.il.sod.services.utils.ConvertUtils;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.io.InputStream;
 
-@Component
-@Path("/health")
-//@Api(value="healt", tags={"healt"})
-@Produces(MediaType.APPLICATION_JSON)
+@RestController
+@RequestMapping(value = "/health", produces = "application/json")
 public class Health extends AbstractService {
 	final static Logger LOGGER = LoggerFactory.getLogger(Health.class);
 	
@@ -49,12 +37,7 @@ public class Health extends AbstractService {
 	private String dbDriver;
 	
 	@PermitAll
-	@GET
-	@ApiOperation(value = "Validate API + MODEL Healt")
-	@ApiResponses(value = { 
-		@ApiResponse(code=400, message="Invalid input supplied"),
-		@ApiResponse(code=404, message="Info not found", 
-				response=GeneralResponseMessage.class)})
+	@RequestMapping(method = RequestMethod.GET)
 	public GeneralResponseMessage checkHealth() throws SODAPIException{
 		LOGGER.info("********************************");
 		LOGGER.info("Calling health method: ");
@@ -66,20 +49,20 @@ public class Health extends AbstractService {
 		return new GeneralResponseMessage(true, "from the resource: " + dbUrl);
 	}	
 	
-	@GET
-	@Path("/abcdef")
-	@ApiOperation(value = "Validate API + MODEL Healt")
-	public GeneralResponseMessage throwException() throws SODAPIException{	
-		LOGGER.info("Testing throwing exception!");
-		throw new SODAPIException(Response.Status.BAD_REQUEST, "Expected Exception!");
-	}
-	
-	@RolesAllowed("BASIC_AUTH")
-	@GET
-	@Path("/admin_service")
-	@ApiOperation(value = "Test")
-	public GeneralResponseMessage secureMethod(InputStream is) throws SODAPIException{
-		TestDto tst = ConvertUtils.getJsonISAsObject(is, TestDto.class);
-		return new GeneralResponseMessage(true, "ok your ar an admin!! good for you!! " + tst.getVal());
-	}	
+//	@RequestMapping(method = RequestMethod.GET)
+//	@RequestMapping(value = "/abcdef")
+//	@ApiOperation(value = "Validate API + MODEL Healt")
+//	public GeneralResponseMessage throwException() throws SODAPIException{
+//		LOGGER.info("Testing throwing exception!");
+//		throw new SODAPIException(HttpStatus.BAD_REQUEST, "Expected Exception!");
+//	}
+//
+//	@RolesAllowed("BASIC_AUTH")
+//	@RequestMapping(method = RequestMethod.GET)
+//	@RequestMapping(value = "/admin_service")
+//	@ApiOperation(value = "Test")
+//	public GeneralResponseMessage secureMethod(InputStream is) throws SODAPIException{
+//		TestDto tst = ConvertUtils.getJsonISAsObject(is, TestDto.class);
+//		return new GeneralResponseMessage(true, "ok your ar an admin!! good for you!! " + tst.getVal());
+//	}
 }

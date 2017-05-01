@@ -1,12 +1,13 @@
 package com.il.sod.services.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.il.sod.config.jersey.JacksonObjectMapperProvider;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.BaseMapper;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.util.RestUtil;
 import ma.glasnost.orika.MapperFacade;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -15,13 +16,18 @@ import java.io.StringWriter;
 
 public abstract class ConvertUtils {
 
-	protected static ObjectMapper mapper = JacksonObjectMapperProvider.MAPPER;
+	protected static ObjectMapper mapper = new ObjectMapper();
 	protected MapperFacade converter = BaseMapper.MAPPER_FACTORY.getMapperFacade();
 
 	public static Response castEntityAsResponse(Object entity) throws SODAPIException {
 		return ConvertUtils.castEntityAsResponse(entity, Status.OK);
 	}
 
+	public static ResponseEntity castEntityAsResponse(Object entity, HttpStatus status) throws SODAPIException {
+		return new ResponseEntity<>(entity, status);
+	}
+
+	@Deprecated
 	public static Response castEntityAsResponse(Object entity, Status status) throws SODAPIException {
 		StringWriter writer = new StringWriter();
 		try {

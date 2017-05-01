@@ -22,20 +22,20 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
+@RestController
 @RolesAllowed("ADMIN")
-@Path("/orders/order-type")
-@Produces(MediaType.APPLICATION_JSON)
+@RequestMapping(value = "/orders/order-type", produces = MediaType.APPLICATION_JSON)
 @Api(value = "/orders/order-type", tags = { "orders" })
 public class AppOrdersService extends AbstractServiceMutations {
 	final static Logger LOGGER = LoggerFactory.getLogger(AppOrdersService.class);
@@ -70,8 +70,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 	@Autowired
 	OrderTaskRepository orderTaskRepository;
 	
-	@GET
-	@Path("/pre-order")
+	@RequestMapping(method = RequestMethod.GET, value = "/pre-order")
 	@ApiOperation(value = "Get a complete list of the orders information", response = WServiceCategoryDTO.class, responseContainer = "List")
 	public Response getOrderTypes() throws SODAPIException {
 		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
@@ -79,21 +78,19 @@ public class AppOrdersService extends AbstractServiceMutations {
 		return ConvertUtils.castEntityAsResponse(result);
 	}
 
-	@GET
-	@Path("/public/pre-order")
+	@RequestMapping(method = RequestMethod.GET, value = "/public/pre-order")
 	@ApiOperation(value = "Get a complete list of the orders information marked as public ", response = WServiceCategoryDTO.class, responseContainer = "List")
 	public Response getOrderTypesPublic() throws SODAPIException {
 		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
 		List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
 		for (WServiceCategoryDTO cat : result){
-			Set<WServiceTypeDTO> serviceTypes =  cat.getServiceTypes().stream().filter(st -> st.isCalculator()).collect(Collectors.toSet());
+			Set<WServiceTypeDTO> serviceTypes =  cat.getServiceTypes().stream().filter(WServiceTypeDTO::isCalculator).collect(Collectors.toSet());
 			cat.setServiceTypes(serviceTypes);
 		}
 		return ConvertUtils.castEntityAsResponse(result);
 	}
 
-	@POST
-	@Path("/create-order")
+	@RequestMapping(value = "/create-order", method = RequestMethod.POST)
 	@ApiOperation(value = "Save order", response = OrderDTO.class)
 	public Response saveOrder(UIOrderDTO orderInputDto) throws SODAPIException {
 		OrderDTO result;
@@ -126,7 +123,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 		// get client
 		Client client =  clientRepository.findAllIncludeOrders(orderInputDto.getIdClient());
 		if (client == null) {
-			throw new SODAPIException(Response.Status.NOT_FOUND, "Client not found {%d}", orderInputDto.getIdClient());
+			throw new SODAPIException(HttpStatus.NOT_FOUND, "Client not found {%d}", orderInputDto.getIdClient());
 		}
 		orderEntity.setClient(client);
 
@@ -205,7 +202,7 @@ public class AppOrdersService extends AbstractServiceMutations {
 		result = OrderMapper.INSTANCE.map(orderEntity);
 		LOGGER.info("Object mapper, response:" + ConvertUtils.castEntityAsString(result));
 		
-		return ConvertUtils.castEntityAsResponse(result, Response.Status.CREATED);
+		return ConvertUtils.castEntityAsResponse(result, HttpStatus.CREATED);
 	}
 
 	/**

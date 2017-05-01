@@ -68,6 +68,7 @@
 		<spring.data>1.9.2.RELEASE</spring.data>
 		<spring.version>4.3.3.RELEASE</spring.version>
 		<org.springframework.security.version>4.0.3.RELEASE</org.springframework.security.version>
+		<io.springfox>2.6.1</io.springfox>
 
 	</properties>
 
@@ -124,30 +125,30 @@
 		</dependency>
 
 		<!-- Has its own mappers,.. for some type of exceptions... -->
-		<dependency>
-			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-json-jackson</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.glassfish.jersey.media</groupId>-->
+			<!--<artifactId>jersey-media-json-jackson</artifactId>-->
+			<!--<version>${jersey.version}</version>-->
+		<!--</dependency>-->
 
 		<!-- Jesery -->
-		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-servlet</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.core</groupId>
-			<artifactId>jersey-client</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.glassfish.jersey.containers</groupId>-->
+			<!--<artifactId>jersey-container-servlet</artifactId>-->
+			<!--<version>${jersey.version}</version>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>org.glassfish.jersey.core</groupId>-->
+			<!--<artifactId>jersey-client</artifactId>-->
+			<!--<version>${jersey.version}</version>-->
+		<!--</dependency>-->
 
 		<!-- Swagger for jersey2 -->
-		<dependency>
-			<groupId>io.swagger</groupId>
-			<artifactId>swagger-jersey2-jaxrs</artifactId>
-			<version>${swagger.version}</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>io.swagger</groupId>-->
+			<!--<artifactId>swagger-jersey2-jaxrs</artifactId>-->
+			<!--<version>${swagger.version}</version>-->
+		<!--</dependency>-->
 
 		<!-- JSTL -->
 		<dependency>
@@ -189,11 +190,11 @@
 		</dependency>
 
 		<!-- Jersey + Spring -->
-		<dependency>
-			<groupId>org.glassfish.jersey.ext</groupId>
-			<artifactId>jersey-spring3</artifactId>
-			<version>${jersey-spring.version}</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.glassfish.jersey.ext</groupId>-->
+			<!--<artifactId>jersey-spring3</artifactId>-->
+			<!--<version>${jersey-spring.version}</version>-->
+		<!--</dependency>-->
 
 		<!-- Logging -->
 		<dependency>
@@ -255,6 +256,12 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>javax</groupId>-->
+			<!--<artifactId>javaee-web-api</artifactId>-->
+			<!--<version>6.0</version>-->
+			<!--<scope>provided</scope>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>xalan</groupId>
 			<artifactId>xalan</artifactId>
@@ -352,25 +359,6 @@
 			<version>${orika.version}</version>
 		</dependency>
 
-		<!-- Email -->
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>${javax.mail.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- velocity -->
-		<dependency>
-			<groupId>org.apache.velocity</groupId>
-			<artifactId>velocity</artifactId>
-			<version>${velocity.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.velocity</groupId>
-			<artifactId>velocity-tools</artifactId>
-			<version>${velocity-tools.version}</version>
-		</dependency>
-
 		<!--Reactive-->
 		<dependency>
 			<groupId>org.reactivestreams</groupId>
@@ -418,6 +406,33 @@
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>${org.springframework.security.version}</version>
 		</dependency>
+
+		<!-- Email -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>${javax.mail.version}</version>
+		</dependency>
+
+		<!-- velocity -->
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>${velocity.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity-tools</artifactId>
+			<version>${velocity-tools.version}</version>
+		</dependency>
+
+		<!--Rest Documentation-->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${io.springfox}</version>
+		</dependency>
+
 
 	</dependencies>
 

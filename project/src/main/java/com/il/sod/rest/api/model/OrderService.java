@@ -4,90 +4,87 @@ import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.dto.db.OrderDTO;
+import com.il.sod.rest.dto.parse.UIOrderDTO;
 import com.il.sod.rest.dto.specifics.OrderTasksInfoDTO;
 import com.il.sod.services.cruds.OrdersSv;
-import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import java.util.List;
 
-@Component
+@RestController
 @RolesAllowed("ADMIN")
-@Path("/orders")
-@Produces(MediaType.APPLICATION_JSON)
+@RequestMapping(value = "/orders", produces = MediaType.APPLICATION_JSON)
 @Api(value = "/orders", tags = {"orders"})
 public class OrderService extends AbstractServiceMutations {
 
 	@Autowired
 	OrdersSv ordersSv;
 
-	@POST
+	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "Create Order Type", response = OrderDTO.class)
-	public Response saveOrder(OrderDTO dto) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.saveOrder(dto), Response.Status.CREATED);
+	public ResponseEntity<OrderDTO> saveOrder(OrderDTO dto) throws SODAPIException {
+		return new ResponseEntity<>(ordersSv.saveOrder(dto), HttpStatus.CREATED);
 	}
 
-	@PUT
+	@RequestMapping(method = RequestMethod.PUT)
 	@ApiOperation(value = "Update Order Type", response = OrderDTO.class)
-	public Response updateOrder(OrderDTO dto) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.updateOrder(dto), Response.Status.OK);
+	public ResponseEntity<OrderDTO> updateOrder(OrderDTO dto) throws SODAPIException {
+		return new ResponseEntity<>(ordersSv.updateOrder(dto), HttpStatus.OK);
 	}
 
 	//TODO by param
-	@DELETE
+	@RequestMapping(method = RequestMethod.DELETE)
 	@ApiOperation(value = "Create Order Type", response = OrderDTO.class)
-	public Response deleteOrder(OrderDTO dto) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(
-				new GeneralResponseMessage(ordersSv.deleteOrder(dto), "Entity deleted"),
-				Response.Status.OK);
+	public ResponseEntity<GeneralResponseMessage> deleteOrder(OrderDTO dto) throws SODAPIException {
+		return new ResponseEntity<>(new GeneralResponseMessage(ordersSv.deleteOrder(dto), "Entity deleted"),
+				HttpStatus.OK);
 	}
 
-	@GET
+	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get Order Type list", response = OrderDTO.class, responseContainer = "List")
-	public Response getOrderList() throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.getOrderList());
+	public ResponseEntity<List<OrderDTO>> getOrderList() throws SODAPIException {
+		return new ResponseEntity<>(ordersSv.getOrderList(), HttpStatus.OK);
 	}
 
 	//TODO change all this methods to be accesible thru the GET
-	@GET
-	@Path("/byStatus/{status}")
+	@RequestMapping(method = RequestMethod.GET, value = "/byStatus/{status}")
 	@ApiOperation(value = "Get Order by status ", response = OrderDTO.class, responseContainer = "List")
-	public Response getOrdersByStatus(@PathParam("status") int status) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.getOrdersByStatus(status), Response.Status.OK);
+	public ResponseEntity<List<OrderDTO>> getOrdersByStatus(@PathVariable("status") int status) throws SODAPIException {
+		return new ResponseEntity<>(ordersSv.getOrdersByStatus(status), HttpStatus.OK);
 	}
 
-	@GET
-	@Path("/byId/{orderId}")
+	@RequestMapping(method = RequestMethod.GET, value = "/byId/{orderId}")
 	@ApiOperation(value = "Get Order by id", response = OrderDTO.class)
-	public Response getOrderById(@PathParam("orderId") String orderId) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.getOrderById(orderId), Response.Status.OK);
+	public ResponseEntity<OrderDTO> getOrderById(@PathVariable("orderId") String orderId) throws SODAPIException {
+		return new ResponseEntity<>(ordersSv.getOrderById(orderId), HttpStatus.OK);
 	}
 
-	@GET
-	@Path("/byClient/{idClient}")
+	@RequestMapping(method = RequestMethod.GET, value = "/byClient/{idClient}")
 	@ApiOperation(value = "Get Client Orders list", response = OrderDTO.class, responseContainer = "List")
-	public Response getOrdersByClient(@PathParam("idClient") int idClient) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.getOrdersByClient(idClient), Response.Status.OK);
+	public ResponseEntity<List<OrderDTO>> getOrdersByClient(@PathVariable("idClient") int idClient) throws SODAPIException {
+		return new ResponseEntity<>(ordersSv.getOrdersByClient(idClient), HttpStatus.OK);
 	}
 
-	@GET
-	@Path("/tasks/{orderId}")
+	@RequestMapping(method = RequestMethod.GET, value = "/tasks/{orderId}")
 	@ApiOperation(value = "Get Task list for order", response = OrderTasksInfoDTO.class)
-	public Response getOrderTaskInfo(@PathParam("orderId") int orderId) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.getOrderTaskInfo(orderId), Response.Status.OK);
+	public ResponseEntity<OrderTasksInfoDTO> getOrderTaskInfo(@PathVariable("orderId") int orderId) throws SODAPIException {
+		return new ResponseEntity<>(ordersSv.getOrderTaskInfo(orderId), HttpStatus.OK);
 	}
 
 	@Deprecated
-	@GET
-	@Path("/forEdit/{orderId}")
+	@RequestMapping(method = RequestMethod.GET, value = "/forEdit/{orderId}")
 	@ApiOperation(value = "Get Order in Edit object mode.", response = OrderTasksInfoDTO.class)
-	public Response getOrder4Edit(@PathParam("orderId") String orderId) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.getOrder4Edit(orderId), Response.Status.OK);
+	public ResponseEntity<UIOrderDTO> getOrder4Edit(@PathVariable("orderId") String orderId) throws SODAPIException {
+		return new ResponseEntity<>(ordersSv.getOrder4Edit(orderId), HttpStatus.OK);
 	}
 }

@@ -11,59 +11,59 @@ import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@RestController
 @RolesAllowed("ADMIN")
-@Path("/services")
-@Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/services", tags = { "services" })
+@RequestMapping(value = "/services", produces = MediaType.APPLICATION_JSON)
+@Api(value = "/services", tags = {"services"})
 public class ServiceService extends AbstractServiceMutations {
 	@Autowired
 	ServiceRepository serviceRepository;
 
-	@POST
+	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "Create Service Type", response = ServiceDTO.class)
 	public Response saveService(ServiceDTO dto) throws SODAPIException {
 
-			Service entity = ServiceMapper.INSTANCE.map(dto);
-			this.saveEntity(serviceRepository, entity);
-			dto = ServiceMapper.INSTANCE.map(entity);
-			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
+		Service entity = ServiceMapper.INSTANCE.map(dto);
+		this.saveEntity(serviceRepository, entity);
+		dto = ServiceMapper.INSTANCE.map(entity);
+		return ConvertUtils.castEntityAsResponse(dto, HttpStatus.CREATED);
 
 	}
 
-	@PUT
+	@RequestMapping(method = RequestMethod.PUT)
 	@ApiOperation(value = "Update Service Type", response = ServiceDTO.class)
 	public Response updateService(ServiceDTO dto) throws SODAPIException {
 
-			Service entity = ServiceMapper.INSTANCE.map(dto);
-			this.updateEntity(serviceRepository, entity);
-			dto = ServiceMapper.INSTANCE.map(entity);
-			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
+		Service entity = ServiceMapper.INSTANCE.map(dto);
+		this.updateEntity(serviceRepository, entity);
+		dto = ServiceMapper.INSTANCE.map(entity);
+		return ConvertUtils.castEntityAsResponse(dto, HttpStatus.OK);
 
 	}
 
-	@DELETE
+	@RequestMapping(method = RequestMethod.DELETE)
 	@ApiOperation(value = "Create Service Type", response = ServiceDTO.class)
 	public Response deleteService(ServiceDTO dto) throws SODAPIException {
 
-			Service entity = ServiceMapper.INSTANCE.map(dto);
-			this.deleteEntity(serviceRepository, entity.getIdService());
-			return ConvertUtils.castEntityAsResponse(
-					new GeneralResponseMessage(true, "Entity deleted"),
-					Response.Status.OK);
+		Service entity = ServiceMapper.INSTANCE.map(dto);
+		this.deleteEntity(serviceRepository, entity.getIdService());
+		return ConvertUtils.castEntityAsResponse(
+				new GeneralResponseMessage(true, "Entity deleted"),
+				HttpStatus.OK);
 
 	}
 
-	@GET
+	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get Service Type list", response = ServiceDTO.class, responseContainer = "List")
 	public Response getServiceList() throws SODAPIException {
 		List<Service> rentityList = this.getEntityList(serviceRepository);

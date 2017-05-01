@@ -1,7 +1,6 @@
 package com.il.sod.services.cruds;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.il.sod.config.jersey.JacksonObjectMapperProvider;
 import com.il.sod.db.dao.IDAO;
 import com.il.sod.db.model.entities.SoftDeleteEntity;
 import com.il.sod.exception.SODAPIException;
@@ -27,7 +26,7 @@ public abstract class EntityServicesBase {
 	private IDAO genericDaoImpl;
 
 	protected EntityServicesBase() {
-		mapper = JacksonObjectMapperProvider.MAPPER;
+		mapper = new ObjectMapper();
 		serviceDbHelper = new ServicesDBHelper(this);
 	}
 

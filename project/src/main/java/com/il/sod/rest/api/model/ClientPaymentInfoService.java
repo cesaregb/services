@@ -5,7 +5,6 @@ import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.entities.ClientPaymentInfo;
 import com.il.sod.db.model.repositories.ClientPaymentInfoRepository;
 import com.il.sod.db.model.repositories.ClientRepository;
-import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ClientMapper;
 import com.il.sod.mapper.PaymentMapper;
@@ -19,19 +18,22 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.*;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@RestController
 @RolesAllowed("ADMIN")
-@Path("/clients/client-payment-info")
-@Produces(MediaType.APPLICATION_JSON)
+@RequestMapping(value = "/clients/client-payment-info", produces = MediaType.APPLICATION_JSON)
 @Api(value = "/clients/client-payment-info", tags = {"payment"})
 public class ClientPaymentInfoService extends AbstractServiceMutations {
 	private final static Logger LOGGER = LoggerFactory.getLogger(ClientPaymentInfoService.class);
@@ -45,65 +47,54 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 	@Autowired
 	IClientPaymentInfoDAO clientPaymentInfoDAO;
 
-	@POST
+	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "Create Client Payment Info", response = ClientPaymentInfoDTO.class)
-	public Response saveClientPaymentInfo(ClientPaymentInfoDTO dto) throws SODAPIException {
+	public ResponseEntity<ClientPaymentInfoDTO> saveClientPaymentInfo(ClientPaymentInfoDTO dto) throws SODAPIException {
 		serviceDbHelper.validateClient(clientRepository, dto);
 		Client client = clientRepository.findOne(dto.getIdClient());
-
 		ClientPaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
-
 		if (client.getPaymentInfo(entity) != null){
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Client has already a Payment Info with that information.");
+			throw new SODAPIException(HttpStatus.BAD_REQUEST, "Client has already a Payment Info with that information.");
 		}
-
-		LOGGER.info("SIZE: " + client.getClientPaymentInfos().size());
-
 		if (client.getClientPaymentInfos().size() == 0){
 			entity.setPrefered(true);
 		}
 		client.addClientPaymentInfo(entity);
 		client = this.saveEntity(clientRepository, client);
 		dto = ClientMapper.INSTANCE.map(client.getPaymentInfo(entity));
-		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
+		return new ResponseEntity<>(dto, HttpStatus.CREATED);
 	}
 
-	@PUT
+	@RequestMapping(method = RequestMethod.PUT)
 	@ApiOperation(value = "Update Client Payment Info", response = ClientPaymentInfoDTO.class)
-	public Response updateClientPaymentInfo(ClientPaymentInfoDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	private Response updateEntity(ClientPaymentInfoDTO dto) throws SODAPIException {
+	public ResponseEntity<ClientPaymentInfoDTO> updateClientPaymentInfo(ClientPaymentInfoDTO dto) throws SODAPIException {
 		ClientPaymentInfo entity = PaymentMapper.INSTANCE.map(dto);
 		this.updateEntity(clientPaymentInfoRepository, entity);
 		dto = PaymentMapper.INSTANCE.map(entity);
-		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
-
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 
-	@DELETE
-	@Path("/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
 	@ApiOperation(value = "Delete Client PaymentInfo", response = GeneralResponseMessage.class)
-	public Response deleteEntity(@PathParam("id") String id) throws SODAPIException {
+	public ResponseEntity<GeneralResponseMessage> deleteEntity(@PathVariable("id") String id) throws SODAPIException {
 		ClientPaymentInfo entity = clientPaymentInfoRepository.findOne(Integer.valueOf(id));
 		if (entity == null) {
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "ClientPaymentInfo not found");
+			throw new SODAPIException(HttpStatus.BAD_REQUEST, "ClientPaymentInfo not found");
 		}
 		Client cEntity = entity.getClient();
 		cEntity.removeClientPaymentInfo(entity);
 		this.saveEntity(clientRepository, cEntity);
-		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
-				Response.Status.OK);
+		return new ResponseEntity<>(new GeneralResponseMessage(true, "Entity deleted"),
+				HttpStatus.OK);
 	}
 
-	@GET
+	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get Payment Info list", response = ClientPaymentInfoDTO.class, responseContainer = "List")
-	public Response getClientPaymentInfoList(@QueryParam("idClient") String idClient) throws SODAPIException {
+	public ResponseEntity<List<ClientPaymentInfoDTO>> getClientPaymentInfoList(@QueryParam("idClient") String idClient) throws SODAPIException {
 		List<ClientPaymentInfo> entityList = null;
 		if (!StringUtils.isEmpty(idClient)) {
 			if (!NumberUtils.isDigits(idClient)) {
-				throw new SODAPIException(Response.Status.BAD_REQUEST, "Not a valid id " + idClient);
+				throw new SODAPIException(HttpStatus.BAD_REQUEST, "Not a valid id " + idClient);
 			}
 			entityList = clientPaymentInfoDAO.findByIdClient(Integer.valueOf(idClient));
 		} else {
@@ -111,20 +102,19 @@ public class ClientPaymentInfoService extends AbstractServiceMutations {
 		}
 
 		List<ClientPaymentInfoDTO> list = entityList.stream().map(PaymentMapper.INSTANCE::map).collect(Collectors.toList());
-		return ConvertUtils.castEntityAsResponse(list);
+		return new ResponseEntity<>(list, HttpStatus.OK);
 
 	}
 
-	@GET
-	@Path("/byId/{idClientPaymentInfo}")
+	@RequestMapping(method = RequestMethod.GET, value = "/byId/{idClientPaymentInfo}")
 	@ApiOperation(value = "Get Payment Info list", response = ClientPaymentInfoDTO.class)
-	public Response getPaymentInfoById(@PathParam("idClientPaymentInfo") String idClientPaymentInfo) throws SODAPIException {
+	public ResponseEntity<ClientPaymentInfoDTO> getPaymentInfoById(@PathVariable("idClientPaymentInfo") String idClientPaymentInfo) throws SODAPIException {
 		if (!NumberUtils.isDigits(idClientPaymentInfo)) {
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Not a valid id " + idClientPaymentInfo);
+			throw new SODAPIException(HttpStatus.BAD_REQUEST, "Not a valid id " + idClientPaymentInfo);
 		}
 		ClientPaymentInfo pi = this.getEntity(clientPaymentInfoRepository, Integer.valueOf(idClientPaymentInfo));
 		ClientPaymentInfoDTO piDto = PaymentMapper.INSTANCE.map(pi);
-		return ConvertUtils.castEntityAsResponse(piDto);
+		return new ResponseEntity<>(piDto, HttpStatus.OK);
 	}
 
 }

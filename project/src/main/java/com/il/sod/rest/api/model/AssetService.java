@@ -2,8 +2,6 @@ package com.il.sod.rest.api.model;
 
 import com.il.sod.db.model.entities.Asset;
 import com.il.sod.db.model.repositories.AssetRepository;
-import com.il.sod.db.model.repositories.AssetTypeRepository;
-import com.il.sod.services.utils.ConvertUtils;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.AssetMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -12,70 +10,64 @@ import com.il.sod.rest.dto.db.AssetDTO;
 import com.il.sod.rest.dto.predicates.DeletablePredicate;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@RestController
 @RolesAllowed("ADMIN")
-@Path("/asset")
-@Produces(MediaType.APPLICATION_JSON)
+@RequestMapping(value = "/asset", produces = "application/json")
 //@Api(value = "/asset", tags = { "asset" })
 public class AssetService extends AbstractServiceMutations {
 	@Autowired
 	AssetRepository assetRepository;
 
-	@Autowired
-	AssetTypeRepository assetTypeRepository;
-
-	@POST
+	@RequestMapping(method = RequestMethod.POST)
 	@ApiOperation(value = "Create Asset", response = AssetDTO.class)
-	public Response saveAsset(AssetDTO dto) throws SODAPIException {
+	public ResponseEntity<AssetDTO> saveAsset(AssetDTO dto) throws SODAPIException {
 		Asset entity = AssetMapper.INSTANCE.map(dto);
 		this.saveEntity(assetRepository, entity);
 		dto = AssetMapper.INSTANCE.map(entity);
-		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
+		return new ResponseEntity<>(dto, HttpStatus.CREATED);
 	}
 
-	@PUT
+	@RequestMapping(method = RequestMethod.PUT)
 	@ApiOperation(value = "Update Asset", response = AssetDTO.class)
-	public Response updateAsset(AssetDTO dto) throws SODAPIException {
+	public ResponseEntity<AssetDTO> updateAsset(AssetDTO dto) throws SODAPIException {
 		Asset entity = AssetMapper.INSTANCE.map(dto);
 		this.updateEntity(assetRepository, entity);
 		dto = AssetMapper.INSTANCE.map(entity);
-		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 
 
-	@DELETE
-	@Path("/{id}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
 	@ApiOperation(value = "Delete Task", response = GeneralResponseMessage.class)
-	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
+	public ResponseEntity<GeneralResponseMessage> deleteItem(@PathVariable("id") String id) throws SODAPIException {
 		Asset entity = assetRepository.findOne(Integer.valueOf(id));
-		if (entity == null){
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
+		if (entity == null) {
+			throw new SODAPIException(HttpStatus.BAD_REQUEST, "Item not found");
 		}
 		this.softDeleteEntity(assetRepository, entity.getId());
-		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
-				Response.Status.OK);
+		return new ResponseEntity<>(new GeneralResponseMessage(true, "Entity deleted"),
+				HttpStatus.OK);
 	}
 
-	@GET
+	@RequestMapping(method = RequestMethod.GET)
 	@ApiOperation(value = "Get Asset list", response = AssetDTO.class, responseContainer = "List")
-	public Response getAssetList() throws SODAPIException {
+	public ResponseEntity<List<AssetDTO>> getAssetList() throws SODAPIException {
 		List<Asset> entityList = this.getEntityList(assetRepository);
-		List<AssetDTO> list = entityList.stream().map((i) -> {
-			AssetDTO dto = AssetMapper.INSTANCE.map(i);
-			return dto;
-		})
+		List<AssetDTO> list = entityList.stream().map(AssetMapper.INSTANCE::map)
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());
-		return ConvertUtils.castEntityAsResponse(list);
+		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
 }

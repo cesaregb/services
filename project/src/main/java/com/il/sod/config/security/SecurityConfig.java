@@ -26,7 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
 		final String user = (System.getenv("SEC_USER") == null)?"user":System.getenv("SEC_USER");
 		final String password = (System.getenv("SEC_PASSWORD") == null)?"thousandeyes":System.getenv("SEC_PASSWORD");
-
 		auth.inMemoryAuthentication().withUser(user).password(password).roles("ADMIN");
 	}
 
