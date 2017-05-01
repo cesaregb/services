@@ -41,8 +41,9 @@ public class MailConfiguration {
 	@Value("${email.host}")
     private String host;
 
+	//TODO check type to be int
     @Value("${email.port}")
-    private Integer port;
+    private String port;
     
     @Value("${email.username}")
     private String emailUsername;
@@ -54,7 +55,7 @@ public class MailConfiguration {
     public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost(host);
-        javaMailSender.setPort(port);
+        javaMailSender.setPort(Integer.valueOf(port));
         javaMailSender.setJavaMailProperties(getMailProperties());
         javaMailSender.setUsername(emailUsername);
         javaMailSender.setPassword(emailPassword);

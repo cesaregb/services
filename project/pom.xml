@@ -1,7 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.il.sod</groupId>
 	<artifactId>sod_project</artifactId>
@@ -10,43 +10,48 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
+		<!--build props-->
+		<api-port>8000</api-port>
 		<skipTests>true</skipTests>
+
 		<jetty.version>8.1.5.v20120716</jetty.version>
 		<java.version>1.8</java.version>
-		<slf4j.version>1.7.16</slf4j.version>
-		<logback.version>1.1.7</logback.version>
-
-		<spring.data>1.9.2.RELEASE</spring.data>
-		<spring.version>4.2.4.RELEASE</spring.version>
-		<mysql.version>5.1.30</mysql.version>
-
-		<org.aspectj.verision>1.8.7</org.aspectj.verision>
-		<commons-io.version>2.4</commons-io.version>
-		<hibernate.version>4.3.5.Final</hibernate.version>
-		<junit.version>4.11</junit.version>
-		<mockito.version>1.10.19</mockito.version>
-
-		<jersey.version>2.22.1</jersey.version>
 		<orika.version>1.4.2</orika.version>
 		<org.mongodb.version>3.2.0</org.mongodb.version>
 		<spark-core.version>2.0.0</spark-core.version>
 		<graphql-java.version>1.3</graphql-java.version>
 		<json-api.version>1.0</json-api.version>
 		<org.glassfish.version>1.0.4</org.glassfish.version>
-		<swagger.version>1.5.4</swagger.version>
-		<jersey-spring.version>2.22.1</jersey-spring.version>
 		<google-guava.version>19.0</google-guava.version>
-		<!-- <gson.version>2.6.2</gson.version> -->
-		<jackson.version>2.8.5</jackson.version>
-		<!--<jackson.version>2.7.2</jackson.version> removed to use JWT -->
-		<rest-assured.version>2.9.0</rest-assured.version>
-		<javax.mail.version>1.4.7</javax.mail.version>
 		<jaf.version>1.0.2</jaf.version>
 		<velocity.version>1.7</velocity.version>
 		<velocity-tools.version>2.0</velocity-tools.version>
-
 		<apache.commons.lang3.version>3.4</apache.commons.lang3.version>
 		<apache.commons.collections.version>4.0</apache.commons.collections.version>
+		<org.aspectj.verision>1.8.7</org.aspectj.verision>
+		<commons-io.version>2.4</commons-io.version>
+
+		<!--logging-->
+		<slf4j.version>1.7.16</slf4j.version>
+		<logback.version>1.1.7</logback.version>
+
+		<!--Database-->
+		<mysql.version>5.1.30</mysql.version>
+		<hibernate.version>4.3.5.Final</hibernate.version>
+
+		<!--testing-->
+		<junit.version>4.11</junit.version>
+		<mockito.version>1.10.19</mockito.version>
+
+		<!--Rest-->
+		<jersey.version>2.22.1</jersey.version>
+		<swagger.version>1.5.4</swagger.version>
+		<jersey-spring.version>2.22.1</jersey-spring.version>
+		<jackson.version>2.8.5</jackson.version>
+		<rest-assured.version>2.9.0</rest-assured.version>
+
+		<!--Mail-->
+		<javax.mail.version>1.4.7</javax.mail.version>
 
 		<!--External configuration plugin -->
 		<typesafe-config.version>1.3.1</typesafe-config.version>
@@ -58,13 +63,19 @@
 
 		<!--Groovy-->
 		<groovy-version>2.4.9</groovy-version>
+
+		<!--Spring-->
+		<spring.data>1.9.2.RELEASE</spring.data>
+		<spring.version>4.3.3.RELEASE</spring.version>
+		<org.springframework.security.version>4.0.3.RELEASE</org.springframework.security.version>
+
 	</properties>
-    
-    <repositories>
+
+	<repositories>
 		<!--not used-->
 	</repositories>
-    
-    <dependencies>
+
+	<dependencies>
 		<!-- mapping (JSON processor) -->
 		<!--  json integration!!  -->
 		<dependency>
@@ -73,9 +84,9 @@
 			<version>${json-api.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.glassfish</groupId>
-		    <artifactId>javax.json</artifactId>
-		    <version>${org.glassfish.version}</version>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.json</artifactId>
+			<version>${org.glassfish.version}</version>
 		</dependency>
 
 		<dependency>
@@ -83,30 +94,52 @@
 			<artifactId>jackson-core</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-		
+
+
+		<!-- Jackson (JSON processor) -->
 		<dependency>
-		  <groupId>com.fasterxml.jackson.core</groupId>
-		  <artifactId>jackson-annotations</artifactId>
-		  <version>${jackson.version}</version>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<!-- General libraries  -->
+
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
 		<!-- Has its own mappers,.. for some type of exceptions... -->
 		<dependency>
-		    <groupId>org.glassfish.jersey.media</groupId>
-		    <artifactId>jersey-media-json-jackson</artifactId>
-		    <version>${jersey.version}</version>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jersey.version}</version>
 		</dependency>
-		
+
 		<!-- Jesery -->
 		<dependency>
-		    <groupId>org.glassfish.jersey.containers</groupId>
-		    <artifactId>jersey-container-servlet</artifactId>
-		    <version>${jersey.version}</version>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.glassfish.jersey.core</groupId>
-		    <artifactId>jersey-client</artifactId>
-		    <version>${jersey.version}</version>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${jersey.version}</version>
 		</dependency>
 
 		<!-- Swagger for jersey2 -->
@@ -115,7 +148,7 @@
 			<artifactId>swagger-jersey2-jaxrs</artifactId>
 			<version>${swagger.version}</version>
 		</dependency>
-		
+
 		<!-- JSTL -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -130,9 +163,9 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-context-support</artifactId>
-		    <version>${spring.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<!-- The spring-aop  -->
@@ -141,34 +174,27 @@
 			<artifactId>spring-aop</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- AspectJ dependencies -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>${org.aspectj.verision}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjtools</artifactId>
-            <version>${org.aspectj.verision}</version>
-        </dependency>
-        
-        <!-- The spring-web module  -->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj.verision}</version>
+			<scope>runtime</scope>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>${org.aspectj.verision}</version>
+		</dependency>
+
 		<!-- Jersey + Spring -->
 		<dependency>
 			<groupId>org.glassfish.jersey.ext</groupId>
 			<artifactId>jersey-spring3</artifactId>
 			<version>${jersey-spring.version}</version>
 		</dependency>
-		
+
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -184,12 +210,6 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 			<version>${logback.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy</artifactId>
-			<version>${groovy-version}</version>
 		</dependency>
 
 		<!-- ******* JPA/Hibernate ******** -->
@@ -208,17 +228,17 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
-		   <groupId>mysql</groupId>
-		   <artifactId>mysql-connector-java</artifactId>
-		   <version>${mysql.version}</version>
-		   <!-- <scope>runtime</scope> -->
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
+			<!-- <scope>runtime</scope> -->
 		</dependency>
 
 		<!-- General libraries  -->
@@ -250,6 +270,11 @@
 			<artifactId>commons-collections4</artifactId>
 			<version>${apache.commons.collections.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy</artifactId>
+			<version>${groovy-version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -262,6 +287,17 @@
 			<artifactId>config</artifactId>
 			<version>${typesafe-config.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.graphql-java</groupId>
+			<artifactId>graphql-java</artifactId>
+			<version>${graphql-java.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver</artifactId>
+			<version>${org.mongodb.version}</version>
+		</dependency>
 
 		<!-- Testing dependencies -->
 		<dependency>
@@ -269,19 +305,19 @@
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 			<scope>test</scope>
-	    </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- Integration test (REST Services) -->
 		<dependency>
@@ -290,7 +326,7 @@
 			<version>${rest-assured.version}</version>
 			<scope>test</scope>
 		</dependency>
-        
+
 		<!-- Jetty server -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -302,32 +338,20 @@
 			<artifactId>jetty-servlet</artifactId>
 			<version>${jetty.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.sparkjava</groupId>
 			<artifactId>spark-core</artifactId>
 			<version>${spark-core.version}</version>
 		</dependency>
-		
-		<dependency>
-		    <groupId>com.graphql-java</groupId>
-		    <artifactId>graphql-java</artifactId>
-		    <version>${graphql-java.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongodb-driver</artifactId>
-			<version>${org.mongodb.version}</version>
-		</dependency>
-		
+
 		<!-- dto <==> entity mapper -->
 		<dependency>
 			<groupId>ma.glasnost.orika</groupId>
 			<artifactId>orika-core</artifactId>
 			<version>${orika.version}</version>
 		</dependency>
-		
+
 		<!-- Email -->
 		<dependency>
 			<groupId>javax.mail</groupId>
@@ -335,7 +359,6 @@
 			<version>${javax.mail.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<!-- velocity -->
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
@@ -346,13 +369,6 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity-tools</artifactId>
 			<version>${velocity-tools.version}</version>
-		</dependency>
-
-		<!--Security-->
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>${jjwt-version}</version>
 		</dependency>
 
 		<!--Reactive-->
@@ -380,65 +396,91 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-    </dependencies>
-    
-    <build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0.2</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
+		<!--Security-->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${jjwt-version}</version>
+		</dependency>
 
-			<!-- mvn clean compile exec:java -->
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-        		<artifactId>jetty-maven-plugin</artifactId>
-				<version>${jetty.version}</version>
-			</plugin>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${org.springframework.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${org.springframework.security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${org.springframework.security.version}</version>
+		</dependency>
 
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<mainClass>com.il.sod.config.App</mainClass>
-				</configuration>
-			</plugin>
-			<!-- end mvn clean compile exec:java -->
-			
-			<!-- Skip tests, for integration testing....  -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.19.1</version>
-				<configuration>
-					<skipTests>${skipTests}</skipTests>
-				</configuration>
-			</plugin>
-			
-		</plugins>
-		
- 		<resources>
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<configuration>
+						<failOnMissingWebXml>false</failOnMissingWebXml>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.0.2</version>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-maven-plugin</artifactId>
+					<version>9.2.6.v20141205</version>
+					<configuration>
+						<httpConnector>
+							<port>${api-port}</port>
+						</httpConnector>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>2.4</version>
+					<executions>
+						<execution>
+							<id>copy-dependencies</id>
+							<phase>package</phase>
+							<goals>
+								<goal>copy-dependencies</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- Skip tests, for integration testing....  -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.19.1</version>
+					<configuration>
+						<skipTests>${skipTests}</skipTests>
+					</configuration>
+				</plugin>
+
+			</plugins>
+
+		</pluginManagement>
+
+		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
@@ -448,6 +490,6 @@
 		</resources>
 		<finalName>sod_project</finalName>
 	</build>
-	
+
 </project>
 
