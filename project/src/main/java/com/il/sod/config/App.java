@@ -38,7 +38,6 @@ public class App {
 		staticServlet.setInitParameter("resourceBase", "src/main/webapp");
 		staticServlet.setInitParameter("pathInfoOnly", "true");
 
-
 		try {
 			server.start();
 			server.join();
@@ -46,8 +45,8 @@ public class App {
 			t.printStackTrace(System.err);
 		}
 	}
-	
-	public static String getProfile(){
+
+	static String getProfile(){
 		String profile = (System.getProperty("spring.profiles.active") != null)
 				? System.getProperty("spring.profiles.active") : System.getenv(Constants.ENV_APP_PROFILE);
         if (profile != null) {
