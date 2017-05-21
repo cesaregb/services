@@ -9,8 +9,8 @@ import java.util.Set;
  * 
  */
 @Entity
-@NamedQuery(name="PromotionType.findAll", query="SELECT p FROM PromotionType p")
-public class PromotionType extends SoftDeleteEntity implements IEntity<Integer> {
+@NamedQuery(name="PromotionType.findAll", query="SELECT p FROM PriceAdjustmentType p")
+public class PriceAdjustmentType extends SoftDeleteEntity implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -23,9 +23,9 @@ public class PromotionType extends SoftDeleteEntity implements IEntity<Integer> 
 
 	//bi-directional many-to-one association to PromotionDTO
 	@OneToMany(mappedBy="promotionType", fetch = FetchType.EAGER)
-	private Set<Promotion> promotions;
+	private Set<PriceAdjustment> promotions;
 
-	public PromotionType() {
+	public PriceAdjustmentType() {
 	}
 
 	public int getIdPromotionType() {
@@ -52,22 +52,22 @@ public class PromotionType extends SoftDeleteEntity implements IEntity<Integer> 
 		this.name = name;
 	}
 
-	public Set<Promotion> getPromotions() {
+	public Set<PriceAdjustment> getPromotions() {
 		return this.promotions;
 	}
 
-	public void setPromotions(Set<Promotion> promotions) {
+	public void setPromotions(Set<PriceAdjustment> promotions) {
 		this.promotions = promotions;
 	}
 
-	public Promotion addPromotion(Promotion promotion) {
+	public PriceAdjustment addPromotion(PriceAdjustment promotion) {
 		getPromotions().add(promotion);
 		promotion.setPromotionType(this);
 
 		return promotion;
 	}
 
-	public Promotion removePromotion(Promotion promotion) {
+	public PriceAdjustment removePromotion(PriceAdjustment promotion) {
 		getPromotions().remove(promotion);
 		promotion.setPromotionType(null);
 
@@ -80,7 +80,7 @@ public class PromotionType extends SoftDeleteEntity implements IEntity<Integer> 
 	}
 
 	@Override
-	public PromotionType setId(Integer id) {
+	public PriceAdjustmentType setId(Integer id) {
 		this.idPromotionType = id;
 		return this;
 	}

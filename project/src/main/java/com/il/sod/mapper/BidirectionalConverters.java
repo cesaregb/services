@@ -426,14 +426,14 @@ class DistanceInfoSetConverter extends BidirectionalConverter<Set<DistanceInfo>,
 
 /* Promotion */
 
-class PromotionSetConverter extends BidirectionalConverter<Set<Promotion>, Set<PromotionDTO>> {
+class PromotionSetConverter extends BidirectionalConverter<Set<PriceAdjustment>, Set<PromotionDTO>> {
 	@Override
-	public Set<PromotionDTO> convertTo(Set<Promotion> source, Type<Set<PromotionDTO>> type) {
+	public Set<PromotionDTO> convertTo(Set<PriceAdjustment> source, Type<Set<PromotionDTO>> type) {
 		return source.stream().map(item -> PromotionMapper.INSTANCE.map(item)).collect(Collectors.toSet());
 	}
 
 	@Override
-	public Set<Promotion> convertFrom(Set<PromotionDTO> promotionDTOs, Type<Set<Promotion>> type) {
+	public Set<PriceAdjustment> convertFrom(Set<PromotionDTO> promotionDTOs, Type<Set<PriceAdjustment>> type) {
 		return null;
 	}
 }

@@ -10,8 +10,8 @@ import java.util.Set;
  * 
  */
 @Entity
-@NamedQuery(name="Promotion.findAll", query="SELECT p FROM Promotion p")
-public class Promotion extends SoftDeleteEntity implements IEntity<Integer> {
+@NamedQuery(name="Promotion.findAll", query="SELECT p FROM PriceAdjustment p")
+public class PriceAdjustment extends SoftDeleteEntity implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -43,16 +43,16 @@ public class Promotion extends SoftDeleteEntity implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to OrderPromotion
 	@OneToMany(mappedBy="promotion")
-	private Set<OrderPromotion> orderPromotions;
+	private Set<PriceAdjustmentPromotion> orderPromotions;
 
 	//bi-directional many-to-one association to PromotionTypeDTO
 	@ManyToOne
 	@JoinColumn(name="idPromotionType")
-	private PromotionType promotionType;
+	private PriceAdjustmentType promotionType;
 
 	private int discountType;
 
-	public Promotion() {
+	public PriceAdjustment() {
 	}
 
 	public int getIdPromotion() {
@@ -143,33 +143,33 @@ public class Promotion extends SoftDeleteEntity implements IEntity<Integer> {
 		this.startDate = startDate;
 	}
 
-	public Set<OrderPromotion> getOrderPromotions() {
+	public Set<PriceAdjustmentPromotion> getOrderPromotions() {
 		return this.orderPromotions;
 	}
 
-	public void setOrderPromotions(Set<OrderPromotion> orderPromotions) {
+	public void setOrderPromotions(Set<PriceAdjustmentPromotion> orderPromotions) {
 		this.orderPromotions = orderPromotions;
 	}
 
-	public OrderPromotion addOrderPromotion(OrderPromotion orderPromotion) {
+	public PriceAdjustmentPromotion addOrderPromotion(PriceAdjustmentPromotion orderPromotion) {
 		getOrderPromotions().add(orderPromotion);
 		orderPromotion.setPromotion(this);
 
 		return orderPromotion;
 	}
 
-	public OrderPromotion removeOrderPromotion(OrderPromotion orderPromotion) {
+	public PriceAdjustmentPromotion removeOrderPromotion(PriceAdjustmentPromotion orderPromotion) {
 		getOrderPromotions().remove(orderPromotion);
 		orderPromotion.setPromotion(null);
 
 		return orderPromotion;
 	}
 
-	public PromotionType getPromotionType() {
+	public PriceAdjustmentType getPromotionType() {
 		return this.promotionType;
 	}
 
-	public void setPromotionType(PromotionType promotionType) {
+	public void setPromotionType(PriceAdjustmentType promotionType) {
 		this.promotionType = promotionType;
 	}
 
@@ -184,9 +184,9 @@ public class Promotion extends SoftDeleteEntity implements IEntity<Integer> {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof Promotion)) return false;
+		if (!(o instanceof PriceAdjustment)) return false;
 
-		Promotion promotion = (Promotion) o;
+		PriceAdjustment promotion = (PriceAdjustment) o;
 
 		if (idPromotion != promotion.idPromotion) return false;
 		if (Double.compare(promotion.amount, amount) != 0) return false;
@@ -230,7 +230,7 @@ public class Promotion extends SoftDeleteEntity implements IEntity<Integer> {
 	}
 
 	@Override
-	public Promotion setId(Integer id) {
+	public PriceAdjustment setId(Integer id) {
 		this.idPromotion = id;
 		return this;
 	}

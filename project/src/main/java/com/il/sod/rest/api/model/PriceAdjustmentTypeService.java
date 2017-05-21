@@ -1,9 +1,9 @@
 package com.il.sod.rest.api.model;
 
-import com.il.sod.db.model.entities.Promotion;
-import com.il.sod.db.model.entities.PromotionType;
-import com.il.sod.db.model.repositories.PromotionRepository;
-import com.il.sod.db.model.repositories.PromotionTypeRepository;
+import com.il.sod.db.model.entities.PriceAdjustment;
+import com.il.sod.db.model.entities.PriceAdjustmentType;
+import com.il.sod.db.model.repositories.PriceAdjustmentRepository;
+import com.il.sod.db.model.repositories.PriceAdjustmentTypeRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.PromotionMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -28,19 +28,19 @@ import java.util.stream.Collectors;
 @Path("/promotions/promotion-type")
 @Produces(MediaType.APPLICATION_JSON)
  @Api(value = "/promotions/promotion-type", tags = { "promotions" })
-public class PromotionTypeService extends AbstractServiceMutations {
+public class PriceAdjustmentTypeService extends AbstractServiceMutations {
 
 	@Autowired
-	PromotionTypeRepository promotionTypeRepository;
+	PriceAdjustmentTypeRepository promotionTypeRepository;
 
 	@Autowired
-	PromotionRepository promotionRepository;
+	PriceAdjustmentRepository promotionRepository;
 
 	@POST
 	@ApiOperation(value = "Create Promotion Type", response = PromotionTypeDTO.class)
 	public Response savePromotionType(PromotionTypeDTO dto) throws SODAPIException {
 
-			PromotionType entity = PromotionMapper.INSTANCE.map(dto);
+			PriceAdjustmentType entity = PromotionMapper.INSTANCE.map(dto);
 			this.saveEntity(promotionTypeRepository, entity);
 			dto = PromotionMapper.INSTANCE.map(entity);
 			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
@@ -55,7 +55,7 @@ public class PromotionTypeService extends AbstractServiceMutations {
 
 	private Response updateEntity(PromotionTypeDTO dto) throws SODAPIException {
 
-			PromotionType entity = PromotionMapper.INSTANCE.map(dto);
+			PriceAdjustmentType entity = PromotionMapper.INSTANCE.map(dto);
 			this.updateEntity(promotionTypeRepository, entity);
 			dto = PromotionMapper.INSTANCE.map(entity);
 			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
@@ -67,7 +67,7 @@ public class PromotionTypeService extends AbstractServiceMutations {
 	@ApiOperation(value = "Create Promotion Type", response = PromotionTypeDTO.class)
 	public Response deletePromotionType(@PathParam("id") String id, PromotionTypeDTO dto) throws SODAPIException {
 
-			PromotionType entity = promotionTypeRepository.findOne(Integer.valueOf(id));
+			PriceAdjustmentType entity = promotionTypeRepository.findOne(Integer.valueOf(id));
 			if (entity == null){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Entity not found");
 			}
@@ -84,7 +84,7 @@ public class PromotionTypeService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Promotion Type list", response = PromotionTypeDTO.class, responseContainer = "List")
 	public Response getPromotionTypeList() throws SODAPIException {
-		List<PromotionType> rentityList = this.getEntityList(promotionTypeRepository);
+		List<PriceAdjustmentType> rentityList = this.getEntityList(promotionTypeRepository);
 		List<PromotionTypeDTO> list = rentityList.stream().map((i) -> {
 			PromotionTypeDTO dto = PromotionMapper.INSTANCE.map(i);
 			return dto;
@@ -97,14 +97,14 @@ public class PromotionTypeService extends AbstractServiceMutations {
 	@ApiOperation(value = "Add Promotion to Promotion Type", response = PromotionTypeDTO.class)
 	public Response addPromotion2PromotionType(@PathParam("idPromotionType") Integer id, PromotionDTO dto) throws SODAPIException {
 
-			Promotion promotionEntity = promotionRepository.findOne(dto.getIdPromotion());
+			PriceAdjustment promotionEntity = promotionRepository.findOne(dto.getIdPromotion());
 			if (promotionEntity == null){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Promotion not found");
 			}
 
 			// remove me from the prev type.
 			promotionEntity.getPromotionType().removePromotion(promotionEntity);
-			PromotionType promotionTypeEntity = promotionTypeRepository.findOne(id);
+			PriceAdjustmentType promotionTypeEntity = promotionTypeRepository.findOne(id);
 			promotionTypeEntity.addPromotion(promotionEntity);
 			this.saveEntity(promotionRepository, promotionEntity);
 			PromotionTypeDTO result = PromotionMapper.INSTANCE.map(promotionTypeEntity);

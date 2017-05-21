@@ -15,12 +15,12 @@ public enum PromotionMapper {
 		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
 		converterFactory.registerConverter("promotionSetConverter", new PromotionSetConverter());
 
-		BaseMapper.MAPPER_FACTORY.classMap(PromotionDTO.class, Promotion.class)
+		BaseMapper.MAPPER_FACTORY.classMap(PromotionDTO.class, PriceAdjustment.class)
 			.field("idPromotionType", "promotionType.idPromotionType")
 			.byDefault()
 			.register();
 
-		BaseMapper.MAPPER_FACTORY.classMap(PromotionTypeDTO.class, PromotionType.class)
+		BaseMapper.MAPPER_FACTORY.classMap(PromotionTypeDTO.class, PriceAdjustmentType.class)
 			.fieldMap("promotions", "promotions").converter("promotionSetConverter").mapNulls(false).mapNullsInReverse(true).add()
 			.byDefault()
 			.register();
@@ -29,19 +29,19 @@ public enum PromotionMapper {
 		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
 	}
 
-	public Promotion map(PromotionDTO input) {
-		return this.mapperFacade.map(input, Promotion.class);
+	public PriceAdjustment map(PromotionDTO input) {
+		return this.mapperFacade.map(input, PriceAdjustment.class);
 	}
 
-	public PromotionDTO map(Promotion input) {
+	public PromotionDTO map(PriceAdjustment input) {
 		return this.mapperFacade.map(input, PromotionDTO.class);
 	}
 
-	public PromotionType map(PromotionTypeDTO dto) {
-		return this.mapperFacade.map(dto, PromotionType.class);
+	public PriceAdjustmentType map(PromotionTypeDTO dto) {
+		return this.mapperFacade.map(dto, PriceAdjustmentType.class);
 	}
 
-	public PromotionTypeDTO map(PromotionType dto) {
+	public PromotionTypeDTO map(PriceAdjustmentType dto) {
 		return this.mapperFacade.map(dto, PromotionTypeDTO.class);
 	}
 

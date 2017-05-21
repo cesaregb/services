@@ -1,6 +1,5 @@
 package com.il.sod.db.model.entities;
 
-import java.io.Serializable;
 import javax.persistence.*;
 
 
@@ -9,8 +8,8 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@NamedQuery(name="OrderPromotion.findAll", query="SELECT o FROM OrderPromotion o")
-public class OrderPromotion implements IEntity<Integer> {
+@NamedQuery(name="OrderPromotion.findAll", query="SELECT o FROM PriceAdjustmentPromotion o")
+public class PriceAdjustmentPromotion implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -27,9 +26,9 @@ public class OrderPromotion implements IEntity<Integer> {
 	//bi-directional many-to-one association to PromotionDTO
 	@ManyToOne
 	@JoinColumn(name="idPromotion")
-	private Promotion promotion;
+	private PriceAdjustment promotion;
 
-	public OrderPromotion() {
+	public PriceAdjustmentPromotion() {
 	}
 
 	public int getIdOrderPromotion() {
@@ -56,11 +55,11 @@ public class OrderPromotion implements IEntity<Integer> {
 		this.order = order;
 	}
 
-	public Promotion getPromotion() {
+	public PriceAdjustment getPromotion() {
 		return this.promotion;
 	}
 
-	public void setPromotion(Promotion promotion) {
+	public void setPromotion(PriceAdjustment promotion) {
 		this.promotion = promotion;
 	}
 
@@ -70,7 +69,7 @@ public class OrderPromotion implements IEntity<Integer> {
 	}
 
 	@Override
-	public OrderPromotion setId(Integer id) {
+	public PriceAdjustmentPromotion setId(Integer id) {
 		this.idOrderPromotion = id;
 		return this;
 	}

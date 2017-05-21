@@ -1,8 +1,8 @@
 package com.il.sod.rest.api.model;
 
 import com.il.sod.db.dao.impl.PromotionDAO;
-import com.il.sod.db.model.entities.Promotion;
-import com.il.sod.db.model.repositories.PromotionRepository;
+import com.il.sod.db.model.entities.PriceAdjustment;
+import com.il.sod.db.model.repositories.PriceAdjustmentRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.PromotionMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
@@ -28,10 +28,10 @@ import java.util.stream.Collectors;
 @Path("/promotions")
 @Produces(MediaType.APPLICATION_JSON)
 @Api(value = "/promotions", tags = { "promotions" })
-public class PromotionService extends AbstractServiceMutations {
+public class PriceAdjustmentService extends AbstractServiceMutations {
 
 	@Autowired
-	PromotionRepository promotionRepository;
+	PriceAdjustmentRepository promotionRepository;
 
 	@Autowired
 	PromotionDAO promotionDAO;
@@ -40,7 +40,7 @@ public class PromotionService extends AbstractServiceMutations {
 	@ApiOperation(value = "Create Promotion", response = PromotionDTO.class)
 	public Response savePromotion(PromotionDTO dto) throws SODAPIException {
 
-			Promotion entity = PromotionMapper.INSTANCE.map(dto);
+			PriceAdjustment entity = PromotionMapper.INSTANCE.map(dto);
 			this.saveEntity(promotionRepository, entity);
 			dto = PromotionMapper.INSTANCE.map(entity);
 			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
@@ -55,7 +55,7 @@ public class PromotionService extends AbstractServiceMutations {
 
 	private Response updateEntity(PromotionDTO dto) throws SODAPIException {
 
-			Promotion entity = PromotionMapper.INSTANCE.map(dto);
+			PriceAdjustment entity = PromotionMapper.INSTANCE.map(dto);
 			this.updateEntity(promotionRepository, entity);
 			dto = PromotionMapper.INSTANCE.map(entity);
 			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
@@ -67,7 +67,7 @@ public class PromotionService extends AbstractServiceMutations {
 	@ApiOperation(value = "Create Promotion", response = PromotionDTO.class)
 	public Response deletePromotion(@PathParam("id") String id, PromotionDTO dto) throws SODAPIException {
 
-			Promotion entity = promotionRepository.findOne(Integer.valueOf(id));
+			PriceAdjustment entity = promotionRepository.findOne(Integer.valueOf(id));
 			if (entity == null){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not found");
 			}
@@ -81,7 +81,7 @@ public class PromotionService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Promotion list", response = PromotionDTO.class, responseContainer = "List")
 	public Response getPromotionList(@QueryParam("name") String name) throws SODAPIException {
-		List<Promotion> rentityList;
+		List<PriceAdjustment> rentityList;
 		if (!StringUtils.isEmpty(name)){
 			rentityList = promotionDAO.findByName(name);
 		}else{

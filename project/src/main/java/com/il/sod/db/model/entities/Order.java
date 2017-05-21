@@ -92,7 +92,7 @@ public class Order implements IEntity<Integer> {
 
 	//bi-directional many-to-one association to OrderPromotion
 	@OneToMany(mappedBy="order", fetch=FetchType.LAZY)
-	private Set<OrderPromotion> orderPromotions;
+	private Set<PriceAdjustmentPromotion> orderPromotions;
 
 	private double pickUpPrice;
 	private double deliverPrice;
@@ -295,22 +295,22 @@ public class Order implements IEntity<Integer> {
 		this.paymentInfo = paymentInfo;
 	}
 
-	public Set<OrderPromotion> getOrderPromotions() {
+	public Set<PriceAdjustmentPromotion> getOrderPromotions() {
 		return this.orderPromotions;
 	}
 
-	public void setOrderPromotions(Set<OrderPromotion> orderPromotions) {
+	public void setOrderPromotions(Set<PriceAdjustmentPromotion> orderPromotions) {
 		this.orderPromotions = orderPromotions;
 	}
 
-	public OrderPromotion addOrderPromotion(OrderPromotion orderPromotion) {
+	public PriceAdjustmentPromotion addOrderPromotion(PriceAdjustmentPromotion orderPromotion) {
 		getOrderPromotions().add(orderPromotion);
 		orderPromotion.setOrder(this);
 
 		return orderPromotion;
 	}
 
-	public OrderPromotion removeOrderPromotion(OrderPromotion orderPromotion) {
+	public PriceAdjustmentPromotion removeOrderPromotion(PriceAdjustmentPromotion orderPromotion) {
 		getOrderPromotions().remove(orderPromotion);
 		orderPromotion.setOrder(null);
 
