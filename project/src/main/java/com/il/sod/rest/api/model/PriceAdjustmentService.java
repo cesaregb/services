@@ -1,13 +1,13 @@
 package com.il.sod.rest.api.model;
 
-import com.il.sod.db.dao.impl.PromotionDAO;
+import com.il.sod.db.dao.impl.PriceAdjustmentDAO;
 import com.il.sod.db.model.entities.PriceAdjustment;
 import com.il.sod.db.model.repositories.PriceAdjustmentRepository;
 import com.il.sod.exception.SODAPIException;
-import com.il.sod.mapper.PromotionMapper;
+import com.il.sod.mapper.PriceAdjustmentMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
-import com.il.sod.rest.dto.db.PromotionDTO;
+import com.il.sod.rest.dto.db.PriceAdjustmentDTO;
 import com.il.sod.rest.dto.predicates.DeletablePredicate;
 import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
@@ -25,53 +25,53 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/promotions")
+@Path("/priceAdjustments")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/promotions", tags = { "promotions" })
+@Api(value = "/priceAdjustments", tags = { "priceAdjustments" })
 public class PriceAdjustmentService extends AbstractServiceMutations {
 
 	@Autowired
-	PriceAdjustmentRepository promotionRepository;
+	PriceAdjustmentRepository priceAdjustmentRepository;
 
 	@Autowired
-	PromotionDAO promotionDAO;
+	PriceAdjustmentDAO priceAdjustmentDAO;
 
 	@POST
-	@ApiOperation(value = "Create Promotion", response = PromotionDTO.class)
-	public Response savePromotion(PromotionDTO dto) throws SODAPIException {
+	@ApiOperation(value = "Create PriceAdjustment", response = PriceAdjustmentDTO.class)
+	public Response savePriceAdjustment(PriceAdjustmentDTO dto) throws SODAPIException {
 
-			PriceAdjustment entity = PromotionMapper.INSTANCE.map(dto);
-			this.saveEntity(promotionRepository, entity);
-			dto = PromotionMapper.INSTANCE.map(entity);
+			PriceAdjustment entity = PriceAdjustmentMapper.INSTANCE.map(dto);
+			this.saveEntity(priceAdjustmentRepository, entity);
+			dto = PriceAdjustmentMapper.INSTANCE.map(entity);
 			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
 	@PUT
-	@ApiOperation(value = "Update Promotion", response = PromotionDTO.class)
-	public Response updatePromotion(PromotionDTO dto) throws SODAPIException {
+	@ApiOperation(value = "Update PriceAdjustment", response = PriceAdjustmentDTO.class)
+	public Response updatePriceAdjustment(PriceAdjustmentDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
 
-	private Response updateEntity(PromotionDTO dto) throws SODAPIException {
+	private Response updateEntity(PriceAdjustmentDTO dto) throws SODAPIException {
 
-			PriceAdjustment entity = PromotionMapper.INSTANCE.map(dto);
-			this.updateEntity(promotionRepository, entity);
-			dto = PromotionMapper.INSTANCE.map(entity);
+			PriceAdjustment entity = PriceAdjustmentMapper.INSTANCE.map(dto);
+			this.updateEntity(priceAdjustmentRepository, entity);
+			dto = PriceAdjustmentMapper.INSTANCE.map(entity);
 			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 
 	}
 
 	@DELETE
 	@Path("/{id}")
-	@ApiOperation(value = "Create Promotion", response = PromotionDTO.class)
-	public Response deletePromotion(@PathParam("id") String id, PromotionDTO dto) throws SODAPIException {
+	@ApiOperation(value = "Create PriceAdjustment", response = PriceAdjustmentDTO.class)
+	public Response deletePriceAdjustment(@PathParam("id") String id, PriceAdjustmentDTO dto) throws SODAPIException {
 
-			PriceAdjustment entity = promotionRepository.findOne(Integer.valueOf(id));
+			PriceAdjustment entity = priceAdjustmentRepository.findOne(Integer.valueOf(id));
 			if (entity == null){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Client not found");
 			}
-			this.softDeleteEntity(promotionRepository, entity.getId());
+			this.softDeleteEntity(priceAdjustmentRepository, entity.getId());
 			return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 
@@ -79,16 +79,16 @@ public class PriceAdjustmentService extends AbstractServiceMutations {
 	}
 
 	@GET
-	@ApiOperation(value = "Get Promotion list", response = PromotionDTO.class, responseContainer = "List")
-	public Response getPromotionList(@QueryParam("name") String name) throws SODAPIException {
+	@ApiOperation(value = "Get PriceAdjustment list", response = PriceAdjustmentDTO.class, responseContainer = "List")
+	public Response getPriceAdjustmentList(@QueryParam("name") String name) throws SODAPIException {
 		List<PriceAdjustment> rentityList;
 		if (!StringUtils.isEmpty(name)){
-			rentityList = promotionDAO.findByName(name);
+			rentityList = priceAdjustmentDAO.findByName(name);
 		}else{
-			rentityList = this.getEntityList(promotionRepository);
+			rentityList = this.getEntityList(priceAdjustmentRepository);
 		}
-		List<PromotionDTO> list = rentityList.stream()
-				.map(PromotionMapper.INSTANCE::map)
+		List<PriceAdjustmentDTO> list = rentityList.stream()
+				.map(PriceAdjustmentMapper.INSTANCE::map)
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());
 		return ConvertUtils.castEntityAsResponse(list);

@@ -14,7 +14,7 @@ public interface PriceAdjustmentRepository extends DeletableRepository<PriceAdju
     @Query("SELECT s FROM PriceAdjustment s WHERE s.name LIKE :name")
     public List<PriceAdjustment> findByName(@Param("name") String name);
 
-    @Query("SELECT s FROM PriceAdjustment s WHERE s.promotionType.idPromotionType=:idPromotionType")
-    public List<PriceAdjustment> findByPromotionType(@Param("idPromotionType") Integer idPromotionType);
+    @Query("SELECT s FROM PriceAdjustment s WHERE s.priceAdjustmentType.idPriceAdjustmentType=:idPriceAdjustmentType")
+    public List<PriceAdjustment> findByPriceAdjustmentType(@Param("idPriceAdjustmentType") Integer idPriceAdjustmentType);
 
 }

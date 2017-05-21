@@ -90,9 +90,9 @@ public class Order implements IEntity<Integer> {
 	
 	private int deleted;
 
-	//bi-directional many-to-one association to OrderPromotion
+	//bi-directional many-to-one association to OrderPriceAdjustment
 	@OneToMany(mappedBy="order", fetch=FetchType.LAZY)
-	private Set<PriceAdjustmentPromotion> orderPromotions;
+	private Set<PriceAdjustment> orderPriceAdjustments;
 
 	private double pickUpPrice;
 	private double deliverPrice;
@@ -295,26 +295,26 @@ public class Order implements IEntity<Integer> {
 		this.paymentInfo = paymentInfo;
 	}
 
-	public Set<PriceAdjustmentPromotion> getOrderPromotions() {
-		return this.orderPromotions;
+	public Set<PriceAdjustment> getOrderPriceAdjustments() {
+		return this.orderPriceAdjustments;
 	}
 
-	public void setOrderPromotions(Set<PriceAdjustmentPromotion> orderPromotions) {
-		this.orderPromotions = orderPromotions;
+	public void setOrderPriceAdjustments(Set<PriceAdjustment> orderPriceAdjustments) {
+		this.orderPriceAdjustments = orderPriceAdjustments;
 	}
 
-	public PriceAdjustmentPromotion addOrderPromotion(PriceAdjustmentPromotion orderPromotion) {
-		getOrderPromotions().add(orderPromotion);
-		orderPromotion.setOrder(this);
+	public PriceAdjustment addOrderPriceAdjustment(PriceAdjustment orderPriceAdjustment) {
+		getOrderPriceAdjustments().add(orderPriceAdjustment);
+		orderPriceAdjustment.setOrder(this);
 
-		return orderPromotion;
+		return orderPriceAdjustment;
 	}
 
-	public PriceAdjustmentPromotion removeOrderPromotion(PriceAdjustmentPromotion orderPromotion) {
-		getOrderPromotions().remove(orderPromotion);
-		orderPromotion.setOrder(null);
+	public PriceAdjustment removeOrderPriceAdjustment(PriceAdjustment orderPriceAdjustment) {
+		getOrderPriceAdjustments().remove(orderPriceAdjustment);
+		orderPriceAdjustment.setOrder(null);
 
-		return orderPromotion;
+		return orderPriceAdjustment;
 	}
 
 	public double getPickUpPrice() {

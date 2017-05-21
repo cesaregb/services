@@ -3,8 +3,8 @@ package com.il.sod.rest.dto.db;
 import java.util.Date;
 
 
-public class PromotionDTO extends DeletableDTO{
-	private int idPromotion;
+public class PriceAdjustmentDTO extends DeletableDTO{
+	private int idPriceAdjustment;
 	private double amount;
 	private Date dateLimit;
 	private String description;
@@ -15,15 +15,15 @@ public class PromotionDTO extends DeletableDTO{
 	private int orderLimit;
 	private String promoCode;
 	private Date startDate;
-	private Integer idPromotionType;
+	private Integer idPriceAdjustmentType;
 	private Integer discountType;
 
-	public int getIdPromotion() {
-		return idPromotion;
+	public int getIdPriceAdjustment() {
+		return idPriceAdjustment;
 	}
 
-	public void setIdPromotion(int idPromotion) {
-		this.idPromotion = idPromotion;
+	public void setIdPriceAdjustment(int idPriceAdjustment) {
+		this.idPriceAdjustment = idPriceAdjustment;
 	}
 
 	public double getAmount() {
@@ -106,12 +106,12 @@ public class PromotionDTO extends DeletableDTO{
 		this.startDate = startDate;
 	}
 
-	public Integer getIdPromotionType() {
-		return idPromotionType;
+	public Integer getIdPriceAdjustmentType() {
+		return idPriceAdjustmentType;
 	}
 
-	public void setIdPromotionType(Integer idPromotionType) {
-		this.idPromotionType = idPromotionType;
+	public void setIdPriceAdjustmentType(Integer idPriceAdjustmentType) {
+		this.idPriceAdjustmentType = idPriceAdjustmentType;
 	}
 
 	public Integer getDiscountType() {

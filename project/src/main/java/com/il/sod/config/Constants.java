@@ -62,13 +62,13 @@ public class Constants {
 	public static final int ADDRESS_CLIENT_TYPE = 1;
 
 
-	// Promotion
-	public enum PROMOTION_TYPE{
+	// PriceAdjustment
+	public enum PRICE_ADJUSTMENT_TYPE {
 		AMOUNT(envConfig.getInt("constants.promo.type.amount")),
 		PERCENTAGE(envConfig.getInt("constants.promo.type.percentge"));
 
 		public final int val;
-		PROMOTION_TYPE(int val){
+		PRICE_ADJUSTMENT_TYPE(int val){
 			this.val = val;
 		}
 		public int getValue(){

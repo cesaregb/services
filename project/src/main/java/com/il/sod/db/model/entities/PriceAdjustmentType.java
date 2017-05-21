@@ -5,35 +5,35 @@ import java.util.Set;
 
 
 /**
- * The persistent class for the PromotionTypeDTO database table.
+ * The persistent class for the PriceAdjustmentTypeDTO database table.
  * 
  */
 @Entity
-@NamedQuery(name="PromotionType.findAll", query="SELECT p FROM PriceAdjustmentType p")
+@NamedQuery(name="PriceAdjustmentType.findAll", query="SELECT p FROM PriceAdjustmentType p")
 public class PriceAdjustmentType extends SoftDeleteEntity implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idPromotionType;
+	private int idPriceAdjustmentType;
 
 	private String description;
 
 	private String name;
 
-	//bi-directional many-to-one association to PromotionDTO
-	@OneToMany(mappedBy="promotionType", fetch = FetchType.EAGER)
-	private Set<PriceAdjustment> promotions;
+	//bi-directional many-to-one association to PriceAdjustmentDTO
+	@OneToMany(mappedBy="priceAdjustmentType", fetch = FetchType.EAGER)
+	private Set<PriceAdjustment> priceAdjustments;
 
 	public PriceAdjustmentType() {
 	}
 
-	public int getIdPromotionType() {
-		return this.idPromotionType;
+	public int getIdPriceAdjustmentType() {
+		return this.idPriceAdjustmentType;
 	}
 
-	public void setIdPromotionType(int idPromotionType) {
-		this.idPromotionType = idPromotionType;
+	public void setIdPriceAdjustmentType(int idPriceAdjustmentType) {
+		this.idPriceAdjustmentType = idPriceAdjustmentType;
 	}
 
 	public String getDescription() {
@@ -52,36 +52,36 @@ public class PriceAdjustmentType extends SoftDeleteEntity implements IEntity<Int
 		this.name = name;
 	}
 
-	public Set<PriceAdjustment> getPromotions() {
-		return this.promotions;
+	public Set<PriceAdjustment> getPriceAdjustments() {
+		return this.priceAdjustments;
 	}
 
-	public void setPromotions(Set<PriceAdjustment> promotions) {
-		this.promotions = promotions;
+	public void setPriceAdjustments(Set<PriceAdjustment> priceAdjustments) {
+		this.priceAdjustments = priceAdjustments;
 	}
 
-	public PriceAdjustment addPromotion(PriceAdjustment promotion) {
-		getPromotions().add(promotion);
-		promotion.setPromotionType(this);
+	public PriceAdjustment addPriceAdjustment(PriceAdjustment priceAdjustment) {
+		getPriceAdjustments().add(priceAdjustment);
+		priceAdjustment.setPriceAdjustmentType(this);
 
-		return promotion;
+		return priceAdjustment;
 	}
 
-	public PriceAdjustment removePromotion(PriceAdjustment promotion) {
-		getPromotions().remove(promotion);
-		promotion.setPromotionType(null);
+	public PriceAdjustment removePriceAdjustment(PriceAdjustment priceAdjustment) {
+		getPriceAdjustments().remove(priceAdjustment);
+		priceAdjustment.setPriceAdjustmentType(null);
 
-		return promotion;
+		return priceAdjustment;
 	}
 
 	@Override
 	public Integer getId() {
-		return this.idPromotionType;
+		return this.idPriceAdjustmentType;
 	}
 
 	@Override
 	public PriceAdjustmentType setId(Integer id) {
-		this.idPromotionType = id;
+		this.idPriceAdjustmentType = id;
 		return this;
 	}
 }

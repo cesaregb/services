@@ -5,11 +5,11 @@ import com.il.sod.db.model.entities.PriceAdjustmentType;
 import com.il.sod.db.model.repositories.PriceAdjustmentRepository;
 import com.il.sod.db.model.repositories.PriceAdjustmentTypeRepository;
 import com.il.sod.exception.SODAPIException;
-import com.il.sod.mapper.PromotionMapper;
+import com.il.sod.mapper.PriceAdjustmentMapper;
 import com.il.sod.rest.api.AbstractServiceMutations;
 import com.il.sod.rest.dto.GeneralResponseMessage;
-import com.il.sod.rest.dto.db.PromotionDTO;
-import com.il.sod.rest.dto.db.PromotionTypeDTO;
+import com.il.sod.rest.dto.db.PriceAdjustmentDTO;
+import com.il.sod.rest.dto.db.PriceAdjustmentTypeDTO;
 import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,89 +25,89 @@ import java.util.stream.Collectors;
 
 @Component
 @RolesAllowed("ADMIN")
-@Path("/promotions/promotion-type")
+@Path("/priceAdjustments/priceAdjustment-type")
 @Produces(MediaType.APPLICATION_JSON)
- @Api(value = "/promotions/promotion-type", tags = { "promotions" })
+ @Api(value = "/priceAdjustments/priceAdjustment-type", tags = { "priceAdjustments" })
 public class PriceAdjustmentTypeService extends AbstractServiceMutations {
 
 	@Autowired
-	PriceAdjustmentTypeRepository promotionTypeRepository;
+	PriceAdjustmentTypeRepository priceAdjustmentTypeRepository;
 
 	@Autowired
-	PriceAdjustmentRepository promotionRepository;
+	PriceAdjustmentRepository priceAdjustmentRepository;
 
 	@POST
-	@ApiOperation(value = "Create Promotion Type", response = PromotionTypeDTO.class)
-	public Response savePromotionType(PromotionTypeDTO dto) throws SODAPIException {
+	@ApiOperation(value = "Create PriceAdjustment Type", response = PriceAdjustmentTypeDTO.class)
+	public Response savePriceAdjustmentType(PriceAdjustmentTypeDTO dto) throws SODAPIException {
 
-			PriceAdjustmentType entity = PromotionMapper.INSTANCE.map(dto);
-			this.saveEntity(promotionTypeRepository, entity);
-			dto = PromotionMapper.INSTANCE.map(entity);
+			PriceAdjustmentType entity = PriceAdjustmentMapper.INSTANCE.map(dto);
+			this.saveEntity(priceAdjustmentTypeRepository, entity);
+			dto = PriceAdjustmentMapper.INSTANCE.map(entity);
 			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
 	}
 
 	@PUT
-	@ApiOperation(value = "Update Promotion Type", response = PromotionTypeDTO.class)
-	public Response updatePromotionType(PromotionTypeDTO dto) throws SODAPIException {
+	@ApiOperation(value = "Update PriceAdjustment Type", response = PriceAdjustmentTypeDTO.class)
+	public Response updatePriceAdjustmentType(PriceAdjustmentTypeDTO dto) throws SODAPIException {
 		return updateEntity(dto);
 	}
 
-	private Response updateEntity(PromotionTypeDTO dto) throws SODAPIException {
+	private Response updateEntity(PriceAdjustmentTypeDTO dto) throws SODAPIException {
 
-			PriceAdjustmentType entity = PromotionMapper.INSTANCE.map(dto);
-			this.updateEntity(promotionTypeRepository, entity);
-			dto = PromotionMapper.INSTANCE.map(entity);
+			PriceAdjustmentType entity = PriceAdjustmentMapper.INSTANCE.map(dto);
+			this.updateEntity(priceAdjustmentTypeRepository, entity);
+			dto = PriceAdjustmentMapper.INSTANCE.map(entity);
 			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 
 	}
 
 	@DELETE
 	@Path("/{id}")
-	@ApiOperation(value = "Create Promotion Type", response = PromotionTypeDTO.class)
-	public Response deletePromotionType(@PathParam("id") String id, PromotionTypeDTO dto) throws SODAPIException {
+	@ApiOperation(value = "Create PriceAdjustment Type", response = PriceAdjustmentTypeDTO.class)
+	public Response deletePriceAdjustmentType(@PathParam("id") String id, PriceAdjustmentTypeDTO dto) throws SODAPIException {
 
-			PriceAdjustmentType entity = promotionTypeRepository.findOne(Integer.valueOf(id));
+			PriceAdjustmentType entity = priceAdjustmentTypeRepository.findOne(Integer.valueOf(id));
 			if (entity == null){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Entity not found");
 			}
-			if (entity.getPromotions().size() > 0){
+			if (entity.getPriceAdjustments().size() > 0){
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "Entity Type have children assigned.");
 			}
 
-			this.softDeleteEntity(promotionTypeRepository, entity.getId());
+			this.softDeleteEntity(priceAdjustmentTypeRepository, entity.getId());
 			return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
 					Response.Status.OK);
 
 	}
 
 	@GET
-	@ApiOperation(value = "Get Promotion Type list", response = PromotionTypeDTO.class, responseContainer = "List")
-	public Response getPromotionTypeList() throws SODAPIException {
-		List<PriceAdjustmentType> rentityList = this.getEntityList(promotionTypeRepository);
-		List<PromotionTypeDTO> list = rentityList.stream().map((i) -> {
-			PromotionTypeDTO dto = PromotionMapper.INSTANCE.map(i);
+	@ApiOperation(value = "Get PriceAdjustment Type list", response = PriceAdjustmentTypeDTO.class, responseContainer = "List")
+	public Response getPriceAdjustmentTypeList() throws SODAPIException {
+		List<PriceAdjustmentType> rentityList = this.getEntityList(priceAdjustmentTypeRepository);
+		List<PriceAdjustmentTypeDTO> list = rentityList.stream().map((i) -> {
+			PriceAdjustmentTypeDTO dto = PriceAdjustmentMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
 		return ConvertUtils.castEntityAsResponse(list);
 	}
 
 	@POST
-	@Path("/addPromotion/{idPromotionType}")
-	@ApiOperation(value = "Add Promotion to Promotion Type", response = PromotionTypeDTO.class)
-	public Response addPromotion2PromotionType(@PathParam("idPromotionType") Integer id, PromotionDTO dto) throws SODAPIException {
+	@Path("/addPriceAdjustment/{idPriceAdjustmentType}")
+	@ApiOperation(value = "Add PriceAdjustment to PriceAdjustment Type", response = PriceAdjustmentTypeDTO.class)
+	public Response addPriceAdjustment2PriceAdjustmentType(@PathParam("idPriceAdjustmentType") Integer id, PriceAdjustmentDTO dto) throws SODAPIException {
 
-			PriceAdjustment promotionEntity = promotionRepository.findOne(dto.getIdPromotion());
-			if (promotionEntity == null){
-				throw new SODAPIException(Response.Status.BAD_REQUEST, "Promotion not found");
+			PriceAdjustment priceAdjustmentEntity = priceAdjustmentRepository.findOne(dto.getIdPriceAdjustment());
+			if (priceAdjustmentEntity == null){
+				throw new SODAPIException(Response.Status.BAD_REQUEST, "PriceAdjustment not found");
 			}
 
 			// remove me from the prev type.
-			promotionEntity.getPromotionType().removePromotion(promotionEntity);
-			PriceAdjustmentType promotionTypeEntity = promotionTypeRepository.findOne(id);
-			promotionTypeEntity.addPromotion(promotionEntity);
-			this.saveEntity(promotionRepository, promotionEntity);
-			PromotionTypeDTO result = PromotionMapper.INSTANCE.map(promotionTypeEntity);
+			priceAdjustmentEntity.getPriceAdjustmentType().removePriceAdjustment(priceAdjustmentEntity);
+			PriceAdjustmentType priceAdjustmentTypeEntity = priceAdjustmentTypeRepository.findOne(id);
+			priceAdjustmentTypeEntity.addPriceAdjustment(priceAdjustmentEntity);
+			this.saveEntity(priceAdjustmentRepository, priceAdjustmentEntity);
+			PriceAdjustmentTypeDTO result = PriceAdjustmentMapper.INSTANCE.map(priceAdjustmentTypeEntity);
 			return ConvertUtils.castEntityAsResponse(result, Response.Status.OK);
 
 	}

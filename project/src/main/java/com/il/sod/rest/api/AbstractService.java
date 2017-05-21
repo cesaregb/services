@@ -27,7 +27,7 @@ import javax.ws.rs.Path;
 		@Tag(name = "payment", description = "Payment Services Client and Orders"),
 //		@Tag(name = "routes", description = "Route Information,... not user related..."),
 		@Tag(name = "products", description = "Products, similar to specs but different!! LOL "),
-		@Tag(name = "promotions", description = "Promotions, promotion handling  "),
+		@Tag(name = "priceAdjustments", description = "PriceAdjustments, priceAdjustment handling  "),
 		@Tag(name = "auth", description = "Auth services "),
 		@Tag(name = "health", description = "Validate API + MODEL Healt") })
 @Path("/v1")
