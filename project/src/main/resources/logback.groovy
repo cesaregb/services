@@ -1,7 +1,3 @@
-import ch.qos.logback.core.ConsoleAppender
-import ch.qos.logback.core.rolling.FixedWindowRollingPolicy
-import ch.qos.logback.core.rolling.RollingFileAppender
-import ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy
 import com.il.sod.logging.CustomLayoutWrappingEncoder
 import groovy.transform.Field
 
@@ -34,7 +30,7 @@ def getSystemProperty(String val, String defValue) {
  * %msg - Logged Message
  * %n - Breakline
  */
-@Field String defaultPattern = "%d{yyyy-MM-dd_HH:mm:ss.SSS} %-5level %logger{16} {} - %msg%n"
+@Field String defaultPattern = "[%-5level] %d{yyyy-MM-dd_HH:mm:ss.SSS} %logger{16} {} [%X] - %msg%n"
 
 /**
  * Add system appenders
@@ -42,10 +38,11 @@ def getSystemProperty(String val, String defValue) {
  */
 def addAppenders() {
 	Map<String, String> map = new HashMap<>();
-	map.put("oracle.doceng.selfpub", "[APP]")
+	map.put("com.il.sod", "[APP]")
 	map.put("ma.glasnost.orika", "[FW]")
 	map.put("io.swagger", "[FW]")
 	map.put("org.hibernate", "[DB]")
+
 	appender("STDOUT", ConsoleAppender) {
 		encoder(CustomLayoutWrappingEncoder) {
 			pattern = defaultPattern
@@ -61,10 +58,10 @@ def addAppenders() {
 		rollingPolicy(FixedWindowRollingPolicy) {
 			FileNamePattern = "${WEBAPP_DIR}/log/${baseName}.%i.log.zip"
 			minIndex = 1
-			maxIndex = 9
+			maxIndex = 100
 		}
 		triggeringPolicy(SizeBasedTriggeringPolicy) {
-			maxFileSize = "20MB"
+			maxFileSize = "30MB"
 		}
 		append = true
 	}
@@ -96,16 +93,16 @@ switch (soutLevelVal) {
 def addLoggers() {
 	def sqlAppenders = ["ROLLING_FILE"];
 	if ( stoutType < 3 ) {
-		sqlAppenders = ["ROLLING_FILE", "STDOUT"];
+		sqlAppenders.add("STDOUT")
 	}
-
-	logger("oracle.doceng.selfpub", ALL, ["ROLLING_FILE", "STDOUT"], false)
 	logger("org.hibernate.SQL", DEBUG, sqlAppenders, false)
 	logger("org.hibernate.type.descriptor.sql.BasicBinder", TRACE, sqlAppenders, false)
 
+	logger("com.il.sod", soutLevel, ["STDOUT", "ROLLING_FILE"], false)
+
 	def fwAppenders = ["ROLLING_FILE"]
 	if ( stoutType == 1 ){
-		fwAppenders = ["ROLLING_FILE", "STDOUT"]
+		fwAppenders.add("STDOUT")
 	}
 
 	String[] frameworks = ["ma.glasnost.orika", "io.swagger"]
