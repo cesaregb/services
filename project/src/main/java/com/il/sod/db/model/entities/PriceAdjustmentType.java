@@ -1,77 +1,80 @@
 package com.il.sod.db.model.entities;
 
+import com.google.common.base.Objects;
+
 import javax.persistence.*;
 import java.util.Set;
 
-
 /**
- * The persistent class for the PriceAdjustmentTypeDTO database table.
- * 
+ * Created by cesaregb on 5/21/17.
  */
 @Entity
-@NamedQuery(name="PriceAdjustmentType.findAll", query="SELECT p FROM PriceAdjustmentType p")
-public class PriceAdjustmentType extends SoftDeleteEntity implements IEntity<Integer> {
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+public class PriceAdjustmentType extends SoftDeleteEntity implements IEntity<Integer>{
 	private int idPriceAdjustmentType;
-
-	private String description;
-
 	private String name;
-
-	//bi-directional many-to-one association to PriceAdjustmentDTO
-	@OneToMany(mappedBy="priceAdjustmentType", fetch = FetchType.EAGER)
+	private String description;
 	private Set<PriceAdjustment> priceAdjustments;
 
-	public PriceAdjustmentType() {
-	}
-
+	@Id
+	@Column(name = "idPriceAdjustmentType")
 	public int getIdPriceAdjustmentType() {
-		return this.idPriceAdjustmentType;
+		return idPriceAdjustmentType;
 	}
 
 	public void setIdPriceAdjustmentType(int idPriceAdjustmentType) {
 		this.idPriceAdjustmentType = idPriceAdjustmentType;
 	}
 
-	public String getDescription() {
-		return this.description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
+	@Basic
+	@Column(name = "name")
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@Basic
+	@Column(name = "description")
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		PriceAdjustmentType that = (PriceAdjustmentType) o;
+		return idPriceAdjustmentType == that.idPriceAdjustmentType &&
+				Objects.equal(name, that.name) &&
+				Objects.equal(description, that.description);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(idPriceAdjustmentType, name, description);
+	}
+
+	@OneToMany(mappedBy = "priceAdjustmentType")
 	public Set<PriceAdjustment> getPriceAdjustments() {
-		return this.priceAdjustments;
+		return priceAdjustments;
 	}
 
 	public void setPriceAdjustments(Set<PriceAdjustment> priceAdjustments) {
 		this.priceAdjustments = priceAdjustments;
 	}
 
-	public PriceAdjustment addPriceAdjustment(PriceAdjustment priceAdjustment) {
-		getPriceAdjustments().add(priceAdjustment);
-		priceAdjustment.setPriceAdjustmentType(this);
-
-		return priceAdjustment;
+	public void removePriceAdjustment(PriceAdjustment priceAdjustment){
+		this.priceAdjustments.remove(priceAdjustment);
 	}
 
-	public PriceAdjustment removePriceAdjustment(PriceAdjustment priceAdjustment) {
-		getPriceAdjustments().remove(priceAdjustment);
-		priceAdjustment.setPriceAdjustmentType(null);
-
-		return priceAdjustment;
+	public void addPriceAdjustment(PriceAdjustment priceAdjustment){
+		this.priceAdjustments.add(priceAdjustment);
 	}
 
 	@Override
@@ -80,7 +83,7 @@ public class PriceAdjustmentType extends SoftDeleteEntity implements IEntity<Int
 	}
 
 	@Override
-	public PriceAdjustmentType setId(Integer id) {
+	public IEntity setId(Integer id) {
 		this.idPriceAdjustmentType = id;
 		return this;
 	}

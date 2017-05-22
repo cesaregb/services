@@ -3,8 +3,8 @@ package com.il.sod.rest.dto.db;
 public class OrderPriceAdjustmentDTO {
 	private int idOrderPriceAdjustment;
 	private double cantidad;
-	private Integer idOrder;
-	private Integer idPriceAdjustment;
+	private int idOrder;
+	private int idPriceAdjustment;
 
 	public int getIdOrderPriceAdjustment() {
 		return idOrderPriceAdjustment;

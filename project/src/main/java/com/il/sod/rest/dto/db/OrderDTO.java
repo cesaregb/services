@@ -34,6 +34,9 @@ public class OrderDTO {
 	private double pickUpPrice;
 	private double deliverPrice;
 	private double discount;
+	private int paymentStatus;
+
+	private Set<OrderPriceAdjustmentDTO> orderPriceAdjustments;
 
 	public int getIdOrder() {
 		return idOrder;
@@ -195,6 +198,22 @@ public class OrderDTO {
 
 	public void setDiscount(double discount) {
 		this.discount = discount;
+	}
+
+	public int getPaymentStatus() {
+		return paymentStatus;
+	}
+
+	public void setPaymentStatus(int paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+
+	public Set<OrderPriceAdjustmentDTO> getOrderPriceAdjustments() {
+		return orderPriceAdjustments;
+	}
+
+	public void setOrderPriceAdjustments(Set<OrderPriceAdjustmentDTO> orderPriceAdjustments) {
+		this.orderPriceAdjustments = orderPriceAdjustments;
 	}
 
 	@Override
