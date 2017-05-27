@@ -1,26 +1,12 @@
 package com.il.sod.db.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 /**
@@ -30,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name="Orders")
 @NamedQuery(name="Order.findAll", query="SELECT o FROM Order o")
-public class Order implements IEntity<Integer> {
+public class Order extends SoftDeleteEntity implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -88,15 +74,15 @@ public class Order implements IEntity<Integer> {
 	
 	private int createdBy;
 	
-	private int deleted;
-
-	//bi-directional many-to-one association to OrderPromotion
-	@OneToMany(mappedBy="order", fetch=FetchType.LAZY)
-	private Set<OrderPromotion> orderPromotions;
-
 	private double pickUpPrice;
 	private double deliverPrice;
 	private double discount;
+
+	@OneToMany(mappedBy = "order")
+	private Set<OrderPriceAdjustment> orderPriceAdjustments;
+
+
+	private int paymentStatus;
 
 	public Order() {
 	}
@@ -279,14 +265,6 @@ public class Order implements IEntity<Integer> {
 		this.createdBy = createdBy;
 	}
 
-	public int getDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(int deleted) {
-		this.deleted = deleted;
-	}
-
 	public PaymentInfo getPaymentInfo() {
 		return paymentInfo;
 	}
@@ -295,26 +273,25 @@ public class Order implements IEntity<Integer> {
 		this.paymentInfo = paymentInfo;
 	}
 
-	public Set<OrderPromotion> getOrderPromotions() {
-		return this.orderPromotions;
+
+	public Set<OrderPriceAdjustment> getOrderPriceAdjustments() {
+		return orderPriceAdjustments;
 	}
 
-	public void setOrderPromotions(Set<OrderPromotion> orderPromotions) {
-		this.orderPromotions = orderPromotions;
+	public void setOrderPriceAdjustments(Set<OrderPriceAdjustment> orderPriceAdjustments) {
+		this.orderPriceAdjustments = orderPriceAdjustments;
 	}
 
-	public OrderPromotion addOrderPromotion(OrderPromotion orderPromotion) {
-		getOrderPromotions().add(orderPromotion);
-		orderPromotion.setOrder(this);
-
-		return orderPromotion;
+	public OrderPriceAdjustment addOrderPriceAdjustment(OrderPriceAdjustment orderPriceAdjustment) {
+		getOrderPriceAdjustments().add(orderPriceAdjustment);
+		orderPriceAdjustment.setOrder(this);
+		return orderPriceAdjustment;
 	}
 
-	public OrderPromotion removeOrderPromotion(OrderPromotion orderPromotion) {
-		getOrderPromotions().remove(orderPromotion);
-		orderPromotion.setOrder(null);
-
-		return orderPromotion;
+	public OrderPriceAdjustment removeOrderPriceAdjustment(OrderPriceAdjustment orderPriceAdjustment) {
+		getOrderPriceAdjustments().remove(orderPriceAdjustment);
+		orderPriceAdjustment.setOrder(null);
+		return orderPriceAdjustment;
 	}
 
 	public double getPickUpPrice() {
@@ -339,5 +316,13 @@ public class Order implements IEntity<Integer> {
 
 	public void setDiscount(double discount) {
 		this.discount = discount;
+	}
+
+	public int getPaymentStatus() {
+		return paymentStatus;
+	}
+
+	public void setPaymentStatus(int paymentStatus) {
+		this.paymentStatus = paymentStatus;
 	}
 }
