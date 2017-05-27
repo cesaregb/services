@@ -16,6 +16,6 @@ export soutLevelVal="ALL"
 # 1 = all; 2 = sql + app; 3 = app
 export stoutType="3"
 
-cd project
+cd java_project
 
 mvn clean compile exec:java
