@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -18,20 +19,10 @@ public class CashOutDAO {
 	private final static Logger LOGGER = getLogger(CashOutDAO.class);
 
 	@Autowired
-	OrdersDAO ordersDAO;
-
-	@Autowired
 	CashOutRepository cashOutRepository;
 
 	@Autowired
 	OrderRepository orderRepository;
-
-
-	public void createCashOut() {
-		List<Order> orders = ordersDAO.findOrderNotCashedOut();
-		CashOut cashOut = createCashOut(orders);
-
-	}
 
 	private void updateOrdersWithCashOut(List<Order> orders, CashOut cashOut) {
 		final int idCashOut = cashOut.getId();
@@ -41,8 +32,12 @@ public class CashOutDAO {
 		}
 	}
 
+	public List<Order> findOrderNotCashedOut(){
+		return orderRepository.findByIdCashOut(0);
+	}
+
 	@NotNull
-	private CashOut createCashOut(List<Order> orders) {
+	public CashOut createCashOut(List<Order> orders) {
 		double amount = 0d;
 		double pending = 0d;
 		double coupons = 0d;
@@ -61,6 +56,11 @@ public class CashOutDAO {
 		cashOut = cashOutRepository.save(cashOut);
 		updateOrdersWithCashOut(orders, cashOut);
 		return cashOut;
+	}
+
+	@NotNull
+	public List<CashOut> getCashOutByDate(Timestamp date) {
+		return cashOutRepository.findAllByCreateDate(date);
 	}
 
 
