@@ -38,6 +38,7 @@ public enum OrderMapper {
 
 		BaseMapper.MAPPER_FACTORY.classMap(OrderDTO.class, Order.class)
 				.exclude("services")
+				.exclude("orderPriceAdjustments")
 				.fieldMap("client", "client").converter("clientConverter").mapNulls(true).mapNullsInReverse(true).add()
 				.fieldMap("orderTasks", "orderTasks").converter("orderTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
 //				.fieldMap("services", "services").converter("serviceSetConverter").mapNulls(true).mapNullsInReverse(true).add()

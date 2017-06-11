@@ -5,7 +5,7 @@ import com.google.common.base.MoreObjects;
 import java.util.Date;
 import java.util.Set;
 
-public class OrderDTO {
+public class OrderDTO extends DeletableDTO {
 	private int idOrder;
 	private String comments;
 	private int idAddressDeliver;
@@ -37,6 +37,8 @@ public class OrderDTO {
 	private int paymentStatus;
 
 	private Set<OrderPriceAdjustmentDTO> orderPriceAdjustments;
+
+	private int idCashOut;
 
 	public int getIdOrder() {
 		return idOrder;
@@ -214,6 +216,14 @@ public class OrderDTO {
 
 	public void setOrderPriceAdjustments(Set<OrderPriceAdjustmentDTO> orderPriceAdjustments) {
 		this.orderPriceAdjustments = orderPriceAdjustments;
+	}
+
+	public int getIdCashOut() {
+		return idCashOut;
+	}
+
+	public void setIdCashOut(int idCashOut) {
+		this.idCashOut = idCashOut;
 	}
 
 	@Override

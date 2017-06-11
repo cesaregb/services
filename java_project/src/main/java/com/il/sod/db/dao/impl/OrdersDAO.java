@@ -3,18 +3,13 @@ package com.il.sod.db.dao.impl;
 import com.il.sod.db.model.entities.Order;
 import com.il.sod.db.model.repositories.OrderRepository;
 import io.jsonwebtoken.lang.Collections;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
 @Service
 public class OrdersDAO {
-	private final static Logger LOGGER = getLogger(OrdersDAO.class);
-
 	@Autowired
 	OrderRepository orderRepository;
 
@@ -46,10 +41,19 @@ public class OrdersDAO {
 						.filter(t-> t.getStatus() == 2).count())
 				.sum();
 
+		if (nTasks == 0d) {
+			return nTasks;
+		}
+		return  ((sumStatus / nTasks) * 100);
+	}
 
-		double completed = ((sumStatus / nTasks) * 100);
-		LOGGER.info("Order: {} completed {}% ", order.getId(), completed);
-		return completed;
+	public List<Order> findByCashOut(int idCashOut){
+		return orderRepository.findByIdCashOut(idCashOut);
+	}
+
+
+	public List<Order> findOrderNotCashedOut(){
+		return orderRepository.findByIdCashOut(0);
 	}
 
 }

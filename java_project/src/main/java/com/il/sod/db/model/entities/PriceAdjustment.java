@@ -1,16 +1,17 @@
 package com.il.sod.db.model.entities;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Set;
 
 /**
  * Created by cesaregb on 5/21/17.
  */
 @Entity
+@NamedQuery(name="PriceAdjustment.findAll", query="SELECT p FROM PriceAdjustment p")
 public class PriceAdjustment extends SoftDeleteEntity implements IEntity<Integer>{
 	private int idPriceAdjustment;
 	private String name;
@@ -191,6 +192,7 @@ public class PriceAdjustment extends SoftDeleteEntity implements IEntity<Integer
 	}
 
 	@Override
+	@Transient
 	public Integer getId() {
 		return this.idPriceAdjustment;
 	}
@@ -201,4 +203,22 @@ public class PriceAdjustment extends SoftDeleteEntity implements IEntity<Integer
 		return this;
 	}
 
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("idPriceAdjustment", idPriceAdjustment)
+				.add("name", name)
+				.add("description", description)
+				.add("startDate", startDate)
+				.add("endDate", endDate)
+				.add("maxUses", maxUses)
+				.add("amount", amount)
+				.add("promoCode", promoCode)
+				.add("orderLimit", orderLimit)
+				.add("dateLimit", dateLimit)
+				.add("minimumAmount", minimumAmount)
+				.add("discountType", discountType)
+				.add("priceAdjustmentType", priceAdjustmentType.getId())
+				.toString();
+	}
 }

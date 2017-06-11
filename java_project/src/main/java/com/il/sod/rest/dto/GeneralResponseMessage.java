@@ -1,5 +1,6 @@
 package com.il.sod.rest.dto;
 
+// TODO WTF with all these names.. of packages and names.
 public class GeneralResponseMessage {
 	public static final String GENERIC_MESSAGE_SUCCES = "Success";
 	public static final String GENERIC_MESSAGE_ERROR = "Error";

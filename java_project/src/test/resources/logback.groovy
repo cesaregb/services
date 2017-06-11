@@ -73,14 +73,14 @@ def addAppenders() {
  * Logic to set the Logging (Loggin natural) LEVEL to sout
  */
 def soutLevelVal = getSystemProperty("soutLevelVal", "ALL")
-@Field soutLevel = ALL
+@Field soutLevel = INFO
 switch (soutLevelVal) {
 	case "ERROR": soutLevel = ERROR; break
 	case "WARN": soutLevel = WARN; break
 	case "INFO": soutLevel = INFO; break
 	case "DEBUG": soutLevel = DEBUG; break
 	case "TRACE": soutLevel = TRACE; break
-	default: soutLevel = ALL
+	default: soutLevel = INFO
 }
 
 /**

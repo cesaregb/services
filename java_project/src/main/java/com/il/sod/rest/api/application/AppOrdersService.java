@@ -1,4 +1,4 @@
-package com.il.sod.rest.api.actions;
+package com.il.sod.rest.api.application;
 
 import com.il.sod.config.Constants;
 import com.il.sod.converter.services.SpecificObjectsConverterService;

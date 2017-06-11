@@ -5,15 +5,14 @@ import javax.persistence.*;
 
 /**
  * The persistent class for the DistanceInfo database table.
- * 
  */
 @Entity
-@NamedQuery(name="DistanceInfo.findAll", query="SELECT d FROM DistanceInfo d")
+@NamedQuery(name = "DistanceInfo.findAll", query = "SELECT d FROM DistanceInfo d")
 public class DistanceInfo implements IEntity<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int idDistanceInfo;
 
 	private int distance;
@@ -21,10 +20,10 @@ public class DistanceInfo implements IEntity<Integer> {
 	private double price;
 
 	private int source;
-	
+
 	//bi-directional many-to-one association to Store
 	@ManyToOne
-	@JoinColumn(name="idStore")
+	@JoinColumn(name = "idStore")
 	private Store store;
 
 	public DistanceInfo() {

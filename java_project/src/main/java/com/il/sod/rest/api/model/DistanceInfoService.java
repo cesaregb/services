@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @RolesAllowed("ADMIN")
 @Path("/distance-info")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/distance-info", tags = { "app-utils" })
+@Api(value = "/distance-info", tags = {"app-utils"})
 public class DistanceInfoService extends AbstractServiceMutations {
 
 	@Autowired
@@ -33,27 +33,19 @@ public class DistanceInfoService extends AbstractServiceMutations {
 	@POST
 	@ApiOperation(value = "Create Distance Info", response = DistanceInfoDTO.class)
 	public Response saveDistanceInfo(DistanceInfoDTO dto) throws SODAPIException {
-
-			DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
-			this.saveEntity(distanceInfoRepository, entity);
-			dto = StoreInfoMapper.INSTANCE.map(entity);
-			return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
-
+		DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
+		this.saveEntity(distanceInfoRepository, entity);
+		dto = StoreInfoMapper.INSTANCE.map(entity);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 	}
 
 	@PUT
 	@ApiOperation(value = "Update Distance Info", response = DistanceInfoDTO.class)
 	public Response updateDistanceInfo(DistanceInfoDTO dto) throws SODAPIException {
-		return updateEntity(dto);
-	}
-
-	private Response updateEntity(DistanceInfoDTO dto) throws SODAPIException {
-
-			DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
-			this.updateEntity(distanceInfoRepository, entity);
-			dto = StoreInfoMapper.INSTANCE.map(entity);
-			return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
-
+		DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
+		this.updateEntity(distanceInfoRepository, entity);
+		dto = StoreInfoMapper.INSTANCE.map(entity);
+		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
 	}
 
 	@DELETE
@@ -61,7 +53,7 @@ public class DistanceInfoService extends AbstractServiceMutations {
 	@ApiOperation(value = "Delete Item", response = GeneralResponseMessage.class)
 	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
 		DistanceInfo entity = distanceInfoRepository.findOne(Integer.valueOf(id));
-		if (entity == null){
+		if (entity == null) {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
 		}
 		this.deleteEntity(distanceInfoRepository, entity.getId());
