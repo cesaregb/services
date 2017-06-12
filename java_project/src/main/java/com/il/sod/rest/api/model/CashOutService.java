@@ -21,7 +21,7 @@ import java.sql.Timestamp;
 @Component
 @RolesAllowed("ADMIN")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "cash-outs", tags = {"cashOuts"})
+@Api(value = "cash-outs", tags = {"cash-outs"})
 @Path("/cash-outs")
 public class CashOutService extends AbstractServiceMutations {
 
@@ -38,8 +38,8 @@ public class CashOutService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Cash Outs", response = CashOutDTO.class, responseContainer = "List")
-	public Response getClientsByFilter(@QueryParam("date")Timestamp date) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse( cashOutSv.getCashOutByDate(date),
+	public Response getCashOutBy(@QueryParam("date")Timestamp date) throws SODAPIException {
+		return ConvertUtils.castEntityAsResponse(cashOutSv.getCashOutByDate(date),
 				Response.Status.OK);
 	}
 

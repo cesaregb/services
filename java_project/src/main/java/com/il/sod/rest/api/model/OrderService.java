@@ -90,4 +90,13 @@ public class OrderService extends AbstractServiceMutations {
 	public Response getOrder4Edit(@PathParam("orderId") String orderId) throws SODAPIException {
 		return ConvertUtils.castEntityAsResponse(ordersSv.getOrder4Edit(orderId), Response.Status.OK);
 	}
+
+	@GET
+	@Path("/forCashOut")
+	@ApiOperation(value = "Get Orders pending of Cash Out", response = OrderDTO.class, responseContainer = "List")
+	public Response getNextCashOut() throws SODAPIException {
+		return ConvertUtils.castEntityAsResponse(ordersSv.getOrderNotCashedOut(),
+				Response.Status.OK);
+	}
+
 }

@@ -126,4 +126,9 @@ public class OrdersSv extends EntityServicesBase {
 		return rentityList.stream().map(OrderMapper.INSTANCE::map).collect(Collectors.toList());
 	}
 
+	public List<OrderDTO> getOrderNotCashedOut() throws SODAPIException {
+		List<Order> rentityList = ordersDAO.findOrderNotCashedOut();
+		return rentityList.stream().map(orderConverterService::convert).collect(Collectors.toList());
+	}
+
 }
