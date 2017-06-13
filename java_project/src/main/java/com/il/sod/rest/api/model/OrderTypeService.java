@@ -67,8 +67,8 @@ public class OrderTypeService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Order Type list", response = OrderTypeDTO.class, responseContainer = "List")
 	public Response getOrderTypeList() throws SODAPIException {
-		List<OrderType> rentityList = this.getEntityList(orderTypeRepository);
-		List<OrderTypeDTO> list = rentityList.stream()
+		List<OrderType> entityList = this.getEntityList(orderTypeRepository);
+		List<OrderTypeDTO> list = entityList.stream()
 				.map(OrderMapper.INSTANCE::map)
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());

@@ -10,9 +10,10 @@ public class CashOutDTO  extends DeletableDTO{
 	private int idCashOut;
 	private Timestamp created;
 	private int user;
-	private double amount;
+	private double subtotal;
 	private double pending;
-	private String cupons;
+	private double total;
+	private double discount;
 
 	private List<Integer> orders;
 
@@ -40,13 +41,6 @@ public class CashOutDTO  extends DeletableDTO{
 		this.user = user;
 	}
 
-	public double getAmount() {
-		return amount;
-	}
-
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
 
 	public double getPending() {
 		return pending;
@@ -56,19 +50,35 @@ public class CashOutDTO  extends DeletableDTO{
 		this.pending = pending;
 	}
 
-	public String getCupons() {
-		return cupons;
-	}
-
-	public void setCupons(String cupons) {
-		this.cupons = cupons;
-	}
-
 	public List<Integer> getOrders() {
 		return orders;
 	}
 
 	public void setOrders(List<Integer> orders) {
 		this.orders = orders;
+	}
+
+	public double getSubtotal() {
+		return subtotal;
+	}
+
+	public void setSubtotal(double subtotal) {
+		this.subtotal = subtotal;
+	}
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
+	public double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(double discount) {
+		this.discount = discount;
 	}
 }

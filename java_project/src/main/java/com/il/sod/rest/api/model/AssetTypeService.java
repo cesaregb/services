@@ -63,8 +63,8 @@ public class AssetTypeService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Asset Type list", response = AssetTypeDTO.class, responseContainer = "List")
 	public Response getAssetTypeList() throws SODAPIException {
-		List<AssetType> rentityList = this.getEntityList(assetTypeRepository);
-		List<AssetTypeDTO> list = rentityList.stream().map((i) -> {
+		List<AssetType> entityList = this.getEntityList(assetTypeRepository);
+		List<AssetTypeDTO> list = entityList.stream().map((i) -> {
 			AssetTypeDTO dto = AssetMapper.INSTANCE.map(i);
 			return dto;
 		})

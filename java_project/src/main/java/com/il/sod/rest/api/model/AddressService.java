@@ -109,15 +109,15 @@ public class AddressService extends AbstractServiceMutations {
 									) throws SODAPIException {
 
 
-		List<Address> rentityList = null;
+		List<Address> entityList = null;
 		if (!StringUtils.isEmpty(idClient)){
 			Client client = this.getEntity(clientRepository, Integer.valueOf(idClient));
-			rentityList = new ArrayList<>(client.getAddresses());
+			entityList = new ArrayList<>(client.getAddresses());
 		}else{
-			rentityList = this.getEntityList(addressRepository);
+			entityList = this.getEntityList(addressRepository);
 		}
 
-		List<AddressDTO> list = rentityList.stream().map(ClientMapper.INSTANCE::map).collect(Collectors.toList());
+		List<AddressDTO> list = entityList.stream().map(ClientMapper.INSTANCE::map).collect(Collectors.toList());
 		return ConvertUtils.castEntityAsResponse(list);
 
 	}

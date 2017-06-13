@@ -71,13 +71,13 @@ public class PriceAdjustmentService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get PriceAdjustment list", response = PriceAdjustmentDTO.class, responseContainer = "List")
 	public Response getPriceAdjustmentList(@QueryParam("name") String name) throws SODAPIException {
-		List<PriceAdjustment> rentityList;
+		List<PriceAdjustment> entityList;
 		if (!StringUtils.isEmpty(name)) {
-			rentityList = priceAdjustmentDAO.findByName(name);
+			entityList = priceAdjustmentDAO.findByName(name);
 		} else {
-			rentityList = this.getEntityList(priceAdjustmentRepository);
+			entityList = this.getEntityList(priceAdjustmentRepository);
 		}
-		List<PriceAdjustmentDTO> list = rentityList.stream()
+		List<PriceAdjustmentDTO> list = entityList.stream()
 				.map(PriceAdjustmentMapper.INSTANCE::map)
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());

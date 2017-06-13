@@ -65,8 +65,8 @@ public class ServiceTypeTaskService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Service Type list", response = ServiceTypeTaskDTO.class, responseContainer = "List")
 	public Response getServiceTypeTaskList() throws SODAPIException {
-		List<ServiceTypeTask> rentityList = this.getEntityList(serviceTypeSpecRepository);
-		List<ServiceTypeTaskDTO> list = rentityList.stream().map((i) -> {
+		List<ServiceTypeTask> entityList = this.getEntityList(serviceTypeSpecRepository);
+		List<ServiceTypeTaskDTO> list = entityList.stream().map((i) -> {
 			ServiceTypeTaskDTO dto = ServiceMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());

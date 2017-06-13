@@ -64,8 +64,8 @@ public class DistanceInfoService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Distance Info list", response = DistanceInfoDTO.class, responseContainer = "List")
 	public Response getDistanceInfoList() throws SODAPIException {
-		List<DistanceInfo> rentityList = distanceInfoRepository.findAllOrderByDistance();
-		List<DistanceInfoDTO> list = rentityList.stream().map((i) -> {
+		List<DistanceInfo> entityList = distanceInfoRepository.findAllOrderByDistance();
+		List<DistanceInfoDTO> list = entityList.stream().map((i) -> {
 			DistanceInfoDTO dto = StoreInfoMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());

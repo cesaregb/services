@@ -78,8 +78,8 @@ public class PriceAdjustmentTypeService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get PriceAdjustment Type list", response = PriceAdjustmentTypeDTO.class, responseContainer = "List")
 	public Response getPriceAdjustmentTypeList() throws SODAPIException {
-		List<PriceAdjustmentType> rentityList = this.getEntityList(priceAdjustmentTypeRepository);
-		List<PriceAdjustmentTypeDTO> list = rentityList.stream().map((i) -> {
+		List<PriceAdjustmentType> entityList = this.getEntityList(priceAdjustmentTypeRepository);
+		List<PriceAdjustmentTypeDTO> list = entityList.stream().map((i) -> {
 			PriceAdjustmentTypeDTO dto = PriceAdjustmentMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());

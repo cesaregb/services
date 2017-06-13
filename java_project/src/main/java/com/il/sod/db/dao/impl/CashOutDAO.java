@@ -32,29 +32,35 @@ public class CashOutDAO {
 		}
 	}
 
-	public List<Order> findOrderNotCashedOut(){
+	public List<Order> findOrderNotCashedOut() {
 		return orderRepository.findByIdCashOut(0);
 	}
 
 	@NotNull
 	public CashOut createCashOut(List<Order> orders) {
-		double amount = 0d;
+		CashOut cashOut = peekCashOut(orders);
+		cashOut = cashOutRepository.save(cashOut);
+		updateOrdersWithCashOut(orders, cashOut);
+		return cashOut;
+	}
+
+	public CashOut peekCashOut(List<Order> orders) {
+		double subtotal = 0d;
 		double pending = 0d;
-		double coupons = 0d;
+		double discount = 0d;
 
 		for (Order o : orders) {
-			amount += o.getTotal();
-			pending += (o.getPaymentStatus() == 0)?o.getTotal():0;
-			coupons += o.getDiscount();
+			subtotal += o.getTotal();
+			pending += (o.getPaymentStatus() == 0) ? o.getTotal() : 0;
+			discount += o.getDiscount();
 		}
 
 		CashOut cashOut = new CashOut();
 		cashOut.setUser(1); //TODO fixme
-		cashOut.setAmount(amount);
+		cashOut.setSubtotal(subtotal);
 		cashOut.setPending(pending);
-		cashOut.setCoupons(coupons);
-		cashOut = cashOutRepository.save(cashOut);
-		updateOrdersWithCashOut(orders, cashOut);
+		cashOut.setDiscount(discount);
+		cashOut.setTotal(subtotal - discount);
 		return cashOut;
 	}
 

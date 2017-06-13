@@ -72,8 +72,8 @@ public class ProductTypeService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Product Type list", response = ProductTypeDTO.class, responseContainer = "List")
 	public Response getProductTypeList() throws SODAPIException {
-		List<ProductType> rentityList = this.getEntityList(productTypeRepository);
-		List<ProductTypeDTO> list = rentityList.stream()
+		List<ProductType> entityList = this.getEntityList(productTypeRepository);
+		List<ProductTypeDTO> list = entityList.stream()
 				.map(ProductMapper.INSTANCE::map)
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());

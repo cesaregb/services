@@ -1,5 +1,6 @@
 package com.il.sod.services.cruds;
 
+import com.il.sod.config.Constants;
 import com.il.sod.converter.services.OrderConverterService;
 import com.il.sod.db.dao.impl.OrdersDAO;
 import com.il.sod.db.model.entities.Client;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("Duplicates")
 @Service
 public class OrdersSv extends EntityServicesBase {
-	
+
 	@Autowired
 	OrderRepository orderRepository;
 
@@ -41,6 +42,9 @@ public class OrdersSv extends EntityServicesBase {
 
 	@Autowired
 	ClientRepository clientRepository;
+
+	@Autowired
+	CashOutSv cashOutSv;
 
 	public OrderDTO saveOrder(OrderDTO dto) throws SODAPIException {
 		Order entity = OrderMapper.INSTANCE.map(dto);
@@ -61,8 +65,8 @@ public class OrdersSv extends EntityServicesBase {
 	}
 
 	public List<OrderDTO> getOrderList() throws SODAPIException {
-		List<Order> rentityList = this.getEntityList(orderRepository);
-		return rentityList.stream().map((i) -> {
+		List<Order> entityList = this.getEntityList(orderRepository);
+		return entityList.stream().map((i) -> {
 			OrderDTO dto = orderConverterService.convert(i);
 			return dto;
 		}).collect(Collectors.toList());
@@ -122,13 +126,16 @@ public class OrdersSv extends EntityServicesBase {
 
 	public List<OrderDTO> getOrdersByClient(int idClient) throws SODAPIException {
 		Client client = this.getEntity(clientRepository, idClient);
-		List<Order> rentityList = orderRepository.findByClient(client);
-		return rentityList.stream().map(OrderMapper.INSTANCE::map).collect(Collectors.toList());
+		List<Order> entityList = orderRepository.findByClient(client);
+		return entityList.stream().map(OrderMapper.INSTANCE::map).collect(Collectors.toList());
 	}
 
 	public List<OrderDTO> getOrderNotCashedOut() throws SODAPIException {
-		List<Order> rentityList = ordersDAO.findOrderNotCashedOut();
-		return rentityList.stream().map(orderConverterService::convert).collect(Collectors.toList());
+		return cashOutSv.filterOrders(ordersDAO.findOrderNotCashedOut())
+				.stream()
+				.filter(o -> o.getPaymentStatus() == Constants.PAYMENT_STATUS.Completed.getValue())
+				.map(orderConverterService::convert)
+				.collect(Collectors.toList());
 	}
 
 }

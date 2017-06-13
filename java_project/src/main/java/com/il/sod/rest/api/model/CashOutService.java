@@ -43,4 +43,11 @@ public class CashOutService extends AbstractServiceMutations {
 				Response.Status.OK);
 	}
 
+	@GET
+	@Path("/next")
+	@ApiOperation(value = "Create a cash-out object with the current state of the db", response = CashOutDTO.class)
+	public Response getNextCashOut() throws SODAPIException {
+		return ConvertUtils.castEntityAsResponse(cashOutSv.nextCashOut(), Response.Status.OK);
+	}
+
 }

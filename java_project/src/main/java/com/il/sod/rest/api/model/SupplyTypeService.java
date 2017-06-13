@@ -68,8 +68,8 @@ public class SupplyTypeService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Supply Type list", response = SupplyTypeDTO.class, responseContainer = "List")
 	public Response getSupplyTypeList() throws SODAPIException {
-		List<SupplyType> rentityList = this.getEntityList(supplyTypeRepository);
-		List<SupplyTypeDTO> list = rentityList.stream().map((i) -> {
+		List<SupplyType> entityList = this.getEntityList(supplyTypeRepository);
+		List<SupplyTypeDTO> list = entityList.stream().map((i) -> {
 			SupplyTypeDTO dto = SupplyMapper.INSTANCE.map(i);
 			return dto;
 		})

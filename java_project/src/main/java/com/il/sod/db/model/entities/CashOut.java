@@ -13,9 +13,10 @@ public class CashOut extends SoftDeleteEntity implements IEntity<Integer>  {
 	private int idCashOut;
 	private Timestamp created;
 	private Integer user;
-	private Double amount;
+	private Double subtotal;
 	private Double pending;
-	private Double coupons;
+	private Double discount;
+	private Double total;
 
 	@Id
 	@Column(name = "idCashOut")
@@ -49,13 +50,13 @@ public class CashOut extends SoftDeleteEntity implements IEntity<Integer>  {
 	}
 
 	@Basic
-	@Column(name = "amount")
-	public Double getAmount() {
-		return amount;
+	@Column(name = "subtotal")
+	public Double getSubtotal() {
+		return subtotal;
 	}
 
-	public void setAmount(Double amount) {
-		this.amount = amount;
+	public void setSubtotal(Double subtotal) {
+		this.subtotal = subtotal;
 	}
 
 	@Basic
@@ -68,14 +69,25 @@ public class CashOut extends SoftDeleteEntity implements IEntity<Integer>  {
 		this.pending = pending;
 	}
 
+
 	@Basic
-	@Column(name = "coupons")
-	public Double getCoupons() {
-		return coupons;
+	@Column(name = "discount")
+	public Double getDiscount() {
+		return discount;
 	}
 
-	public void setCoupons(Double coupons) {
-		this.coupons = coupons;
+	public void setDiscount(Double discount) {
+		this.discount = discount;
+	}
+
+	@Basic
+	@Column(name = "total")
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
 	}
 
 	@Override
@@ -86,14 +98,15 @@ public class CashOut extends SoftDeleteEntity implements IEntity<Integer>  {
 		return idCashOut == cashOut.idCashOut &&
 				Objects.equal(created, cashOut.created) &&
 				Objects.equal(user, cashOut.user) &&
-				Objects.equal(amount, cashOut.amount) &&
+				Objects.equal(subtotal, cashOut.subtotal) &&
+				Objects.equal(total, cashOut.total) &&
 				Objects.equal(pending, cashOut.pending) &&
-				Objects.equal(coupons, cashOut.coupons);
+				Objects.equal(discount, cashOut.discount);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(idCashOut, created, user, amount, pending, coupons);
+		return Objects.hashCode(idCashOut, created, user, subtotal, pending, discount, total);
 	}
 
 	@Override

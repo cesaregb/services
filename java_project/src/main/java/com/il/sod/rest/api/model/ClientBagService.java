@@ -72,8 +72,8 @@ public class ClientBagService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Client Bag list", response = ClientBagDTO.class, responseContainer = "List")
 	public Response getClientBagList() throws SODAPIException {
-		List<ClientBag> rentityList = clientBagRepository.findAll();
-		List<ClientBagDTO> list = rentityList.stream().map((i) -> {
+		List<ClientBag> entityList = clientBagRepository.findAll();
+		List<ClientBagDTO> list = entityList.stream().map((i) -> {
 			ClientBagDTO dto = ClientMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());

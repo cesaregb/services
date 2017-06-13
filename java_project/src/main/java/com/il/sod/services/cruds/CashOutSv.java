@@ -1,5 +1,6 @@
 package com.il.sod.services.cruds;
 
+import com.il.sod.config.Constants;
 import com.il.sod.db.dao.impl.CashOutDAO;
 import com.il.sod.db.dao.impl.OrdersDAO;
 import com.il.sod.db.model.entities.CashOut;
@@ -21,7 +22,6 @@ import java.util.stream.Collectors;
 @SuppressWarnings("Duplicates")
 @Service
 public class CashOutSv extends EntityServicesBase{
-
 	private final static Logger LOGGER = LoggerFactory.getLogger(CashOutSv.class);
 
 	@Autowired
@@ -30,26 +30,39 @@ public class CashOutSv extends EntityServicesBase{
 	@Autowired
 	OrdersDAO ordersDAO;
 
-
 	public CashOutDTO createCashOut() {
-		CashOut co = cashOutDAO.createCashOut(ordersDAO.findOrderNotCashedOut());
+		CashOut co = cashOutDAO.createCashOut(filterOrders(ordersDAO.findOrderNotCashedOut()));
 		return CashOutMapper.INSTANCE.map(co);
 	}
 
 	public List<CashOutDTO> getCashOutByDate(Timestamp date) {
 		List<CashOut> list = cashOutDAO.getCashOutByDate(date);
 		List<CashOutDTO> result = list.stream().map(CashOutMapper.INSTANCE::map).collect(Collectors.toList());
-		fillOrders(result);
+		addOrders(result);
 		return result;
+	}
+
+	public CashOutDTO nextCashOut() {
+		CashOut co = cashOutDAO.peekCashOut(filterOrders(ordersDAO.findOrderNotCashedOut()));
+		return CashOutMapper.INSTANCE.map(co);
+	}
+
+	public List<Order> filterOrders(List<Order> lOrder ){
+		return lOrder.stream()
+				.filter(o -> o.getPaymentStatus() == Constants.PAYMENT_STATUS.Completed.getValue())
+				.collect(Collectors.toList());
 	}
 
 	/**
 	 * Alter existing cashout list
 	 * @param result
 	 */
-	private void fillOrders(List<CashOutDTO> result) {
+	private void addOrders(List<CashOutDTO> result) {
 		for(CashOutDTO itm : result){
-			List<Integer> orders = ordersDAO.findByCashOut(itm.getIdCashOut()).stream().map(Order::getId).collect(Collectors.toList());
+			List<Integer> orders = ordersDAO.findByCashOut(itm.getIdCashOut())
+					.stream()
+					.map(Order::getId)
+					.collect(Collectors.toList());
 			itm.setOrders(orders);
 		}
 	}
