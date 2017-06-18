@@ -4,7 +4,6 @@ import com.il.sod.db.model.entities.CashOut;
 import com.il.sod.db.model.entities.Order;
 import com.il.sod.db.model.repositories.CashOutRepository;
 import com.il.sod.db.model.repositories.OrderRepository;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +35,6 @@ public class CashOutDAO {
 		return orderRepository.findByIdCashOut(0);
 	}
 
-	@NotNull
 	public CashOut createCashOut(List<Order> orders) {
 		CashOut cashOut = peekCashOut(orders);
 		cashOut = cashOutRepository.save(cashOut);
@@ -64,7 +62,6 @@ public class CashOutDAO {
 		return cashOut;
 	}
 
-	@NotNull
 	public List<CashOut> getCashOutByDate(Timestamp date) {
 		return cashOutRepository.findAllByCreateDate(date);
 	}

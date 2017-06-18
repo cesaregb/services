@@ -107,7 +107,7 @@ public enum ClientMapper implements MapperMarker{
 	}
 	
 	public Set<AddressDTO> map(Set<Address> source) {
-		return source.stream().map(item -> ClientMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+		return source.stream().map(ClientMapper.INSTANCE::map).collect(Collectors.toSet());
 	}
 	
 	public ClientPaymentInfo map(ClientPaymentInfoDTO input) {

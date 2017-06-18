@@ -59,7 +59,7 @@
 
 		<!--Languages-->
 		<groovy-version>2.4.9</groovy-version>
-		<kotlin.version>1.1.2-4</kotlin.version>
+		<kotlin.version>1.1.2-5</kotlin.version>
 	</properties>
     
     <repositories>
@@ -225,6 +225,12 @@
 
 		<!-- General libraries  -->
 		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.16</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.jboss.spec</groupId>
 			<artifactId>jboss-javaee-6.0</artifactId>
 			<version>2.0.0.Final</version>
@@ -307,6 +313,7 @@
 			<artifactId>jetty-server</artifactId>
 			<version>${jetty.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlet</artifactId>
@@ -365,30 +372,7 @@
 			<version>${jjwt-version}</version>
 		</dependency>
 
-		<!--Reactive-->
-		<dependency>
-			<groupId>org.reactivestreams</groupId>
-			<artifactId>reactive-streams-tck</artifactId>
-			<version>${reactivestreams-version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>io.reactivex.rxjava2</groupId>
-			<artifactId>rxjava</artifactId>
-			<version>${rxjava-version}</version>
-		</dependency>
-
-		<!--Spring mvc-->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
+		<!--Kotlin-->
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-stdlib-jre8</artifactId>
@@ -400,6 +384,20 @@
 			<version>${kotlin.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!--Reactive-->
+		<!--<dependency>-->
+			<!--<groupId>org.reactivestreams</groupId>-->
+			<!--<artifactId>reactive-streams-tck</artifactId>-->
+			<!--<version>${reactivestreams-version}</version>-->
+		<!--</dependency>-->
+
+		<!--<dependency>-->
+			<!--<groupId>io.reactivex.rxjava2</groupId>-->
+			<!--<artifactId>rxjava</artifactId>-->
+			<!--<version>${rxjava-version}</version>-->
+		<!--</dependency>-->
+
 
 	</dependencies>
     
@@ -464,6 +462,12 @@
 						<goals>
 							<goal>test-compile</goal>
 						</goals>
+						<configuration>
+							<sourceDirs>
+								<source>src/test/java</source>
+								<source>src/test/kotlin</source>
+							</sourceDirs>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

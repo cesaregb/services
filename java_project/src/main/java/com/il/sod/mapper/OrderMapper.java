@@ -88,6 +88,11 @@ public enum OrderMapper {
 		return this.mapperFacade.map(entity, OrderDTO.class);
 	}
 
+	public Order map(OrderDTO dto, Order entity) {
+		this.mapperFacade.map(dto, entity);
+		return entity;
+	}
+
 	public OrderType map(OrderTypeDTO dto) {
 		return this.mapperFacade.map(dto, OrderType.class);
 	}
