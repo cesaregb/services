@@ -1,6 +1,5 @@
 package com.il.sod.services.cruds;
 
-import com.il.sod.config.Constants;
 import com.il.sod.converter.services.OrderConverterService;
 import com.il.sod.db.dao.impl.OrdersDAO;
 import com.il.sod.db.model.entities.Client;
@@ -134,7 +133,7 @@ public class OrdersSv extends EntityServicesBase {
 	public List<OrderDTO> getOrderNotCashedOut() throws SODAPIException {
 		return cashOutSv.filterOrders(ordersDAO.findOrderNotCashedOut())
 				.stream()
-				.filter(o -> o.getPaymentStatus() == Constants.PAYMENT_STATUS.Completed.getValue())
+				.filter(Order::isPaymentStatus)
 				.map(orderConverterService::convert)
 				.collect(Collectors.toList());
 	}

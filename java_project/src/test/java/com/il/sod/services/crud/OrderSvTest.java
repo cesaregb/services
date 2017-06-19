@@ -23,7 +23,7 @@ public class OrderSvTest extends SpringTestConfiguration {
 	public void testUpdatePublication(){
 		OrderDTO dto = new OrderDTO();
 		dto.setIdOrder(2);
-		dto.setPaymentStatus(1);
+		dto.setPaymentStatus(true);
 
 		try {
 			OrderDTO response = ordersSv.updateOrder(dto);

@@ -108,20 +108,21 @@ public class Constants {
 		}
 	}
 
-	public enum PAYMENT_STATUS {
-		Pending(0),
-		Completed(1);
-
-		private int val = 0;
-
-		PAYMENT_STATUS(int val) {
-			this.val = val;
-		}
-
-		public int getValue() {
-			return this.val;
-		}
-	}
+	// TODO reuse me if needed..
+//	public enum PAYMENT_STATUS {
+//		Pending(0),
+//		Completed(1);
+//
+//		private int val = 0;
+//
+//		PAYMENT_STATUS(int val) {
+//			this.val = val;
+//		}
+//
+//		public int getValue() {
+//			return this.val;
+//		}
+//	}
 
 	public static final int ORDER_STATUS_FINISHED = 1;
 

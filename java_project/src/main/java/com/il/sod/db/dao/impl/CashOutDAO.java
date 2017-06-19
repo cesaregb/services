@@ -49,7 +49,7 @@ public class CashOutDAO {
 
 		for (Order o : orders) {
 			subtotal += o.getTotal();
-			pending += (o.getPaymentStatus() == 0) ? o.getTotal() : 0;
+			pending += (o.isPaymentStatus()) ? 0 : o.getTotal();
 			discount += o.getDiscount();
 		}
 

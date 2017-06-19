@@ -81,7 +81,7 @@ public class Order extends SoftDeleteEntity implements IEntity<Integer> {
 	@OneToMany(mappedBy = "order", fetch=FetchType.LAZY)
 	private Set<OrderPriceAdjustment> orderPriceAdjustments;
 
-	private int paymentStatus;
+	private boolean paymentStatus;
 
 	private int idCashOut;
 
@@ -318,11 +318,15 @@ public class Order extends SoftDeleteEntity implements IEntity<Integer> {
 		this.discount = discount;
 	}
 
-	public int getPaymentStatus() {
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	public boolean isPaymentStatus() {
 		return paymentStatus;
 	}
 
-	public void setPaymentStatus(int paymentStatus) {
+	public void setPaymentStatus(boolean paymentStatus) {
 		this.paymentStatus = paymentStatus;
 	}
 

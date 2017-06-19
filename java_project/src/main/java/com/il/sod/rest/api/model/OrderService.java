@@ -9,6 +9,7 @@ import com.il.sod.services.cruds.OrdersSv;
 import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 @Component
 @RolesAllowed("ADMIN")
 @Path("/orders")
@@ -24,12 +27,18 @@ import javax.ws.rs.core.Response;
 @Api(value = "/orders", tags = {"orders"})
 public class OrderService extends AbstractServiceMutations {
 
+	private final static Logger LOGGER = getLogger(OrderService.class);
+
 	@Autowired
 	OrdersSv ordersSv;
+
 
 	@POST
 	@ApiOperation(value = "Create Order Type", response = OrderDTO.class)
 	public Response saveOrder(OrderDTO dto) throws SODAPIException {
+		if (dto != null) {
+			LOGGER.info("Dto: {}", dto.toString());
+		}
 		return ConvertUtils.castEntityAsResponse(ordersSv.saveOrder(dto), Response.Status.CREATED);
 	}
 

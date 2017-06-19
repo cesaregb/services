@@ -1,6 +1,5 @@
 package com.il.sod.services.cruds;
 
-import com.il.sod.config.Constants;
 import com.il.sod.db.dao.impl.CashOutDAO;
 import com.il.sod.db.dao.impl.OrdersDAO;
 import com.il.sod.db.model.entities.CashOut;
@@ -49,7 +48,7 @@ public class CashOutSv extends EntityServicesBase{
 
 	public List<Order> filterOrders(List<Order> lOrder ){
 		return lOrder.stream()
-				.filter(o -> o.getPaymentStatus() == Constants.PAYMENT_STATUS.Completed.getValue())
+				.filter(Order::isPaymentStatus)
 				.collect(Collectors.toList());
 	}
 
