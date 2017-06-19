@@ -54,7 +54,7 @@ public class Order extends SoftDeleteEntity implements IEntity<Integer> {
 	private Client client;
 
 	//bi-directional many-to-one association to OrderType
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.DETACH)
 	@JoinColumn(name="idOrderType")
 	@JsonBackReference
 	private OrderType orderType;

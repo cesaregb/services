@@ -1,5 +1,6 @@
 package com.il.sod.services.crud;
 
+import com.il.sod.config.SpringTestConfiguration;
 import com.il.sod.db.model.repositories.OrderRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.dto.db.OrderDTO;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Created by cesaregb on 6/18/17.
  */
-public class OrderSvTest {
+public class OrderSvTest extends SpringTestConfiguration {
 
 	@Autowired
 	OrderRepository orderRepository;
@@ -21,7 +22,8 @@ public class OrderSvTest {
 	@Test
 	public void testUpdatePublication(){
 		OrderDTO dto = new OrderDTO();
-		dto.idOrder(2).paymentStatus(1);
+		dto.setIdOrder(2);
+		dto.setPaymentStatus(1);
 
 		try {
 			OrderDTO response = ordersSv.updateOrder(dto);

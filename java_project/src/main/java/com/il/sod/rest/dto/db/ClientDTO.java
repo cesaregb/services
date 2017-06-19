@@ -57,7 +57,6 @@ public class ClientDTO extends DeletableDTO{
 	private Set<AddressDTO> addresses;
 	private Set<ClientPaymentInfoDTO> clientPaymentInfos;
 	private Set<ClientBagDTO> clientBags;
-	private int deleted;
 
 	public String getFullName(){
 		StringBuilder sb = new StringBuilder(this.name).append(" ").append(this.lastName);
@@ -160,13 +159,6 @@ public class ClientDTO extends DeletableDTO{
 	public void setRazonSocial(String razonSocial) {
 		this.razonSocial = razonSocial;
 	}
-	public int getDeleted() {
-		return deleted;
-	}
-	public void setDeleted(int deleted) {
-		this.deleted = deleted;
-	}
-
 	public Set<ClientBagDTO> getClientBags() {
 		return clientBags;
 	}
@@ -231,7 +223,6 @@ public class ClientDTO extends DeletableDTO{
 				.append("addresses", addresses)
 				.append("clientPaymentInfos", clientPaymentInfos)
 				.append("clientBags", clientBags)
-				.append("deleted", deleted)
 				.toString();
 	}
 
@@ -241,7 +232,6 @@ public class ClientDTO extends DeletableDTO{
 		if (o == null || getClass() != o.getClass()) return false;
 		ClientDTO clientDTO = (ClientDTO) o;
 		return idClient == clientDTO.idClient &&
-				deleted == clientDTO.deleted &&
 				Objects.equal(email, clientDTO.email) &&
 				Objects.equal(lastName, clientDTO.lastName) &&
 				Objects.equal(name, clientDTO.name) &&
@@ -257,6 +247,6 @@ public class ClientDTO extends DeletableDTO{
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(idClient, email, lastName, name, twitter, loginID, rfc, razonSocial, idClientType, mobilePhone, homePhone, otherPhone, deleted);
+		return Objects.hashCode(idClient, email, lastName, name, twitter, loginID, rfc, razonSocial, idClientType, mobilePhone, homePhone, otherPhone);
 	}
 }

@@ -53,7 +53,7 @@ public class OrdersSv extends EntityServicesBase {
 	}
 
 	public OrderDTO updateOrder(OrderDTO dto) throws SODAPIException {
-		Order entity = orderRepository.findOne(dto.idOrder());
+		Order entity = orderRepository.findOne(dto.getIdOrder());
 		entity = OrderMapper.INSTANCE.map(dto, entity);
 		this.updateEntity(orderRepository, entity);
 		return OrderMapper.INSTANCE.map(entity);

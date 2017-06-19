@@ -2,45 +2,43 @@ package com.il.sod.rest.dto.db;
 
 import com.google.common.base.MoreObjects;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.util.Date;
 import java.util.Set;
 
+//@Accessors(fluent = true)
 @Data
-@Accessors(fluent = true)
 public class OrderDTO extends DeletableDTO {
-	private int idOrder;
+	private Integer idOrder;
 	private String comments;
-	private int idAddressDeliver;
-	private int idAddressPickup;
+	private Integer idAddressDeliver;
+	private Integer idAddressPickup;
 	private Date pickUpDate;
 	private Date deliverDate;
-	private double totalServices;
-	private double total;
-	private int status;
+	private Double totalServices;
+	private Double total;
+	private Integer status;
 	private ClientDTO client;
-	private int idOrderType;
+	private Integer idOrderType;
 	private Set<OrderTaskDTO> orderTasks;
 	private PaymentInfoDTO paymentInfo;
 	private Date created;
 	private Date updated;
-	private int time;
+	private Integer time;
 	private Set<ServiceDTO> services;
-	private int createdBy;
-	private int deleted;
-	
+	private Integer createdBy;
+
 	// flat information.
 	private String clientName;
 	private String orderTypeName;
-	private double completed;
+	private Double completed;
 
-	private double pickUpPrice;
-	private double deliverPrice;
-	private double discount;
-	private int paymentStatus;
+	private Double pickUpPrice;
+	private Double deliverPrice;
+	private Double discount;
+	private Integer paymentStatus;
 	private Set<OrderPriceAdjustmentDTO> orderPriceAdjustments;
-	private int idCashOut;
+	private Integer idCashOut;
 
 
 
@@ -63,7 +61,6 @@ public class OrderDTO extends DeletableDTO {
 				.add("updated", updated)
 				.add("time", time)
 				.add("createdBy", createdBy)
-				.add("deleted", deleted)
 				.add("clientName", clientName)
 				.add("orderTypeName", orderTypeName)
 				.add("completed", completed)

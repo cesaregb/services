@@ -2,13 +2,13 @@ package com.il.sod.rest.dto.db;
 
 public abstract class DeletableDTO {
 
-	private int deleted;
+	private Integer deleted;
 
-	public int getDeleted() {
+	public Integer getDeleted() {
 		return deleted;
 	}
 
-	public void setDeleted(int deleted) {
+	public void setDeleted(Integer deleted) {
 		this.deleted = deleted;
 	}
 }

@@ -1,6 +1,5 @@
 package com.il.sod.services.crud;
 
-import com.il.sod.config.SpringTestConfiguration;
 import com.il.sod.db.model.entities.Client;
 import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.mapper.ClientMapper;
@@ -18,7 +17,7 @@ import java.util.List;
 /**
  * Created by cesaregb on 1/19/17.
  */
-public class ClientSvTest extends SpringTestConfiguration {
+public class ClientSvTest{
 
 	@Autowired
 	ClientSv clientSv;

@@ -33,17 +33,17 @@ public class OrderConverterService {
 	public OrderDTO convert(Order entity){
 		OrderDTO result = OrderMapper.INSTANCE.map(entity);
 		// add flattering...
-		result.clientName(result.client().getName() + " " + result.client().getLastName());
-		result.orderTypeName(entity.getOrderType().getName());
+		result.setClientName(result.getClient().getName() + " " + result.getClient().getLastName());
+		result.setOrderTypeName(entity.getOrderType().getName());
 		
 		// override services to use the custom converter
-		List<com.il.sod.db.model.entities.Service> services = serviceRepository.findByOrder(result.idOrder());
+		List<com.il.sod.db.model.entities.Service> services = serviceRepository.findByOrder(result.getIdOrder());
 
 		Set<ServiceDTO> setService = services
 				.stream().map(s -> serviceConverterService.convert(s))
 				.collect(Collectors.toSet());
-		result.services(setService);
-		result.completed(ordersDAO.getCompletedPercent(entity));
+		result.setServices(setService);
+		result.setCompleted(ordersDAO.getCompletedPercent(entity));
 		return result;
 	}
 	
