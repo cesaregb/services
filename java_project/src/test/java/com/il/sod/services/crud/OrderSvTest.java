@@ -31,4 +31,18 @@ public class OrderSvTest extends SpringTestConfiguration {
 			e.printStackTrace();
 		}
 	}
+
+
+	@Test
+	public void testCreateOrder(){
+		OrderDTO dto = new OrderDTO();
+		dto.setIdOrder(2);
+		dto.setPaymentStatus(true);
+
+		try {
+			OrderDTO response = ordersSv.updateOrder(dto);
+		} catch (SODAPIException e) {
+			e.printStackTrace();
+		}
+	}
 }

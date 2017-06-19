@@ -1,11 +1,11 @@
 package com.il.sod.services.cruds;
 
+import com.il.sod.config.Constants;
 import com.il.sod.converter.services.OrderConverterService;
+import com.il.sod.converter.services.SpecificObjectsConverterService;
 import com.il.sod.db.dao.impl.OrdersDAO;
-import com.il.sod.db.model.entities.Client;
-import com.il.sod.db.model.entities.Order;
-import com.il.sod.db.model.repositories.ClientRepository;
-import com.il.sod.db.model.repositories.OrderRepository;
+import com.il.sod.db.model.entities.*;
+import com.il.sod.db.model.repositories.*;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.OrderMapper;
 import com.il.sod.mapper.ServiceMapper;
@@ -13,15 +13,27 @@ import com.il.sod.rest.dto.db.OrderDTO;
 import com.il.sod.rest.dto.db.OrderTaskDTO;
 import com.il.sod.rest.dto.db.ServiceTaskDTO;
 import com.il.sod.rest.dto.parse.UIOrderDTO;
+import com.il.sod.rest.dto.parse.UIProductDTO;
+import com.il.sod.rest.dto.parse.UIServiceDTO;
+import com.il.sod.rest.dto.parse.UISpecDTO;
+import com.il.sod.rest.dto.serve.WServiceCategoryDTO;
+import com.il.sod.rest.dto.serve.WServiceTypeDTO;
 import com.il.sod.rest.dto.specifics.OrderTasksInfoDTO;
 import com.il.sod.rest.dto.specifics.ServiceTasksInfoDTO;
+import com.il.sod.services.utils.ConvertUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.core.Response;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Created by cesaregb on 1/19/17.
@@ -29,6 +41,8 @@ import java.util.stream.Collectors;
 @SuppressWarnings("Duplicates")
 @Service
 public class OrdersSv extends EntityServicesBase {
+
+	private final static Logger LOGGER = getLogger(OrdersSv.class);
 
 	@Autowired
 	OrderRepository orderRepository;
@@ -45,11 +59,23 @@ public class OrdersSv extends EntityServicesBase {
 	@Autowired
 	CashOutSv cashOutSv;
 
-	public OrderDTO saveOrder(OrderDTO dto) throws SODAPIException {
-		Order entity = OrderMapper.INSTANCE.map(dto);
-		this.saveEntity(orderRepository, entity);
-		return OrderMapper.INSTANCE.map(entity);
-	}
+	@Autowired
+	OrderTypeRepository orderTypeRepository;
+
+	@Autowired
+	ServiceTypeRepository serviceTypeRepository;
+
+	@Autowired
+	SpecRepository specRepository;
+
+	@Autowired
+	ProductRepository productRepository;
+
+	@Autowired
+	ServiceCategoryRepository serviceCategoryRepository;
+
+	@Autowired
+	SpecificObjectsConverterService specificObjectsConverterService;
 
 	public OrderDTO updateOrder(OrderDTO dto) throws SODAPIException {
 		Order entity = orderRepository.findOne(dto.getIdOrder());
@@ -139,5 +165,176 @@ public class OrdersSv extends EntityServicesBase {
 	}
 
 
+	public List<WServiceCategoryDTO> getOrderTypes() throws SODAPIException {
+		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
+		return entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
+	}
+
+	public List<WServiceCategoryDTO> getOrderTypesPublic() throws SODAPIException {
+		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
+		List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
+		for (WServiceCategoryDTO cat : result) {
+			Set<WServiceTypeDTO> serviceTypes = cat.getServiceTypes().stream().filter(WServiceTypeDTO::isCalculator).collect(Collectors.toSet());
+			cat.setServiceTypes(serviceTypes);
+		}
+		return result;
+	}
+
+
+	public OrderDTO createOrder(UIOrderDTO orderInputDto) throws SODAPIException {
+		OrderDTO result;
+
+		Client client = clientRepository.findAllIncludeOrders(orderInputDto.getIdClient());
+		if (client == null) {
+			throw new SODAPIException(Response.Status.NOT_FOUND, "Client not found {%d}", orderInputDto.getIdClient());
+		}
+
+		if (orderInputDto.getTransport() == null || orderInputDto.getTransport().isEmpty() || orderInputDto.getTransport().size() < 2) {
+			int errorSize = (orderInputDto.getTransport() != null) ? orderInputDto.getTransport().size() : 0;
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Error [transport] object is not complete %s", errorSize);
+		}
+
+		int valOrderType = calculateOrderType(orderInputDto);
+		OrderType orderType = orderTypeRepository.findOne(valOrderType);
+		Order orderEntity = createBasicOrder(orderInputDto);
+		orderEntity.setClient(client);
+		orderEntity.setOrderType(orderType);
+		addingOrderTasks(orderEntity, orderType);
+		addingPaymentInfo(orderInputDto, orderEntity);
+		addingServices(orderInputDto, orderEntity);
+
+		orderEntity = orderRepository.save(orderEntity);
+		result = OrderMapper.INSTANCE.map(orderEntity);
+		LOGGER.info("Order Saved!");
+		LOGGER.info("Object mapper, response: {}", ConvertUtils.castEntityAsString(result));
+
+		return result;
+	}
+
+	private void addingServices(UIOrderDTO orderInputDto, Order orderEntity) {
+		for (UIServiceDTO uiServiceDTO : orderInputDto.getServices()) {
+			orderEntity.addService(createService(uiServiceDTO));
+		}
+	}
+
+	@NotNull
+	private com.il.sod.db.model.entities.Service createService(UIServiceDTO uiServiceDTO) {
+		ServiceType serviceType = serviceTypeRepository.findOne(uiServiceDTO.getIdServiceType());
+		com.il.sod.db.model.entities.Service service = createBasicService(uiServiceDTO, serviceType);
+		addingServiceTasks(service, serviceType);
+		addingServiceSpecs(uiServiceDTO, service);
+		addingProducts(uiServiceDTO, service);
+		return service;
+	}
+
+	@NotNull
+	private com.il.sod.db.model.entities.Service createBasicService(UIServiceDTO uiServiceDTO, ServiceType serviceType) {
+		com.il.sod.db.model.entities.Service service = new com.il.sod.db.model.entities.Service();
+		service.setServiceType(serviceType);
+		service.setName(serviceType.getName());
+		service.setDescription(serviceType.getDescription());
+		service.setPrice(uiServiceDTO.getPrice());
+		service.setDescription(uiServiceDTO.getComments());
+		return service;
+	}
+
+	private void addingProducts(UIServiceDTO uiServiceDTO, com.il.sod.db.model.entities.Service service) {
+		if (!CollectionUtils.isEmpty(uiServiceDTO.getProducts())) {
+			for (UIProductDTO product : uiServiceDTO.getProducts()) {
+				ServiceProduct ss = new ServiceProduct();
+				ss.setProduct(productRepository.findOne(product.getIdProduct()));
+				ss.setQuantity(product.getQuantity());
+				ss.setPrice(product.getPrice());
+				service.addProduct(ss);
+			}
+		}
+	}
+
+	private void addingServiceSpecs(UIServiceDTO uiServiceDTO, com.il.sod.db.model.entities.Service service) {
+		for (UISpecDTO specInput : uiServiceDTO.getSpecs()) {
+			ServiceSpec serviceSpec = new ServiceSpec();
+			serviceSpec.setQuantity(specInput.getQuantity());
+			serviceSpec.setService(service);
+			serviceSpec.setSpec(specRepository.findOne(specInput.getIdSpecs()));
+			serviceSpec.setSelectedValue(specInput.getValue());
+			serviceSpec.setSpecPrice(specInput.getPrice());
+			// adding service spec
+			service.addServiceSpec(serviceSpec);
+		}
+	}
+
+	private void addingServiceTasks(com.il.sod.db.model.entities.Service service, ServiceType serviceType) {
+		for (ServiceTypeTask serviceTypeTask : serviceType.getServiceTypeTasks()) {
+			ServiceTask serviceTask = new ServiceTask();
+			serviceTask.setTask(serviceTypeTask.getTask());
+			serviceTask.setTime(serviceTypeTask.getTime());
+			serviceTask.setSortingOrder(serviceTypeTask.getSortingOrder());
+			serviceTask.setService(service);
+			service.addServiceTask(serviceTask);
+		}
+	}
+
+	private void addingPaymentInfo(UIOrderDTO orderInputDto, Order orderEntity) {
+		if (orderInputDto.getPaymentInfo() != null && orderInputDto.getPaymentInfo().getTransactionInfo() != null) {
+			PaymentInfo pi = new PaymentInfo();
+			pi.setTransactionInfo(orderInputDto.getPaymentInfo().getTransactionInfo());
+			pi.setOrder(orderEntity);
+			pi.setType(orderInputDto.getPaymentInfo().getType());
+			orderEntity.setPaymentInfo(pi);
+		}
+	}
+
+	private void addingOrderTasks(Order orderEntity, OrderType orderType) {
+		for (OrderTypeTask ott : orderType.getOrderTypeTask()) {
+			OrderTask orderTask = new OrderTask();
+			orderTask.setTask(ott.getTask());
+			orderTask.setSortingOrder(ott.getSortingOrder());
+			orderTask.setOrder(orderEntity);
+			orderEntity.addOrderTask(orderTask);
+		}
+	}
+
+	@NotNull
+	private Order createBasicOrder(UIOrderDTO orderInputDto) throws SODAPIException {
+		Order orderEntity = new Order();
+		orderEntity.setPaymentStatus(orderInputDto.getPaymentStatus());
+		orderEntity.setComments(orderInputDto.getComments());
+
+
+		orderEntity.setIdAddressPickup(orderInputDto.getTransport().get(0).getIdAddress());
+		orderEntity.setPickUpDate(orderInputDto.getTransport().get(0).getDate());
+		orderEntity.setPickUpPrice(orderInputDto.getTransport().get(0).getPrice());
+
+		orderEntity.setIdAddressDeliver(orderInputDto.getTransport().get(1).getIdAddress());
+		orderEntity.setDeliverDate(orderInputDto.getTransport().get(1).getDate());
+		orderEntity.setDeliverPrice(orderInputDto.getTransport().get(1).getPrice());
+
+		orderEntity.setTotalServices(orderInputDto.getTotalServices());
+		orderEntity.setTotal(orderInputDto.getTotal());
+		orderEntity.setStatus(Constants.ORDER_CREATED);
+
+		//TODO validate if discount is applicable!
+		orderEntity.setDiscount(orderInputDto.getDiscount());
+		return orderEntity;
+	}
+
+
+	private static int calculateOrderType(UIOrderDTO orderInputDto) {
+		if (orderInputDto.getIdOrderType() >= 1 && orderInputDto.getIdOrderType() <= 4) {
+			return orderInputDto.getIdOrderType();
+		}
+		int orderType;
+		orderType = 4;
+		int a = orderInputDto.getTransport().get(0).getIdAddress();
+		int b = orderInputDto.getTransport().get(1).getIdAddress();
+		if (a > 0 && b > 0) {
+			orderType = 1;
+		} else if (a > 0) {
+			orderType = 2;
+		} else if (b > 0) {
+			orderType = 3;
+		}
+		return orderType;
+	}
 
 }

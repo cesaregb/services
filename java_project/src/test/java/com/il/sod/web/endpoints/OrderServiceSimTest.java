@@ -46,6 +46,6 @@ public class OrderServiceSimTest extends SpringTestConfiguration{
 		e.setSpecs(specs );
 		services.add(e);
 		oi.setServices(services);
-		appOrdersService.saveOrder(oi);
+		appOrdersService.createOrder(oi);
     }    
 }
