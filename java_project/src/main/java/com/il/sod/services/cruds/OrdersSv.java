@@ -297,9 +297,8 @@ public class OrdersSv extends EntityServicesBase {
 	@NotNull
 	private Order createBasicOrder(UIOrderDTO orderInputDto) throws SODAPIException {
 		Order orderEntity = new Order();
-		orderEntity.setPaymentStatus(orderInputDto.getPaymentStatus());
+		orderEntity.setPaymentStatus(orderInputDto.isPaymentStatus());
 		orderEntity.setComments(orderInputDto.getComments());
-
 
 		orderEntity.setIdAddressPickup(orderInputDto.getTransport().get(0).getIdAddress());
 		orderEntity.setPickUpDate(orderInputDto.getTransport().get(0).getDate());

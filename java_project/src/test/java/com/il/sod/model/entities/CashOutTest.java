@@ -44,11 +44,9 @@ public class CashOutTest extends SpringTestConfiguration {
 
 	@Test
 	public void testGetCashOutByDate(){
-
 		LocalDate date = LocalDate.now();
 		System.out.println(toTimestamp(date));
 		List<CashOut> list = cashOutDAO.getCashOutByDate(toTimestamp(date));
-
 		LOGGER.info("Today's cashouts: {}", list.size());
 	}
 

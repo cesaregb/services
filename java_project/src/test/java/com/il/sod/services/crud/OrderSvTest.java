@@ -1,10 +1,11 @@
 package com.il.sod.services.crud;
 
 import com.il.sod.config.SpringTestConfiguration;
-import com.il.sod.db.model.repositories.OrderRepository;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.dto.db.OrderDTO;
 import com.il.sod.services.cruds.OrdersSv;
+import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,35 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class OrderSvTest extends SpringTestConfiguration {
 
 	@Autowired
-	OrderRepository orderRepository;
-
-	@Autowired
 	OrdersSv ordersSv;
 
 	@Test
-	public void testUpdatePublication(){
+	public void testPayOrder() throws SODAPIException {
 		OrderDTO dto = new OrderDTO();
 		dto.setIdOrder(2);
 		dto.setPaymentStatus(true);
-
-		try {
-			OrderDTO response = ordersSv.updateOrder(dto);
-		} catch (SODAPIException e) {
-			e.printStackTrace();
-		}
+		OrderDTO response = ordersSv.updateOrder(dto);
+		Assert.assertThat("Some value!!!! ", response.getPaymentStatus(), Matchers.is(true));
 	}
 
 
-	@Test
-	public void testCreateOrder(){
-		OrderDTO dto = new OrderDTO();
-		dto.setIdOrder(2);
-		dto.setPaymentStatus(true);
-
-		try {
-			OrderDTO response = ordersSv.updateOrder(dto);
-		} catch (SODAPIException e) {
-			e.printStackTrace();
-		}
-	}
 }

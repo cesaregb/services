@@ -54,16 +54,9 @@ public class ServicesSvTest extends SpringTestConfiguration {
 		list = new ArrayList<>();
 		list.add(new ProductTypeDTO(8));
 		list.add(new ProductTypeDTO(9));
-		list.add(new ProductTypeDTO(10));
 		servicesSv.addProducts(8, list);
 		dto = servicesSv.getServiceTypeList(8).get(0);
-		Assert.assertTrue(dto.getProductTypes().size() == 3);
-
-		list = new ArrayList<>();
-		list.add(new ProductTypeDTO(10));
-		servicesSv.addProducts(8, list);
-		dto = servicesSv.getServiceTypeList(8).get(0);
-		Assert.assertTrue(dto.getProductTypes().size() == 1);
+		Assert.assertTrue(dto.getProductTypes().size() == 2);
 	}
 
 

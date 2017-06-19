@@ -184,7 +184,7 @@ public class TasksSv extends EntityServicesBase {
 			ServiceTask serviceTask = service.getServiceTasks()
 					.stream()
 					.filter(t-> t.getTask().getId() == idTask).findFirst()
-					.orElseThrow(() -> new SODAPIException(Response.Status.BAD_REQUEST, "No task were found with id {}", idTask));;
+					.orElseThrow(() -> new SODAPIException(Response.Status.BAD_REQUEST, "No task were found with id {%s}", idTask));;
 
 			if (action == ACTION_INIT){
 				serviceTask.setStarted(new Date());

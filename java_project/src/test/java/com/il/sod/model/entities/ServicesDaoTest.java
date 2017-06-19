@@ -11,7 +11,6 @@ import com.il.sod.db.model.repositories.ServiceTypeRepository;
 import com.il.sod.db.model.repositories.SpecRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,6 @@ public class ServicesDaoTest extends SpringTestConfiguration{
 	@Autowired
 	ProductTypeRepository productTypeRepository;
 
-	@Ignore
 	@Test
 	public void testCreateAndAddSpec(){
 		String name = RandomStringUtils.randomAlphanumeric(8).toLowerCase() + "[test]";
@@ -42,7 +40,6 @@ public class ServicesDaoTest extends SpringTestConfiguration{
 		ServiceType serviceType = new ServiceType(name,"desc",0, 0, serviceCategory, false);
 		serviceType = serviceTypeRepository.save(serviceType);
 		LOGGER.info("serviceType: {}", serviceType);
-		System.out.format("serviceType: [%s] %n", serviceType);
 
 		Spec spec = new Spec(name, "desc", true, 0);
 		specRepository.save(spec);

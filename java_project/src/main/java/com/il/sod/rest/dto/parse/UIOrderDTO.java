@@ -14,7 +14,7 @@ public class UIOrderDTO {
 	private double totalServices;
 	private double total;
 	private double discount;
-	private Boolean paymentStatus;
+	private boolean paymentStatus;
 	private String comments;
 
 	private List<UITransportDTO> transport;
