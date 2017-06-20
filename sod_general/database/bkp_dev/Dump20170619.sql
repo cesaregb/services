@@ -1,3 +1,16 @@
+-- -----------------------------------------------------
+-- Schema sod_db
+-- -----------------------------------------------------
+-- This is the initial_scheema for the service on demand application
+--
+DROP SCHEMA IF EXISTS `sod_db` ;
+
+-- -----------------------------------------------------
+-- Schema sod_db
+--
+-- This is the initial_scheema for the service on demand application
+--
+-- -----------------------------------------------------
 CREATE DATABASE  IF NOT EXISTS `sod_db` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `sod_db`;
 -- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
@@ -713,7 +726,6 @@ CREATE TABLE `OrderTask` (
 
 LOCK TABLES `OrderTask` WRITE;
 /*!40000 ALTER TABLE `OrderTask` DISABLE KEYS */;
-INSERT INTO `OrderTask` VALUES (1,1,4,0,NULL,2,3,'2017-03-07 00:05:47','2017-06-19 13:20:11'),(2,1,1,0,NULL,2,2,'2017-03-07 00:03:48','2017-03-07 00:05:33'),(3,1,3,0,NULL,2,1,'2017-06-19 13:19:28','2017-06-19 13:19:31'),(4,2,3,0,NULL,2,0,'2017-06-19 13:21:13','2017-06-19 13:21:23'),(5,3,3,0,NULL,2,1,'2017-03-23 22:20:59','2017-03-23 22:22:02'),(6,3,1,0,NULL,2,2,'2017-03-23 22:22:21','2017-03-23 22:22:38'),(7,3,4,0,NULL,2,3,'2017-03-23 22:23:14','2017-03-23 22:23:29'),(8,4,3,0,NULL,2,1,'2017-03-23 22:32:32','2017-03-23 22:32:48'),(9,4,1,0,NULL,2,2,'2017-03-23 22:33:05','2017-03-23 22:33:20'),(10,4,4,0,NULL,2,3,'2017-03-23 22:40:22','2017-03-23 22:40:37'),(11,5,1,0,NULL,2,0,'2017-03-24 18:15:49','2017-03-24 18:16:05'),(12,1,1,0,NULL,2,2,NULL,'2017-06-19 13:20:03'),(13,1,3,0,NULL,2,1,'2017-06-19 13:19:46','2017-06-19 13:19:50'),(14,1,4,0,NULL,2,3,'2017-06-19 13:20:07','2017-06-19 13:20:15'),(15,2,1,0,NULL,0,2,NULL,NULL),(16,2,3,0,NULL,2,1,NULL,'2017-06-19 13:21:18'),(17,2,4,0,NULL,0,3,NULL,NULL),(18,3,4,0,NULL,0,3,NULL,NULL),(19,3,1,0,NULL,0,2,NULL,NULL),(20,3,3,0,NULL,0,1,NULL,NULL),(21,4,4,0,NULL,0,3,NULL,NULL),(22,4,1,0,NULL,0,2,NULL,NULL),(23,4,3,0,NULL,0,1,NULL,NULL),(24,5,1,0,NULL,0,2,NULL,NULL),(25,5,4,0,NULL,0,3,NULL,NULL),(26,5,3,0,NULL,0,1,NULL,NULL),(27,6,3,0,NULL,0,1,NULL,NULL),(28,6,4,0,NULL,0,3,NULL,NULL),(29,6,1,0,NULL,0,2,NULL,NULL),(30,7,1,0,NULL,0,2,NULL,NULL),(31,7,3,0,NULL,0,1,NULL,NULL),(32,7,4,0,NULL,0,3,NULL,NULL),(33,8,4,0,NULL,0,3,NULL,NULL),(34,8,3,0,NULL,0,1,NULL,NULL),(35,8,1,0,NULL,0,2,NULL,NULL),(36,9,3,0,NULL,0,1,NULL,NULL),(37,9,4,0,NULL,0,3,NULL,NULL),(38,9,1,0,NULL,0,2,NULL,NULL),(39,10,1,0,NULL,0,0,NULL,NULL);
 /*!40000 ALTER TABLE `OrderTask` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -817,7 +829,6 @@ CREATE TABLE `Orders` (
 
 LOCK TABLES `Orders` WRITE;
 /*!40000 ALTER TABLE `Orders` DISABLE KEYS */;
-INSERT INTO `Orders` VALUES (1,1,1,1,'2017-06-03 18:41:55',10,1,'2017-06-03 18:41:55',10,0,1,'',0,'2017-06-03 18:42:22','2017-06-19 13:20:15',0,68,88,0,1,12),(2,1,1,0,'2017-06-10 17:13:29',0,0,'2017-06-10 17:13:29',0,0,0,NULL,0,'2017-06-10 17:13:29','2017-06-19 12:57:21',0,68,88,0,1,13),(3,1,1,0,'2017-06-16 15:28:55',0,0,'2017-06-16 15:28:55',0,0,0,'',0,'2017-06-16 15:29:31','2017-06-19 13:26:39',0,68,88,0,1,14),(4,1,1,1,'2017-06-19 11:07:05',10,2,'2017-06-19 11:07:05',10,0,0,'',0,'2017-06-19 11:07:34','2017-06-19 13:26:39',0,68,88,0,1,14),(5,1,1,1,'2017-06-19 11:09:13',10,1,'2017-06-19 11:09:13',10,0,0,'',0,'2017-06-19 11:14:57','2017-06-19 13:26:40',0,68,88,0,0,14),(6,1,1,2,'2017-06-19 11:29:39',10,2,'2017-06-19 11:29:39',10,0,0,'',0,'2017-06-19 11:30:06','2017-06-19 12:57:22',0,68,88,0,1,13),(7,1,1,1,'2017-06-19 11:33:19',10,1,'2017-06-19 11:33:19',10,0,0,'',0,'2017-06-19 11:33:37','2017-06-19 13:26:41',0,68,88,0,1,14),(8,1,1,2,'2017-06-19 11:36:21',10,2,'2017-06-19 11:36:21',10,0,0,'',0,'2017-06-19 11:52:12','2017-06-19 13:26:41',0,68,88,0,0,14),(9,1,1,2,'2017-06-19 12:56:33',10,2,'2017-06-19 12:56:33',10,0,0,'',0,'2017-06-19 12:57:01','2017-06-19 12:57:22',0,68,88,0,1,13),(10,298,4,0,'2017-06-19 13:15:03',10,0,'2017-06-19 13:15:03',10,0,0,'',0,'2017-06-19 13:18:56','2017-06-19 13:26:42',0,103,123,0,0,14);
 /*!40000 ALTER TABLE `Orders` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -885,7 +896,6 @@ CREATE TABLE `PaymentInfo` (
 
 LOCK TABLES `PaymentInfo` WRITE;
 /*!40000 ALTER TABLE `PaymentInfo` DISABLE KEYS */;
-INSERT INTO `PaymentInfo` VALUES (1,3,0,'cash'),(2,4,0,'cash'),(3,5,0,'cash'),(4,6,0,'cash'),(5,7,0,'cash'),(6,8,0,'cash'),(7,9,0,'cash'),(8,10,0,'cash');
 /*!40000 ALTER TABLE `PaymentInfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1046,7 +1056,6 @@ CREATE TABLE `Service` (
 
 LOCK TABLES `Service` WRITE;
 /*!40000 ALTER TABLE `Service` DISABLE KEYS */;
-INSERT INTO `Service` VALUES (1,3,'Planchado',NULL,0,'2017-03-07 00:02:55',NULL,NULL,1,0,0,0,0,0,0),(2,1,'Lavado General',NULL,0,'2017-03-18 22:06:32',NULL,NULL,2,0,0,0,0,0,0),(3,3,'Planchado',NULL,0,'2017-03-23 22:17:22',NULL,NULL,3,0,0,0,0,0,0),(4,5,'Ocho16 Spa',NULL,0,'2017-03-23 22:32:15',NULL,NULL,4,0,0,0,0,0,0),(5,3,'Planchado',NULL,0,'2017-03-24 18:15:29',NULL,NULL,5,0,0,0,0,0,0),(6,1,'Lavado General',NULL,0,'2017-06-03 18:42:22',NULL,NULL,1,0,0,0,0,0,0),(7,1,'Lavado General',NULL,0,'2017-06-10 17:13:29',NULL,NULL,2,0,0,35,0,0,0),(8,1,'Lavado General',NULL,0,'2017-06-16 15:29:31',NULL,NULL,3,0,0,0,0,0,0),(9,1,'Lavado General',NULL,0,'2017-06-19 11:07:34',NULL,NULL,4,0,0,0,0,0,0),(10,1,'Lavado General',NULL,0,'2017-06-19 11:14:57',NULL,NULL,5,0,0,0,0,0,0),(11,1,'Lavado General',NULL,0,'2017-06-19 11:30:06',NULL,NULL,6,0,0,0,0,0,0),(12,1,'Lavado General',NULL,0,'2017-06-19 11:33:37',NULL,NULL,7,0,0,0,0,0,0),(13,1,'Lavado General',NULL,0,'2017-06-19 11:52:12',NULL,NULL,8,0,0,0,0,0,0),(14,1,'Lavado General',NULL,0,'2017-06-19 12:57:01',NULL,NULL,9,0,0,0,0,0,0),(15,3,'Planchado',NULL,0,'2017-06-19 13:18:56',NULL,NULL,10,0,0,0,0,0,0),(16,1,'Lavado General',NULL,0,'2017-06-19 13:18:56',NULL,NULL,10,0,0,0,0,0,0);
 /*!40000 ALTER TABLE `Service` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1168,7 +1177,6 @@ CREATE TABLE `ServiceProducts` (
 
 LOCK TABLES `ServiceProducts` WRITE;
 /*!40000 ALTER TABLE `ServiceProducts` DISABLE KEYS */;
-INSERT INTO `ServiceProducts` VALUES (1,1,35,2,60),(2,1,36,0,35),(3,1,37,0,7),(4,2,15,0,271.5),(5,2,17,0,7),(6,2,5,0,13.600000381469727),(7,2,7,0,130),(8,2,14,0,196.5),(9,2,13,0,13),(10,2,6,1,68),(11,3,36,0,35),(12,3,37,0,7),(13,3,35,1,60),(14,4,19,18,0.8999999761581421),(15,4,29,0,1.0800000429153442),(16,4,3,1,2.3399999141693115),(17,4,25,0,2.700000047683716),(18,4,26,0,2.880000114440918),(19,4,1,15,2.700000047683716),(20,4,22,0,9.539999961853027),(21,4,23,11,0.8999999761581421),(22,4,20,0,0.8999999761581421),(23,4,21,0,2.880000114440918),(24,4,27,0,0.8999999761581421),(25,4,16,0,346.5),(26,4,28,4,1.0800000429153442),(27,4,24,0,2.700000047683716),(28,4,2,0,0.8999999761581421),(29,4,4,0,1.0800000429153442),(30,5,37,0,7),(31,5,35,3,60),(32,5,36,0,35),(33,6,13,0,13),(34,6,14,0,196.5),(35,6,6,1,68),(36,6,15,0,271.5),(37,6,5,0,13.600000381469727),(38,6,7,0,130),(39,6,17,0,7),(40,8,6,1,68),(41,8,7,0,130),(42,8,14,0,196.5),(43,8,17,0,7),(44,8,13,0,13),(45,8,15,0,271.5),(46,8,5,0,13.600000381469727),(47,9,14,0,196.5),(48,9,15,0,271.5),(49,9,5,0,13.600000381469727),(50,9,7,0,130),(51,9,13,0,13),(52,9,6,1,68),(53,9,17,0,7),(54,10,17,0,7),(55,10,14,0,196.5),(56,10,6,1,68),(57,10,5,0,13.600000381469727),(58,10,7,0,130),(59,10,13,0,13),(60,10,15,0,271.5),(61,11,14,0,196.5),(62,11,5,0,13.600000381469727),(63,11,15,0,271.5),(64,11,7,0,130),(65,11,17,0,7),(66,11,6,1,68),(67,11,13,0,13),(68,12,6,1,68),(69,12,7,0,130),(70,12,5,0,13.600000381469727),(71,12,15,0,271.5),(72,12,13,0,13),(73,12,17,0,7),(74,12,14,0,196.5),(75,13,7,0,130),(76,13,15,0,271.5),(77,13,17,0,7),(78,13,13,0,13),(79,13,6,1,68),(80,13,5,0,13.600000381469727),(81,13,14,0,196.5),(82,14,7,0,130),(83,14,5,0,13.600000381469727),(84,14,15,0,271.5),(85,14,13,0,13),(86,14,17,0,7),(87,14,6,1,68),(88,14,14,0,196.5),(89,15,35,0,60),(90,15,36,1,35),(91,15,37,0,7),(92,16,17,0,7),(93,16,14,0,196.5),(94,16,13,0,13),(95,16,6,1,68),(96,16,5,0,13.600000381469727),(97,16,7,0,130),(98,16,15,0,271.5);
 /*!40000 ALTER TABLE `ServiceProducts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1202,7 +1210,6 @@ CREATE TABLE `ServiceSpecs` (
 
 LOCK TABLES `ServiceSpecs` WRITE;
 /*!40000 ALTER TABLE `ServiceSpecs` DISABLE KEYS */;
-INSERT INTO `ServiceSpecs` VALUES (1,2,1,NULL,0,0,'3',0),(2,2,2,NULL,0,0,'1',0),(3,2,7,NULL,0,0,'5',0),(4,2,8,NULL,0,0,'13',0),(5,2,3,NULL,0,0,'4',0),(6,2,9,NULL,0,0,'14',0),(7,4,2,NULL,0,0,'7',0),(8,4,3,NULL,0,0,'4',0),(9,4,9,NULL,0,0,'14',0),(10,4,7,NULL,0,0,'5',0),(11,7,2,NULL,1,0,'1',0),(12,7,1,NULL,1,0,'2',0);
 /*!40000 ALTER TABLE `ServiceSpecs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1237,7 +1244,6 @@ CREATE TABLE `ServiceTask` (
 
 LOCK TABLES `ServiceTask` WRITE;
 /*!40000 ALTER TABLE `ServiceTask` DISABLE KEYS */;
-INSERT INTO `ServiceTask` VALUES (1,1,6,NULL,2,'2017-03-07 00:04:12','2017-03-07 00:05:10',0,0),(2,2,2,NULL,2,'2017-03-23 22:18:29','2017-03-23 22:18:51',1,10),(3,2,5,NULL,1,'2017-03-23 22:19:14',NULL,2,10),(4,3,6,NULL,2,'2017-03-23 22:21:17','2017-03-23 22:21:32',0,0),(5,4,5,NULL,2,'2017-03-23 22:35:43','2017-03-23 22:36:16',2,0),(6,4,2,NULL,2,'2017-03-23 22:34:29','2017-03-23 22:34:47',0,0),(7,4,7,NULL,2,'2017-03-23 22:35:08','2017-03-23 22:35:26',1,0),(8,5,6,NULL,1,'2017-03-24 18:16:20',NULL,0,0),(9,6,2,NULL,2,'2017-06-19 13:19:56','2017-06-19 13:19:58',1,10),(10,6,5,NULL,2,'2017-06-19 13:20:01','2017-06-19 13:20:02',2,10),(11,7,2,NULL,0,NULL,NULL,1,10),(12,7,5,NULL,0,NULL,NULL,2,10),(13,8,2,NULL,0,NULL,NULL,1,10),(14,8,5,NULL,0,NULL,NULL,2,10),(15,9,2,NULL,0,NULL,NULL,1,10),(16,9,5,NULL,0,NULL,NULL,2,10),(17,10,2,NULL,0,NULL,NULL,1,10),(18,10,5,NULL,0,NULL,NULL,2,10),(19,11,2,NULL,0,NULL,NULL,1,10),(20,11,5,NULL,0,NULL,NULL,2,10),(21,12,5,NULL,0,NULL,NULL,2,10),(22,12,2,NULL,0,NULL,NULL,1,10),(23,13,2,NULL,0,NULL,NULL,1,10),(24,13,5,NULL,0,NULL,NULL,2,10),(25,14,5,NULL,0,NULL,NULL,2,10),(26,14,2,NULL,0,NULL,NULL,1,10),(27,15,6,NULL,0,NULL,NULL,0,0),(28,16,2,NULL,0,NULL,NULL,1,10),(29,16,5,NULL,0,NULL,NULL,2,10);
 /*!40000 ALTER TABLE `ServiceTask` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1268,7 +1274,7 @@ CREATE TABLE `ServiceType` (
 
 LOCK TABLES `ServiceType` WRITE;
 /*!40000 ALTER TABLE `ServiceType` DISABLE KEYS */;
-INSERT INTO `ServiceType` VALUES (1,'Lavado General','Ropa general',0,45,1,1),(2,'Lavado Blancos','Roba de cama',0,120,1,1),(3,'Planchado','Planchado',0,60,2,0),(4,'Costura','Servicio de costura',0,20,2,0),(5,'Ocho16 Spa','Ocho16 Spa',0,180,5,0),(6,'Mayoreo esteticas','Mayoreo de esteticas',0,120,6,0),(7,'Tintoreria','Tintoreria general',0,0,3,0),(8,'uo3kipnl[test]','desc',0,0,1,0);
+INSERT INTO `ServiceType` VALUES (1,'Lavado General','Ropa general',0,45,1,1),(2,'Lavado Blancos','Roba de cama',0,120,1,1),(3,'Planchado','Planchado',0,60,2,0),(4,'Costura','Servicio de costura',0,20,2,0),(5,'Ocho16 Spa','Ocho16 Spa',0,180,5,0),(6,'Mayoreo esteticas','Mayoreo de esteticas',0,120,6,0);
 /*!40000 ALTER TABLE `ServiceType` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1431,7 +1437,7 @@ CREATE TABLE `Specs` (
 
 LOCK TABLES `Specs` WRITE;
 /*!40000 ALTER TABLE `Specs` DISABLE KEYS */;
-INSERT INTO `Specs` VALUES (1,'Suavizante','Tipo de suavizante',1,1,0),(2,'Detergente','Jabon / detergente a utilizarse',1,1,0),(3,'Tipo de secado','Tipo de secado',1,0,0),(4,'Toallas de secado','toalla aromatizante de secado',1,1,0),(5,'Ganchos','Ganchos para prendas',1,0,0),(6,'Tintoreria','general',0,0,0),(7,'Blanqueador','Blanqueador de ropa',1,0,0),(8,'Bolsas','Bolsas varias',1,0,0),(9,'Aroma','Reforzador de aroma',1,0,0),(10,'uo3kipnl[test]','desc',1,0,0);
+INSERT INTO `Specs` VALUES (1,'Suavizante','Tipo de suavizante',1,1,0),(2,'Detergente','Jabon / detergente a utilizarse',1,1,0),(3,'Tipo de secado','Tipo de secado',1,0,0),(4,'Toallas de secado','toalla aromatizante de secado',1,1,0),(5,'Ganchos','Ganchos para prendas',1,0,0),(6,'Tintoreria','general',0,0,0),(7,'Blanqueador','Blanqueador de ropa',1,0,0),(8,'Bolsas','Bolsas varias',1,0,0),(9,'Aroma','Reforzador de aroma',1,0,0);
 /*!40000 ALTER TABLE `Specs` ENABLE KEYS */;
 UNLOCK TABLES;
 

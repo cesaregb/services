@@ -135,6 +135,36 @@ public class OrdersSv extends EntityServicesBase {
 	private ServiceTasksInfoDTO getServiceTasksInfoDTO(com.il.sod.db.model.entities.Service service) {
 		ServiceTasksInfoDTO serviceTI = new ServiceTasksInfoDTO();
 		serviceTI.setName(service.getName());
+		StringBuilder description = new StringBuilder();
+		description.append(
+				service.getServiceProducts().stream()
+						.filter(p -> p.getQuantity() > 0)
+						.map(sp -> {
+							StringBuilder sb = new StringBuilder(sp.getProduct().getName())
+									.append(" x ")
+									.append(sp.getQuantity())
+									.append("\n");
+							return sb.toString();
+						}).collect(Collectors.joining("\n"))
+		);
+
+		description.append(
+				service.getServiceSpecs().stream()
+						.filter(p -> p.getQuantity() > 0)
+						.map(spec -> {
+							StringBuilder sb = new StringBuilder()
+									.append(spec.getSpec().getName())
+									.append(" tipo: ")
+									.append(spec.getSelectedValue())
+									.append(" x ")
+									.append(spec.getSpecPrice())
+									.append("\n");
+
+							return sb.toString();
+						}).collect(Collectors.joining("\n"))
+		);
+
+		serviceTI.setServiceDescription(description.toString());
 		serviceTI.setIdService(service.getIdService());
 		Set<ServiceTaskDTO> serviceTaskDTOS = service.getServiceTasks()
 				.stream()
@@ -144,10 +174,6 @@ public class OrdersSv extends EntityServicesBase {
 		serviceTI.setServiceTasks(serviceTaskDTOS);
 		serviceTI.setIdOrder(service.getOrder().getId());
 		return serviceTI;
-	}
-
-	public UIOrderDTO getOrder4Edit(String orderId) throws SODAPIException {
-		return orderConverterService.convert2UI(this.getEntity(orderRepository, Integer.valueOf(orderId)));
 	}
 
 	public List<OrderDTO> getOrdersByClient(int idClient) throws SODAPIException {
@@ -334,6 +360,19 @@ public class OrdersSv extends EntityServicesBase {
 			orderType = 3;
 		}
 		return orderType;
+	}
+
+	/**
+	 * Orders that are not complete; status = 0 || paymentStatu = false
+	 *
+	 * @return
+	 */
+	public List<OrderDTO> getPendingOrders() {
+		return orderRepository.findAll()
+				.stream()
+				.filter(o -> o.getStatus() == 0 || !o.isPaymentStatus())
+				.map(o -> orderConverterService.convert(o))
+				.collect(Collectors.toList());
 	}
 
 }
