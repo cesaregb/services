@@ -2,8 +2,10 @@ package com.il.sod.db.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.il.sod.exception.SODAPIException;
 
 import javax.persistence.*;
+import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -146,6 +148,14 @@ public class Order extends SoftDeleteEntity implements IEntity<Integer> {
 
 	public Set<OrderTask> getOrderTasks() {
 		return this.orderTasks;
+	}
+
+	@Transient
+	public OrderTask getServiceOrderTask() throws SODAPIException{
+		return this.orderTasks.stream()
+				.filter(o->o.getTask().getId() == 1)
+				.findFirst()
+				.orElseThrow(() -> new SODAPIException(Response.Status.INTERNAL_SERVER_ERROR, "Service task not found!"));
 	}
 
 	public void setOrderTasks(Set<OrderTask> orderTasks) {

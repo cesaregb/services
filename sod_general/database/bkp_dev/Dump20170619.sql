@@ -662,7 +662,7 @@ CREATE TABLE `Menu` (
 
 LOCK TABLES `Menu` WRITE;
 /*!40000 ALTER TABLE `Menu` DISABLE KEYS */;
-INSERT INTO `Menu` VALUES (1,'client.all','Clientes',2,1),(2,'routes.all','Rutas',1,2),(3,'tasks.taskMenu','Tareas',1,5),(4,'specs.specMenu','Specs',1,6),(5,'employees.employeeMenu','Empleados',1,4),(6,'assets.assetMenu','Activos',0,3),(7,'supplies.supplyMenu','Consumibles',1,7),(8,'services.serviceMenu','Servicios',1,8),(9,'orders.orderMenu','Orders',1,9),(10,'products.productMenu','Productos',1,10);
+INSERT INTO `Menu` VALUES (1,'client.all','Clientes',2,1),(2,'routes.all','Rutas',2,2),(3,'tasks.taskMenu','Tareas',1,5),(4,'specs.specMenu','Specs',1,6),(5,'employees.employeeMenu','Empleados',1,4),(6,'assets.assetMenu','Activos',0,3),(7,'supplies.supplyMenu','Consumibles',1,7),(8,'services.serviceMenu','Servicios',1,8),(9,'orders.orderMenu','Orders',1,9),(10,'products.productMenu','Productos',1,10);
 /*!40000 ALTER TABLE `Menu` ENABLE KEYS */;
 UNLOCK TABLES;
 

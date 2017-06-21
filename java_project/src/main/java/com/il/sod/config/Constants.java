@@ -96,33 +96,14 @@ public class Constants {
 	public enum TypeTaskOps {
 		Order(0),
 		Service(1);
-
 		private int val = 0;
-
 		TypeTaskOps(int val) {
 			this.val = val;
 		}
-
 		public int getValue() {
 			return this.val;
 		}
 	}
-
-	// TODO reuse me if needed..
-//	public enum PAYMENT_STATUS {
-//		Pending(0),
-//		Completed(1);
-//
-//		private int val = 0;
-//
-//		PAYMENT_STATUS(int val) {
-//			this.val = val;
-//		}
-//
-//		public int getValue() {
-//			return this.val;
-//		}
-//	}
 
 	public static final int ORDER_STATUS_FINISHED = 1;
 
@@ -132,5 +113,7 @@ public class Constants {
 	// initialize all static information
 	static {
 	}
+
+	public static int ACTION_INIT = 1;
 
 }
