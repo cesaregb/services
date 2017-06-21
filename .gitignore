@@ -6,6 +6,7 @@
 **/bkp_prod
 
 # Intellij
+*/.idea/
 .idea/
 *.iml
 *.iws
@@ -14,7 +15,14 @@
 .DS_Store
 
 # Maven
-*/log/
 */target/**
 *~
 common-prod.env
+java_project/src/main/java/com/il/sod/exception/StringMapper/
+java_project/src/main/resources/META-INF/
+java_project/src/main/resources/emails/
+java_project/src/main/webapp/resources/
+java_project/src/main/webapp/swagger-ui/
+java_project/target/
+
+secure/

@@ -1,5 +1,5 @@
 # NOT WORKING!!!! 
-# This is dockerfile uses the existing jar that has to be in ./project/target/sod_project-1.0.jar
+# This is dockerfile uses the existing jar that has to be in ./java_project/target/sod_project-1.0.jar
 # To build:
 # docker build -t sod-service:v1 -f docker/Dockerfile_jar.app .
 #
@@ -63,7 +63,7 @@ ENV MODULE_SOURCE ${USER_HOME}/${MODULE}
 # add in the source files
 RUN mkdir -p ${MODULE_SOURCE}
 ENV JAR_DIR=${MODULE_SOURCE}/${JAR_NAME}
-ADD project/target/${JAR_NAME} ${JAR_DIR}
+ADD java_project/target/${JAR_NAME} ${JAR_DIR}
 
 # make doceng the owner of all the source files, so when mvn clean install package runs it can create the target/classes dir
 RUN chown -R ${BASE_USER}:${BASE_USER} ${MODULE_SOURCE}
