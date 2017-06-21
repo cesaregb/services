@@ -75,8 +75,8 @@ public class PaymentInfoService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Payment Info list", response = PaymentInfoDTO.class, responseContainer = "List")
 	public Response getPaymentInfoList() throws SODAPIException {
-		List<PaymentInfo> rentityList = this.getEntityList(paymentInfoRepository);
-		List<PaymentInfoDTO> list = rentityList.stream().map((i) -> {
+		List<PaymentInfo> entityList = this.getEntityList(paymentInfoRepository);
+		List<PaymentInfoDTO> list = entityList.stream().map((i) -> {
 			PaymentInfoDTO dto = PaymentMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());

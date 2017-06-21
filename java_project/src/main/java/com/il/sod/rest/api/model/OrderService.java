@@ -27,21 +27,14 @@ public class OrderService extends AbstractServiceMutations {
 	@Autowired
 	OrdersSv ordersSv;
 
-	@POST
-	@ApiOperation(value = "Create Order Type", response = OrderDTO.class)
-	public Response saveOrder(OrderDTO dto) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.saveOrder(dto), Response.Status.CREATED);
-	}
-
 	@PUT
 	@ApiOperation(value = "Update Order Type", response = OrderDTO.class)
 	public Response updateOrder(OrderDTO dto) throws SODAPIException {
 		return ConvertUtils.castEntityAsResponse(ordersSv.updateOrder(dto), Response.Status.OK);
 	}
 
-	//TODO by param
 	@DELETE
-	@ApiOperation(value = "Create Order Type", response = OrderDTO.class)
+	@ApiOperation(value = "Delete Order", response = OrderDTO.class)
 	public Response deleteOrder(OrderDTO dto) throws SODAPIException {
 		return ConvertUtils.castEntityAsResponse(
 				new GeneralResponseMessage(ordersSv.deleteOrder(dto), "Entity deleted"),
@@ -50,16 +43,28 @@ public class OrderService extends AbstractServiceMutations {
 
 	@GET
 	@ApiOperation(value = "Get Order Type list", response = OrderDTO.class, responseContainer = "List")
-	public Response getOrderList() throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.getOrderList());
-	}
+	public Response getOrderList(@QueryParam("forCashOut") Boolean forCashOut,
+	                             @QueryParam("status") Integer status,
+	                             @QueryParam("idClient") Integer idClient,
+	                             @QueryParam("pending") Boolean pending) throws SODAPIException {
+		if (forCashOut != null && forCashOut){
+			return ConvertUtils.castEntityAsResponse(ordersSv.getOrderNotCashedOut(), Response.Status.OK);
+		}
 
-	//TODO change all this methods to be accesible thru the GET
-	@GET
-	@Path("/byStatus/{status}")
-	@ApiOperation(value = "Get Order by status ", response = OrderDTO.class, responseContainer = "List")
-	public Response getOrdersByStatus(@PathParam("status") int status) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.getOrdersByStatus(status), Response.Status.OK);
+		if (status != null){
+			return ConvertUtils.castEntityAsResponse(ordersSv.getOrdersByStatus(status), Response.Status.OK);
+		}
+
+		if (idClient != null && idClient > 0) {
+			return ConvertUtils.castEntityAsResponse(ordersSv.getOrdersByClient(idClient), Response.Status.OK);
+		}
+
+		if (pending != null && pending){
+			return ConvertUtils.castEntityAsResponse(ordersSv.getPendingOrders(), Response.Status.OK);
+		}
+
+		return ConvertUtils.castEntityAsResponse(ordersSv.getOrderList());
+
 	}
 
 	@GET
@@ -72,8 +77,9 @@ public class OrderService extends AbstractServiceMutations {
 	@GET
 	@Path("/byClient/{idClient}")
 	@ApiOperation(value = "Get Client Orders list", response = OrderDTO.class, responseContainer = "List")
+	@Deprecated
 	public Response getOrdersByClient(@PathParam("idClient") int idClient) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.getOrdersByClient(idClient), Response.Status.OK);
+		return getOrderList(null, null, idClient, null);
 	}
 
 	@GET
@@ -83,11 +89,4 @@ public class OrderService extends AbstractServiceMutations {
 		return ConvertUtils.castEntityAsResponse(ordersSv.getOrderTaskInfo(orderId), Response.Status.OK);
 	}
 
-	@Deprecated
-	@GET
-	@Path("/forEdit/{orderId}")
-	@ApiOperation(value = "Get Order in Edit object mode.", response = OrderTasksInfoDTO.class)
-	public Response getOrder4Edit(@PathParam("orderId") String orderId) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.getOrder4Edit(orderId), Response.Status.OK);
-	}
 }

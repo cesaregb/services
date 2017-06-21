@@ -78,6 +78,7 @@ public class PriceAdjustmentType extends SoftDeleteEntity implements IEntity<Int
 	}
 
 	@Override
+	@Transient
 	public Integer getId() {
 		return this.idPriceAdjustmentType;
 	}

@@ -12,5 +12,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
 //    @Query("SELECT o FROM Order o join c.clientPaymentInfos cpi WHERE cpi.token=:token")
     List<Order> findByStatus(int status);
-    
+
+	List<Order> findByIdCashOut(int idCashOut);
 }

@@ -72,8 +72,8 @@ public class TaskTypeService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Task Type list", response = TaskTypeDTO.class, responseContainer = "List")
 	public Response getTaskTypeList(@QueryParam("filterBy") Boolean filterBy) throws SODAPIException {
-		List<TaskType> rentityList = (filterBy != null)?tasksDAO.findBySection(filterBy):this.getEntityList(taskTypeRepository);
-		List<TaskTypeDTO> list = rentityList.stream()
+		List<TaskType> entityList = (filterBy != null)?tasksDAO.findBySection(filterBy):this.getEntityList(taskTypeRepository);
+		List<TaskTypeDTO> list = entityList.stream()
 				.map(TaskMapper.INSTANCE::map)
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());

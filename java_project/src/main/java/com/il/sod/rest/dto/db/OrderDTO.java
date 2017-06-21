@@ -1,246 +1,42 @@
 package com.il.sod.rest.dto.db;
 
-import com.google.common.base.MoreObjects;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.Set;
 
-public class OrderDTO {
-	private int idOrder;
+//@Accessors(fluent = true)
+@Data
+public class OrderDTO extends DeletableDTO {
+	private Integer idOrder;
 	private String comments;
-	private int idAddressDeliver;
-	private int idAddressPickup;
+	private Integer idAddressDeliver;
+	private Integer idAddressPickup;
 	private Date pickUpDate;
 	private Date deliverDate;
-	private double totalServices;
-	private double total;
-	private int status;
+	private Double totalServices;
+	private Double total;
+	private Integer status;
 	private ClientDTO client;
-	private int idOrderType;
+	private Integer idOrderType;
 	private Set<OrderTaskDTO> orderTasks;
 	private PaymentInfoDTO paymentInfo;
 	private Date created;
 	private Date updated;
-	private int time;
+	private Integer time;
 	private Set<ServiceDTO> services;
-	private int createdBy;
-	private int deleted;
-	
+	private Integer createdBy;
+
 	// flat information.
 	private String clientName;
 	private String orderTypeName;
-	private double completed;
+	private Double completed;
 
-	private double pickUpPrice;
-	private double deliverPrice;
-	private double discount;
-	private int paymentStatus;
-
+	private Double pickUpPrice;
+	private Double deliverPrice;
+	private Double discount;
+	private Boolean paymentStatus;
 	private Set<OrderPriceAdjustmentDTO> orderPriceAdjustments;
+	private Integer idCashOut;
 
-	public int getIdOrder() {
-		return idOrder;
-	}
-	public void setIdOrder(int idOrder) {
-		this.idOrder = idOrder;
-	}
-	public String getComments() {
-		return comments;
-	}
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
-	public int getIdAddressDeliver() {
-		return idAddressDeliver;
-	}
-	public void setIdAddressDeliver(int idAddressDeliver) {
-		this.idAddressDeliver = idAddressDeliver;
-	}
-	public int getIdAddressPickup() {
-		return idAddressPickup;
-	}
-	public void setIdAddressPickup(int idAddressPickup) {
-		this.idAddressPickup = idAddressPickup;
-	}
-
-	public double getTotalServices() {
-		return totalServices;
-	}
-
-	public void setTotalServices(double totalServices) {
-		this.totalServices = totalServices;
-	}
-
-	public double getTotal() {
-		return total;
-	}
-
-	public void setTotal(double total) {
-		this.total = total;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-	public void setStatus(int status) {
-		this.status = status;
-	}
-	public ClientDTO getClient() {
-		return client;
-	}
-	public void setClient(ClientDTO client) {
-		this.client = client;
-	}
-	public Set<OrderTaskDTO> getOrderTasks() {
-		return orderTasks;
-	}
-	public void setOrderTasks(Set<OrderTaskDTO> orderTasks) {
-		this.orderTasks = orderTasks;
-	}
-	public Date getCreated() {
-		return created;
-	}
-	public void setCreated(Date created) {
-		this.created = created;
-	}
-	public Date getUpdated() {
-		return updated;
-	}
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
-	public int getTime() {
-		return time;
-	}
-	public void setTime(int time) {
-		this.time = time;
-	}
-	public Date getPickUpDate() {
-		return pickUpDate;
-	}
-	public void setPickUpDate(Date pickUpDate) {
-		this.pickUpDate = pickUpDate;
-	}
-	public Date getDeliverDate() {
-		return deliverDate;
-	}
-	public void setDeliverDate(Date deliverDate) {
-		this.deliverDate = deliverDate;
-	}
-	public int getIdOrderType() {
-		return idOrderType;
-	}
-	public void setIdOrderType(int idOrderType) {
-		this.idOrderType = idOrderType;
-	}
-	public Set<ServiceDTO> getServices() {
-		return services;
-	}
-	public void setServices(Set<ServiceDTO> services) {
-		this.services = services;
-	}
-	public int getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-	public String getClientName() {
-		return clientName;
-	}
-	public void setClientName(String clientName) {
-		this.clientName = clientName;
-	}
-	public String getOrderTypeName() {
-		return orderTypeName;
-	}
-	public void setOrderTypeName(String orderTypeName) {
-		this.orderTypeName = orderTypeName;
-	}
-	public double getCompleted() {
-		return completed;
-	}
-	public void setCompleted(double completed) {
-		this.completed = completed;
-	}
-	public int getDeleted() {
-		return deleted;
-	}
-	public void setDeleted(int deleted) {
-		this.deleted = deleted;
-	}
-	public PaymentInfoDTO getPaymentInfo() {
-		return paymentInfo;
-	}
-	public void setPaymentInfo(PaymentInfoDTO paymentInfo) {
-		this.paymentInfo = paymentInfo;
-	}
-
-	public double getPickUpPrice() {
-		return pickUpPrice;
-	}
-
-	public void setPickUpPrice(double pickUpPrice) {
-		this.pickUpPrice = pickUpPrice;
-	}
-
-	public double getDeliverPrice() {
-		return deliverPrice;
-	}
-
-	public void setDeliverPrice(double deliverPrice) {
-		this.deliverPrice = deliverPrice;
-	}
-
-	public double getDiscount() {
-		return discount;
-	}
-
-	public void setDiscount(double discount) {
-		this.discount = discount;
-	}
-
-	public int getPaymentStatus() {
-		return paymentStatus;
-	}
-
-	public void setPaymentStatus(int paymentStatus) {
-		this.paymentStatus = paymentStatus;
-	}
-
-	public Set<OrderPriceAdjustmentDTO> getOrderPriceAdjustments() {
-		return orderPriceAdjustments;
-	}
-
-	public void setOrderPriceAdjustments(Set<OrderPriceAdjustmentDTO> orderPriceAdjustments) {
-		this.orderPriceAdjustments = orderPriceAdjustments;
-	}
-
-	@Override
-	public String toString() {
-		return MoreObjects.toStringHelper(this)
-				.add("idOrder", idOrder)
-				.add("comments", comments)
-				.add("idAddressDeliver", idAddressDeliver)
-				.add("idAddressPickup", idAddressPickup)
-				.add("pickUpDate", pickUpDate)
-				.add("deliverDate", deliverDate)
-				.add("totalServices", totalServices)
-				.add("total", total)
-				.add("status", status)
-				.add("client", client)
-				.add("idOrderType", idOrderType)
-				.add("orderTasks", orderTasks)
-				.add("created", created)
-				.add("updated", updated)
-				.add("time", time)
-				.add("createdBy", createdBy)
-				.add("deleted", deleted)
-				.add("clientName", clientName)
-				.add("orderTypeName", orderTypeName)
-				.add("completed", completed)
-				.add("pickUpPrice", pickUpPrice)
-				.add("deliverPrice", deliverPrice)
-				.toString();
-	}
 }

@@ -67,13 +67,13 @@ public class ServicesSv extends EntityServicesBase {
 	}
 
 	public List<ServiceTypeDTO> getServiceTypeList(@QueryParam("idServiceType") int idServiceType) throws SODAPIException {
-		List<ServiceType> rentityList = null;
+		List<ServiceType> entityList = null;
 		if (idServiceType > 0) {
-			rentityList = serviceTypeRepository.findById(idServiceType);
+			entityList = serviceTypeRepository.findById(idServiceType);
 		} else {
-			rentityList = this.getEntityList(serviceTypeRepository);
+			entityList = this.getEntityList(serviceTypeRepository);
 		}
-		List<ServiceTypeDTO> list = rentityList.stream().map((i) -> {
+		List<ServiceTypeDTO> list = entityList.stream().map((i) -> {
 			ServiceTypeDTO dto = ServiceMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());

@@ -9,7 +9,6 @@ public class SODAPIException extends Exception {
 	Response.Status status = Response.Status.INTERNAL_SERVER_ERROR;
 	String message;
 
-	// TODO implement formatter
 	public SODAPIException(Response.Status status, String message, Object... messageSubstitutions) {
 		this.message = String.format(message, messageSubstitutions);
 		this.status = status;

@@ -1,5 +1,6 @@
 package com.il.sod.model.entities;
 
+import com.il.sod.config.SpringTestConfiguration;
 import com.il.sod.db.dao.IDAO;
 import com.il.sod.db.dao.impl.ClientDAO;
 import com.il.sod.db.model.entities.Address;
@@ -9,7 +10,6 @@ import com.il.sod.db.model.repositories.ClientRepository;
 import com.il.sod.db.model.repositories.ClientSpecification;
 import com.il.sod.db.model.repositories.ClientTypeRepository;
 import com.il.sod.db.model.repositories.SearchCriteria;
-import com.il.sod.config.SpringTestConfiguration;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,7 @@ import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
+@Ignore
 public class ClientDaoTest extends SpringTestConfiguration{
 	
 	@Autowired
@@ -36,7 +37,6 @@ public class ClientDaoTest extends SpringTestConfiguration{
 	@Autowired
 	ClientTypeRepository clientTypeRepository;
 	
-    @Ignore
     @Test
     public void test(){
     	try{

@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,8 +31,7 @@ import java.util.stream.Collectors;
 @org.springframework.stereotype.Service
 public class TasksSv extends EntityServicesBase {
 	private final static Logger LOGGER = LoggerFactory.getLogger(TaskService.class);
-
-	private static int ACTION_INIT = 1;
+	private static final String NO_TASK_WERE_FOUND_WITH_ID_S = "No task were found with id {%s}";
 
 	@Autowired
 	TaskRepository taskRepository;
@@ -71,7 +71,7 @@ public class TasksSv extends EntityServicesBase {
 	}
 
 	public TaskDTO updateTask(TaskDTO dto) throws SODAPIException {
-		if (taskRepository.findOne(dto.getIdTask()) == null){
+		if (taskRepository.findOne(dto.getIdTask()) == null) {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Task not found [%s]", dto.getIdTask());
 		}
 
@@ -91,7 +91,7 @@ public class TasksSv extends EntityServicesBase {
 		return true;
 	}
 
-	public List<TaskDTO> getTaskList(int idTaskType) throws SODAPIException {
+	public List<TaskDTO> getTaskList(int idTaskType) {
 		List<Task> entityList;
 
 		if (idTaskType > 0) {
@@ -101,23 +101,21 @@ public class TasksSv extends EntityServicesBase {
 			entityList = this.getEntityList(taskRepository);
 		}
 
-		List<TaskDTO> list = entityList.stream()
+		return entityList.stream()
 				.map(TaskMapper.INSTANCE::map)
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());
-
-		return list;
 	}
 
 	public List<TaskInfoDTO> getTaskListByOrder(int idOrder) throws SODAPIException {
-		Order o = orderRepository.findOne(idOrder);
+		Order order = orderRepository.findOne(idOrder);
 
-		if (o == null) {
+		if (order == null) {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Order not found!");
 		}
 
-		List<OrderTask> tList = new ArrayList<>(o.getOrderTasks());
-		tList.sort((a, a1) -> a.getSortingOrder() - a1.getSortingOrder());
+		List<OrderTask> tList = new ArrayList<>(order.getOrderTasks());
+		tList.sort(Comparator.comparingInt(OrderTask::getSortingOrder));
 
 		List<TaskInfoDTO> resultList = tList.stream().map(i -> {
 			TaskInfoDTO r = TaskMapper.INSTANCE.map(i);
@@ -133,16 +131,15 @@ public class TasksSv extends EntityServicesBase {
 			}
 		}
 
-		for (com.il.sod.db.model.entities.Service s : o.getServices()) {
+		for (com.il.sod.db.model.entities.Service s : order.getServices()) {
 			List<ServiceTask> helperList = new ArrayList<>(s.getServiceTasks());
-			helperList.sort((a, a1) -> a.getSortingOrder() - a1.getSortingOrder());
+			helperList.sort(Comparator.comparingInt(ServiceTask::getSortingOrder));
 
 			List<TaskInfoDTO> serviceTasks = helperList.stream().map(i -> {
 				TaskInfoDTO r = TaskMapper.INSTANCE.map(i);
 				r.setTypeTask(1);
 				return r;
-			})
-					.collect(Collectors.toList());
+			}).collect(Collectors.toList());
 
 			resultList.addAll(insertPosition, serviceTasks);
 			insertPosition += serviceTasks.size();
@@ -154,57 +151,83 @@ public class TasksSv extends EntityServicesBase {
 		return resultList;
 	}
 
-	public OrderDTO taskAction(TaskDTO dto, int action, int idOrder) throws SODAPIException {
+	private void moveTask(OrderTask orderTask, int action){
+		if (action == Constants.ACTION_INIT) {
+			orderTask.setStarted(new Date());
+			orderTask.setStatus(Constants.TaskAction.Working.getValue());
+		} else {
+			orderTask.setEnded(new Date());
+			orderTask.setStatus(Constants.TaskAction.End.getValue());
+		}
+		orderTaskRepository.save(orderTask);
+	}
+
+	private void moveTask(ServiceTask serviceTask, int action){
+		if (action == Constants.ACTION_INIT) {
+			serviceTask.setStarted(new Date());
+			serviceTask.setStatus(Constants.TaskAction.Working.getValue());
+		} else {
+			serviceTask.setEnded(new Date());
+			serviceTask.setStatus(Constants.TaskAction.End.getValue());
+		}
+		serviceTaskRepository.save(serviceTask);
+	}
+
+	public OrderDTO taskAction(TaskDTO taskDto, int action, int idOrder) throws SODAPIException {
 		// find task regardless of what is ti
-		final int idTask = dto.getIdTask();
+		final int idTask = taskDto.getIdTask();
 		Order order = orderRepository.findOne(idOrder);
-		if (order == null){
+		if (order == null) {
 			throw new SODAPIException(Response.Status.BAD_REQUEST, "Order not found %s", idOrder);
 		}
 
-		if (dto.getTypeTask() == Constants.TypeTaskOps.Order.getValue()) {
-			// ORDER TASK
-			OrderTask orderTask = order.getOrderTasks()
+		if (taskDto.getTypeTask() == Constants.TypeTaskOps.Order.getValue()) {
+			OrderTask orderTask;
+			orderTask = order.getOrderTasks()
 					.stream()
-					.filter(t-> t.getTask().getId() == idTask).findFirst()
-					.orElseThrow(() -> new SODAPIException(Response.Status.BAD_REQUEST, "No task were found with id {}", idTask));
+					.filter(t -> t.getTask().getId() == idTask)
+					.findFirst()
+					.orElseThrow(() -> new SODAPIException(Response.Status.BAD_REQUEST, NO_TASK_WERE_FOUND_WITH_ID_S, idTask));
 
-			if (action == ACTION_INIT){
-				orderTask.setStarted(new Date());
-				orderTask.setStatus(Constants.TaskAction.Working.getValue());
-			} else {
-				orderTask.setEnded(new Date());
-				orderTask.setStatus(Constants.TaskAction.End.getValue());
-			}
-			orderTaskRepository.save(orderTask);
+			moveTask(orderTask, action);
 
-		} else if (dto.getTypeTask() == Constants.TypeTaskOps.Service.getValue()) {
-			// SERVICE TASK
-			Service service = serviceRepository.findOne(dto.getIdParent());
+		} else if (taskDto.getTypeTask() == Constants.TypeTaskOps.Service.getValue()) {
+			initOrderServiceTask(action, idTask, order);
+
+			Service service = serviceRepository.findOne(taskDto.getIdParent());
 			ServiceTask serviceTask = service.getServiceTasks()
 					.stream()
-					.filter(t-> t.getTask().getId() == idTask).findFirst()
-					.orElseThrow(() -> new SODAPIException(Response.Status.BAD_REQUEST, "No task were found with id {}", idTask));;
+					.filter(t -> t.getTask().getId() == idTask)
+					.findFirst()
+					.orElseThrow(() -> new SODAPIException(Response.Status.BAD_REQUEST, NO_TASK_WERE_FOUND_WITH_ID_S, idTask));
 
-			if (action == ACTION_INIT){
-				serviceTask.setStarted(new Date());
-				serviceTask.setStatus(Constants.TaskAction.Working.getValue());
-			} else {
-				serviceTask.setEnded(new Date());
-				serviceTask.setStatus(Constants.TaskAction.End.getValue());
-			}
-			serviceTaskRepository.save(serviceTask);
-		}else{
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Task Type not valid should be in [1, 2] actual {%s}", dto.getTypeTask());
+			moveTask(serviceTask, action);
+
+		} else {
+			throw new SODAPIException(Response.Status.BAD_REQUEST, "Task Type not valid should be in [1, 2] actual {%s}", taskDto.getTypeTask());
 		}
 
-		// If order is finished, save that value.
-		if (ordersDAO.getCompletedPercent(order) >= 100){
+		checkIfOrderIsComplete(order);
+
+		return OrderMapper.INSTANCE.map(orderRepository.findOne(idOrder));
+	}
+
+	private void checkIfOrderIsComplete(Order order) {
+		if (ordersDAO.getCompletedPercent(order) >= 100) {
 			order.setStatus(Constants.ORDER_STATUS_FINISHED);
 			orderRepository.save(order);
 		}
+	}
 
-		return OrderMapper.INSTANCE.map(orderRepository.findOne(idOrder));
+	private void initOrderServiceTask(int action, int idTask, Order order) throws SODAPIException {
+		if (order.getServiceOrderTask().getStarted() == null){
+			OrderTask orderTask = order.getOrderTasks()
+					.stream()
+					.filter(t -> t.getTask().getId() == 1)
+					.findFirst()
+					.orElseThrow(() -> new SODAPIException(Response.Status.BAD_REQUEST, NO_TASK_WERE_FOUND_WITH_ID_S, idTask));
+			moveTask(orderTask, action);
+		}
 	}
 
 }

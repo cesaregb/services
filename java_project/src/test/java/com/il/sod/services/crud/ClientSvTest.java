@@ -8,6 +8,7 @@ import com.il.sod.rest.dto.db.ClientDTO;
 import com.il.sod.services.cruds.ClientSv;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,24 +25,30 @@ public class ClientSvTest extends SpringTestConfiguration {
 	ClientSv clientSv;
 
 	@Autowired
-	protected ClientRepository clientRepository;
+	private ClientRepository clientRepository;
 
-	String email = RandomStringUtils.randomAlphanumeric(8).toLowerCase() + "-test@domain.com";
+	String email;
 
-	public ClientDTO testClient(){
+	@Before
+	public void init() {
+		email = RandomStringUtils.randomAlphanumeric(8).toLowerCase() + "-test@domain.com";
+	}
+
+
+	public ClientDTO testClient() {
 		return new ClientDTO(0, email,
 				"lname", "name", "twt", "rfc",
 				"rz", 1, "0123", "0123",
 				"0123", null, null, null);
 	}
 
-	public void saveClient() throws Exception {
+	private void saveClient() throws Exception {
 		List<Client> c = clientRepository.findByEmail(email);
 		ClientDTO dto;
-		if (c.isEmpty()){
+		if (c.isEmpty()) {
 			dto = testClient();
 			dto = clientSv.saveClient(dto);
-		}else{
+		} else {
 			dto = clientSv.reactivateClient(email);
 		}
 	}
@@ -65,12 +72,10 @@ public class ClientSvTest extends SpringTestConfiguration {
 		saveClient();
 		MultivaluedMap<String, String> map = new MultivaluedHashMap<>();
 		map.add("email", "test@domain.com");
-		List<ClientDTO> l = clientSv.getClientsByFilter(map, null, null , null);
+		List<ClientDTO> l = clientSv.getClientsByFilter(map, null, null, null);
 		Assert.assertTrue("No Clients found", l.size() > 0);
 		System.out.println("*****************");
-		l.forEach(c ->{
-			System.out.println(c.toString());
-		});
+		l.forEach(c -> System.out.println(c.toString()));
 		System.out.println("*****************");
 		deleteClient();
 

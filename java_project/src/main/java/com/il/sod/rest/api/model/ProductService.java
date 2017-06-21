@@ -74,18 +74,18 @@ public class ProductService extends AbstractServiceMutations {
 	@ApiOperation(value = "Get Product list", response = ProductDTO.class, responseContainer = "List")
 	public Response getProductList(@QueryParam("name") String name,
 	                               @QueryParam("idProductType") String idProductType) throws SODAPIException {
-		List<Product> rentityList;
+		List<Product> entityList;
 		if (!StringUtils.isEmpty(name)) {
-			rentityList = productDAO.findByName(name);
+			entityList = productDAO.findByName(name);
 		} else if (!StringUtils.isEmpty(idProductType)) {
 			if (!NumberUtils.isNumber(idProductType)) {
 				throw new SODAPIException(Response.Status.BAD_REQUEST, "{idProductType} not valid " + idProductType);
 			}
-			rentityList = productDAO.findByProductType(Integer.valueOf(idProductType));
+			entityList = productDAO.findByProductType(Integer.valueOf(idProductType));
 		} else {
-			rentityList = this.getEntityList(productRepository);
+			entityList = this.getEntityList(productRepository);
 		}
-		List<ProductDTO> list = rentityList.stream()
+		List<ProductDTO> list = entityList.stream()
 				.map(ProductMapper.INSTANCE::map)
 				.filter(DeletablePredicate.isActive())
 				.collect(Collectors.toList());
@@ -98,8 +98,8 @@ public class ProductService extends AbstractServiceMutations {
 	public Response getProductListByType(List<String> ids) throws SODAPIException {
 		Set<ProductDTO> spSet = new HashSet<>();
 		for (String item : ids) {
-			List<Product> rentityList = productDAO.findByProductType(Integer.valueOf(item));
-			List<ProductDTO> list = rentityList.stream()
+			List<Product> entityList = productDAO.findByProductType(Integer.valueOf(item));
+			List<ProductDTO> list = entityList.stream()
 					.map(ProductMapper.INSTANCE::map)
 					.filter(DeletablePredicate.isActive())
 					.collect(Collectors.toList());

@@ -1,8 +1,6 @@
 package com.il.sod.db.model.entities;
 
 import com.google.common.base.Objects;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
@@ -37,7 +35,7 @@ public class Spec implements IEntity<Integer> {
 	private Set<ServiceType> serviceTypes;
 
 	//bi-directional many-to-one association to SpecsValue
-	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy="spec", fetch=FetchType.EAGER, cascade=CascadeType.ALL )
 	private Set<SpecsValue> specsValues;
 
 	private boolean optional;

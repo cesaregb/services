@@ -37,11 +37,13 @@ public enum OrderMapper {
 				.byDefault().register();
 
 		BaseMapper.MAPPER_FACTORY.classMap(OrderDTO.class, Order.class)
+				.mapNulls(false)
 				.exclude("services")
-				.fieldMap("client", "client").converter("clientConverter").mapNulls(true).mapNullsInReverse(true).add()
-				.fieldMap("orderTasks", "orderTasks").converter("orderTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+				.exclude("orderPriceAdjustments")
+				.fieldMap("client", "client").converter("clientConverter").mapNulls(false).mapNullsInReverse(false).add()
+				.fieldMap("orderTasks", "orderTasks").converter("orderTaskSetConverter").mapNulls(false).mapNullsInReverse(false).add()
 //				.fieldMap("services", "services").converter("serviceSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-				.field("idOrderType", "orderType.idOrderType").mapNulls(false)
+				.fieldBToA("orderType.idOrderType", "idOrderType").mapNulls(false)
 				.byDefault().register();
 
 		// TODO enable asset and employees once is used.
@@ -85,6 +87,11 @@ public enum OrderMapper {
 
 	public OrderDTO map(Order entity) {
 		return this.mapperFacade.map(entity, OrderDTO.class);
+	}
+
+	public Order map(OrderDTO dto, Order entity) {
+		this.mapperFacade.map(dto, entity);
+		return entity;
 	}
 
 	public OrderType map(OrderTypeDTO dto) {

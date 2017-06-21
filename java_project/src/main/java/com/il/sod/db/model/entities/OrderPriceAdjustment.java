@@ -8,7 +8,7 @@ import javax.persistence.*;
  * Created by cesaregb on 5/21/17.
  */
 @Entity
-public class OrderPriceAdjustment {
+public class OrderPriceAdjustment implements IEntity<Integer> {
 	private int idOrderPriceAdjustment;
 	private double cantidad;
 	private Order order;
@@ -68,4 +68,16 @@ public class OrderPriceAdjustment {
 		this.priceAdjustment = priceAdjustment;
 	}
 
+
+	@Override
+	@Transient
+	public Integer getId() {
+		return this.idOrderPriceAdjustment;
+	}
+
+	@Override
+	public IEntity setId(Integer id) {
+		this.idOrderPriceAdjustment = id;
+		return this;
+	}
 }

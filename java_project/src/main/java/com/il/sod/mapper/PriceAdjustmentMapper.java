@@ -17,6 +17,7 @@ public enum PriceAdjustmentMapper {
 
 		BaseMapper.MAPPER_FACTORY.classMap(PriceAdjustmentDTO.class, PriceAdjustment.class)
 			.field("idPriceAdjustmentType", "priceAdjustmentType.idPriceAdjustmentType")
+			.exclude("orderPriceAdjustments")
 			.byDefault()
 			.register();
 

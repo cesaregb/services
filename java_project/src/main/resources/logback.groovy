@@ -1,3 +1,4 @@
+import ch.qos.logback.classic.Level
 import com.il.sod.logging.CustomLayoutWrappingEncoder
 import groovy.transform.Field
 
@@ -88,7 +89,7 @@ switch (soutLevelVal) {
  * 2 = app + sql (jpa)
  * 3 = app
  */
-@Field int stoutType = Integer.valueOf(getSystemProperty("stoutType", "1"))
+@Field int stoutType = Integer.valueOf(getSystemProperty("stoutType", "3"))
 
 def addLoggers() {
 	def sqlAppenders = ["ROLLING_FILE"];
@@ -98,7 +99,7 @@ def addLoggers() {
 	logger("org.hibernate.SQL", DEBUG, sqlAppenders, false)
 	logger("org.hibernate.type.descriptor.sql.BasicBinder", TRACE, sqlAppenders, false)
 
-	logger("com.il.sod", soutLevel, ["STDOUT", "ROLLING_FILE"], false)
+	logger("com.il.sod", soutLevel as Level, ["STDOUT", "ROLLING_FILE"], false)
 
 	def fwAppenders = ["ROLLING_FILE"]
 	if ( stoutType == 1 ){
@@ -107,7 +108,7 @@ def addLoggers() {
 
 	String[] frameworks = ["ma.glasnost.orika", "io.swagger"]
 	for (String fw : frameworks ){
-		logger(fw, soutLevel, fwAppenders, false)
+		logger(fw, soutLevel as Level, fwAppenders, false)
 	}
 
 	root(ERROR, ["STDOUT"])

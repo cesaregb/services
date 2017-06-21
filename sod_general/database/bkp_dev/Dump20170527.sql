@@ -17,6 +17,22 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
+-- -----------------------------------------------------
+-- Schema sod_db
+-- -----------------------------------------------------
+-- This is the initial_scheema for the service on demand application
+--
+DROP SCHEMA IF EXISTS `sod_db` ;
+
+-- -----------------------------------------------------
+-- Schema sod_db
+--
+-- This is the initial_scheema for the service on demand application
+--
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `sod_db` DEFAULT CHARACTER SET utf8 ;
+USE `sod_db` ;
+
 -- ----------------------------
 --  Table structure for `AccessKey`
 -- ----------------------------

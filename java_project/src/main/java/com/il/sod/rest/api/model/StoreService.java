@@ -64,8 +64,8 @@ public class StoreService extends AbstractServiceMutations {
 	@GET
 	@ApiOperation(value = "Get Store list", response = StoreDTO.class, responseContainer = "List")
 	public Response getStoreList() throws SODAPIException {
-		List<Store> rentityList = storeRepository.findAll();
-		List<StoreDTO> list = rentityList.stream().map((i) -> {
+		List<Store> entityList = storeRepository.findAll();
+		List<StoreDTO> list = entityList.stream().map((i) -> {
 			StoreDTO dto = StoreInfoMapper.INSTANCE.map(i);
 			return dto;
 		}).collect(Collectors.toList());
