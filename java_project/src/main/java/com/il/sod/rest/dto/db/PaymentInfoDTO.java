@@ -3,51 +3,52 @@ package com.il.sod.rest.dto.db;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.il.sod.rest.dto.GenericDBDTO;
 
-public class PaymentInfoDTO implements GenericDBDTO{
+public class PaymentInfoDTO implements GenericDBDTO {
 
-	private int idPaymentInfo;
-	private String transactionInfo;
-	private int type;
-	private int idOrder;
-	public PaymentInfoDTO() {
-	}
+  private int idPaymentInfo;
+  private String transactionInfo;
+  private int type;
+  private int idOrder;
 
-	public int getIdPaymentInfo() {
-		return this.idPaymentInfo;
-	}
+  public PaymentInfoDTO() {
+  }
 
-	public void setIdPaymentInfo(int idPaymentInfo) {
-		this.idPaymentInfo = idPaymentInfo;
-	}
+  public int getIdPaymentInfo() {
+    return this.idPaymentInfo;
+  }
 
-	public String getTransactionInfo() {
-		return this.transactionInfo;
-	}
+  public void setIdPaymentInfo(int idPaymentInfo) {
+    this.idPaymentInfo = idPaymentInfo;
+  }
 
-	public void setTransactionInfo(String transactionInfo) {
-		this.transactionInfo = transactionInfo;
-	}
+  public String getTransactionInfo() {
+    return this.transactionInfo;
+  }
 
-	public int getType() {
-		return this.type;
-	}
+  public void setTransactionInfo(String transactionInfo) {
+    this.transactionInfo = transactionInfo;
+  }
 
-	public void setType(int type) {
-		this.type = type;
-	}
+  public int getType() {
+    return this.type;
+  }
 
-	public int getIdOrder() {
-		return idOrder;
-	}
+  public void setType(int type) {
+    this.type = type;
+  }
 
-	public void setIdOrder(int idOrder) {
-		this.idOrder = idOrder;
-	}
+  public int getIdOrder() {
+    return idOrder;
+  }
 
-	@Override
-	@JsonIgnore
-	public Integer getParentId() {
-		return this.idOrder;
-	}
+  public void setIdOrder(int idOrder) {
+    this.idOrder = idOrder;
+  }
+
+  @Override
+  @JsonIgnore
+  public Integer getParentId() {
+    return this.idOrder;
+  }
 
 }

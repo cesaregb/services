@@ -1,191 +1,182 @@
 package com.il.sod.db.model.entities;
 
-import java.util.Date;
-import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.util.Date;
+import java.util.Set;
 
 
 /**
  * The persistent class for the ServiceTask database table.
- *
  */
 @Entity
-@NamedQuery(name="ServiceTask.findAll", query="SELECT s FROM ServiceTask s")
+@NamedQuery(name = "ServiceTask.findAll", query = "SELECT s FROM ServiceTask s")
 public class ServiceTask implements IEntity<Integer> {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idServiceTask;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int idServiceTask;
 
-	private String comments;
+  private String comments;
 
-	//bi-directional many-to-one association to AssetTaskService
-	@OneToMany(mappedBy="serviceTask", fetch=FetchType.LAZY)
-	@JsonManagedReference
-	private Set<AssetTaskService> assetTaskServices;
+  //bi-directional many-to-one association to AssetTaskService
+  @OneToMany(mappedBy = "serviceTask", fetch = FetchType.LAZY)
+  @JsonManagedReference
+  private Set<AssetTaskService> assetTaskServices;
 
-	//bi-directional many-to-one association to EmployeeTaskService
-	@OneToMany(mappedBy="serviceTask", fetch=FetchType.LAZY)
-	@JsonManagedReference
-	private Set<EmployeeTaskService> employeeTaskServices;
+  //bi-directional many-to-one association to EmployeeTaskService
+  @OneToMany(mappedBy = "serviceTask", fetch = FetchType.LAZY)
+  @JsonManagedReference
+  private Set<EmployeeTaskService> employeeTaskServices;
 
-	//bi-directional many-to-one association to Service
-	@ManyToOne
-	@JoinColumn(name="idService")
-	@JsonBackReference
-	private Service service;
+  //bi-directional many-to-one association to Service
+  @ManyToOne
+  @JoinColumn(name = "idService")
+  @JsonBackReference
+  private Service service;
 
-	//bi-directional many-to-one association to Task
-	@ManyToOne
-	@JoinColumn(name="idTask")
-	@JsonBackReference
-	private Task task;
-	
-	private int status;
-	private Date started;
-	private Date ended;
-	private int time;
-	private int sortingOrder;
+  //bi-directional many-to-one association to Task
+  @ManyToOne
+  @JoinColumn(name = "idTask")
+  @JsonBackReference
+  private Task task;
 
-	public ServiceTask() {
-	}
+  private int status;
+  private Date started;
+  private Date ended;
+  private int time;
+  private int sortingOrder;
 
-	public int getIdServiceTask() {
-		return this.idServiceTask;
-	}
+  public ServiceTask() {
+  }
 
-	public void setIdServiceTask(int idServiceTask) {
-		this.idServiceTask = idServiceTask;
-	}
+  public int getIdServiceTask() {
+    return this.idServiceTask;
+  }
 
-	public String getComments() {
-		return this.comments;
-	}
+  public void setIdServiceTask(int idServiceTask) {
+    this.idServiceTask = idServiceTask;
+  }
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
+  public String getComments() {
+    return this.comments;
+  }
 
-	public Set<AssetTaskService> getAssetTaskServices() {
-		return this.assetTaskServices;
-	}
+  public void setComments(String comments) {
+    this.comments = comments;
+  }
 
-	public void setAssetTaskServices(Set<AssetTaskService> assetTaskServices) {
-		this.assetTaskServices = assetTaskServices;
-	}
+  public Set<AssetTaskService> getAssetTaskServices() {
+    return this.assetTaskServices;
+  }
 
-	public AssetTaskService addAssetTaskService(AssetTaskService assetTaskService) {
-		getAssetTaskServices().add(assetTaskService);
-		assetTaskService.setServiceTask(this);
+  public void setAssetTaskServices(Set<AssetTaskService> assetTaskServices) {
+    this.assetTaskServices = assetTaskServices;
+  }
 
-		return assetTaskService;
-	}
+  public AssetTaskService addAssetTaskService(AssetTaskService assetTaskService) {
+    getAssetTaskServices().add(assetTaskService);
+    assetTaskService.setServiceTask(this);
 
-	public AssetTaskService removeAssetTaskService(AssetTaskService assetTaskService) {
-		getAssetTaskServices().remove(assetTaskService);
-		assetTaskService.setServiceTask(null);
+    return assetTaskService;
+  }
 
-		return assetTaskService;
-	}
+  public AssetTaskService removeAssetTaskService(AssetTaskService assetTaskService) {
+    getAssetTaskServices().remove(assetTaskService);
+    assetTaskService.setServiceTask(null);
 
-	public Set<EmployeeTaskService> getEmployeeTaskServices() {
-		return this.employeeTaskServices;
-	}
+    return assetTaskService;
+  }
 
-	public void setEmployeeTaskServices(Set<EmployeeTaskService> employeeTaskServices) {
-		this.employeeTaskServices = employeeTaskServices;
-	}
+  public Set<EmployeeTaskService> getEmployeeTaskServices() {
+    return this.employeeTaskServices;
+  }
 
-	public EmployeeTaskService addEmployeeTaskService(EmployeeTaskService employeeTaskService) {
-		getEmployeeTaskServices().add(employeeTaskService);
-		employeeTaskService.setServiceTask(this);
+  public void setEmployeeTaskServices(Set<EmployeeTaskService> employeeTaskServices) {
+    this.employeeTaskServices = employeeTaskServices;
+  }
 
-		return employeeTaskService;
-	}
+  public EmployeeTaskService addEmployeeTaskService(EmployeeTaskService employeeTaskService) {
+    getEmployeeTaskServices().add(employeeTaskService);
+    employeeTaskService.setServiceTask(this);
 
-	public EmployeeTaskService removeEmployeeTaskService(EmployeeTaskService employeeTaskService) {
-		getEmployeeTaskServices().remove(employeeTaskService);
-		employeeTaskService.setServiceTask(null);
+    return employeeTaskService;
+  }
 
-		return employeeTaskService;
-	}
+  public EmployeeTaskService removeEmployeeTaskService(EmployeeTaskService employeeTaskService) {
+    getEmployeeTaskServices().remove(employeeTaskService);
+    employeeTaskService.setServiceTask(null);
 
-	public Service getService() {
-		return this.service;
-	}
+    return employeeTaskService;
+  }
 
-	public void setService(Service service) {
-		this.service = service;
-	}
+  public Service getService() {
+    return this.service;
+  }
 
-	public Task getTask() {
-		return this.task;
-	}
+  public void setService(Service service) {
+    this.service = service;
+  }
 
-	public void setTask(Task task) {
-		this.task = task;
-	}
-	@Override
-	public Integer getId() {
-		return this.idServiceTask;
-	}
+  public Task getTask() {
+    return this.task;
+  }
 
-	@Override
-	public ServiceTask setId(Integer id) {
-		this.idServiceTask = id;
-		return this;
-	}
+  public void setTask(Task task) {
+    this.task = task;
+  }
 
-	public Date getStarted() {
-		return started;
-	}
+  @Override
+  public Integer getId() {
+    return this.idServiceTask;
+  }
 
-	public void setStarted(Date started) {
-		this.started = started;
-	}
+  @Override
+  public ServiceTask setId(Integer id) {
+    this.idServiceTask = id;
+    return this;
+  }
 
-	public Date getEnded() {
-		return ended;
-	}
+  public Date getStarted() {
+    return started;
+  }
 
-	public void setEnded(Date ended) {
-		this.ended = ended;
-	}
+  public void setStarted(Date started) {
+    this.started = started;
+  }
 
-	public int getStatus() {
-		return status;
-	}
+  public Date getEnded() {
+    return ended;
+  }
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
+  public void setEnded(Date ended) {
+    this.ended = ended;
+  }
 
-	public int getSortingOrder() {
-		return sortingOrder;
-	}
+  public int getStatus() {
+    return status;
+  }
 
-	public void setSortingOrder(int sortingOrder) {
-		this.sortingOrder = sortingOrder;
-	}
+  public void setStatus(int status) {
+    this.status = status;
+  }
 
-	public int getTime() {
-		return time;
-	}
+  public int getSortingOrder() {
+    return sortingOrder;
+  }
 
-	public void setTime(int time) {
-		this.time = time;
-	}
+  public void setSortingOrder(int sortingOrder) {
+    this.sortingOrder = sortingOrder;
+  }
+
+  public int getTime() {
+    return time;
+  }
+
+  public void setTime(int time) {
+    this.time = time;
+  }
 }

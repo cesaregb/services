@@ -17,52 +17,52 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class ServicesDaoTest extends SpringTestConfiguration{
-	private final static Logger LOGGER = getLogger(ServiceDaoTest.class);
-	
-	@Autowired
-	ServiceTypeRepository serviceTypeRepository;
+public class ServicesDaoTest extends SpringTestConfiguration {
+  private final static Logger LOGGER = getLogger(ServiceDaoTest.class);
 
-	@Autowired
-	ServiceCategoryRepository serviceCategoryRepository;
+  @Autowired
+  ServiceTypeRepository serviceTypeRepository;
 
-	@Autowired
-	SpecRepository specRepository;
+  @Autowired
+  ServiceCategoryRepository serviceCategoryRepository;
 
-	@Autowired
-	ProductTypeRepository productTypeRepository;
+  @Autowired
+  SpecRepository specRepository;
 
-	@Test
-	public void testCreateAndAddSpec(){
-		String name = RandomStringUtils.randomAlphanumeric(8).toLowerCase() + "[test]";
+  @Autowired
+  ProductTypeRepository productTypeRepository;
 
-		ServiceCategory serviceCategory = serviceCategoryRepository.findOne(1);
-		ServiceType serviceType = new ServiceType(name,"desc",0, 0, serviceCategory, false);
-		serviceType = serviceTypeRepository.save(serviceType);
-		LOGGER.info("serviceType: {}", serviceType);
+  @Test
+  public void testCreateAndAddSpec() {
+    String name = RandomStringUtils.randomAlphanumeric(8).toLowerCase() + "[test]";
 
-		Spec spec = new Spec(name, "desc", true, 0);
-		specRepository.save(spec);
+    ServiceCategory serviceCategory = serviceCategoryRepository.findOne(1);
+    ServiceType serviceType = new ServiceType(name, "desc", 0, 0, serviceCategory, false);
+    serviceType = serviceTypeRepository.save(serviceType);
+    LOGGER.info("serviceType: {}", serviceType);
 
-		serviceType.addSpec(spec);
-		serviceTypeRepository.save(serviceType);
+    Spec spec = new Spec(name, "desc", true, 0);
+    specRepository.save(spec);
 
-		ProductType productType = new ProductType(name, "desc");
-		productTypeRepository.save(productType);
+    serviceType.addSpec(spec);
+    serviceTypeRepository.save(serviceType);
 
-		serviceType.addProductType(productType);
-		serviceTypeRepository.save(serviceType);
-		System.out.format("serviceType: [%s] %n", serviceType);
+    ProductType productType = new ProductType(name, "desc");
+    productTypeRepository.save(productType);
 
-		serviceType.removeSpec(spec);
-		serviceTypeRepository.save(serviceType);
-		Assert.assertTrue("Specs should be empty", serviceType.getSpecs().isEmpty());
-		// get it from the db...
-		serviceType = serviceTypeRepository.findOne(serviceType.getId());
-		Assert.assertTrue("Specs should be empty", serviceType.getSpecs().isEmpty());
+    serviceType.addProductType(productType);
+    serviceTypeRepository.save(serviceType);
+    System.out.format("serviceType: [%s] %n", serviceType);
 
-		System.out.format("serviceType: [%s] %n", serviceType.getSpecs().size());
+    serviceType.removeSpec(spec);
+    serviceTypeRepository.save(serviceType);
+    Assert.assertTrue("Specs should be empty", serviceType.getSpecs().isEmpty());
+    // get it from the db...
+    serviceType = serviceTypeRepository.findOne(serviceType.getId());
+    Assert.assertTrue("Specs should be empty", serviceType.getSpecs().isEmpty());
 
-	}
+    System.out.format("serviceType: [%s] %n", serviceType.getSpecs().size());
+
+  }
 
 }

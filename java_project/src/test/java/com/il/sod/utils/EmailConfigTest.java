@@ -6,16 +6,16 @@ import com.il.sod.services.email.EmailService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class EmailConfigTest extends SpringTestConfiguration{
-	
-	@Autowired
-	EmailService emailService;
-	
-    @Test
-    public void test(){
-    	Client client = new Client();
-    	client.setName("Cesar");
-    	client.setEmail("cesareg.borjon@gmail.com");
-		emailService.send(client);
-    }
+public class EmailConfigTest extends SpringTestConfiguration {
+
+  @Autowired
+  EmailService emailService;
+
+  @Test
+  public void test() {
+    Client client = new Client();
+    client.setName("Cesar");
+    client.setEmail("cesareg.borjon@gmail.com");
+    emailService.send(client);
+  }
 }

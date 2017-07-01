@@ -24,31 +24,31 @@ import javax.ws.rs.core.Response;
 @RolesAllowed("ADMIN")
 @Path("/orders/order-type")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/orders/order-type", tags = { "orders" })
+@Api(value = "/orders/order-type", tags = {"orders"})
 public class AppOrdersService extends AbstractServiceMutations {
 
-	@Autowired
-	OrdersSv ordersSv;
-	
-	@GET
-	@Path("/pre-order")
-	@ApiOperation(value = "Get a complete list of the orders information", response = WServiceCategoryDTO.class, responseContainer = "List")
-	public Response getOrderTypes() throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.getOrderTypes());
-	}
+  @Autowired
+  OrdersSv ordersSv;
 
-	@GET
-	@Path("/public/pre-order")
-	@ApiOperation(value = "Get a complete list of the orders information marked as public ", response = WServiceCategoryDTO.class, responseContainer = "List")
-	public Response getOrderTypesPublic() throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.getOrderTypesPublic());
-	}
+  @GET
+  @Path("/pre-order")
+  @ApiOperation(value = "Get a complete list of the orders information", response = WServiceCategoryDTO.class, responseContainer = "List")
+  public Response getOrderTypes() throws SODAPIException {
+    return ConvertUtils.castEntityAsResponse(ordersSv.getOrderTypes());
+  }
 
-	@POST
-	@Path("/create-order")
-	@ApiOperation(value = "Create Order ", response = OrderDTO.class)
-	public Response createOrder(UIOrderDTO orderInputDto) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(ordersSv.createOrder(orderInputDto), Response.Status.CREATED);
-	}
+  @GET
+  @Path("/public/pre-order")
+  @ApiOperation(value = "Get a complete list of the orders information marked as public ", response = WServiceCategoryDTO.class, responseContainer = "List")
+  public Response getOrderTypesPublic() throws SODAPIException {
+    return ConvertUtils.castEntityAsResponse(ordersSv.getOrderTypesPublic());
+  }
+
+  @POST
+  @Path("/create-order")
+  @ApiOperation(value = "Create Order ", response = OrderDTO.class)
+  public Response createOrder(UIOrderDTO orderInputDto) throws SODAPIException {
+    return ConvertUtils.castEntityAsResponse(ordersSv.createOrder(orderInputDto), Response.Status.CREATED);
+  }
 
 }

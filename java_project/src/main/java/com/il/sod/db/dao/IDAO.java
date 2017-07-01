@@ -7,13 +7,20 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface IDAO<T, ID extends Serializable> {
-	
-	public void setRepository(JpaRepository<T, ID> repository);
-	public T create(T entity);
-	public boolean delete(ID id) throws SODAPIException ;
-	public T sofDelete(ID id) throws SODAPIException;
-	public List<T> findAll();
-	public List<T> findAllActive();
-	public T update(T entity);
-	public T findById(ID id);
+
+  public void setRepository(JpaRepository<T, ID> repository);
+
+  public T create(T entity);
+
+  public boolean delete(ID id) throws SODAPIException;
+
+  public T sofDelete(ID id) throws SODAPIException;
+
+  public List<T> findAll();
+
+  public List<T> findAllActive();
+
+  public T update(T entity);
+
+  public T findById(ID id);
 }

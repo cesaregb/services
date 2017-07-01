@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface TaskTypeRepository extends DeletableRepository<TaskType, Integer> {
-	
-	@Query("SELECT t FROM TaskType t WHERE t.ordersOnly=:ordersOnly")
-    public List<TaskType> findBySection(@Param("ordersOnly") boolean ordersOnly);
+
+  @Query("SELECT t FROM TaskType t WHERE t.ordersOnly=:ordersOnly")
+  public List<TaskType> findBySection(@Param("ordersOnly") boolean ordersOnly);
 }

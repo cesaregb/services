@@ -27,59 +27,59 @@ import java.util.stream.Collectors;
 @Api(value = "/stores", tags = {"app-utils"})
 public class StoreService extends AbstractServiceMutations {
 
-	@Autowired
-	StoreRepository storeRepository;
+  @Autowired
+  StoreRepository storeRepository;
 
-	@POST
-	@ApiOperation(value = "Create Store", response = StoreDTO.class)
-	public Response saveStore(StoreDTO dto) throws SODAPIException {
-		Store entity = StoreInfoMapper.INSTANCE.map(dto);
-		this.saveEntity(storeRepository, entity);
-		dto = StoreInfoMapper.INSTANCE.map(entity);
-		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
-	}
+  @POST
+  @ApiOperation(value = "Create Store", response = StoreDTO.class)
+  public Response saveStore(StoreDTO dto) throws SODAPIException {
+    Store entity = StoreInfoMapper.INSTANCE.map(dto);
+    this.saveEntity(storeRepository, entity);
+    dto = StoreInfoMapper.INSTANCE.map(entity);
+    return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
+  }
 
-	@PUT
-	@ApiOperation(value = "Update Store", response = StoreDTO.class)
-	public Response updateStore(StoreDTO dto) throws SODAPIException {
-		Store entity = StoreInfoMapper.INSTANCE.map(dto);
-		this.updateEntity(storeRepository, entity);
-		dto = StoreInfoMapper.INSTANCE.map(entity);
-		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
-	}
+  @PUT
+  @ApiOperation(value = "Update Store", response = StoreDTO.class)
+  public Response updateStore(StoreDTO dto) throws SODAPIException {
+    Store entity = StoreInfoMapper.INSTANCE.map(dto);
+    this.updateEntity(storeRepository, entity);
+    dto = StoreInfoMapper.INSTANCE.map(entity);
+    return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
+  }
 
-	@DELETE
-	@Path("/{id}")
-	@ApiOperation(value = "Delete Item", response = GeneralResponseMessage.class)
-	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
-		Store entity = storeRepository.findOne(Integer.valueOf(id));
-		if (entity == null) {
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
-		}
-		this.deleteEntity(storeRepository, entity.getId());
-		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
-				Response.Status.OK);
-	}
+  @DELETE
+  @Path("/{id}")
+  @ApiOperation(value = "Delete Item", response = GeneralResponseMessage.class)
+  public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
+    Store entity = storeRepository.findOne(Integer.valueOf(id));
+    if (entity == null) {
+      throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
+    }
+    this.deleteEntity(storeRepository, entity.getId());
+    return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+            Response.Status.OK);
+  }
 
-	@GET
-	@ApiOperation(value = "Get Store list", response = StoreDTO.class, responseContainer = "List")
-	public Response getStoreList() throws SODAPIException {
-		List<Store> entityList = storeRepository.findAll();
-		List<StoreDTO> list = entityList.stream().map((i) -> {
-			StoreDTO dto = StoreInfoMapper.INSTANCE.map(i);
-			return dto;
-		}).collect(Collectors.toList());
-		return ConvertUtils.castEntityAsResponse(list);
-	}
+  @GET
+  @ApiOperation(value = "Get Store list", response = StoreDTO.class, responseContainer = "List")
+  public Response getStoreList() throws SODAPIException {
+    List<Store> entityList = storeRepository.findAll();
+    List<StoreDTO> list = entityList.stream().map((i) -> {
+      StoreDTO dto = StoreInfoMapper.INSTANCE.map(i);
+      return dto;
+    }).collect(Collectors.toList());
+    return ConvertUtils.castEntityAsResponse(list);
+  }
 
-	@GET
-	@Path("/byId/{id}")
-	@ApiOperation(value = "Get Store by ID", response = StoreDTO.class)
-	public Response getStoreById(@PathParam("id") Integer id) throws SODAPIException {
-		Store entity = storeRepository.findOne(id);
-		StoreDTO result = StoreInfoMapper.INSTANCE.map(entity);
-		result.getDistanceInfos();
-		return ConvertUtils.castEntityAsResponse(result);
-	}
+  @GET
+  @Path("/byId/{id}")
+  @ApiOperation(value = "Get Store by ID", response = StoreDTO.class)
+  public Response getStoreById(@PathParam("id") Integer id) throws SODAPIException {
+    Store entity = storeRepository.findOne(id);
+    StoreDTO result = StoreInfoMapper.INSTANCE.map(entity);
+    result.getDistanceInfos();
+    return ConvertUtils.castEntityAsResponse(result);
+  }
 
 }

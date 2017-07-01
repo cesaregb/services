@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MyService {
-	
-	public String getMyValue(String val){
-		return "Service===> " + val;
-	}
+
+  public String getMyValue(String val) {
+    return "Service===> " + val;
+  }
 }

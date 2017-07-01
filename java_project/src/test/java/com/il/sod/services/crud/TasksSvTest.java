@@ -13,13 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class TasksSvTest extends SpringTestConfiguration {
 
-	@Autowired
-	TasksSv tasksSv;
+  @Autowired
+  TasksSv tasksSv;
 
-	@Test
-	public void testStartOrderService() throws SODAPIException {
-		TaskDTO dto = new TaskDTO(2, Constants.TypeTaskOps.Service.getValue(), 20);
-		tasksSv.taskAction(dto, Constants.ACTION_INIT, 13);
-	}
+  @Test
+  public void testStartOrderService() throws SODAPIException {
+    TaskDTO dto = new TaskDTO(2, Constants.TypeTaskOps.Service.getValue(), 20);
+    tasksSv.taskAction(dto, Constants.ACTION_INIT, 13);
+  }
 
 }

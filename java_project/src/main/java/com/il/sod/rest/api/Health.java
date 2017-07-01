@@ -31,55 +31,55 @@ import java.io.InputStream;
 //@Api(value="healt", tags={"healt"})
 @Produces(MediaType.APPLICATION_JSON)
 public class Health extends AbstractService {
-	final static Logger LOGGER = LoggerFactory.getLogger(Health.class);
-	
-	@Autowired
-    private Environment env;
-	
-	@Context
-	SecurityContext securityContext;
-	
-	@Autowired
-	MyService myService;
-	
-	@Value("${db.url}")
-	private String dbUrl;
-	
-	@Value("${db.driver}")
-	private String dbDriver;
-	
-	@PermitAll
-	@GET
-	@ApiOperation(value = "Validate API + MODEL Healt")
-	@ApiResponses(value = { 
-		@ApiResponse(code=400, message="Invalid input supplied"),
-		@ApiResponse(code=404, message="Info not found", 
-				response=GeneralResponseMessage.class)})
-	public GeneralResponseMessage checkHealth() throws SODAPIException{
-		LOGGER.info("********************************");
-		LOGGER.info("Calling health method: ");
-		LOGGER.info("dbUrl: " + dbUrl + " == " + " dbDriver: " + dbDriver + " == " + System.getProperty("spring.profiles.active"));
-		LOGGER.info("myValue: " + env.getProperty("myValue"));
+  final static Logger LOGGER = LoggerFactory.getLogger(Health.class);
+
+  @Autowired
+  private Environment env;
+
+  @Context
+  SecurityContext securityContext;
+
+  @Autowired
+  MyService myService;
+
+  @Value("${db.url}")
+  private String dbUrl;
+
+  @Value("${db.driver}")
+  private String dbDriver;
+
+  @PermitAll
+  @GET
+  @ApiOperation(value = "Validate API + MODEL Healt")
+  @ApiResponses(value = {
+          @ApiResponse(code = 400, message = "Invalid input supplied"),
+          @ApiResponse(code = 404, message = "Info not found",
+                  response = GeneralResponseMessage.class)})
+  public GeneralResponseMessage checkHealth() throws SODAPIException {
+    LOGGER.info("********************************");
+    LOGGER.info("Calling health method: ");
+    LOGGER.info("dbUrl: " + dbUrl + " == " + " dbDriver: " + dbDriver + " == " + System.getProperty("spring.profiles.active"));
+    LOGGER.info("myValue: " + env.getProperty("myValue"));
 //		LOGGER.info("env: " + env.getRequiredProperty("db.driver")  + " == " + env.getRequiredProperty("db.url"));
-		LOGGER.info("********************************");
-		
-		return new GeneralResponseMessage(true, "from the resource: " + dbUrl);
-	}	
-	
-	@GET
-	@Path("/abcdef")
-	@ApiOperation(value = "Validate API + MODEL Healt")
-	public GeneralResponseMessage throwException() throws SODAPIException{	
-		LOGGER.info("Testing throwing exception!");
-		throw new SODAPIException(Response.Status.BAD_REQUEST, "Expected Exception!");
-	}
-	
-	@RolesAllowed("BASIC_AUTH")
-	@GET
-	@Path("/admin_service")
-	@ApiOperation(value = "Test")
-	public GeneralResponseMessage secureMethod(InputStream is) throws SODAPIException{
-		TestDto tst = ConvertUtils.getJsonISAsObject(is, TestDto.class);
-		return new GeneralResponseMessage(true, "ok your ar an admin!! good for you!! " + tst.getVal());
-	}	
+    LOGGER.info("********************************");
+
+    return new GeneralResponseMessage(true, "from the resource: " + dbUrl);
+  }
+
+  @GET
+  @Path("/abcdef")
+  @ApiOperation(value = "Validate API + MODEL Healt")
+  public GeneralResponseMessage throwException() throws SODAPIException {
+    LOGGER.info("Testing throwing exception!");
+    throw new SODAPIException(Response.Status.BAD_REQUEST, "Expected Exception!");
+  }
+
+  @RolesAllowed("BASIC_AUTH")
+  @GET
+  @Path("/admin_service")
+  @ApiOperation(value = "Test")
+  public GeneralResponseMessage secureMethod(InputStream is) throws SODAPIException {
+    TestDto tst = ConvertUtils.getJsonISAsObject(is, TestDto.class);
+    return new GeneralResponseMessage(true, "ok your ar an admin!! good for you!! " + tst.getVal());
+  }
 }

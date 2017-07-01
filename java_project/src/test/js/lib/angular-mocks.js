@@ -26,26 +26,26 @@
 /*
 
  NUGGGGGH MUST TONGUE WANGS
-                           \
-                                .....
-                               C C  /
-                              /<   /
-               ___ __________/_#__=o
-              /(- /(\_\________   \
-              \ ) \ )_      \o     \
-              /|\ /|\       |'     |
-                            |     _|
-                            /o   __\
-                           / '     |
-                          / /      |
-                         /_/\______|
-                        (   _(    <
-                         \    \    \
-                          \    \    |
-                           \____\____\
-                           ____\_\__\_\
-                         /`   /`     o\
-                         |___ |_______|.. . b'ger
+ \
+ .....
+ C C  /
+ /<   /
+ ___ __________/_#__=o
+ /(- /(\_\________   \
+ \ ) \ )_      \o     \
+ /|\ /|\       |'     |
+ |     _|
+ /o   __\
+ / '     |
+ / /      |
+ /_/\______|
+ (   _(    <
+ \    \    \
+ \    \    |
+ \____\____\
+ ____\_\__\_\
+ /`   /`     o\
+ |___ |_______|.. . b'ger
 
 
  IN THE FINAL BUILD THIS FILE DOESN'T HAVE DIRECT ACCESS TO GLOBAL FUNCTIONS
@@ -94,21 +94,21 @@ function MockBrowser() {
 
   // register url polling fn
 
-  self.onHashChange = function(listener) {
+  self.onHashChange = function (listener) {
     self.pollFns.push(
-      function() {
-        if (self.lastUrl != self.url) {
-          self.lastUrl = self.url;
-          listener();
+        function () {
+          if (self.lastUrl != self.url) {
+            self.lastUrl = self.url;
+            listener();
+          }
         }
-      }
     );
 
     return listener;
   };
 
 
-  self.xhr = function(method, url, data, callback, headers) {
+  self.xhr = function (method, url, data, callback, headers) {
     headers = headers || {};
     if (data && angular.isObject(data)) data = angular.toJson(data);
     if (data && angular.isString(data)) url += "|" + data;
@@ -117,8 +117,8 @@ function MockBrowser() {
     if (!expectation) {
       throw new Error("Unexpected request for method '" + method + "' and url '" + url + "'.");
     }
-    requests.push(function(){
-      angular.forEach(expectation.headers, function(value, key){
+    requests.push(function () {
+      angular.forEach(expectation.headers, function (value, key) {
         if (headers[key] !== value) {
           throw new Error("Missing HTTP request header: " + key + ": " + value);
         }
@@ -128,31 +128,31 @@ function MockBrowser() {
   };
   self.xhr.expectations = expectations;
   self.xhr.requests = requests;
-  self.xhr.expect = function(method, url, data, headers) {
+  self.xhr.expect = function (method, url, data, headers) {
     if (data && angular.isObject(data)) data = angular.toJson(data);
     if (data && angular.isString(data)) url += "|" + data;
     var expect = expectations[method] || (expectations[method] = {});
     return {
-      respond: function(code, response) {
+      respond: function (code, response) {
         if (!angular.isNumber(code)) {
           response = code;
           code = 200;
         }
-        expect[url] = {code:code, response:response, headers: headers || {}};
+        expect[url] = {code: code, response: response, headers: headers || {}};
       }
     };
   };
-  self.xhr.expectGET    = angular.bind(self, self.xhr.expect, 'GET');
-  self.xhr.expectPOST   = angular.bind(self, self.xhr.expect, 'POST');
+  self.xhr.expectGET = angular.bind(self, self.xhr.expect, 'GET');
+  self.xhr.expectPOST = angular.bind(self, self.xhr.expect, 'POST');
   self.xhr.expectDELETE = angular.bind(self, self.xhr.expect, 'DELETE');
-  self.xhr.expectPUT    = angular.bind(self, self.xhr.expect, 'PUT');
-  self.xhr.expectJSON   = angular.bind(self, self.xhr.expect, 'JSON');
-  self.xhr.flush = function() {
+  self.xhr.expectPUT = angular.bind(self, self.xhr.expect, 'PUT');
+  self.xhr.expectJSON = angular.bind(self, self.xhr.expect, 'JSON');
+  self.xhr.flush = function () {
     if (requests.length == 0) {
       throw new Error("No xhr requests to be flushed!");
     }
 
-    while(requests.length) {
+    while (requests.length) {
       requests.pop()();
     }
   };
@@ -161,20 +161,22 @@ function MockBrowser() {
   self.lastCookieHash = {};
   self.deferredFns = [];
 
-  self.defer = function(fn, delay) {
+  self.defer = function (fn, delay) {
     delay = delay || 0;
-    self.deferredFns.push({time:(self.defer.now + delay), fn:fn});
-    self.deferredFns.sort(function(a,b){ return a.time - b.time;});
+    self.deferredFns.push({time: (self.defer.now + delay), fn: fn});
+    self.deferredFns.sort(function (a, b) {
+      return a.time - b.time;
+    });
   };
 
   self.defer.now = 0;
 
-  self.defer.flush = function(delay) {
+  self.defer.flush = function (delay) {
     if (angular.isDefined(delay)) {
       self.defer.now += delay;
     } else {
       if (self.deferredFns.length) {
-        self.defer.now = self.deferredFns[self.deferredFns.length-1].time;
+        self.defer.now = self.deferredFns[self.deferredFns.length - 1].time;
       }
     }
 
@@ -185,29 +187,29 @@ function MockBrowser() {
 }
 MockBrowser.prototype = {
 
-  poll: function poll(){
-    angular.forEach(this.pollFns, function(pollFn){
+  poll: function poll() {
+    angular.forEach(this.pollFns, function (pollFn) {
       pollFn();
     });
   },
 
-  addPollFn: function(pollFn) {
+  addPollFn: function (pollFn) {
     this.pollFns.push(pollFn);
     return pollFn;
   },
 
-  hover: function(onHover) {
+  hover: function (onHover) {
   },
 
-  getUrl: function(){
+  getUrl: function () {
     return this.url;
   },
 
-  setUrl: function(url){
+  setUrl: function (url) {
     this.url = url;
   },
 
-  cookies:  function(name, value) {
+  cookies: function (name, value) {
     if (name) {
       if (value == undefined) {
         delete this.cookieHash[name];
@@ -226,10 +228,11 @@ MockBrowser.prototype = {
     }
   },
 
-  addJs: function(){}
+  addJs: function () {
+  }
 };
 
-angular.service('$browser', function(){
+angular.service('$browser', function () {
   return new MockBrowser();
 });
 
@@ -246,8 +249,10 @@ angular.service('$browser', function(){
  *
  * See {@link angular.mock} for more info on angular mocks.
  */
-angular.service('$exceptionHandler', function() {
-  return function(e) { throw e;};
+angular.service('$exceptionHandler', function () {
+  return function (e) {
+    throw e;
+  };
 });
 
 
@@ -267,10 +272,18 @@ angular.service('$log', MockLogFactory);
 
 function MockLogFactory() {
   var $log = {
-    log: function(){ $log.log.logs.push(arguments); },
-    warn: function(){ $log.warn.logs.push(arguments); },
-    info: function(){ $log.info.logs.push(arguments); },
-    error: function(){ $log.error.logs.push(arguments); }
+    log: function () {
+      $log.log.logs.push(arguments);
+    },
+    warn: function () {
+      $log.warn.logs.push(arguments);
+    },
+    info: function () {
+      $log.info.logs.push(arguments);
+    },
+    error: function () {
+      $log.error.logs.push(arguments);
+    }
   };
 
   $log.log.logs = [];
@@ -329,83 +342,83 @@ function TzDate(offset, timestamp) {
   }
 
   var localOffset = new Date(timestamp).getTimezoneOffset();
-  this.offsetDiff = localOffset*60*1000 - offset*1000*60*60;
+  this.offsetDiff = localOffset * 60 * 1000 - offset * 1000 * 60 * 60;
   this.date = new Date(timestamp + this.offsetDiff);
 
-  this.getTime = function() {
+  this.getTime = function () {
     return this.date.getTime() - this.offsetDiff;
   };
 
-  this.toLocaleDateString = function() {
+  this.toLocaleDateString = function () {
     return this.date.toLocaleDateString();
   };
 
-  this.getFullYear = function() {
+  this.getFullYear = function () {
     return this.date.getFullYear();
   };
 
-  this.getMonth = function() {
+  this.getMonth = function () {
     return this.date.getMonth();
   };
 
-  this.getDate = function() {
+  this.getDate = function () {
     return this.date.getDate();
   };
 
-  this.getHours = function() {
+  this.getHours = function () {
     return this.date.getHours();
   };
 
-  this.getMinutes = function() {
+  this.getMinutes = function () {
     return this.date.getMinutes();
   };
 
-  this.getSeconds = function() {
+  this.getSeconds = function () {
     return this.date.getSeconds();
   };
 
-  this.getTimezoneOffset = function() {
+  this.getTimezoneOffset = function () {
     return offset * 60;
   };
 
-  this.getUTCFullYear = function() {
+  this.getUTCFullYear = function () {
     return this.origDate.getUTCFullYear();
   };
 
-  this.getUTCMonth = function() {
+  this.getUTCMonth = function () {
     return this.origDate.getUTCMonth();
   };
 
-  this.getUTCDate = function() {
+  this.getUTCDate = function () {
     return this.origDate.getUTCDate();
   };
 
-  this.getUTCHours = function() {
+  this.getUTCHours = function () {
     return this.origDate.getUTCHours();
   };
 
-  this.getUTCMinutes = function() {
+  this.getUTCMinutes = function () {
     return this.origDate.getUTCMinutes();
   };
 
-  this.getUTCSeconds = function() {
+  this.getUTCSeconds = function () {
     return this.origDate.getUTCSeconds();
   };
 
-  this.getDay = function() {
+  this.getDay = function () {
     return this.origDate.getDay();
   };
 
   //hide all methods not implemented in this mock that the Date prototype exposes
   var unimplementedMethods = ['getMilliseconds', 'getTime', 'getUTCDay',
-      'getUTCMilliseconds', 'getYear', 'setDate', 'setFullYear', 'setHours', 'setMilliseconds',
-      'setMinutes', 'setMonth', 'setSeconds', 'setTime', 'setUTCDate', 'setUTCFullYear',
-      'setUTCHours', 'setUTCMilliseconds', 'setUTCMinutes', 'setUTCMonth', 'setUTCSeconds',
-      'setYear', 'toDateString', 'toJSON', 'toGMTString', 'toLocaleFormat', 'toLocaleString',
-      'toLocaleTimeString', 'toSource', 'toString', 'toTimeString', 'toUTCString', 'valueOf'];
+    'getUTCMilliseconds', 'getYear', 'setDate', 'setFullYear', 'setHours', 'setMilliseconds',
+    'setMinutes', 'setMonth', 'setSeconds', 'setTime', 'setUTCDate', 'setUTCFullYear',
+    'setUTCHours', 'setUTCMilliseconds', 'setUTCMinutes', 'setUTCMonth', 'setUTCSeconds',
+    'setYear', 'toDateString', 'toJSON', 'toGMTString', 'toLocaleFormat', 'toLocaleString',
+    'toLocaleTimeString', 'toSource', 'toString', 'toTimeString', 'toUTCString', 'valueOf'];
 
-  angular.forEach(unimplementedMethods, function(methodName) {
-    this[methodName] = function() {
+  angular.forEach(unimplementedMethods, function (methodName) {
+    this[methodName] = function () {
       throw {
         name: "MethodNotImplemented",
         message: "Method '" + methodName + "' is not implemented in the TzDate mock"

@@ -13,82 +13,81 @@ import java.util.Date;
  */
 public enum JWTSingleton {
 
-	INSTANCE;
+  INSTANCE;
 
-	private final Key key;
-	SignatureAlgorithm sigAlg;
+  private final Key key;
+  SignatureAlgorithm sigAlg;
 
-	private JWTSingleton(){
-		sigAlg = SignatureAlgorithm.HS256; // or HS384 or HS512
+  private JWTSingleton() {
+    sigAlg = SignatureAlgorithm.HS256; // or HS384 or HS512
 
 //		byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(apiKey.getSecret());
 //		Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
-		key = MacProvider.generateKey(sigAlg);
-	}
+    key = MacProvider.generateKey(sigAlg);
+  }
 
 
-	public Key getKey(){
-		return this.key;
-	}
+  public Key getKey() {
+    return this.key;
+  }
 
-	public SignatureAlgorithm getSigAlg(){
-		return sigAlg;
-	}
+  public SignatureAlgorithm getSigAlg() {
+    return sigAlg;
+  }
 
 
-	//Sample method to construct a JWT
-	public String createJWT(String id, String subject, int days) {
+  //Sample method to construct a JWT
+  public String createJWT(String id, String subject, int days) {
 
-		final String issuer = "InteractiveLabs";
+    final String issuer = "InteractiveLabs";
 
-		long nowMillis = System.currentTimeMillis();
-		Date now = new Date(nowMillis);
+    long nowMillis = System.currentTimeMillis();
+    Date now = new Date(nowMillis);
 
-		//Let's set the JWT Claims
-		JwtBuilder builder = Jwts.builder().setId(id)
-				.setIssuedAt(now)
-				.setSubject(subject)
-				.setIssuer(issuer)
-				.signWith(sigAlg, key);
+    //Let's set the JWT Claims
+    JwtBuilder builder = Jwts.builder().setId(id)
+            .setIssuedAt(now)
+            .setSubject(subject)
+            .setIssuer(issuer)
+            .signWith(sigAlg, key);
 
-		//if it has been specified, let's add the expiration
-		long ttlMillis = days * 24 * 60 * 60 * 1000;
-		if (ttlMillis >= 0) {
-			long expMillis = nowMillis + ttlMillis;
-			Date exp = new Date(expMillis);
-			builder.setExpiration(exp);
-		}
+    //if it has been specified, let's add the expiration
+    long ttlMillis = days * 24 * 60 * 60 * 1000;
+    if (ttlMillis >= 0) {
+      long expMillis = nowMillis + ttlMillis;
+      Date exp = new Date(expMillis);
+      builder.setExpiration(exp);
+    }
 
-		//Builds the JWT and serializes it to a compact, URL-safe string
-		return builder.compact();
-	}
+    //Builds the JWT and serializes it to a compact, URL-safe string
+    return builder.compact();
+  }
 
-	public boolean isValidToken(String token){
+  public boolean isValidToken(String token) {
 
-		//This line will throw an exception if it is not a signed JWS (as expected)
+    //This line will throw an exception if it is not a signed JWS (as expected)
 //		Claims claims = Jwts.parser()
 //				.setSigningKey(DatatypeConverter.parseBase64Binary(apiKey.getSecret()))
 //				.parseClaimsJws(jwt).getBody();
 
-		if (token == null || token.length() == 0) {
-			return false;
-		}
+    if (token == null || token.length() == 0) {
+      return false;
+    }
 
-		try {
-			return  Jwts.parser().setSigningKey(key)
-					.parseClaimsJws(token)
-					.getBody()
-					.getSubject().equals(Constants.BASIC_AUTH);
+    try {
+      return Jwts.parser().setSigningKey(key)
+              .parseClaimsJws(token)
+              .getBody()
+              .getSubject().equals(Constants.BASIC_AUTH);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
 
 
-
-	}
+  }
 
 
 }

@@ -9,12 +9,12 @@ import java.util.List;
 
 @Service
 public class TaskDAO {
-	
-	@Autowired
-	TaskRepository taskRepository;
 
-	public List<Task> findByTaskType(Integer idTaskType){
-		return taskRepository.findByTaskType(idTaskType);
-	}
+  @Autowired
+  TaskRepository taskRepository;
+
+  public List<Task> findByTaskType(Integer idTaskType) {
+    return taskRepository.findByTaskType(idTaskType);
+  }
 
 }

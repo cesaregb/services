@@ -29,69 +29,69 @@ import javax.ws.rs.core.UriInfo;
 @Path("/clients")
 public class ClientService extends AbstractServiceMutations {
 
-	private final static Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
+  private final static Logger LOGGER = LoggerFactory.getLogger(ClientService.class);
 
-	@Autowired
-	ClientSv clientSv;
+  @Autowired
+  ClientSv clientSv;
 
-	@POST
-	@ApiOperation(value = "Create Client por mientras ", response = ClientDTO.class)
-	public Response saveClient(ClientDTO dto) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(clientSv.saveClient(dto), Response.Status.CREATED);
-	}
+  @POST
+  @ApiOperation(value = "Create Client por mientras ", response = ClientDTO.class)
+  public Response saveClient(ClientDTO dto) throws SODAPIException {
+    return ConvertUtils.castEntityAsResponse(clientSv.saveClient(dto), Response.Status.CREATED);
+  }
 
-	@PUT
-	@ApiOperation(value = "Update Client", response = ClientDTO.class)
-	public Response updateClient(ClientDTO dto) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(clientSv.updateClient(dto), Response.Status.OK);
-	}
+  @PUT
+  @ApiOperation(value = "Update Client", response = ClientDTO.class)
+  public Response updateClient(ClientDTO dto) throws SODAPIException {
+    return ConvertUtils.castEntityAsResponse(clientSv.updateClient(dto), Response.Status.OK);
+  }
 
-	@PUT
-	@Path("/reactivate/{email}")
-	@ApiOperation(value = "Reactivate Client", response = ClientDTO.class)
-	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
-			@ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class)})
-	public Response reactivateClient(@PathParam("email") String email) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(clientSv.reactivateClient(email), Response.Status.OK);
-	}
-
-
-	@DELETE
-	@Path("/{id}")
-	@ApiOperation(value = "Delete Client", response = GeneralResponseMessage.class)
-	public Response deleteItem(@PathParam("id") String clientId) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(
-				new GeneralResponseMessage(clientSv.deleteItem(Integer.valueOf(clientId)),
-						"Entity deleted"),
-				Response.Status.OK);
-	}
-
-	@GET
-	@Path("/byId/{clientId}")
-	@ApiOperation(value = "Get Client by id", response = ClientDTO.class)
-	public Response getClient(@PathParam("clientId") String clientId) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(clientSv.getClient(clientId), Response.Status.OK);
-	}
-
-	@GET
-	@ApiOperation(value = "Get Client list by filter UNIQUE[ phone, idAddress, email, token]", response = ClientDTO.class)
-	public Response getClientsByFilter(@Context UriInfo uriInfo,
-	                                   @QueryParam("idAddress") String idAddress,
-	                                   @QueryParam("phone") String phone,
-	                                   @QueryParam("token") String token,
-	                                   @QueryParam("email") String email,
-	                                   @QueryParam("lastName") String lastName,
-	                                   @QueryParam("name") String name,
-	                                   @QueryParam("twitter") String twitter,
-	                                   @QueryParam("loginID") String loginID,
-	                                   @QueryParam("rfc") String rfc,
-	                                   @QueryParam("razonSocial") String razonSocial,
-	                                   @QueryParam("idClientType") String idClientType) throws SODAPIException {
+  @PUT
+  @Path("/reactivate/{email}")
+  @ApiOperation(value = "Reactivate Client", response = ClientDTO.class)
+  @ApiResponses(value = {
+          @ApiResponse(code = 400, message = "4## errors: Invalid input supplied", response = GeneralResponseMessage.class),
+          @ApiResponse(code = 500, message = "5## errors: Server error", response = GeneralResponseMessage.class)})
+  public Response reactivateClient(@PathParam("email") String email) throws SODAPIException {
+    return ConvertUtils.castEntityAsResponse(clientSv.reactivateClient(email), Response.Status.OK);
+  }
 
 
-		return ConvertUtils.castEntityAsResponse( clientSv.getClientsByFilter(uriInfo.getQueryParameters(), idAddress, phone, token),
-				Response.Status.OK);
-	}
+  @DELETE
+  @Path("/{id}")
+  @ApiOperation(value = "Delete Client", response = GeneralResponseMessage.class)
+  public Response deleteItem(@PathParam("id") String clientId) throws SODAPIException {
+    return ConvertUtils.castEntityAsResponse(
+            new GeneralResponseMessage(clientSv.deleteItem(Integer.valueOf(clientId)),
+                    "Entity deleted"),
+            Response.Status.OK);
+  }
+
+  @GET
+  @Path("/byId/{clientId}")
+  @ApiOperation(value = "Get Client by id", response = ClientDTO.class)
+  public Response getClient(@PathParam("clientId") String clientId) throws SODAPIException {
+    return ConvertUtils.castEntityAsResponse(clientSv.getClient(clientId), Response.Status.OK);
+  }
+
+  @GET
+  @ApiOperation(value = "Get Client list by filter UNIQUE[ phone, idAddress, email, token]", response = ClientDTO.class)
+  public Response getClientsByFilter(@Context UriInfo uriInfo,
+                                     @QueryParam("idAddress") String idAddress,
+                                     @QueryParam("phone") String phone,
+                                     @QueryParam("token") String token,
+                                     @QueryParam("email") String email,
+                                     @QueryParam("lastName") String lastName,
+                                     @QueryParam("name") String name,
+                                     @QueryParam("twitter") String twitter,
+                                     @QueryParam("loginID") String loginID,
+                                     @QueryParam("rfc") String rfc,
+                                     @QueryParam("razonSocial") String razonSocial,
+                                     @QueryParam("idClientType") String idClientType) throws SODAPIException {
+
+
+    return ConvertUtils.castEntityAsResponse(clientSv.getClientsByFilter(uriInfo.getQueryParameters(), idAddress, phone, token),
+            Response.Status.OK);
+  }
 
 }

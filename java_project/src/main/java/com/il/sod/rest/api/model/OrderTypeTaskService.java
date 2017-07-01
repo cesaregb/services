@@ -27,51 +27,51 @@ import java.util.stream.Collectors;
 @Api(value = "/orders/order-type/order-type-task", tags = {"orders"})
 public class OrderTypeTaskService extends AbstractServiceMutations {
 
-	@Autowired
-	private OrderTypeTaskRepository orderTypeTaskRepository;
+  @Autowired
+  private OrderTypeTaskRepository orderTypeTaskRepository;
 
-	@POST
-	@ApiOperation(value = "Create Order Type Task", response = OrderTypeTaskDTO.class)
-	public Response saveOrderTypeTask(OrderTypeTaskDTO dto) throws SODAPIException {
-		OrderTypeTask entity = OrderMapper.INSTANCE.map(dto);
-		this.saveEntity(orderTypeTaskRepository, entity);
-		dto = OrderMapper.INSTANCE.map(entity);
-		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
+  @POST
+  @ApiOperation(value = "Create Order Type Task", response = OrderTypeTaskDTO.class)
+  public Response saveOrderTypeTask(OrderTypeTaskDTO dto) throws SODAPIException {
+    OrderTypeTask entity = OrderMapper.INSTANCE.map(dto);
+    this.saveEntity(orderTypeTaskRepository, entity);
+    dto = OrderMapper.INSTANCE.map(entity);
+    return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
 
-	}
+  }
 
-	@PUT
-	@ApiOperation(value = "Update Order Type Task", response = OrderTypeTaskDTO.class)
-	public Response updateOrderTypeTask(OrderTypeTaskDTO dto) throws SODAPIException {
-		OrderTypeTask entity = OrderMapper.INSTANCE.map(dto);
-		this.updateEntity(orderTypeTaskRepository, entity);
-		dto = OrderMapper.INSTANCE.map(entity);
-		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
-	}
+  @PUT
+  @ApiOperation(value = "Update Order Type Task", response = OrderTypeTaskDTO.class)
+  public Response updateOrderTypeTask(OrderTypeTaskDTO dto) throws SODAPIException {
+    OrderTypeTask entity = OrderMapper.INSTANCE.map(dto);
+    this.updateEntity(orderTypeTaskRepository, entity);
+    dto = OrderMapper.INSTANCE.map(entity);
+    return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
+  }
 
-	@DELETE
-	@Path("/{id}")
-	@ApiOperation(value = "Create Order Type Task", response = OrderTypeTaskDTO.class)
-	public Response deleteOrderTypeTask(@PathParam("id") Integer id) throws SODAPIException {
-		OrderTypeTask entity = orderTypeTaskRepository.findOne(id);
-		if (entity == null) {
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
-		}
-		this.deleteEntity(orderTypeTaskRepository, entity.getIdOrderTypeTask());
-		return ConvertUtils.castEntityAsResponse(
-				new GeneralResponseMessage(true, "Entity deleted"),
-				Response.Status.OK);
-	}
+  @DELETE
+  @Path("/{id}")
+  @ApiOperation(value = "Create Order Type Task", response = OrderTypeTaskDTO.class)
+  public Response deleteOrderTypeTask(@PathParam("id") Integer id) throws SODAPIException {
+    OrderTypeTask entity = orderTypeTaskRepository.findOne(id);
+    if (entity == null) {
+      throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
+    }
+    this.deleteEntity(orderTypeTaskRepository, entity.getIdOrderTypeTask());
+    return ConvertUtils.castEntityAsResponse(
+            new GeneralResponseMessage(true, "Entity deleted"),
+            Response.Status.OK);
+  }
 
-	@GET
-	@ApiOperation(value = "Get Order Type Task list", response = OrderTypeTaskDTO.class, responseContainer = "List")
-	public Response getOrderTypeTaskList() throws SODAPIException {
-		List<OrderTypeTask> entityList = this.getEntityList(orderTypeTaskRepository);
-		List<OrderTypeTaskDTO> list = entityList.stream().map((i) -> {
-			OrderTypeTaskDTO dto = OrderMapper.INSTANCE.map(i);
-			return dto;
-		}).collect(Collectors.toList());
-		return ConvertUtils.castEntityAsResponse(list);
-	}
+  @GET
+  @ApiOperation(value = "Get Order Type Task list", response = OrderTypeTaskDTO.class, responseContainer = "List")
+  public Response getOrderTypeTaskList() throws SODAPIException {
+    List<OrderTypeTask> entityList = this.getEntityList(orderTypeTaskRepository);
+    List<OrderTypeTaskDTO> list = entityList.stream().map((i) -> {
+      OrderTypeTaskDTO dto = OrderMapper.INSTANCE.map(i);
+      return dto;
+    }).collect(Collectors.toList());
+    return ConvertUtils.castEntityAsResponse(list);
+  }
 
 }

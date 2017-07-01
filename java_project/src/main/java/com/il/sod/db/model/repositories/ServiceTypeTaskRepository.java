@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface ServiceTypeTaskRepository extends JpaRepository<ServiceTypeTask, Integer> {
-	@Query("SELECT s FROM ServiceTypeTask s WHERE s.serviceType.idServiceType=:idServiceType")
-	public List<ServiceTypeTask> findByServiceType(@Param("idServiceType") int idServiceType);
+  @Query("SELECT s FROM ServiceTypeTask s WHERE s.serviceType.idServiceType=:idServiceType")
+  public List<ServiceTypeTask> findByServiceType(@Param("idServiceType") int idServiceType);
 
-	@Modifying
-	@Transactional
-	@Query("Delete FROM ServiceTypeTask s WHERE s.serviceType.idServiceType=:idServiceType")
-	public void removeByServiceType(@Param("idServiceType") int idServiceType);
+  @Modifying
+  @Transactional
+  @Query("Delete FROM ServiceTypeTask s WHERE s.serviceType.idServiceType=:idServiceType")
+  public void removeByServiceType(@Param("idServiceType") int idServiceType);
 
 }

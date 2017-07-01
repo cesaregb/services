@@ -7,8 +7,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SupplyRepository extends DeletableRepository<Supply, Integer> {
-	
-	@Query("SELECT p FROM Supply p WHERE p.supplyType.idSupplyType=:idSupplyType")
-	List<Supply> findByIdSupplyType(@Param("idSupplyType") Integer idSupplyType);
-	
+
+  @Query("SELECT p FROM Supply p WHERE p.supplyType.idSupplyType=:idSupplyType")
+  List<Supply> findByIdSupplyType(@Param("idSupplyType") Integer idSupplyType);
+
 }

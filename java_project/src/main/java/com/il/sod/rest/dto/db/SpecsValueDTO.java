@@ -1,108 +1,108 @@
 package com.il.sod.rest.dto.db;
 
 public class SpecsValueDTO {
-	
-	private int idSpecsValues;
-	private int idSupplyType;
-	private int type;
-	private String value;
-	private int idSpecs;
-	private double serviceIncrement; 
-	private int prefered;
-	private double specPrice;
-	private int costType;
-	private String specName;
-	private String supplyName;
-	
-	public SpecsValueDTO() {
-	}
 
-	public int getIdSpecsValues() {
-		return this.idSpecsValues;
-	}
+  private int idSpecsValues;
+  private int idSupplyType;
+  private int type;
+  private String value;
+  private int idSpecs;
+  private double serviceIncrement;
+  private int prefered;
+  private double specPrice;
+  private int costType;
+  private String specName;
+  private String supplyName;
 
-	public void setIdSpecsValues(int idSpecsValues) {
-		this.idSpecsValues = idSpecsValues;
-	}
+  public SpecsValueDTO() {
+  }
 
-	public int getType() {
-		return this.type;
-	}
+  public int getIdSpecsValues() {
+    return this.idSpecsValues;
+  }
 
-	public void setType(int type) {
-		this.type = type;
-	}
+  public void setIdSpecsValues(int idSpecsValues) {
+    this.idSpecsValues = idSpecsValues;
+  }
 
-	public String getValue() {
-		return this.value;
-	}
+  public int getType() {
+    return this.type;
+  }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+  public void setType(int type) {
+    this.type = type;
+  }
 
-	public int getIdSupplyType() {
-		return idSupplyType;
-	}
+  public String getValue() {
+    return this.value;
+  }
 
-	public void setIdSupplyType(int idSupplyType) {
-		this.idSupplyType = idSupplyType;
-	}
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-	public double getServiceIncrement() {
-		return serviceIncrement;
-	}
+  public int getIdSupplyType() {
+    return idSupplyType;
+  }
 
-	public void setServiceIncrement(double serviceIncrement) {
-		this.serviceIncrement = serviceIncrement;
-	}
+  public void setIdSupplyType(int idSupplyType) {
+    this.idSupplyType = idSupplyType;
+  }
 
-	public int getIdSpecs() {
-		return idSpecs;
-	}
+  public double getServiceIncrement() {
+    return serviceIncrement;
+  }
 
-	public void setIdSpecs(int idSpecs) {
-		this.idSpecs = idSpecs;
-	}
+  public void setServiceIncrement(double serviceIncrement) {
+    this.serviceIncrement = serviceIncrement;
+  }
 
-	public int getPrefered() {
-		return prefered;
-	}
+  public int getIdSpecs() {
+    return idSpecs;
+  }
 
-	public void setPrefered(int prefered) {
-		this.prefered = prefered;
-	}
+  public void setIdSpecs(int idSpecs) {
+    this.idSpecs = idSpecs;
+  }
 
-	public double getSpecPrice() {
-		return specPrice;
-	}
+  public int getPrefered() {
+    return prefered;
+  }
 
-	public void setSpecPrice(double specPrice) {
-		this.specPrice = specPrice;
-	}
+  public void setPrefered(int prefered) {
+    this.prefered = prefered;
+  }
 
-	public int getCostType() {
-		return costType;
-	}
+  public double getSpecPrice() {
+    return specPrice;
+  }
 
-	public void setCostType(int costType) {
-		this.costType = costType;
-	}
+  public void setSpecPrice(double specPrice) {
+    this.specPrice = specPrice;
+  }
 
-	public String getSpecName() {
-		return specName;
-	}
+  public int getCostType() {
+    return costType;
+  }
 
-	public void setSpecName(String specName) {
-		this.specName = specName;
-	}
+  public void setCostType(int costType) {
+    this.costType = costType;
+  }
 
-	public String getSupplyName() {
-		return supplyName;
-	}
+  public String getSpecName() {
+    return specName;
+  }
 
-	public void setSupplyName(String supplyName) {
-		this.supplyName = supplyName;
-	}
+  public void setSpecName(String specName) {
+    this.specName = specName;
+  }
+
+  public String getSupplyName() {
+    return supplyName;
+  }
+
+  public void setSupplyName(String supplyName) {
+    this.supplyName = supplyName;
+  }
 
 }

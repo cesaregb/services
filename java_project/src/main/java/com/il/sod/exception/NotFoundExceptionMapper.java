@@ -15,18 +15,18 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class NotFoundExceptionMapper extends GeneralMapper implements ExceptionMapper<NotFoundException> {
 
-	@Context
-	HttpServletRequest request;
-	
-	@Override
-	public Response toResponse(NotFoundException ex) {
-		long ID = Thread.currentThread().getId();
+  @Context
+  HttpServletRequest request;
 
-		logException(ex, request, ID);
-		return Response
-				.status(Response.Status.NOT_FOUND)
-				.entity(new GeneralResponseMessage(ex.getMessage(), String.valueOf(ID), "[missing]", false))
-				.type(MediaType.APPLICATION_JSON)
-				.build();
-	}
+  @Override
+  public Response toResponse(NotFoundException ex) {
+    long ID = Thread.currentThread().getId();
+
+    logException(ex, request, ID);
+    return Response
+            .status(Response.Status.NOT_FOUND)
+            .entity(new GeneralResponseMessage(ex.getMessage(), String.valueOf(ID), "[missing]", false))
+            .type(MediaType.APPLICATION_JSON)
+            .build();
+  }
 }

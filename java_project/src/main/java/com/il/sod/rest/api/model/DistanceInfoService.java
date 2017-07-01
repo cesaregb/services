@@ -27,49 +27,49 @@ import java.util.stream.Collectors;
 @Api(value = "/distance-info", tags = {"app-utils"})
 public class DistanceInfoService extends AbstractServiceMutations {
 
-	@Autowired
-	DistanceInfoRepository distanceInfoRepository;
+  @Autowired
+  DistanceInfoRepository distanceInfoRepository;
 
-	@POST
-	@ApiOperation(value = "Create Distance Info", response = DistanceInfoDTO.class)
-	public Response saveDistanceInfo(DistanceInfoDTO dto) throws SODAPIException {
-		DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
-		this.saveEntity(distanceInfoRepository, entity);
-		dto = StoreInfoMapper.INSTANCE.map(entity);
-		return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
-	}
+  @POST
+  @ApiOperation(value = "Create Distance Info", response = DistanceInfoDTO.class)
+  public Response saveDistanceInfo(DistanceInfoDTO dto) throws SODAPIException {
+    DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
+    this.saveEntity(distanceInfoRepository, entity);
+    dto = StoreInfoMapper.INSTANCE.map(entity);
+    return ConvertUtils.castEntityAsResponse(dto, Response.Status.CREATED);
+  }
 
-	@PUT
-	@ApiOperation(value = "Update Distance Info", response = DistanceInfoDTO.class)
-	public Response updateDistanceInfo(DistanceInfoDTO dto) throws SODAPIException {
-		DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
-		this.updateEntity(distanceInfoRepository, entity);
-		dto = StoreInfoMapper.INSTANCE.map(entity);
-		return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
-	}
+  @PUT
+  @ApiOperation(value = "Update Distance Info", response = DistanceInfoDTO.class)
+  public Response updateDistanceInfo(DistanceInfoDTO dto) throws SODAPIException {
+    DistanceInfo entity = StoreInfoMapper.INSTANCE.map(dto);
+    this.updateEntity(distanceInfoRepository, entity);
+    dto = StoreInfoMapper.INSTANCE.map(entity);
+    return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);
+  }
 
-	@DELETE
-	@Path("/{id}")
-	@ApiOperation(value = "Delete Item", response = GeneralResponseMessage.class)
-	public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
-		DistanceInfo entity = distanceInfoRepository.findOne(Integer.valueOf(id));
-		if (entity == null) {
-			throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
-		}
-		this.deleteEntity(distanceInfoRepository, entity.getId());
-		return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
-				Response.Status.OK);
-	}
+  @DELETE
+  @Path("/{id}")
+  @ApiOperation(value = "Delete Item", response = GeneralResponseMessage.class)
+  public Response deleteItem(@PathParam("id") String id) throws SODAPIException {
+    DistanceInfo entity = distanceInfoRepository.findOne(Integer.valueOf(id));
+    if (entity == null) {
+      throw new SODAPIException(Response.Status.BAD_REQUEST, "Item not found");
+    }
+    this.deleteEntity(distanceInfoRepository, entity.getId());
+    return ConvertUtils.castEntityAsResponse(new GeneralResponseMessage(true, "Entity deleted"),
+            Response.Status.OK);
+  }
 
-	@GET
-	@ApiOperation(value = "Get Distance Info list", response = DistanceInfoDTO.class, responseContainer = "List")
-	public Response getDistanceInfoList() throws SODAPIException {
-		List<DistanceInfo> entityList = distanceInfoRepository.findAllOrderByDistance();
-		List<DistanceInfoDTO> list = entityList.stream().map((i) -> {
-			DistanceInfoDTO dto = StoreInfoMapper.INSTANCE.map(i);
-			return dto;
-		}).collect(Collectors.toList());
-		return ConvertUtils.castEntityAsResponse(list);
-	}
+  @GET
+  @ApiOperation(value = "Get Distance Info list", response = DistanceInfoDTO.class, responseContainer = "List")
+  public Response getDistanceInfoList() throws SODAPIException {
+    List<DistanceInfo> entityList = distanceInfoRepository.findAllOrderByDistance();
+    List<DistanceInfoDTO> list = entityList.stream().map((i) -> {
+      DistanceInfoDTO dto = StoreInfoMapper.INSTANCE.map(i);
+      return dto;
+    }).collect(Collectors.toList());
+    return ConvertUtils.castEntityAsResponse(list);
+  }
 
 }

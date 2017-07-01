@@ -7,9 +7,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface TaskRepository extends DeletableRepository<Task, Integer> {
-	
-	@Query("SELECT t FROM Task t WHERE t.taskType.idTaskType=:taskType")
-    public List<Task> findByTaskType(@Param("taskType") Integer taskType);
-	
-	
+
+  @Query("SELECT t FROM Task t WHERE t.taskType.idTaskType=:taskType")
+  public List<Task> findByTaskType(@Param("taskType") Integer taskType);
+
+
 }

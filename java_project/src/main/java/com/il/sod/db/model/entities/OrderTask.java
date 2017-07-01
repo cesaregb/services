@@ -1,189 +1,179 @@
 package com.il.sod.db.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 /**
  * The persistent class for the OrderTask database table.
- *
  */
 @Entity
-@NamedQuery(name="OrderTask.findAll", query="SELECT o FROM OrderTask o")
+@NamedQuery(name = "OrderTask.findAll", query = "SELECT o FROM OrderTask o")
 public class OrderTask implements IEntity<Integer> {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idOrderTask;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int idOrderTask;
 
-	private String comments;
-	
-	private int status;
-	private Date started;
-	private Date ended;
-	private int time;
-	private int sortingOrder;
+  private String comments;
 
-	//bi-directional many-to-one association to AssetTaskOrder
-	@OneToMany(mappedBy="orderTask", fetch=FetchType.LAZY)
-	private Set<AssetTaskOrder> assetTaskOrders;
+  private int status;
+  private Date started;
+  private Date ended;
+  private int time;
+  private int sortingOrder;
 
-	//bi-directional many-to-one association to EmployeeTaskOrder
-	@OneToMany(mappedBy="orderTask", fetch=FetchType.LAZY)
-	private Set<EmployeeTaskOrder> employeeTaskOrders;
+  //bi-directional many-to-one association to AssetTaskOrder
+  @OneToMany(mappedBy = "orderTask", fetch = FetchType.LAZY)
+  private Set<AssetTaskOrder> assetTaskOrders;
 
-	//bi-directional many-to-one association to Task
-	@ManyToOne
-	@JoinColumn(name="idTask")
-	@JsonBackReference
-	private Task task;
+  //bi-directional many-to-one association to EmployeeTaskOrder
+  @OneToMany(mappedBy = "orderTask", fetch = FetchType.LAZY)
+  private Set<EmployeeTaskOrder> employeeTaskOrders;
 
-	//bi-directional many-to-one association to Order
-	@ManyToOne
-	@JoinColumn(name="idOrder")
-	@JsonBackReference
-	private Order order;
+  //bi-directional many-to-one association to Task
+  @ManyToOne
+  @JoinColumn(name = "idTask")
+  @JsonBackReference
+  private Task task;
 
-	public OrderTask() {
-	}
+  //bi-directional many-to-one association to Order
+  @ManyToOne
+  @JoinColumn(name = "idOrder")
+  @JsonBackReference
+  private Order order;
 
-	public int getIdOrderTask() {
-		return this.idOrderTask;
-	}
+  public OrderTask() {
+  }
 
-	public void setIdOrderTask(int idOrderTask) {
-		this.idOrderTask = idOrderTask;
-	}
+  public int getIdOrderTask() {
+    return this.idOrderTask;
+  }
 
-	public String getComments() {
-		return this.comments;
-	}
+  public void setIdOrderTask(int idOrderTask) {
+    this.idOrderTask = idOrderTask;
+  }
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
+  public String getComments() {
+    return this.comments;
+  }
 
-	public Set<AssetTaskOrder> getAssetTaskOrders() {
-		return this.assetTaskOrders;
-	}
+  public void setComments(String comments) {
+    this.comments = comments;
+  }
 
-	public void setAssetTaskOrders(Set<AssetTaskOrder> assetTaskOrders) {
-		this.assetTaskOrders = assetTaskOrders;
-	}
+  public Set<AssetTaskOrder> getAssetTaskOrders() {
+    return this.assetTaskOrders;
+  }
 
-	public AssetTaskOrder addAssetTaskOrder(AssetTaskOrder assetTaskOrder) {
-		getAssetTaskOrders().add(assetTaskOrder);
-		assetTaskOrder.setOrderTask(this);
+  public void setAssetTaskOrders(Set<AssetTaskOrder> assetTaskOrders) {
+    this.assetTaskOrders = assetTaskOrders;
+  }
 
-		return assetTaskOrder;
-	}
+  public AssetTaskOrder addAssetTaskOrder(AssetTaskOrder assetTaskOrder) {
+    getAssetTaskOrders().add(assetTaskOrder);
+    assetTaskOrder.setOrderTask(this);
 
-	public AssetTaskOrder removeAssetTaskOrder(AssetTaskOrder assetTaskOrder) {
-		getAssetTaskOrders().remove(assetTaskOrder);
-		assetTaskOrder.setOrderTask(null);
+    return assetTaskOrder;
+  }
 
-		return assetTaskOrder;
-	}
+  public AssetTaskOrder removeAssetTaskOrder(AssetTaskOrder assetTaskOrder) {
+    getAssetTaskOrders().remove(assetTaskOrder);
+    assetTaskOrder.setOrderTask(null);
 
-	public Set<EmployeeTaskOrder> getEmployeeTaskOrders() {
-		return this.employeeTaskOrders;
-	}
+    return assetTaskOrder;
+  }
 
-	public void setEmployeeTaskOrders(Set<EmployeeTaskOrder> employeeTaskOrders) {
-		this.employeeTaskOrders = employeeTaskOrders;
-	}
+  public Set<EmployeeTaskOrder> getEmployeeTaskOrders() {
+    return this.employeeTaskOrders;
+  }
 
-	public EmployeeTaskOrder addEmployeeTaskOrder(EmployeeTaskOrder employeeTaskOrder) {
-		getEmployeeTaskOrders().add(employeeTaskOrder);
-		employeeTaskOrder.setOrderTask(this);
+  public void setEmployeeTaskOrders(Set<EmployeeTaskOrder> employeeTaskOrders) {
+    this.employeeTaskOrders = employeeTaskOrders;
+  }
 
-		return employeeTaskOrder;
-	}
+  public EmployeeTaskOrder addEmployeeTaskOrder(EmployeeTaskOrder employeeTaskOrder) {
+    getEmployeeTaskOrders().add(employeeTaskOrder);
+    employeeTaskOrder.setOrderTask(this);
 
-	public EmployeeTaskOrder removeEmployeeTaskOrder(EmployeeTaskOrder employeeTaskOrder) {
-		getEmployeeTaskOrders().remove(employeeTaskOrder);
-		employeeTaskOrder.setOrderTask(null);
+    return employeeTaskOrder;
+  }
 
-		return employeeTaskOrder;
-	}
+  public EmployeeTaskOrder removeEmployeeTaskOrder(EmployeeTaskOrder employeeTaskOrder) {
+    getEmployeeTaskOrders().remove(employeeTaskOrder);
+    employeeTaskOrder.setOrderTask(null);
 
-	public Task getTask() {
-		return this.task;
-	}
+    return employeeTaskOrder;
+  }
 
-	public void setTask(Task task) {
-		this.task = task;
-	}
+  public Task getTask() {
+    return this.task;
+  }
 
-	public Order getOrder() {
-		return this.order;
-	}
+  public void setTask(Task task) {
+    this.task = task;
+  }
 
-	public void setOrder(Order order) {
-		this.order = order;
-	}
+  public Order getOrder() {
+    return this.order;
+  }
 
-	public int getStatus() {
-		return status;
-	}
+  public void setOrder(Order order) {
+    this.order = order;
+  }
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
+  public int getStatus() {
+    return status;
+  }
 
-	public int getSortingOrder() {
-		return sortingOrder;
-	}
+  public void setStatus(int status) {
+    this.status = status;
+  }
 
-	public void setSortingOrder(int sortingOrder) {
-		this.sortingOrder = sortingOrder;
-	}
+  public int getSortingOrder() {
+    return sortingOrder;
+  }
 
-	public int getTime() {
-		return time;
-	}
+  public void setSortingOrder(int sortingOrder) {
+    this.sortingOrder = sortingOrder;
+  }
 
-	public void setTime(int time) {
-		this.time = time;
-	}
+  public int getTime() {
+    return time;
+  }
 
-	public Date getStarted() {
-		return started;
-	}
+  public void setTime(int time) {
+    this.time = time;
+  }
 
-	public void setStarted(Date started) {
-		this.started = started;
-	}
+  public Date getStarted() {
+    return started;
+  }
 
-	public Date getEnded() {
-		return ended;
-	}
+  public void setStarted(Date started) {
+    this.started = started;
+  }
 
-	public void setEnded(Date ended) {
-		this.ended = ended;
-	}
-	
-	@Override
-	public Integer getId() {
-		return this.idOrderTask;
-	}
+  public Date getEnded() {
+    return ended;
+  }
 
-	@Override
-	public OrderTask setId(Integer id) {
-		this.idOrderTask = id;
-		return this;
-	}
+  public void setEnded(Date ended) {
+    this.ended = ended;
+  }
+
+  @Override
+  public Integer getId() {
+    return this.idOrderTask;
+  }
+
+  @Override
+  public OrderTask setId(Integer id) {
+    this.idOrderTask = id;
+    return this;
+  }
 }

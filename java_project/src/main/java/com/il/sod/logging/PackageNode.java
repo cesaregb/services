@@ -8,36 +8,36 @@ import java.util.Map;
  * Created by cesaregb on 4/2/17.
  */
 public class PackageNode {
-	private String subPackage;
-	private String replaceWith;
-	private Map<String, PackageNode> children = new HashMap<>();
+  private String subPackage;
+  private String replaceWith;
+  private Map<String, PackageNode> children = new HashMap<>();
 
-	public PackageNode(String subPackage, String replaceWith){
-		this.subPackage = subPackage;
-		this.replaceWith = replaceWith;
-	}
+  public PackageNode(String subPackage, String replaceWith) {
+    this.subPackage = subPackage;
+    this.replaceWith = replaceWith;
+  }
 
-	public String getSubPackage() {
-		return subPackage;
-	}
+  public String getSubPackage() {
+    return subPackage;
+  }
 
-	public void setSubPackage(String subPackage) {
-		this.subPackage = subPackage;
-	}
+  public void setSubPackage(String subPackage) {
+    this.subPackage = subPackage;
+  }
 
-	public String getReplaceWith() {
-		return replaceWith;
-	}
+  public String getReplaceWith() {
+    return replaceWith;
+  }
 
-	public void setReplaceWith(String replaceWith) {
-		this.replaceWith = replaceWith;
-	}
+  public void setReplaceWith(String replaceWith) {
+    this.replaceWith = replaceWith;
+  }
 
-	public Map<String, PackageNode> getChildren() {
-		return children;
-	}
+  public Map<String, PackageNode> getChildren() {
+    return children;
+  }
 
-	public void setChildren(Map<String, PackageNode> children) {
-		this.children = children;
-	}
+  public void setChildren(Map<String, PackageNode> children) {
+    this.children = children;
+  }
 }

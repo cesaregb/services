@@ -9,167 +9,167 @@ import java.util.Set;
 
 /**
  * The persistent class for the OrderType database table.
- *
  */
 @Entity
-@NamedQuery(name="OrderType.findAll", query="SELECT o FROM OrderType o")
+@NamedQuery(name = "OrderType.findAll", query = "SELECT o FROM OrderType o")
 public class OrderType extends SoftDeleteEntity implements IEntity<Integer> {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idOrderType;
-	private String description;
-	private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int idOrderType;
+  private String description;
+  private String name;
 
-	//bi-directional many-to-one association to OrderTypeTask
-	@OneToMany(mappedBy="orderType", fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
-	@JsonManagedReference
-	private Set<OrderTypeTask> orderTypeTask;
+  //bi-directional many-to-one association to OrderTypeTask
+  @OneToMany(mappedBy = "orderType", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonManagedReference
+  private Set<OrderTypeTask> orderTypeTask;
 
-	//bi-directional many-to-one association to Order
-	@OneToMany(mappedBy="orderType", fetch=FetchType.LAZY)
-	@JsonManagedReference
-	private Set<Order> orders;
-	
-	private int transportInfo;
+  //bi-directional many-to-one association to Order
+  @OneToMany(mappedBy = "orderType", fetch = FetchType.LAZY)
+  @JsonManagedReference
+  private Set<Order> orders;
 
-	public OrderType() {
-	}
+  private int transportInfo;
 
-	public int getIdOrderType() {
-		return this.idOrderType;
-	}
+  public OrderType() {
+  }
 
-	public void setIdOrderType(int idOrderType) {
-		this.idOrderType = idOrderType;
-	}
+  public int getIdOrderType() {
+    return this.idOrderType;
+  }
 
-	public String getDescription() {
-		return this.description;
-	}
+  public void setIdOrderType(int idOrderType) {
+    this.idOrderType = idOrderType;
+  }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+  public String getDescription() {
+    return this.description;
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	public Set<OrderTypeTask> getOrderTypeTask() {
-		if (this.orderTypeTask == null){
-			this.orderTypeTask = new HashSet<>();
-		}
-		return this.orderTypeTask;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setOrderTypeTask(Set<OrderTypeTask> OrderTypeTask) {
-		this.orderTypeTask = OrderTypeTask;
-	}
+  public Set<OrderTypeTask> getOrderTypeTask() {
+    if (this.orderTypeTask == null) {
+      this.orderTypeTask = new HashSet<>();
+    }
+    return this.orderTypeTask;
+  }
 
-	public OrderTypeTask addOrderTypeTask(OrderTypeTask orderTypeTask) {
-		getOrderTypeTask().add(orderTypeTask);
-		orderTypeTask.setOrderType(this);
-		return orderTypeTask;
-	}
+  public void setOrderTypeTask(Set<OrderTypeTask> OrderTypeTask) {
+    this.orderTypeTask = OrderTypeTask;
+  }
 
-	public OrderTypeTask removeOrderTypeTask(OrderTypeTask orderTypeTask) {
-		getOrderTypeTask().remove(orderTypeTask);
-		orderTypeTask.setOrderType(null);
-		return orderTypeTask;
-	}
+  public OrderTypeTask addOrderTypeTask(OrderTypeTask orderTypeTask) {
+    getOrderTypeTask().add(orderTypeTask);
+    orderTypeTask.setOrderType(this);
+    return orderTypeTask;
+  }
 
-	public Set<Order> getOrders() {
-		return this.orders;
-	}
+  public OrderTypeTask removeOrderTypeTask(OrderTypeTask orderTypeTask) {
+    getOrderTypeTask().remove(orderTypeTask);
+    orderTypeTask.setOrderType(null);
+    return orderTypeTask;
+  }
 
-	public void setOrders(Set<Order> orders) {
-		this.orders = orders;
-	}
+  public Set<Order> getOrders() {
+    return this.orders;
+  }
 
-	public Order addOrder(Order order) {
-		getOrders().add(order);
-		order.setOrderType(this);
+  public void setOrders(Set<Order> orders) {
+    this.orders = orders;
+  }
 
-		return order;
-	}
+  public Order addOrder(Order order) {
+    getOrders().add(order);
+    order.setOrderType(this);
 
-	public Order removeOrder(Order order) {
-		getOrders().remove(order);
-		order.setOrderType(null);
+    return order;
+  }
 
-		return order;
-	}
-	@Override
-	public Integer getId() {
-		return this.idOrderType;
-	}
+  public Order removeOrder(Order order) {
+    getOrders().remove(order);
+    order.setOrderType(null);
 
-	@Override
-	public OrderType setId(Integer id) {
-		this.idOrderType = id;
-		return this;
-	}
-	
-	public int getTransportInfo() {
-		return transportInfo;
-	}
+    return order;
+  }
 
-	public void setTransportInfo(int transportInfo) {
-		this.transportInfo = transportInfo;
-	}
+  @Override
+  public Integer getId() {
+    return this.idOrderType;
+  }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + idOrderType;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((orderTypeTask == null) ? 0 : orderTypeTask.hashCode());
-		result = prime * result + ((orders == null) ? 0 : orders.hashCode());
-		result = prime * result + transportInfo;
-		return result;
-	}
+  @Override
+  public OrderType setId(Integer id) {
+    this.idOrderType = id;
+    return this;
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		OrderType other = (OrderType) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (idOrderType != other.idOrderType)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (orderTypeTask == null) {
-			if (other.orderTypeTask != null)
-				return false;
-		} else if (!orderTypeTask.equals(other.orderTypeTask))
-			return false;
-		if (orders == null) {
-			if (other.orders != null)
-				return false;
-		} else if (!orders.equals(other.orders))
-			return false;
-		if (transportInfo != other.transportInfo)
-			return false;
-		return true;
-	}
+  public int getTransportInfo() {
+    return transportInfo;
+  }
+
+  public void setTransportInfo(int transportInfo) {
+    this.transportInfo = transportInfo;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((description == null) ? 0 : description.hashCode());
+    result = prime * result + idOrderType;
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + ((orderTypeTask == null) ? 0 : orderTypeTask.hashCode());
+    result = prime * result + ((orders == null) ? 0 : orders.hashCode());
+    result = prime * result + transportInfo;
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    OrderType other = (OrderType) obj;
+    if (description == null) {
+      if (other.description != null)
+        return false;
+    } else if (!description.equals(other.description))
+      return false;
+    if (idOrderType != other.idOrderType)
+      return false;
+    if (name == null) {
+      if (other.name != null)
+        return false;
+    } else if (!name.equals(other.name))
+      return false;
+    if (orderTypeTask == null) {
+      if (other.orderTypeTask != null)
+        return false;
+    } else if (!orderTypeTask.equals(other.orderTypeTask))
+      return false;
+    if (orders == null) {
+      if (other.orders != null)
+        return false;
+    } else if (!orders.equals(other.orders))
+      return false;
+    if (transportInfo != other.transportInfo)
+      return false;
+    return true;
+  }
 }

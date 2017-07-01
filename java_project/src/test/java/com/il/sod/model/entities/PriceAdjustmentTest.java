@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class PriceAdjustmentTest extends SpringTestConfiguration{
-	@Autowired
-	PriceAdjustmentRepository priceAdjustmentRepository;
+public class PriceAdjustmentTest extends SpringTestConfiguration {
+  @Autowired
+  PriceAdjustmentRepository priceAdjustmentRepository;
 
-    @Test
-    public void getAllPrices(){
-	    List<PriceAdjustment> list = priceAdjustmentRepository.findAll();
-	    list.forEach(System.out::println);
-    }
-    
+  @Test
+  public void getAllPrices() {
+    List<PriceAdjustment> list = priceAdjustmentRepository.findAll();
+    list.forEach(System.out::println);
+  }
+
 }
