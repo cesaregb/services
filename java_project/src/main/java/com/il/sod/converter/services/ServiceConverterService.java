@@ -14,29 +14,29 @@ import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
 public class ServiceConverterService {
-	
-	public ServiceDTO convert(Service entity){
-		// TODO, do we need to ajust something..
-		ServiceDTO result = ServiceMapper.INSTANCE.map( entity );
+
+  public ServiceDTO convert(Service entity) {
+    // TODO, do we need to ajust something..
+    ServiceDTO result = ServiceMapper.INSTANCE.map(entity);
 //		Set<SpecDTO> specs = entity.getServiceSpecs().stream().map(item -> SpecsMapper.INSTANCE.map(item.getSpec())).collect(Collectors.toSet());
 //		result.setSpecs(specs);
-		return result;
-	}
-	
-	public UIServiceDTO convert2UI(Service entity){
-		UIServiceDTO result = UIMapper.INSTANCE.map(entity);
-		List<UISpecDTO> specs = entity.getServiceSpecs().stream().map(item -> convert2UI(item)).collect(Collectors.toList());
-		result.setSpecs(specs);
-		return result;
-	}
-	
-	public UISpecDTO convert2UI(ServiceSpec entity){
-		UISpecDTO isd = new UISpecDTO();
-		isd.setIdSpecs(entity.getSpec().getIdSpecs());
-		isd.setQuantity(entity.getQuantity());
-		isd.setValue(entity.getSelectedValue());
-		return isd;
-	}
-	
+    return result;
+  }
+
+  public UIServiceDTO convert2UI(Service entity) {
+    UIServiceDTO result = UIMapper.INSTANCE.map(entity);
+    List<UISpecDTO> specs = entity.getServiceSpecs().stream().map(item -> convert2UI(item)).collect(Collectors.toList());
+    result.setSpecs(specs);
+    return result;
+  }
+
+  public UISpecDTO convert2UI(ServiceSpec entity) {
+    UISpecDTO isd = new UISpecDTO();
+    isd.setIdSpecs(entity.getSpec().getIdSpecs());
+    isd.setQuantity(entity.getQuantity());
+    isd.setValue(entity.getSelectedValue());
+    return isd;
+  }
+
 }
 

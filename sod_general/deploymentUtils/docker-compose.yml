@@ -4,7 +4,7 @@ db:
     - "27017:27017"
   command: "--smallfiles --logpath=/dev/null"
 services:
-  image: interactivelabs/services
+  image: cesaregb/base_services
   command: mvn compile exec:java
   ports:
     - "8080:8080"

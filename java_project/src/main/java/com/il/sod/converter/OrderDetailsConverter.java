@@ -1,7 +1,7 @@
 package com.il.sod.converter;
 
 public class OrderDetailsConverter {
-	
+
 //	private SupplyRepository repository;
 //	
 //	public OrderDetailsDTO getOrderDetailFromOrderType(OrderType ot) {

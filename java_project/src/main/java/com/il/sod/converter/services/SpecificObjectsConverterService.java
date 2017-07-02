@@ -25,141 +25,144 @@ import java.util.stream.Collectors;
 
 @Service
 public class SpecificObjectsConverterService {
-	
-	@Autowired
-	SupplyRepository supplyRepository;
 
-	private final MapperFacade mapperFacade;
-	
-	public SpecificObjectsConverterService() {
-		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
-		converterFactory.registerConverter("wServiceTypeSetConverter", new WServiceTypeSetConverter());
-		converterFactory.registerConverter("wSpecSetConverter", new WSpecSetConverter());
-		converterFactory.registerConverter("productTepe2ProductSetConverter", new ProductTepe2ProductSetConverter());
+  @Autowired
+  SupplyRepository supplyRepository;
 
-		BaseMapper.MAPPER_FACTORY.classMap(WServiceCategoryDTO.class, ServiceCategory.class)
-			.fieldMap("serviceTypes", "serviceTypes").converter("wServiceTypeSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.byDefault()
-			.register();
-		
-		BaseMapper.MAPPER_FACTORY.classMap(WServiceTypeDTO.class, ServiceType.class)
-			.fieldMap("specs", "specs").converter("wSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.fieldMap("products", "productTypes").converter("productTepe2ProductSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.byDefault()
-			.register();
-			
-		BaseMapper.MAPPER_FACTORY.classMap(WSpecDTO.class, Spec.class)
-			.byDefault()
-			.customize(new CustomMapper<WSpecDTO, Spec>() {
-				
-				@Override
-				public void mapBtoA(Spec spec, WSpecDTO dto, MappingContext context) {
-					Map<Integer, List<KeyValueSpecs<Integer, String>>> options = new HashMap<Integer, List<KeyValueSpecs<Integer, String>>>();
-					for (SpecsValue specValue : spec.getSpecsValues()){
-						options.putIfAbsent(specValue.getSpec().getId(), new ArrayList<>());
-						KeyValueSpecs<Integer, String> kv = new KeyValueSpecs<Integer, String>();
-						if (specValue.getType() == Constants.SPEC_TYPE_PRODUCT){
-							// get all supplies  by supply type....
-							List<Supply> listSupply = supplyRepository.findByIdSupplyType(specValue.getIdSupplyType());
-							for (Supply p : listSupply){
-								kv = new KeyValueSpecs<>();
-								kv.setKey(p.getId());
-								kv.setValue(p.getName());
-								kv.setServiceIncrement(0d);
-								kv.setSpecPrice(p.getServiceIncrement());
-								kv.setCostType(1); // 0 = increment; 1 = price
-								options.get(specValue.getSpec().getId()).add(kv);
-							}
-						}else if (specValue.getType() == Constants.SPEC_TYPE_VALUES){
-							kv.setKey(specValue.getId());
-							kv.setValue(specValue.getValue());
-							kv.setServiceIncrement(specValue.getServiceIncrement());
-							kv.setSpecPrice(specValue.getSpecPrice());
-							kv.setCostType(specValue.getCostType());
-							options.get(specValue.getSpec().getId()).add(kv);
-						}
-					}
-					dto.setOptions(options);
-				}
-			})
-			.register();
-		
-		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
-	}
-	
-	public ServiceCategory map(WServiceCategoryDTO dto) {
-		return this.mapperFacade.map(dto, ServiceCategory.class);
-	}
-	
-	public WServiceCategoryDTO map(ServiceCategory entity) {
-		return this.mapperFacade.map(entity, WServiceCategoryDTO.class);
-	}
-	
-	public ServiceType map(WServiceTypeDTO dto) {
-		return this.mapperFacade.map(dto, ServiceType.class);
-	}
-	
-	public WServiceTypeDTO map(ServiceType entity) {
-		return this.mapperFacade.map(entity, WServiceTypeDTO.class);
-	}
-	
-	public Spec map(WSpecDTO dto) {
-		return this.mapperFacade.map(dto, Spec.class);
-	}
-	
-	public WSpecDTO map(Spec entity) {
-		return this.mapperFacade.map(entity, WSpecDTO.class);
-	}
-	
-	public MenuDTO map(Menu entity){
-		return this.mapperFacade.map(entity, MenuDTO.class);
-	}
-	
-	public Menu map(MenuDTO dto){
-		return this.mapperFacade.map(dto, Menu.class);
-	}
+  private final MapperFacade mapperFacade;
+
+  public SpecificObjectsConverterService() {
+    ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
+    converterFactory.registerConverter("wServiceTypeSetConverter", new WServiceTypeSetConverter());
+    converterFactory.registerConverter("wSpecSetConverter", new WSpecSetConverter());
+    converterFactory.registerConverter("ProductType2ProductSetConverter", new ProductType2ProductSetConverter());
+
+    BaseMapper.MAPPER_FACTORY.classMap(WServiceCategoryDTO.class, ServiceCategory.class)
+            .fieldMap("serviceTypes", "serviceTypes").converter("wServiceTypeSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+            .byDefault()
+            .register();
+
+    BaseMapper.MAPPER_FACTORY.classMap(WServiceTypeDTO.class, ServiceType.class)
+            .fieldMap("specs", "specs").converter("wSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+            .fieldMap("products", "productTypes").converter("ProductType2ProductSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+            .byDefault()
+            .register();
+
+    BaseMapper.MAPPER_FACTORY.classMap(WSpecDTO.class, Spec.class)
+            .byDefault()
+            .customize(new CustomMapper<WSpecDTO, Spec>() {
+
+              @Override
+              public void mapBtoA(Spec spec, WSpecDTO dto, MappingContext context) {
+                Map<Integer, List<KeyValueSpecs<Integer, String>>> options = new HashMap<Integer, List<KeyValueSpecs<Integer, String>>>();
+                for (SpecsValue specValue : spec.getSpecsValues()) {
+                  options.putIfAbsent(specValue.getSpec().getId(), new ArrayList<>());
+                  KeyValueSpecs<Integer, String> kv = new KeyValueSpecs<Integer, String>();
+                  if (specValue.getType() == Constants.SPEC_TYPE_PRODUCT) {
+                    // get all supplies  by supply type....
+                    List<Supply> listSupply = supplyRepository.findByIdSupplyType(specValue.getIdSupplyType());
+                    for (Supply p : listSupply) {
+                      kv = new KeyValueSpecs<>();
+                      kv.setKey(p.getId());
+                      kv.setValue(p.getName());
+                      kv.setServiceIncrement(0d);
+                      kv.setSpecPrice(p.getServiceIncrement());
+                      kv.setCostType(1); // 0 = increment; 1 = price
+                      options.get(specValue.getSpec().getId()).add(kv);
+                    }
+                  } else if (specValue.getType() == Constants.SPEC_TYPE_VALUES) {
+                    kv.setKey(specValue.getId());
+                    kv.setValue(specValue.getValue());
+                    kv.setServiceIncrement(specValue.getServiceIncrement());
+                    kv.setSpecPrice(specValue.getSpecPrice());
+                    kv.setCostType(specValue.getCostType());
+                    options.get(specValue.getSpec().getId()).add(kv);
+                  }
+                }
+                dto.setOptions(options);
+              }
+            })
+            .register();
+
+    mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
+  }
+
+  public ServiceCategory map(WServiceCategoryDTO dto) {
+    return this.mapperFacade.map(dto, ServiceCategory.class);
+  }
+
+  public WServiceCategoryDTO map(ServiceCategory entity) {
+    return this.mapperFacade.map(entity, WServiceCategoryDTO.class);
+  }
+
+  public ServiceType map(WServiceTypeDTO dto) {
+    return this.mapperFacade.map(dto, ServiceType.class);
+  }
+
+  public WServiceTypeDTO map(ServiceType entity) {
+    return this.mapperFacade.map(entity, WServiceTypeDTO.class);
+  }
+
+  public Spec map(WSpecDTO dto) {
+    return this.mapperFacade.map(dto, Spec.class);
+  }
+
+  public WSpecDTO map(Spec entity) {
+    return this.mapperFacade.map(entity, WSpecDTO.class);
+  }
+
+  public MenuDTO map(Menu entity) {
+    return this.mapperFacade.map(entity, MenuDTO.class);
+  }
+
+  public Menu map(MenuDTO dto) {
+    return this.mapperFacade.map(dto, Menu.class);
+  }
 }
 
 class WServiceTypeSetConverter extends BidirectionalConverter<Set<ServiceType>, Set<WServiceTypeDTO>> {
-	@Override
-	public Set<ServiceType> convertFrom(Set<WServiceTypeDTO> source, Type<Set<ServiceType>> arg1) {
-		return source.stream().map(item -> (new SpecificObjectsConverterService()).map(item)).collect(Collectors.toSet());
-	}
+  @Override
+  public Set<ServiceType> convertFrom(Set<WServiceTypeDTO> source, Type<Set<ServiceType>> arg1) {
+    return source.stream().map(item -> (new SpecificObjectsConverterService()).map(item)).collect(Collectors.toSet());
+  }
 
-	@Override
-	public Set<WServiceTypeDTO> convertTo(Set<ServiceType> source, Type<Set<WServiceTypeDTO>> arg1) {
-		return source.stream().map(item -> (new SpecificObjectsConverterService()).map(item)).collect(Collectors.toSet());
-	}
+  @Override
+  public Set<WServiceTypeDTO> convertTo(Set<ServiceType> source, Type<Set<WServiceTypeDTO>> arg1) {
+    return source.stream().map(item -> (new SpecificObjectsConverterService()).map(item)).collect(Collectors.toSet());
+  }
 }
 
 class WSpecSetConverter extends BidirectionalConverter<Set<Spec>, Set<WSpecDTO>> {
-	@Override
-	public Set<Spec> convertFrom(Set<WSpecDTO> source, Type<Set<Spec>> arg1) {
-		return source.stream().map(item -> (new SpecificObjectsConverterService()).map(item)).collect(Collectors.toSet());
-	}
+  @Override
+  public Set<Spec> convertFrom(Set<WSpecDTO> source, Type<Set<Spec>> arg1) {
+    return source.stream().map(item -> (new SpecificObjectsConverterService()).map(item)).collect(Collectors.toSet());
+  }
 
-	@Override
-	public Set<WSpecDTO> convertTo(Set<Spec> source, Type<Set<WSpecDTO>> arg1) {
-		return source.stream().map(item -> (new SpecificObjectsConverterService()).map(item)).collect(Collectors.toSet());
-	}
-	
+  @Override
+  public Set<WSpecDTO> convertTo(Set<Spec> source, Type<Set<WSpecDTO>> arg1) {
+    return source.stream().map(item -> (new SpecificObjectsConverterService()).map(item)).collect(Collectors.toSet());
+  }
+
 }
 
-class ProductTepe2ProductSetConverter extends BidirectionalConverter<Set<ProductDTO>, Set<ProductType>> {
+class ProductType2ProductSetConverter extends BidirectionalConverter<Set<ProductDTO>, Set<ProductType>> {
 
-	@Override
-	public Set<ProductType> convertTo(Set<ProductDTO> source, Type<Set<ProductType>> type) {
-		// never used... not implemented..
-		return null;
-	}
+  @Override
+  public Set<ProductType> convertTo(Set<ProductDTO> source, Type<Set<ProductType>> type) {
+    // never used... not implemented..
+    return null;
+  }
 
-	@Override
-	public Set<ProductDTO> convertFrom(Set<ProductType> source, Type<Set<ProductDTO>> type) {
-		Set<ProductDTO> result = new HashSet<>();
-		source.forEach(i -> {
-			i.getProducts().forEach(e -> result.add(ProductMapper.INSTANCE.map(e)));
-		});
+  @Override
+  public Set<ProductDTO> convertFrom(Set<ProductType> source, Type<Set<ProductDTO>> type) {
+    Set<ProductDTO> result = new HashSet<>();
+    source.stream()
+            .filter(it -> it.getDeleted() == 0)
+            .forEach(i -> i.getProducts()
+                    .stream()
+                    .filter(pd -> pd.getDeleted() == 0)
+                    .forEach(e -> result.add(ProductMapper.INSTANCE.map(e))));
 
-		return result;
-	}
+    return result;
+  }
 }

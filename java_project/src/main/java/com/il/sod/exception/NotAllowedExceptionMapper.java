@@ -12,19 +12,19 @@ import javax.ws.rs.ext.Provider;
 
 @Provider
 public class NotAllowedExceptionMapper extends GeneralMapper implements ExceptionMapper<NotAllowedException> {
-	@Context
-	HttpServletRequest request;
-	
-	@Override
-	public Response toResponse(NotAllowedException ex) {
-		long ID = Thread.currentThread().getId();
+  @Context
+  HttpServletRequest request;
 
-		logException(ex, request, ID);
-		return Response
-				.status(Response.Status.METHOD_NOT_ALLOWED)
-				.entity(new GeneralResponseMessage("Method Not Allowed",
-						String.valueOf(ID), "[missing]", false))
-				.type(MediaType.APPLICATION_JSON)
-				.build();
-	}
+  @Override
+  public Response toResponse(NotAllowedException ex) {
+    long ID = Thread.currentThread().getId();
+
+    logException(ex, request, ID);
+    return Response
+            .status(Response.Status.METHOD_NOT_ALLOWED)
+            .entity(new GeneralResponseMessage("Method Not Allowed",
+                    String.valueOf(ID), "[missing]", false))
+            .type(MediaType.APPLICATION_JSON)
+            .build();
+  }
 }

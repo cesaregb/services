@@ -3,167 +3,159 @@ package com.il.sod.db.model.entities;
 import com.google.common.base.Objects;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 /**
  * The persistent class for the SpecsValues database table.
- * 
  */
 @Entity
-@Table(name="SpecsValues")
-@NamedQuery(name="SpecsValue.findAll", query="SELECT s FROM SpecsValue s")
+@Table(name = "SpecsValues")
+@NamedQuery(name = "SpecsValue.findAll", query = "SELECT s FROM SpecsValue s")
 public class SpecsValue implements IEntity<Integer> {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idSpecsValues;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int idSpecsValues;
 
-	private int idSupplyType;
+  private int idSupplyType;
 
-	private int type; // 1 = value; 2 = product
+  private int type; // 1 = value; 2 = product
 
-	private String value;
-	
-	private int prefered;
+  private String value;
 
-	//bi-directional many-to-one association to Spec
-	@ManyToOne
-	@JoinColumn(name="idSpecs")
-	private Spec spec;
-	
-	private double serviceIncrement;
-	
-	private double specPrice;
-	
-	private int costType; // 0 = increment; 1 = specPrice
+  private int prefered;
 
-	public SpecsValue() {
-	}
+  //bi-directional many-to-one association to Spec
+  @ManyToOne
+  @JoinColumn(name = "idSpecs")
+  private Spec spec;
 
-	public int getIdSpecsValues() {
-		return this.idSpecsValues;
-	}
+  private double serviceIncrement;
 
-	public void setIdSpecsValues(int idSpecsValues) {
-		this.idSpecsValues = idSpecsValues;
-	}
+  private double specPrice;
 
-	public int getType() {
-		return this.type;
-	}
+  private int costType; // 0 = increment; 1 = specPrice
 
-	public void setType(int type) {
-		this.type = type;
-	}
+  public SpecsValue() {
+  }
 
-	public String getValue() {
-		return this.value;
-	}
+  public int getIdSpecsValues() {
+    return this.idSpecsValues;
+  }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+  public void setIdSpecsValues(int idSpecsValues) {
+    this.idSpecsValues = idSpecsValues;
+  }
 
-	public Spec getSpec() {
-		return this.spec;
-	}
+  public int getType() {
+    return this.type;
+  }
 
-	public void setSpec(Spec spec) {
-		this.spec = spec;
-	}
+  public void setType(int type) {
+    this.type = type;
+  }
 
-	@Override
-	public Integer getId() {
-		return this.idSpecsValues;
-	}
+  public String getValue() {
+    return this.value;
+  }
 
-	@Override
-	public SpecsValue setId(Integer id) {
-		this.idSpecsValues = id;
-		return this;
-	}
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-	public int getIdSupplyType() {
-		return idSupplyType;
-	}
+  public Spec getSpec() {
+    return this.spec;
+  }
 
-	public void setIdSupplyType(int idSupplyType) {
-		this.idSupplyType = idSupplyType;
-	}
+  public void setSpec(Spec spec) {
+    this.spec = spec;
+  }
 
-	public double getServiceIncrement() {
-		return serviceIncrement;
-	}
+  @Override
+  public Integer getId() {
+    return this.idSpecsValues;
+  }
 
-	public void setServiceIncrement(double serviceIncrement) {
-		this.serviceIncrement = serviceIncrement;
-	}
+  @Override
+  public SpecsValue setId(Integer id) {
+    this.idSpecsValues = id;
+    return this;
+  }
 
-	public int getPrefered() {
-		return prefered;
-	}
+  public int getIdSupplyType() {
+    return idSupplyType;
+  }
 
-	public void setPrefered(int prefered) {
-		this.prefered = prefered;
-	}
+  public void setIdSupplyType(int idSupplyType) {
+    this.idSupplyType = idSupplyType;
+  }
 
-	public double getSpecPrice() {
-		return specPrice;
-	}
+  public double getServiceIncrement() {
+    return serviceIncrement;
+  }
 
-	public void setSpecPrice(double specPrice) {
-		this.specPrice = specPrice;
-	}
+  public void setServiceIncrement(double serviceIncrement) {
+    this.serviceIncrement = serviceIncrement;
+  }
 
-	public int getCostType() {
-		return costType;
-	}
+  public int getPrefered() {
+    return prefered;
+  }
 
-	public void setCostType(int costType) {
-		this.costType = costType;
-	}
+  public void setPrefered(int prefered) {
+    this.prefered = prefered;
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		SpecsValue that = (SpecsValue) o;
-		return idSpecsValues == that.idSpecsValues &&
-				idSupplyType == that.idSupplyType &&
-				type == that.type &&
-				prefered == that.prefered &&
-				Double.compare(that.serviceIncrement, serviceIncrement) == 0 &&
-				Double.compare(that.specPrice, specPrice) == 0 &&
-				costType == that.costType &&
-				Objects.equal(value, that.value) &&
-				Objects.equal(spec, that.spec);
-	}
+  public double getSpecPrice() {
+    return specPrice;
+  }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(idSpecsValues, idSupplyType, type, value, prefered, spec, serviceIncrement, specPrice, costType);
-	}
+  public void setSpecPrice(double specPrice) {
+    this.specPrice = specPrice;
+  }
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this)
-				.append("idSpecsValues", idSpecsValues)
-				.append("idSupplyType", idSupplyType)
-				.append("type", type)
-				.append("value", value)
-				.append("prefered", prefered)
-				.append("serviceIncrement", serviceIncrement)
-				.append("specPrice", specPrice)
-				.append("costType", costType)
-				.toString();
-	}
+  public int getCostType() {
+    return costType;
+  }
+
+  public void setCostType(int costType) {
+    this.costType = costType;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    SpecsValue that = (SpecsValue) o;
+    return idSpecsValues == that.idSpecsValues &&
+            idSupplyType == that.idSupplyType &&
+            type == that.type &&
+            prefered == that.prefered &&
+            Double.compare(that.serviceIncrement, serviceIncrement) == 0 &&
+            Double.compare(that.specPrice, specPrice) == 0 &&
+            costType == that.costType &&
+            Objects.equal(value, that.value) &&
+            Objects.equal(spec, that.spec);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(idSpecsValues, idSupplyType, type, value, prefered, spec, serviceIncrement, specPrice, costType);
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this)
+            .append("idSpecsValues", idSpecsValues)
+            .append("idSupplyType", idSupplyType)
+            .append("type", type)
+            .append("value", value)
+            .append("prefered", prefered)
+            .append("serviceIncrement", serviceIncrement)
+            .append("specPrice", specPrice)
+            .append("costType", costType)
+            .toString();
+  }
 }

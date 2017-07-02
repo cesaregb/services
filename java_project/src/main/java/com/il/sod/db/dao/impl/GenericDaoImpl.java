@@ -17,76 +17,77 @@ import java.util.List;
 @Scope("prototype")
 public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID> {
 
-	protected JpaRepository<T, ID> repository;
+  protected JpaRepository<T, ID> repository;
 
-	public GenericDaoImpl(){}
+  public GenericDaoImpl() {
+  }
 
-	public GenericDaoImpl(JpaRepository<T, ID> repository){
-		this.repository = repository;
-	}
-	
-	public void setRepository(JpaRepository<T, ID> repository) {
-		this.repository = repository;
-	}
+  public GenericDaoImpl(JpaRepository<T, ID> repository) {
+    this.repository = repository;
+  }
 
-	@Override
-	@Transactional
-	public T create(T item) {
-		T e = repository.save(item);
-		repository.flush();
-		return e;
-	}
+  public void setRepository(JpaRepository<T, ID> repository) {
+    this.repository = repository;
+  }
 
-	@Override
-	@Transactional
-	public T findById(ID id) {
-		return repository.findOne(id);
-	}
+  @Override
+  @Transactional
+  public T create(T item) {
+    T e = repository.save(item);
+    repository.flush();
+    return e;
+  }
 
-	@Override
-	@Modifying
-	@Transactional
-	public boolean delete(ID id) throws SODAPIException {
-		T deleteEntity = repository.findOne(id);
-		if (deleteEntity == null){
-			throw new SODAPIException("item not found in the db");
-		}
-		repository.delete(deleteEntity);
-		repository.flush();
+  @Override
+  @Transactional
+  public T findById(ID id) {
+    return repository.findOne(id);
+  }
 
-		// make sure it was deleted
-		deleteEntity = repository.findOne(id);
-		return deleteEntity == null;
-	}
+  @Override
+  @Modifying
+  @Transactional
+  public boolean delete(ID id) throws SODAPIException {
+    T deleteEntity = repository.findOne(id);
+    if (deleteEntity == null) {
+      throw new SODAPIException("item not found in the db");
+    }
+    repository.delete(deleteEntity);
+    repository.flush();
 
-	@Override
-	@Transactional
-	public T sofDelete(ID id) throws SODAPIException {
-		T deletedT = repository.findOne(id);
-		if (deletedT == null){
-			throw new SODAPIException("item not found in the db");
-		}
-		((SoftDeleteEntity) deletedT).setDeleted(1);
-		return repository.save(deletedT);
-	}
+    // make sure it was deleted
+    deleteEntity = repository.findOne(id);
+    return deleteEntity == null;
+  }
 
-	@Override
-	@Transactional
-	public List<T> findAll() {
-		return repository.findAll();
-	}
+  @Override
+  @Transactional
+  public T sofDelete(ID id) throws SODAPIException {
+    T deletedT = repository.findOne(id);
+    if (deletedT == null) {
+      throw new SODAPIException("item not found in the db");
+    }
+    ((SoftDeleteEntity) deletedT).setDeleted(1);
+    return repository.save(deletedT);
+  }
 
-	@Override
-	@Transactional
-	public List<T> findAllActive() {
-		return ((DeletableRepository) repository).findAllByDeleted(0);
-	}
+  @Override
+  @Transactional
+  public List<T> findAll() {
+    return repository.findAll();
+  }
 
-	@Override
-	@Transactional(rollbackFor=SODAPIException.class)
-	public T update(T entity) {
-		repository.save(entity);
-		return entity;
-	}
+  @Override
+  @Transactional
+  public List<T> findAllActive() {
+    return ((DeletableRepository) repository).findAllByDeleted(0);
+  }
+
+  @Override
+  @Transactional(rollbackFor = SODAPIException.class)
+  public T update(T entity) {
+    repository.save(entity);
+    return entity;
+  }
 
 }

@@ -9,75 +9,75 @@ import javax.persistence.*;
  */
 @Entity
 public class OrderPriceAdjustment implements IEntity<Integer> {
-	private int idOrderPriceAdjustment;
-	private double cantidad;
-	private Order order;
-	private PriceAdjustment priceAdjustment;
+  private int idOrderPriceAdjustment;
+  private double cantidad;
+  private Order order;
+  private PriceAdjustment priceAdjustment;
 
-	@Id
-	@Column(name = "idOrderPriceAdjustment")
-	public int getIdOrderPriceAdjustment() {
-		return idOrderPriceAdjustment;
-	}
+  @Id
+  @Column(name = "idOrderPriceAdjustment")
+  public int getIdOrderPriceAdjustment() {
+    return idOrderPriceAdjustment;
+  }
 
-	public void setIdOrderPriceAdjustment(int idOrderPriceAdjustment) {
-		this.idOrderPriceAdjustment = idOrderPriceAdjustment;
-	}
+  public void setIdOrderPriceAdjustment(int idOrderPriceAdjustment) {
+    this.idOrderPriceAdjustment = idOrderPriceAdjustment;
+  }
 
-	@Basic
-	@Column(name = "cantidad")
-	public double getCantidad() {
-		return cantidad;
-	}
+  @Basic
+  @Column(name = "cantidad")
+  public double getCantidad() {
+    return cantidad;
+  }
 
-	public void setCantidad(double cantidad) {
-		this.cantidad = cantidad;
-	}
+  public void setCantidad(double cantidad) {
+    this.cantidad = cantidad;
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		OrderPriceAdjustment that = (OrderPriceAdjustment) o;
-		return idOrderPriceAdjustment == that.idOrderPriceAdjustment &&
-				Double.compare(that.cantidad, cantidad) == 0;
-	}
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    OrderPriceAdjustment that = (OrderPriceAdjustment) o;
+    return idOrderPriceAdjustment == that.idOrderPriceAdjustment &&
+            Double.compare(that.cantidad, cantidad) == 0;
+  }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(idOrderPriceAdjustment, cantidad);
-	}
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(idOrderPriceAdjustment, cantidad);
+  }
 
-	@ManyToOne
-	@JoinColumn(name = "idOrder", referencedColumnName = "idOrder", nullable = false)
-	public Order getOrder() {
-		return order;
-	}
+  @ManyToOne
+  @JoinColumn(name = "idOrder", referencedColumnName = "idOrder", nullable = false)
+  public Order getOrder() {
+    return order;
+  }
 
-	public void setOrder(Order orders) {
-		this.order = orders;
-	}
+  public void setOrder(Order orders) {
+    this.order = orders;
+  }
 
-	@ManyToOne
-	@JoinColumn(name = "idPriceAdjustment", referencedColumnName = "idPriceAdjustment", nullable = false)
-	public PriceAdjustment getPriceAdjustment() {
-		return priceAdjustment;
-	}
+  @ManyToOne
+  @JoinColumn(name = "idPriceAdjustment", referencedColumnName = "idPriceAdjustment", nullable = false)
+  public PriceAdjustment getPriceAdjustment() {
+    return priceAdjustment;
+  }
 
-	public void setPriceAdjustment(PriceAdjustment priceAdjustment) {
-		this.priceAdjustment = priceAdjustment;
-	}
+  public void setPriceAdjustment(PriceAdjustment priceAdjustment) {
+    this.priceAdjustment = priceAdjustment;
+  }
 
 
-	@Override
-	@Transient
-	public Integer getId() {
-		return this.idOrderPriceAdjustment;
-	}
+  @Override
+  @Transient
+  public Integer getId() {
+    return this.idOrderPriceAdjustment;
+  }
 
-	@Override
-	public IEntity setId(Integer id) {
-		this.idOrderPriceAdjustment = id;
-		return this;
-	}
+  @Override
+  public IEntity setId(Integer id) {
+    this.idOrderPriceAdjustment = id;
+    return this;
+  }
 }

@@ -3,6 +3,7 @@ import com.il.sod.logging.CustomLayoutWrappingEncoder
 import groovy.transform.Field
 
 import static ch.qos.logback.classic.Level.*
+
 /**
  * Get configuration property. Selection order:
  *  1 Java Property,
@@ -13,10 +14,10 @@ import static ch.qos.logback.classic.Level.*
  * @return
  */
 def getSystemProperty(String val, String defValue) {
-	def result = System.getProperty(val)
-	if (result != null) return result
-	result = (System.getenv(val) != null) ? System.getenv(val) : defValue;
-	return result;
+  def result = System.getProperty(val)
+  if (result != null) return result
+  result = (System.getenv(val) != null) ? System.getenv(val) : defValue;
+  return result;
 }
 
 @Field String WEBAPP_DIR = getSystemProperty("WEBAPP_DIR", ".")
@@ -38,36 +39,35 @@ def getSystemProperty(String val, String defValue) {
  * @return
  */
 def addAppenders() {
-	Map<String, String> map = new HashMap<>();
-	map.put("com.il.sod", "[APP]")
-	map.put("ma.glasnost.orika", "[FW]")
-	map.put("io.swagger", "[FW]")
-	map.put("org.hibernate", "[DB]")
+  Map<String, String> map = new HashMap<>();
+  map.put("com.il.sod", "[APP]")
+  map.put("ma.glasnost.orika", "[FW]")
+  map.put("io.swagger", "[FW]")
+  map.put("org.hibernate", "[DB]")
 
-	appender("STDOUT", ConsoleAppender) {
-		encoder(CustomLayoutWrappingEncoder) {
-			pattern = defaultPattern
-			componentTag = map
-		}
-	}
-	appender("ROLLING_FILE", RollingFileAppender) {
-		file = "${WEBAPP_DIR}/log/${baseName}.log"
-		encoder(CustomLayoutWrappingEncoder) {
-			pattern = defaultPattern
-			componentTag = map
-		}
-		rollingPolicy(FixedWindowRollingPolicy) {
-			FileNamePattern = "${WEBAPP_DIR}/log/${baseName}.%i.log.zip"
-			minIndex = 1
-			maxIndex = 100
-		}
-		triggeringPolicy(SizeBasedTriggeringPolicy) {
-			maxFileSize = "30MB"
-		}
-		append = true
-	}
+  appender("STDOUT", ConsoleAppender) {
+    encoder(CustomLayoutWrappingEncoder) {
+      pattern = defaultPattern
+      componentTag = map
+    }
+  }
+  appender("ROLLING_FILE", RollingFileAppender) {
+    file = "${WEBAPP_DIR}/log/${baseName}.log"
+    encoder(CustomLayoutWrappingEncoder) {
+      pattern = defaultPattern
+      componentTag = map
+    }
+    rollingPolicy(FixedWindowRollingPolicy) {
+      FileNamePattern = "${WEBAPP_DIR}/log/${baseName}.%i.log.zip"
+      minIndex = 1
+      maxIndex = 100
+    }
+    triggeringPolicy(SizeBasedTriggeringPolicy) {
+      maxFileSize = "30MB"
+    }
+    append = true
+  }
 }
-
 
 /**
  * Logic to set the Logging (Loggin natural) LEVEL to sout
@@ -75,12 +75,12 @@ def addAppenders() {
 def soutLevelVal = getSystemProperty("soutLevelVal", "ALL")
 @Field soutLevel = INFO
 switch (soutLevelVal) {
-	case "ERROR": soutLevel = ERROR; break
-	case "WARN": soutLevel = WARN; break
-	case "INFO": soutLevel = INFO; break
-	case "DEBUG": soutLevel = DEBUG; break
-	case "TRACE": soutLevel = TRACE; break
-	default: soutLevel = INFO
+  case "ERROR": soutLevel = ERROR; break
+  case "WARN": soutLevel = WARN; break
+  case "INFO": soutLevel = INFO; break
+  case "DEBUG": soutLevel = DEBUG; break
+  case "TRACE": soutLevel = TRACE; break
+  default: soutLevel = INFO
 }
 
 /**
@@ -92,26 +92,26 @@ switch (soutLevelVal) {
 @Field int stoutType = Integer.valueOf(getSystemProperty("stoutType", "3"))
 
 def addLoggers() {
-	def sqlAppenders = ["ROLLING_FILE"];
-	if ( stoutType < 3 ) {
-		sqlAppenders.add("STDOUT")
-	}
-	logger("org.hibernate.SQL", DEBUG, sqlAppenders, false)
-	logger("org.hibernate.type.descriptor.sql.BasicBinder", TRACE, sqlAppenders, false)
+  def sqlAppenders = ["ROLLING_FILE"];
+  if (stoutType < 3) {
+    sqlAppenders.add("STDOUT")
+  }
+  logger("org.hibernate.SQL", DEBUG, sqlAppenders, false)
+  logger("org.hibernate.type.descriptor.sql.BasicBinder", TRACE, sqlAppenders, false)
 
-	logger("com.il.sod", soutLevel as Level, ["STDOUT", "ROLLING_FILE"], false)
+  logger("com.il.sod", soutLevel as Level, ["STDOUT", "ROLLING_FILE"], false)
 
-	def fwAppenders = ["ROLLING_FILE"]
-	if ( stoutType == 1 ){
-		fwAppenders.add("STDOUT")
-	}
+  def fwAppenders = ["ROLLING_FILE"]
+  if (stoutType == 1) {
+    fwAppenders.add("STDOUT")
+  }
 
-	String[] frameworks = ["ma.glasnost.orika", "io.swagger"]
-	for (String fw : frameworks ){
-		logger(fw, soutLevel as Level, fwAppenders, false)
-	}
+  String[] frameworks = ["ma.glasnost.orika", "io.swagger"]
+  for (String fw : frameworks) {
+    logger(fw, soutLevel as Level, fwAppenders, false)
+  }
 
-	root(ERROR, ["STDOUT"])
+  root(ERROR, ["STDOUT"])
 }
 
 addAppenders()

@@ -9,14 +9,15 @@ import java.util.List;
 
 @Service
 public class ProductDAO {
-	
-	@Autowired
-	ProductRepository productRepository;
-	
-	public List<Product> findByName(String name) {
-		return productRepository.findByName("%" + name + "%");
-	}
-	public List<Product> findByProductType(int idProductType) {
-		return productRepository.findByProductType(idProductType);
-	}
+
+  @Autowired
+  ProductRepository productRepository;
+
+  public List<Product> findByName(String name) {
+    return productRepository.findByName("%" + name + "%");
+  }
+
+  public List<Product> findByProductType(int idProductType) {
+    return productRepository.findByProductType(idProductType);
+  }
 }

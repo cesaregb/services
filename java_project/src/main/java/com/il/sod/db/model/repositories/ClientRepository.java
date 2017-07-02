@@ -8,20 +8,20 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ClientRepository extends DeletableRepository<Client, Integer>, JpaSpecificationExecutor<Client> {
-	
-	List<Client> findByEmail(String email);
-	
-	@Query("SELECT c FROM Client c join c.clientPaymentInfos cpi WHERE cpi.token=:token")
-    public List<Client> findByToken(@Param("token") String token);
-	
-	@Query("SELECT c FROM Client c join c.addresses a WHERE a.idAddress=:idAddress")
-	public List<Client> findByAddress(@Param("idAddress") Integer idAddress);
 
-	@Query("SELECT c FROM Client c WHERE c.mobilePhone LIKE :phone or c.homePhone LIKE :phone or c.otherPhone LIKE :phone")
-	public List<Client> findByPhone(String phone);
+  List<Client> findByEmail(String email);
 
-	public List<Client> findByLoginID(String loginId);
+  @Query("SELECT c FROM Client c join c.clientPaymentInfos cpi WHERE cpi.token=:token")
+  public List<Client> findByToken(@Param("token") String token);
 
-	@Query("SELECT c FROM Client c left join fetch c.orders a WHERE c.idClient=:idClient")
-	public Client findAllIncludeOrders(@Param("idClient") int idClient);
+  @Query("SELECT c FROM Client c join c.addresses a WHERE a.idAddress=:idAddress")
+  public List<Client> findByAddress(@Param("idAddress") Integer idAddress);
+
+  @Query("SELECT c FROM Client c WHERE c.mobilePhone LIKE :phone or c.homePhone LIKE :phone or c.otherPhone LIKE :phone")
+  public List<Client> findByPhone(String phone);
+
+  public List<Client> findByLoginID(String loginId);
+
+  @Query("SELECT c FROM Client c left join fetch c.orders a WHERE c.idClient=:idClient")
+  public Client findAllIncludeOrders(@Param("idClient") int idClient);
 }

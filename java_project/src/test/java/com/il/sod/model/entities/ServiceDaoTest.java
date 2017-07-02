@@ -18,35 +18,35 @@ import java.util.stream.Collectors;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class ServiceDaoTest extends SpringTestConfiguration{
+public class ServiceDaoTest extends SpringTestConfiguration {
 
-	private final static Logger LOGGER = getLogger(ServiceDaoTest.class);
-	
-	@Autowired
-	ServiceCategoryRepository serviceCategoryRepository;
-	
-	@Autowired
-	SpecificObjectsConverterService specificObjectsConverterService;
+  private final static Logger LOGGER = getLogger(ServiceDaoTest.class);
+
+  @Autowired
+  ServiceCategoryRepository serviceCategoryRepository;
+
+  @Autowired
+  SpecificObjectsConverterService specificObjectsConverterService;
 
 
-	@Test
-	public void testServiceCategory(){
-		List<ServiceCategory> entities = serviceCategoryRepository.findAll();
-		Assert.assertThat("Found any category", entities.size(), Matchers.greaterThan(0));
-		LOGGER.info("entities size: {} ", entities.size());
+  @Test
+  public void testServiceCategory() {
+    List<ServiceCategory> entities = serviceCategoryRepository.findAll();
+    Assert.assertThat("Found any category", entities.size(), Matchers.greaterThan(0));
+    LOGGER.info("entities size: {} ", entities.size());
 
-		List<ServiceCategoryDTO> result = entities.stream().map(ServiceMapper.INSTANCE::map).collect(Collectors.toList());
-		Assert.assertThat("Converter not working ", entities.size(), Matchers.is(result.size()));
-	}
+    List<ServiceCategoryDTO> result = entities.stream().map(ServiceMapper.INSTANCE::map).collect(Collectors.toList());
+    Assert.assertThat("Converter not working ", entities.size(), Matchers.is(result.size()));
+  }
 
-    @Test
-    public void testWServiceCategoryConverter(){
-    	List<ServiceCategory> entities = serviceCategoryRepository.findAll();
-    	System.out.println("entities: " + entities.size());
-	    Assert.assertThat("Found any category", entities.size(), Matchers.greaterThan(0));
-	    List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
-	    Assert.assertThat("Converter not working ", entities.size(), Matchers.is(result.size()));
-	    System.out.println("result: " + result.size());
-    }
+  @Test
+  public void testWServiceCategoryConverter() {
+    List<ServiceCategory> entities = serviceCategoryRepository.findAll();
+    System.out.println("entities: " + entities.size());
+    Assert.assertThat("Found any category", entities.size(), Matchers.greaterThan(0));
+    List<WServiceCategoryDTO> result = entities.stream().map(i -> specificObjectsConverterService.map(i)).collect(Collectors.toList());
+    Assert.assertThat("Converter not working ", entities.size(), Matchers.is(result.size()));
+    System.out.println("result: " + result.size());
+  }
 
 }

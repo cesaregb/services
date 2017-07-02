@@ -11,7 +11,7 @@ import java.util.List;
 @NoRepositoryBean
 public interface DeletableRepository<T extends SoftDeleteEntity, ID extends Serializable> extends JpaRepository<T, ID> {
 
-    @Query("select t from #{#entityName} t where t.deleted = ?1")
-    public List<T> findAllByDeleted(Integer deleted);
+  @Query("select t from #{#entityName} t where t.deleted = ?1")
+  public List<T> findAllByDeleted(Integer deleted);
 
 }

@@ -25,29 +25,29 @@ import java.sql.Timestamp;
 @Path("/cash-outs")
 public class CashOutService extends AbstractServiceMutations {
 
-	private final static Logger LOGGER = LoggerFactory.getLogger(CashOutService.class);
+  private final static Logger LOGGER = LoggerFactory.getLogger(CashOutService.class);
 
-	@Autowired
-	CashOutSv cashOutSv;
+  @Autowired
+  CashOutSv cashOutSv;
 
-	@POST
-	@ApiOperation(value = "Create Cash out", response = CashOutDTO.class)
-	public Response createCashOut() throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(cashOutSv.createCashOut(), Response.Status.CREATED);
-	}
+  @POST
+  @ApiOperation(value = "Create Cash out", response = CashOutDTO.class)
+  public Response createCashOut() throws SODAPIException {
+    return ConvertUtils.castEntityAsResponse(cashOutSv.createCashOut(), Response.Status.CREATED);
+  }
 
-	@GET
-	@ApiOperation(value = "Get Cash Outs", response = CashOutDTO.class, responseContainer = "List")
-	public Response getCashOutBy(@QueryParam("date")Timestamp date) throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(cashOutSv.getCashOutByDate(date),
-				Response.Status.OK);
-	}
+  @GET
+  @ApiOperation(value = "Get Cash Outs", response = CashOutDTO.class, responseContainer = "List")
+  public Response getCashOutBy(@QueryParam("date") Timestamp date) throws SODAPIException {
+    return ConvertUtils.castEntityAsResponse(cashOutSv.getCashOutByDate(date),
+            Response.Status.OK);
+  }
 
-	@GET
-	@Path("/next")
-	@ApiOperation(value = "Create a cash-out object with the current state of the db", response = CashOutDTO.class)
-	public Response getNextCashOut() throws SODAPIException {
-		return ConvertUtils.castEntityAsResponse(cashOutSv.nextCashOut(), Response.Status.OK);
-	}
+  @GET
+  @Path("/next")
+  @ApiOperation(value = "Create a cash-out object with the current state of the db", response = CashOutDTO.class)
+  public Response getNextCashOut() throws SODAPIException {
+    return ConvertUtils.castEntityAsResponse(cashOutSv.nextCashOut(), Response.Status.OK);
+  }
 
 }

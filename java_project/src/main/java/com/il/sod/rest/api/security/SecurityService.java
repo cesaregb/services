@@ -24,19 +24,19 @@ import javax.ws.rs.core.Response;
 @Component
 @Path("/auth")
 @Produces(MediaType.APPLICATION_JSON)
-@Api(value = "/auth", tags = { "auth" })
+@Api(value = "/auth", tags = {"auth"})
 public class SecurityService extends AbstractServiceMutations {
-	
-	private final static Logger LOGGER = LoggerFactory.getLogger(SecurityService.class);
 
-	@POST
-	@RolesAllowed("BASIC_AUTH")
-	@Path("/app/{appId}")
-	@ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
-	public Response authClient(@PathParam("appId") String appId) throws SODAPIException {
-		SecurityKeyDto dto = new SecurityKeyDto();
-		dto.setToken(JWTSingleton.INSTANCE.createJWT(appId, Constants.BASIC_AUTH, 1));
-		LOGGER.info("[authClient] info: {}", ConvertUtils.castEntityAsString(dto));
-		return ConvertUtils.castEntityAsResponse(dto);
-	}
+  private final static Logger LOGGER = LoggerFactory.getLogger(SecurityService.class);
+
+  @POST
+  @RolesAllowed("BASIC_AUTH")
+  @Path("/app/{appId}")
+  @ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
+  public Response authClient(@PathParam("appId") String appId) throws SODAPIException {
+    SecurityKeyDto dto = new SecurityKeyDto();
+    dto.setToken(JWTSingleton.INSTANCE.createJWT(appId, Constants.BASIC_AUTH, 1));
+    LOGGER.info("[authClient] info: {}", ConvertUtils.castEntityAsString(dto));
+    return ConvertUtils.castEntityAsResponse(dto);
+  }
 }

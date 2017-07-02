@@ -1,300 +1,289 @@
 package com.il.sod.db.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 
 /**
  * The persistent class for the Service database table.
- *
  */
 @Entity
-@NamedQuery(name="Service.findAll", query="SELECT s FROM Service s")
+@NamedQuery(name = "Service.findAll", query = "SELECT s FROM Service s")
 public class Service implements IEntity<Integer> {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idService;
-	private String description;
-	private String name;
-	private double price;
-	private double specsPrice;
-	private double productsPrice;
-	private double totalPrice;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date created;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updated;
-	private int time;
-	private int deleted;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int idService;
+  private String description;
+  private String name;
+  private double price;
+  private double specsPrice;
+  private double productsPrice;
+  private double totalPrice;
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date created;
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date updated;
+  private int time;
+  private int deleted;
 
-	//bi-directional many-to-one association to ServiceType
-	@ManyToOne
-	@JoinColumn(name="idServiceType")
-	private ServiceType serviceType;
+  //bi-directional many-to-one association to ServiceType
+  @ManyToOne
+  @JoinColumn(name = "idServiceType")
+  private ServiceType serviceType;
 
-	//bi-directional many-to-one association to ServiceSpec
-	@OneToMany(mappedBy="service", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	@JsonManagedReference
-	private Set<ServiceSpec> serviceSpecs;
+  //bi-directional many-to-one association to ServiceSpec
+  @OneToMany(mappedBy = "service", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @JsonManagedReference
+  private Set<ServiceSpec> serviceSpecs;
 
-	//bi-directional many-to-one association to ServiceTask
-	@OneToMany(mappedBy="service", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	@JsonManagedReference
-	private Set<ServiceTask> serviceTasks;
-	
-	//bi-directional many-to-one association to Order
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="idOrder")
-	@JsonBackReference
-	private Order order;
-	
-	private int currentTask;
-	
-	//bi-directional many-to-one association to ServiceComment
-	@OneToMany(mappedBy="service", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	private Set<ServiceComment> serviceComments;
+  //bi-directional many-to-one association to ServiceTask
+  @OneToMany(mappedBy = "service", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @JsonManagedReference
+  private Set<ServiceTask> serviceTasks;
 
-	//bi-directional many-to-one association to ServiceProduct
-	@OneToMany(mappedBy="service", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	private Set<ServiceProduct> serviceProducts;
+  //bi-directional many-to-one association to Order
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "idOrder")
+  @JsonBackReference
+  private Order order;
 
-	public Service() { }
+  private int currentTask;
 
-	public int getIdService() {
-		return this.idService;
-	}
+  //bi-directional many-to-one association to ServiceComment
+  @OneToMany(mappedBy = "service", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  private Set<ServiceComment> serviceComments;
 
-	public void setIdService(int idService) {
-		this.idService = idService;
-	}
+  //bi-directional many-to-one association to ServiceProduct
+  @OneToMany(mappedBy = "service", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  private Set<ServiceProduct> serviceProducts;
 
-	public String getDescription() {
-		return this.description;
-	}
+  public Service() {
+  }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+  public int getIdService() {
+    return this.idService;
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public void setIdService(int idService) {
+    this.idService = idService;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public String getDescription() {
+    return this.description;
+  }
 
-	public double getPrice() {
-		return this.price;
-	}
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-	public void setPrice(double price) {
-		this.price = price;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	public ServiceType getServiceType() {
-		return this.serviceType;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setServiceType(ServiceType serviceType) {
-		this.serviceType = serviceType;
-	}
+  public double getPrice() {
+    return this.price;
+  }
 
-	public Set<ServiceSpec> getServiceSpecs() {
-		return this.serviceSpecs;
-	}
+  public void setPrice(double price) {
+    this.price = price;
+  }
 
-	public void setServiceSpecs(Set<ServiceSpec> serviceSpecs) {
-		this.serviceSpecs = serviceSpecs;
-	}
+  public ServiceType getServiceType() {
+    return this.serviceType;
+  }
 
-	public ServiceSpec addServiceSpec(ServiceSpec serviceSpec) {
-		if (serviceSpecs == null){
-			serviceSpecs = new HashSet<>();
-		}
-		getServiceSpecs().add(serviceSpec);
-		serviceSpec.setService(this);
+  public void setServiceType(ServiceType serviceType) {
+    this.serviceType = serviceType;
+  }
 
-		return serviceSpec;
-	}
+  public Set<ServiceSpec> getServiceSpecs() {
+    return this.serviceSpecs;
+  }
 
-	public ServiceSpec removeServiceSpec(ServiceSpec serviceSpec) {
-		getServiceSpecs().remove(serviceSpec);
-		serviceSpec.setService(null);
+  public void setServiceSpecs(Set<ServiceSpec> serviceSpecs) {
+    this.serviceSpecs = serviceSpecs;
+  }
 
-		return serviceSpec;
-	}
+  public ServiceSpec addServiceSpec(ServiceSpec serviceSpec) {
+    if (serviceSpecs == null) {
+      serviceSpecs = new HashSet<>();
+    }
+    getServiceSpecs().add(serviceSpec);
+    serviceSpec.setService(this);
 
-	public Set<ServiceTask> getServiceTasks() {
-		return this.serviceTasks;
-	}
+    return serviceSpec;
+  }
 
-	public void setServiceTasks(Set<ServiceTask> serviceTasks) {
-		this.serviceTasks = serviceTasks;
-	}
+  public ServiceSpec removeServiceSpec(ServiceSpec serviceSpec) {
+    getServiceSpecs().remove(serviceSpec);
+    serviceSpec.setService(null);
 
-	public ServiceTask addServiceTask(ServiceTask serviceTask) {
-		if (serviceTasks == null){
-			serviceTasks = new HashSet<>();
-		}
-		getServiceTasks().add(serviceTask);
-		serviceTask.setService(this);
+    return serviceSpec;
+  }
 
-		return serviceTask;
-	}
+  public Set<ServiceTask> getServiceTasks() {
+    return this.serviceTasks;
+  }
 
-	public ServiceTask removeServiceTask(ServiceTask serviceTask) {
-		getServiceTasks().remove(serviceTask);
-		serviceTask.setService(null);
+  public void setServiceTasks(Set<ServiceTask> serviceTasks) {
+    this.serviceTasks = serviceTasks;
+  }
 
-		return serviceTask;
-	}
-	@Override
-	public Integer getId() {
-		return this.idService;
-	}
+  public ServiceTask addServiceTask(ServiceTask serviceTask) {
+    if (serviceTasks == null) {
+      serviceTasks = new HashSet<>();
+    }
+    getServiceTasks().add(serviceTask);
+    serviceTask.setService(this);
 
-	@Override
-	public Service setId(Integer id) {
-		this.idService = id;
-		return this;
-	}
+    return serviceTask;
+  }
 
-	public Date getCreated() {
-		return created;
-	}
+  public ServiceTask removeServiceTask(ServiceTask serviceTask) {
+    getServiceTasks().remove(serviceTask);
+    serviceTask.setService(null);
 
-	public void setCreated(Date created) {
-		this.created = created;
-	}
+    return serviceTask;
+  }
 
-	public Date getUpdated() {
-		return updated;
-	}
+  @Override
+  public Integer getId() {
+    return this.idService;
+  }
 
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
+  @Override
+  public Service setId(Integer id) {
+    this.idService = id;
+    return this;
+  }
 
-	public int getTime() {
-		return time;
-	}
+  public Date getCreated() {
+    return created;
+  }
 
-	public void setTime(int time) {
-		this.time = time;
-	}
-	
-	public Order getOrder() {
-		return this.order;
-	}
+  public void setCreated(Date created) {
+    this.created = created;
+  }
 
-	public void setOrder(Order order) {
-		this.order = order;
-	}
+  public Date getUpdated() {
+    return updated;
+  }
 
-	public Set<ServiceComment> getServiceComments() {
-		return this.serviceComments;
-	}
+  public void setUpdated(Date updated) {
+    this.updated = updated;
+  }
 
-	public void setServiceComments(Set<ServiceComment> serviceComments) {
-		this.serviceComments = serviceComments;
-	}
+  public int getTime() {
+    return time;
+  }
 
-	public ServiceComment addServiceComment(ServiceComment serviceComment) {
-		getServiceComments().add(serviceComment);
-		serviceComment.setService(this);
+  public void setTime(int time) {
+    this.time = time;
+  }
 
-		return serviceComment;
-	}
+  public Order getOrder() {
+    return this.order;
+  }
 
-	public ServiceComment removeServiceComment(ServiceComment serviceComment) {
-		getServiceComments().remove(serviceComment);
-		serviceComment.setService(null);
+  public void setOrder(Order order) {
+    this.order = order;
+  }
 
-		return serviceComment;
-	}
+  public Set<ServiceComment> getServiceComments() {
+    return this.serviceComments;
+  }
 
-	public int getCurrentTask() {
-		return currentTask;
-	}
+  public void setServiceComments(Set<ServiceComment> serviceComments) {
+    this.serviceComments = serviceComments;
+  }
 
-	public void setCurrentTask(int currentTask) {
-		this.currentTask = currentTask;
-	}
+  public ServiceComment addServiceComment(ServiceComment serviceComment) {
+    getServiceComments().add(serviceComment);
+    serviceComment.setService(this);
 
-	public int getDeleted() {
-		return deleted;
-	}
+    return serviceComment;
+  }
 
-	public void setDeleted(int deleted) {
-		this.deleted = deleted;
-	}
+  public ServiceComment removeServiceComment(ServiceComment serviceComment) {
+    getServiceComments().remove(serviceComment);
+    serviceComment.setService(null);
 
-	public double getSpecsPrice() {
-		return specsPrice;
-	}
+    return serviceComment;
+  }
 
-	public void setSpecsPrice(double specsPrice) {
-		this.specsPrice = specsPrice;
-	}
+  public int getCurrentTask() {
+    return currentTask;
+  }
 
-	public double getProductsPrice() {
-		return productsPrice;
-	}
+  public void setCurrentTask(int currentTask) {
+    this.currentTask = currentTask;
+  }
 
-	public void setProductsPrice(double productsPrice) {
-		this.productsPrice = productsPrice;
-	}
+  public int getDeleted() {
+    return deleted;
+  }
 
-	public double getTotalPrice() {
-		return totalPrice;
-	}
+  public void setDeleted(int deleted) {
+    this.deleted = deleted;
+  }
 
-	public void setTotalPrice(double totalPrice) {
-		this.totalPrice = totalPrice;
-	}
-	
-	public Set<ServiceProduct> getServiceProducts() {
-		if (serviceProducts == null){
-			serviceProducts = new HashSet<>();
-		}
-		return this.serviceProducts;
-	}
+  public double getSpecsPrice() {
+    return specsPrice;
+  }
 
-	public void setServiceProducts(Set<ServiceProduct> serviceProducts) {
-		this.serviceProducts = serviceProducts;
-	}
+  public void setSpecsPrice(double specsPrice) {
+    this.specsPrice = specsPrice;
+  }
 
-	public ServiceProduct addProduct(ServiceProduct serviceProduct) {
-		getServiceProducts().add(serviceProduct);
-		serviceProduct.setService(this);
+  public double getProductsPrice() {
+    return productsPrice;
+  }
 
-		return serviceProduct;
-	}
+  public void setProductsPrice(double productsPrice) {
+    this.productsPrice = productsPrice;
+  }
 
-	public ServiceProduct removeProduct(ServiceProduct serviceProduct) {
-		getServiceProducts().remove(serviceProduct);
-		serviceProduct.setService(null);
+  public double getTotalPrice() {
+    return totalPrice;
+  }
 
-		return serviceProduct;
-	}
+  public void setTotalPrice(double totalPrice) {
+    this.totalPrice = totalPrice;
+  }
+
+  public Set<ServiceProduct> getServiceProducts() {
+    if (serviceProducts == null) {
+      serviceProducts = new HashSet<>();
+    }
+    return this.serviceProducts;
+  }
+
+  public void setServiceProducts(Set<ServiceProduct> serviceProducts) {
+    this.serviceProducts = serviceProducts;
+  }
+
+  public ServiceProduct addProduct(ServiceProduct serviceProduct) {
+    getServiceProducts().add(serviceProduct);
+    serviceProduct.setService(this);
+
+    return serviceProduct;
+  }
+
+  public ServiceProduct removeProduct(ServiceProduct serviceProduct) {
+    getServiceProducts().remove(serviceProduct);
+    serviceProduct.setService(null);
+
+    return serviceProduct;
+  }
 }

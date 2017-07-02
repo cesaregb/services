@@ -1,10 +1,7 @@
 package com.il.sod.db.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,185 +9,186 @@ import java.math.BigDecimal;
 
 /**
  * The persistent class for the Address database table.
- *
  */
 @Entity
-@NamedQuery(name="Address.findAll", query="SELECT a FROM Address a")
+@NamedQuery(name = "Address.findAll", query = "SELECT a FROM Address a")
 public class Address implements IEntity<Integer> {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idAddress;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int idAddress;
 
-	private String address;
+  private String address;
 
-	private String address2;
+  private String address2;
 
-	private String city;
+  private String city;
 
-	private String country;
+  private String country;
 
-	private String state;
-	
-	private String zipcode;
+  private String state;
 
-	private String comments;
+  private String zipcode;
 
-	private boolean prefered;
-	
-	private boolean factura;
-	
-	private BigDecimal lat;
-	
-	private BigDecimal lng;
+  private String comments;
 
-	//bi-directional many-to-one association to Client
-	@ManyToOne
-	@JoinColumn(name="idClient")
-	@JsonBackReference
-	private Client client;
-	
+  private boolean prefered;
 
-	public Address() {
-	}
+  private boolean factura;
 
-	public int getIdAddress() {
-		return this.idAddress;
-	}
+  private BigDecimal lat;
 
-	public void setIdAddress(int idAddress) {
-		this.idAddress = idAddress;
-	}
+  private BigDecimal lng;
 
-	public String getAddress() {
-		return this.address;
-	}
+  //bi-directional many-to-one association to Client
+  @ManyToOne
+  @JoinColumn(name = "idClient")
+  @JsonBackReference
+  private Client client;
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
 
-	public String getAddress2() {
-		return this.address2;
-	}
+  public Address() {
+  }
 
-	public void setAddress2(String address2) {
-		this.address2 = address2;
-	}
+  public int getIdAddress() {
+    return this.idAddress;
+  }
 
-	public String getCity() {
-		return this.city;
-	}
+  public void setIdAddress(int idAddress) {
+    this.idAddress = idAddress;
+  }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+  public String getAddress() {
+    return this.address;
+  }
 
-	public String getCountry() {
-		return this.country;
-	}
+  public void setAddress(String address) {
+    this.address = address;
+  }
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
+  public String getAddress2() {
+    return this.address2;
+  }
 
-	public String getState() {
-		return this.state;
-	}
+  public void setAddress2(String address2) {
+    this.address2 = address2;
+  }
 
-	public void setState(String state) {
-		this.state = state;
-	}
+  public String getCity() {
+    return this.city;
+  }
 
-	public Client getClient() {
-		return this.client;
-	}
+  public void setCity(String city) {
+    this.city = city;
+  }
 
-	public void setClient(Client client) {
-		this.client = client;
-	}
-	@Override
-	public Integer getId() {
-		return this.idAddress;
-	}
+  public String getCountry() {
+    return this.country;
+  }
 
-	@Override
-	public Address setId(Integer id) {
-		this.idAddress = id;
-		return this;
-	}
+  public void setCountry(String country) {
+    this.country = country;
+  }
 
-	public String getZipcode() {
-		return zipcode;
-	}
+  public String getState() {
+    return this.state;
+  }
 
-	public void setZipcode(String zipcode) {
-		this.zipcode = zipcode;
-	}
-	
+  public void setState(String state) {
+    this.state = state;
+  }
 
-	public boolean isPrefered() {
-		return prefered;
-	}
-	public void setPrefered(boolean prefered) {
-		this.prefered = prefered;
-	}
+  public Client getClient() {
+    return this.client;
+  }
 
-	public BigDecimal getLat() {
-		return lat;
-	}
+  public void setClient(Client client) {
+    this.client = client;
+  }
 
-	public void setLat(BigDecimal lat) {
-		this.lat = lat;
-	}
+  @Override
+  public Integer getId() {
+    return this.idAddress;
+  }
 
-	public BigDecimal getLng() {
-		return lng;
-	}
+  @Override
+  public Address setId(Integer id) {
+    this.idAddress = id;
+    return this;
+  }
 
-	public void setLng(BigDecimal lng) {
-		this.lng = lng;
-	}
+  public String getZipcode() {
+    return zipcode;
+  }
 
-	public boolean isFactura() {
-		return factura;
-	}
+  public void setZipcode(String zipcode) {
+    this.zipcode = zipcode;
+  }
 
-	public void setFactura(boolean factura) {
-		this.factura = factura;
-	}
 
-	public String getComments() {
-		return comments;
-	}
+  public boolean isPrefered() {
+    return prefered;
+  }
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
+  public void setPrefered(boolean prefered) {
+    this.prefered = prefered;
+  }
 
-	@Override
-	public int hashCode(){
-		return Objects.hashCode(lat, lng, address, address2, city, country, state, factura, prefered, comments);
-	}
+  public BigDecimal getLat() {
+    return lat;
+  }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Address address1 = (Address) o;
-		return idAddress == address1.idAddress &&
-				prefered == address1.prefered &&
-				factura == address1.factura &&
-				Objects.equal(address, address1.address) &&
-				Objects.equal(address2, address1.address2) &&
-				Objects.equal(city, address1.city) &&
-				Objects.equal(country, address1.country) &&
-				Objects.equal(state, address1.state) &&
-				Objects.equal(zipcode, address1.zipcode) &&
-				Objects.equal(comments, address1.comments) &&
-				Objects.equal(lat, address1.lat) &&
-				Objects.equal(lng, address1.lng);
-	}
+  public void setLat(BigDecimal lat) {
+    this.lat = lat;
+  }
+
+  public BigDecimal getLng() {
+    return lng;
+  }
+
+  public void setLng(BigDecimal lng) {
+    this.lng = lng;
+  }
+
+  public boolean isFactura() {
+    return factura;
+  }
+
+  public void setFactura(boolean factura) {
+    this.factura = factura;
+  }
+
+  public String getComments() {
+    return comments;
+  }
+
+  public void setComments(String comments) {
+    this.comments = comments;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(lat, lng, address, address2, city, country, state, factura, prefered, comments);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Address address1 = (Address) o;
+    return idAddress == address1.idAddress &&
+            prefered == address1.prefered &&
+            factura == address1.factura &&
+            Objects.equal(address, address1.address) &&
+            Objects.equal(address2, address1.address2) &&
+            Objects.equal(city, address1.city) &&
+            Objects.equal(country, address1.country) &&
+            Objects.equal(state, address1.state) &&
+            Objects.equal(zipcode, address1.zipcode) &&
+            Objects.equal(comments, address1.comments) &&
+            Objects.equal(lat, address1.lat) &&
+            Objects.equal(lng, address1.lng);
+  }
 }

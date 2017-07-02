@@ -6,22 +6,22 @@ import ma.glasnost.orika.MapperFacade;
 
 public enum UIMapper {
 
-	INSTANCE;
-	private final MapperFacade mapperFacade;
+  INSTANCE;
+  private final MapperFacade mapperFacade;
 
-	private UIMapper() {
-		
-		BaseMapper.MAPPER_FACTORY.classMap(UIServiceDTO.class, Service.class)
-			.field("idServiceType", "serviceType.idServiceType")
-			.byDefault()
-			.register();
-		
+  private UIMapper() {
 
-		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
-	}
+    BaseMapper.MAPPER_FACTORY.classMap(UIServiceDTO.class, Service.class)
+            .field("idServiceType", "serviceType.idServiceType")
+            .byDefault()
+            .register();
 
-	public UIServiceDTO map(Service inp) {
-		return this.mapperFacade.map(inp, UIServiceDTO.class);
-	}
+
+    mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
+  }
+
+  public UIServiceDTO map(Service inp) {
+    return this.mapperFacade.map(inp, UIServiceDTO.class);
+  }
 }
 

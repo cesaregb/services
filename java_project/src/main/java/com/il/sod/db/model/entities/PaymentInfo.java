@@ -1,80 +1,74 @@
 package com.il.sod.db.model.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
 
 
 /**
  * The persistent class for the PaymentInfo database table.
- * 
  */
 @Entity
-@NamedQuery(name="PaymentInfo.findAll", query="SELECT p FROM PaymentInfo p")
+@NamedQuery(name = "PaymentInfo.findAll", query = "SELECT p FROM PaymentInfo p")
 public class PaymentInfo implements IEntity<Integer> {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	private int idPaymentInfo;
+  @Id
+  private int idPaymentInfo;
 
-	private String transactionInfo;
+  private String transactionInfo;
 
-	private int type;
+  private int type;
 
-	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="idOrder")
-	@JsonBackReference
-	private Order order;
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "idOrder")
+  @JsonBackReference
+  private Order order;
 
-	public PaymentInfo() {
-	}
+  public PaymentInfo() {
+  }
 
-	public int getIdPaymentInfo() {
-		return this.idPaymentInfo;
-	}
+  public int getIdPaymentInfo() {
+    return this.idPaymentInfo;
+  }
 
-	public void setIdPaymentInfo(int idPaymentInfo) {
-		this.idPaymentInfo = idPaymentInfo;
-	}
+  public void setIdPaymentInfo(int idPaymentInfo) {
+    this.idPaymentInfo = idPaymentInfo;
+  }
 
-	public String getTransactionInfo() {
-		return this.transactionInfo;
-	}
+  public String getTransactionInfo() {
+    return this.transactionInfo;
+  }
 
-	public void setTransactionInfo(String transactionInfo) {
-		this.transactionInfo = transactionInfo;
-	}
+  public void setTransactionInfo(String transactionInfo) {
+    this.transactionInfo = transactionInfo;
+  }
 
-	public int getType() {
-		return this.type;
-	}
+  public int getType() {
+    return this.type;
+  }
 
-	public void setType(int type) {
-		this.type = type;
-	}
+  public void setType(int type) {
+    this.type = type;
+  }
 
-	public Order getOrder() {
-		return this.order;
-	}
+  public Order getOrder() {
+    return this.order;
+  }
 
-	public void setOrder(Order order) {
-		this.order = order;
-	}
+  public void setOrder(Order order) {
+    this.order = order;
+  }
 
-	@Override
-	public Integer getId() {
-		return this.idPaymentInfo;
-	}
+  @Override
+  public Integer getId() {
+    return this.idPaymentInfo;
+  }
 
-	@Override
-	public PaymentInfo setId(Integer id) {
-		this.idPaymentInfo = id;
-		return this;
-	}
+  @Override
+  public PaymentInfo setId(Integer id) {
+    this.idPaymentInfo = id;
+    return this;
+  }
 
 }

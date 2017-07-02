@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface ServiceRepository extends JpaRepository<Service, Integer> {
 
-    @Query("SELECT s FROM Service s WHERE s.order.idOrder=:idOrder")
-	List<Service> findByOrder(@Param("idOrder")int idOrder);
+  @Query("SELECT s FROM Service s WHERE s.order.idOrder=:idOrder")
+  List<Service> findByOrder(@Param("idOrder") int idOrder);
 }

@@ -1,85 +1,80 @@
 package com.il.sod.db.model.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 
 
 /**
  * The persistent class for the Menu database table.
- * 
  */
 @Entity
-@NamedQuery(name="Menu.findAll", query="SELECT m FROM Menu m")
+@NamedQuery(name = "Menu.findAll", query = "SELECT m FROM Menu m")
 public class Menu implements IEntity<Integer> {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idMenu;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private int idMenu;
 
-	private int accessLevel;
+  private int accessLevel;
 
-	private String name;
-	
-	private String state;
+  private String name;
 
-	private int order;
+  private String state;
 
-	public Menu() {
-	}
+  private int order;
 
-	public int getIdMenu() {
-		return this.idMenu;
-	}
+  public Menu() {
+  }
 
-	public void setIdMenu(int idMenu) {
-		this.idMenu = idMenu;
-	}
+  public int getIdMenu() {
+    return this.idMenu;
+  }
 
-	public int getAccessLevel() {
-		return this.accessLevel;
-	}
+  public void setIdMenu(int idMenu) {
+    this.idMenu = idMenu;
+  }
 
-	public void setAccessLevel(int accessLevel) {
-		this.accessLevel = accessLevel;
-	}
+  public int getAccessLevel() {
+    return this.accessLevel;
+  }
 
-	public String getName() {
-		return this.name;
-	}
+  public void setAccessLevel(int accessLevel) {
+    this.accessLevel = accessLevel;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public String getName() {
+    return this.name;
+  }
 
-	public int getOrder() {
-		return this.order;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setOrder(int order) {
-		this.order = order;
-	}
+  public int getOrder() {
+    return this.order;
+  }
 
-	@Override
-	public Integer getId() {
-		return this.idMenu;
-	}
+  public void setOrder(int order) {
+    this.order = order;
+  }
 
-	@Override
-	public Menu setId(Integer id) {
-		this.idMenu = id;
-		return this;
-	}
+  @Override
+  public Integer getId() {
+    return this.idMenu;
+  }
 
-	public String getState() {
-		return state;
-	}
+  @Override
+  public Menu setId(Integer id) {
+    this.idMenu = id;
+    return this;
+  }
 
-	public void setState(String state) {
-		this.state = state;
-	}
+  public String getState() {
+    return state;
+  }
+
+  public void setState(String state) {
+    this.state = state;
+  }
 
 }

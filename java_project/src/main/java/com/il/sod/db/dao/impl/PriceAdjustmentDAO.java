@@ -9,14 +9,15 @@ import java.util.List;
 
 @Service
 public class PriceAdjustmentDAO {
-	
-	@Autowired
-	PriceAdjustmentRepository priceAdjustmentRepository;
-	
-	public List<PriceAdjustment> findByName(String name) {
-		return priceAdjustmentRepository.findByName("%" + name + "%");
-	}
-	public List<PriceAdjustment> findByPriceAdjustmentType(int idPriceAdjustmentType) {
-		return priceAdjustmentRepository.findByPriceAdjustmentType(idPriceAdjustmentType);
-	}
+
+  @Autowired
+  PriceAdjustmentRepository priceAdjustmentRepository;
+
+  public List<PriceAdjustment> findByName(String name) {
+    return priceAdjustmentRepository.findByName("%" + name + "%");
+  }
+
+  public List<PriceAdjustment> findByPriceAdjustmentType(int idPriceAdjustmentType) {
+    return priceAdjustmentRepository.findByPriceAdjustmentType(idPriceAdjustmentType);
+  }
 }

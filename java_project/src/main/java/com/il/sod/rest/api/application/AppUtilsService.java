@@ -31,49 +31,47 @@ import java.util.stream.Collectors;
 @Api(value = "/app-utils", tags = {"app-utils"})
 public class AppUtilsService extends AbstractServiceMutations {
 
-	@Autowired
-	MenuRepository menuRepository;
+  @Autowired
+  MenuRepository menuRepository;
 
-	@Autowired
-	SpecificObjectsConverterService specificObjectsConverterService;
+  @Autowired
+  SpecificObjectsConverterService specificObjectsConverterService;
 
-	@Autowired
-	PriceAdjustmentRepository priceAdjustmentRepository;
+  @Autowired
+  PriceAdjustmentRepository priceAdjustmentRepository;
 
-	@GET
-	@Path("/menu")
-	@ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
-	public Response getMenu() throws SODAPIException {
-		List<Menu> entities = menuRepository.findAllByOrderByOrderAsc();
-		List<MenuDTO> dtos = new ArrayList<>();
-		for (Menu i : entities) {
-			MenuDTO map = specificObjectsConverterService.map(i);
-			dtos.add(map);
-		}
-		return ConvertUtils.castEntityAsResponse(dtos);
-	}
+  @GET
+  @Path("/menu")
+  @ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
+  public Response getMenu() throws SODAPIException {
+    List<Menu> entities = menuRepository.findAllByOrderByOrderAsc();
+    List<MenuDTO> dtos = new ArrayList<>();
+    for (Menu i : entities) {
+      MenuDTO map = specificObjectsConverterService.map(i);
+      dtos.add(map);
+    }
+    return ConvertUtils.castEntityAsResponse(dtos);
+  }
 
-	@GET
-	@Path("/menu/{accessLevel}")
-	@ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
-	public Response getMenu(@PathParam("accessLevel") String accessLevel) throws SODAPIException {
-		List<MenuDTO> dtos = getMenuByAccessLevel(accessLevel);
-		return ConvertUtils.castEntityAsResponse(dtos);
-	}
+  @GET
+  @Path("/menu/{accessLevel}")
+  @ApiOperation(value = "Get Menu Options", response = MenuDTO.class, responseContainer = "List")
+  public Response getMenu(@PathParam("accessLevel") String accessLevel) throws SODAPIException {
+    List<MenuDTO> dtos = getMenuByAccessLevel(accessLevel);
+    return ConvertUtils.castEntityAsResponse(dtos);
+  }
 
-	private List<MenuDTO> getMenuByAccessLevel(String accessLevel) {
-		List<Menu> entities = menuRepository.findAll();
-		// TODO create enum for handling roles.
-		final int accessL = (accessLevel.equals("admin")) ? 1 : 2;
-		return entities.stream()
-				.filter(i -> i.getAccessLevel() >= accessL)
-				.map(i -> {
-					return specificObjectsConverterService.map(i);
-				})
-				.collect(Collectors.toList());
-	}
-
-
+  private List<MenuDTO> getMenuByAccessLevel(String accessLevel) {
+    List<Menu> entities = menuRepository.findAll();
+    // TODO create enum for handling roles.
+    final int accessL = (accessLevel.equals("admin")) ? 1 : 2;
+    return entities.stream()
+            .filter(i -> i.getAccessLevel() >= accessL)
+            .map(i -> {
+              return specificObjectsConverterService.map(i);
+            })
+            .collect(Collectors.toList());
+  }
 
 
 }

@@ -11,33 +11,33 @@ import java.util.List;
  */
 public class TerminalContextDTO {
 
-	private List<MenuDTO> menu;
+  private List<MenuDTO> menu;
 
-	private List<DistanceInfoDTO> distances;
+  private List<DistanceInfoDTO> distances;
 
-	private List<PriceAdjustmentDTO> priceAdjustments;
+  private List<PriceAdjustmentDTO> priceAdjustments;
 
-	public List<MenuDTO> getMenu() {
-		return menu;
-	}
+  public List<MenuDTO> getMenu() {
+    return menu;
+  }
 
-	public void setMenu(List<MenuDTO> menu) {
-		this.menu = menu;
-	}
+  public void setMenu(List<MenuDTO> menu) {
+    this.menu = menu;
+  }
 
-	public List<DistanceInfoDTO> getDistances() {
-		return distances;
-	}
+  public List<DistanceInfoDTO> getDistances() {
+    return distances;
+  }
 
-	public void setDistances(List<DistanceInfoDTO> distances) {
-		this.distances = distances;
-	}
+  public void setDistances(List<DistanceInfoDTO> distances) {
+    this.distances = distances;
+  }
 
-	public List<PriceAdjustmentDTO> getPriceAdjustments() {
-		return priceAdjustments;
-	}
+  public List<PriceAdjustmentDTO> getPriceAdjustments() {
+    return priceAdjustments;
+  }
 
-	public void setPriceAdjustments(List<PriceAdjustmentDTO> priceAdjustments) {
-		this.priceAdjustments = priceAdjustments;
-	}
+  public void setPriceAdjustments(List<PriceAdjustmentDTO> priceAdjustments) {
+    this.priceAdjustments = priceAdjustments;
+  }
 }

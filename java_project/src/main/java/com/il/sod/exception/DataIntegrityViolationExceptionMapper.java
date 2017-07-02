@@ -12,19 +12,19 @@ import javax.ws.rs.ext.Provider;
 
 @Provider
 public class DataIntegrityViolationExceptionMapper extends GeneralMapper implements ExceptionMapper<DataIntegrityViolationException> {
-	@Context
-	HttpServletRequest request;
-	
-	@Override
-	public Response toResponse(DataIntegrityViolationException ex) {
-		long ID = Thread.currentThread().getId();
+  @Context
+  HttpServletRequest request;
 
-		logException(ex, request, ID);
-		return Response
-				.status(Response.Status.SERVICE_UNAVAILABLE)
-				.entity(new GeneralResponseMessage("Server error, we are working on this sorry!",
-						String.valueOf(ID), "[missing]", false))
-				.type(MediaType.APPLICATION_JSON)
-				.build();
-	}
+  @Override
+  public Response toResponse(DataIntegrityViolationException ex) {
+    long ID = Thread.currentThread().getId();
+
+    logException(ex, request, ID);
+    return Response
+            .status(Response.Status.SERVICE_UNAVAILABLE)
+            .entity(new GeneralResponseMessage("Server error, we are working on this sorry!",
+                    String.valueOf(ID), "[missing]", false))
+            .type(MediaType.APPLICATION_JSON)
+            .build();
+  }
 }

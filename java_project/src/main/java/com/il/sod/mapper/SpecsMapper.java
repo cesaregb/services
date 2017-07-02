@@ -20,98 +20,98 @@ import java.util.stream.Collectors;
 
 public enum SpecsMapper {
 
-	INSTANCE;
-	private final MapperFacade mapperFacade;
-	
-	private SupplyTypeRepository supplyTypeRepository;
+  INSTANCE;
+  private final MapperFacade mapperFacade;
 
-	private SpecsMapper() {
-		ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
-		converterFactory.registerConverter("specsValueConverter", new SpecsValueConverter());
-		converterFactory.registerConverter("serviceTypesConverter", new ServiceTypesConverter());
+  private SupplyTypeRepository supplyTypeRepository;
 
-		BaseMapper.MAPPER_FACTORY.classMap(SpecDTO.class, Spec.class)
-			.fieldMap("specsValues", "specsValues").converter("specsValueConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.fieldMap("serviceTypes", "serviceTypes").converter("serviceTypesConverter").mapNulls(true).mapNullsInReverse(true).add()
-			.byDefault()
-			.register();
-		
-		BaseMapper.MAPPER_FACTORY.classMap(ServiceSpecDTO.class, ServiceSpec.class)
-			.field("idService", "service.idService")
-			.byDefault()
-			.register();
+  private SpecsMapper() {
+    ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
+    converterFactory.registerConverter("specsValueConverter", new SpecsValueConverter());
+    converterFactory.registerConverter("serviceTypesConverter", new ServiceTypesConverter());
 
-		BaseMapper.MAPPER_FACTORY.classMap(SpecsValueDTO.class, SpecsValue.class)
-			.field("idSpecs", "spec.idSpecs")
-			.field("specName", "spec.name")
-			.byDefault()
-			.customize(new CustomMapper<SpecsValueDTO, SpecsValue>() {
-				
-				@Override
-				public void mapBtoA(SpecsValue entity, SpecsValueDTO dto, MappingContext context) {
-					if (supplyTypeRepository != null){
-						if (entity.getType() == 2){
-							String supplyName = supplyTypeRepository.findOne(entity.getIdSupplyType()).getName();
-							dto.setSupplyName(supplyName);
-						}
-					}
-				}
-			})
-			.register();
-		
-		mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
-	}
+    BaseMapper.MAPPER_FACTORY.classMap(SpecDTO.class, Spec.class)
+            .fieldMap("specsValues", "specsValues").converter("specsValueConverter").mapNulls(true).mapNullsInReverse(true).add()
+            .fieldMap("serviceTypes", "serviceTypes").converter("serviceTypesConverter").mapNulls(true).mapNullsInReverse(true).add()
+            .byDefault()
+            .register();
 
-	public Spec map(SpecDTO dto) {
-		return this.mapperFacade.map(dto, Spec.class);
-	}
+    BaseMapper.MAPPER_FACTORY.classMap(ServiceSpecDTO.class, ServiceSpec.class)
+            .field("idService", "service.idService")
+            .byDefault()
+            .register();
 
-	public SpecDTO map(Spec entity) {
-		return this.mapperFacade.map(entity, SpecDTO.class);
-	}
-	
-	public SpecsValue map(SpecsValueDTO dto) {
-		return this.mapperFacade.map(dto, SpecsValue.class);
-	}
-	
-	public SpecsValueDTO map(SpecsValue entity) {
-		return this.mapperFacade.map(entity, SpecsValueDTO.class);
-	}
-	
-	public ServiceSpec map(ServiceSpecDTO dto) {
-		return this.mapperFacade.map(dto, ServiceSpec.class);
-	}
-	
-	public ServiceSpecDTO map(ServiceSpec entity) {
-		return this.mapperFacade.map(entity, ServiceSpecDTO.class);
-	}
+    BaseMapper.MAPPER_FACTORY.classMap(SpecsValueDTO.class, SpecsValue.class)
+            .field("idSpecs", "spec.idSpecs")
+            .field("specName", "spec.name")
+            .byDefault()
+            .customize(new CustomMapper<SpecsValueDTO, SpecsValue>() {
 
-	public void setSupplyTypeRepository(SupplyTypeRepository supplyTypeRepository) {
-		this.supplyTypeRepository = supplyTypeRepository;
-	}	
+              @Override
+              public void mapBtoA(SpecsValue entity, SpecsValueDTO dto, MappingContext context) {
+                if (supplyTypeRepository != null) {
+                  if (entity.getType() == 2) {
+                    String supplyName = supplyTypeRepository.findOne(entity.getIdSupplyType()).getName();
+                    dto.setSupplyName(supplyName);
+                  }
+                }
+              }
+            })
+            .register();
+
+    mapperFacade = BaseMapper.MAPPER_FACTORY.getMapperFacade();
+  }
+
+  public Spec map(SpecDTO dto) {
+    return this.mapperFacade.map(dto, Spec.class);
+  }
+
+  public SpecDTO map(Spec entity) {
+    return this.mapperFacade.map(entity, SpecDTO.class);
+  }
+
+  public SpecsValue map(SpecsValueDTO dto) {
+    return this.mapperFacade.map(dto, SpecsValue.class);
+  }
+
+  public SpecsValueDTO map(SpecsValue entity) {
+    return this.mapperFacade.map(entity, SpecsValueDTO.class);
+  }
+
+  public ServiceSpec map(ServiceSpecDTO dto) {
+    return this.mapperFacade.map(dto, ServiceSpec.class);
+  }
+
+  public ServiceSpecDTO map(ServiceSpec entity) {
+    return this.mapperFacade.map(entity, ServiceSpecDTO.class);
+  }
+
+  public void setSupplyTypeRepository(SupplyTypeRepository supplyTypeRepository) {
+    this.supplyTypeRepository = supplyTypeRepository;
+  }
 }
 
 class SpecsValueConverter extends BidirectionalConverter<Set<SpecsValue>, Set<SpecsValueDTO>> {
-	@Override
-	public Set<SpecsValue> convertFrom(Set<SpecsValueDTO> source, Type<Set<SpecsValue>> arg1) {
-		return source.stream().map(item -> SpecsMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-	}
+  @Override
+  public Set<SpecsValue> convertFrom(Set<SpecsValueDTO> source, Type<Set<SpecsValue>> arg1) {
+    return source.stream().map(item -> SpecsMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+  }
 
-	@Override
-	public Set<SpecsValueDTO> convertTo(Set<SpecsValue> source, Type<Set<SpecsValueDTO>> arg1) {
-		return source.stream().map(item -> SpecsMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-	}
+  @Override
+  public Set<SpecsValueDTO> convertTo(Set<SpecsValue> source, Type<Set<SpecsValueDTO>> arg1) {
+    return source.stream().map(item -> SpecsMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+  }
 }
 
 
 class ServiceTypesConverter extends BidirectionalConverter<Set<ServiceType>, Set<Integer>> {
-	@Override
-	public Set<Integer> convertTo(Set<ServiceType> source, Type<Set<Integer>> type) {
-		return source.stream().map(item -> item.getId()).collect(Collectors.toSet());
-	}
+  @Override
+  public Set<Integer> convertTo(Set<ServiceType> source, Type<Set<Integer>> type) {
+    return source.stream().map(item -> item.getId()).collect(Collectors.toSet());
+  }
 
-	@Override
-	public Set<ServiceType> convertFrom(Set<Integer> integers, Type<Set<ServiceType>> type) {
-		return null;
-	}
+  @Override
+  public Set<ServiceType> convertFrom(Set<Integer> integers, Type<Set<ServiceType>> type) {
+    return null;
+  }
 }
