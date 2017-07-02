@@ -6,6 +6,7 @@ import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.metadata.Type;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -94,39 +95,12 @@ class EmployeeTaskOrderSetConverter
   }
 }
 
-//class PaymentInfoSetConverter extends BidirectionalConverter<Set<PaymentInfo>, Set<PaymentInfoDTO>> {
-//	@Override
-//	public Set<PaymentInfo> convertFrom(Set<PaymentInfoDTO> source, Type<Set<PaymentInfo>> arg1) {
-//		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-//	}
-//
-//	@Override
-//	public Set<PaymentInfoDTO> convertTo(Set<PaymentInfo> source, Type<Set<PaymentInfoDTO>> arg1) {
-//		return source.stream().map(item -> PaymentMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-//	}
-//}
-
-//*******************
-// Service Mapper
-//*******************
-//class ServiceTypeTas2IntkSetConverter extends BidirectionalConverter<Set<ServiceTypeTask>, Set<Integer>> {
-//	@Override
-//	public Set<ServiceTypeTask> convertFrom(Set<Integer> source, Type<Set<ServiceTypeTask>> arg1) {
-//		return source.stream().map(p -> (new ServiceTypeTask()).setId(p)).collect(Collectors.toSet());
-//	}
-//
-//	@Override
-//	public Set<Integer> convertTo(Set<ServiceTypeTask> source, Type<Set<Integer>> arg1) {
-//		return source.stream().map(p -> p.getId()).collect(Collectors.toSet());
-//	}
-//}
-
 class ServiceTypeTaskSetConverter extends BidirectionalConverter<Set<ServiceTypeTask>, List<ServiceTypeTaskDTO>> {
 
   @Override
   public List<ServiceTypeTaskDTO> convertTo(Set<ServiceTypeTask> source, Type<List<ServiceTypeTaskDTO>> type) {
     List<ServiceTypeTaskDTO> result = source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toList());
-    Collections.sort(result, (o1, o2) -> o1.getSortingOrder() - o2.getSortingOrder());
+    Collections.sort(result, Comparator.comparingInt(ServiceTypeTaskDTO::getSortingOrder));
     return result;
   }
 
@@ -287,43 +261,31 @@ class ServiceSetConverter extends BidirectionalConverter<Set<Service>, Set<Servi
 
   @Override
   public Set<Service> convertFrom(Set<ServiceDTO> source, Type<Set<Service>> arg1) {
-    return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+    return source.stream().map(ServiceMapper.INSTANCE::map).collect(Collectors.toSet());
   }
 
   @Override
   public Set<ServiceDTO> convertTo(Set<Service> source, Type<Set<ServiceDTO>> arg1) {
-    return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+    return source.stream().map(ServiceMapper.INSTANCE::map).collect(Collectors.toSet());
   }
 }
-
-//class ServiceCommentSetConverter extends BidirectionalConverter<Set<ServiceComment>, Set<ServiceCommentDTO>> {
-//	@Override
-//	public Set<ServiceComment> convertFrom(Set<ServiceCommentDTO> source, Type<Set<ServiceComment>> arg1) {
-//		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-//	}
-//
-//	@Override
-//	public Set<ServiceCommentDTO> convertTo(Set<ServiceComment> source, Type<Set<ServiceCommentDTO>> arg1) {
-//		return source.stream().map(item -> ServiceMapper.INSTANCE.map(item)).collect(Collectors.toSet());
-//	}
-//}
 
 class ProductTypeSetConverter extends BidirectionalConverter<Set<ProductType>, Set<ProductTypeDTO>> {
   @Override
   public Set<ProductTypeDTO> convertTo(Set<ProductType> source, Type<Set<ProductTypeDTO>> type) {
-    return source.stream().map(item -> ProductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+    return source.stream().map(ProductMapper.INSTANCE::map).collect(Collectors.toSet());
   }
 
   @Override
   public Set<ProductType> convertFrom(Set<ProductTypeDTO> source, Type<Set<ProductType>> type) {
-    return source.stream().map(item -> ProductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+    return source.stream().map(ProductMapper.INSTANCE::map).collect(Collectors.toSet());
   }
 }
 
 class ServiceProductDTOSetConverter extends BidirectionalConverter<Set<ServiceProduct>, Set<ServiceProductDTO>> {
   @Override
   public Set<ServiceProductDTO> convertTo(Set<ServiceProduct> source, Type<Set<ServiceProductDTO>> type) {
-    return source.stream().map(item -> ProductMapper.INSTANCE.map(item)).collect(Collectors.toSet());
+    return source.stream().map(ProductMapper.INSTANCE::map).collect(Collectors.toSet());
   }
 
   @Override

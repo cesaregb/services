@@ -35,7 +35,7 @@ public class SpecificObjectsConverterService {
     ConverterFactory converterFactory = BaseMapper.MAPPER_FACTORY.getConverterFactory();
     converterFactory.registerConverter("wServiceTypeSetConverter", new WServiceTypeSetConverter());
     converterFactory.registerConverter("wSpecSetConverter", new WSpecSetConverter());
-    converterFactory.registerConverter("productTepe2ProductSetConverter", new ProductTepe2ProductSetConverter());
+    converterFactory.registerConverter("ProductType2ProductSetConverter", new ProductType2ProductSetConverter());
 
     BaseMapper.MAPPER_FACTORY.classMap(WServiceCategoryDTO.class, ServiceCategory.class)
             .fieldMap("serviceTypes", "serviceTypes").converter("wServiceTypeSetConverter").mapNulls(true).mapNullsInReverse(true).add()
@@ -44,7 +44,7 @@ public class SpecificObjectsConverterService {
 
     BaseMapper.MAPPER_FACTORY.classMap(WServiceTypeDTO.class, ServiceType.class)
             .fieldMap("specs", "specs").converter("wSpecSetConverter").mapNulls(true).mapNullsInReverse(true).add()
-            .fieldMap("products", "productTypes").converter("productTepe2ProductSetConverter").mapNulls(true).mapNullsInReverse(true).add()
+            .fieldMap("products", "productTypes").converter("ProductType2ProductSetConverter").mapNulls(true).mapNullsInReverse(true).add()
             .byDefault()
             .register();
 
@@ -145,7 +145,7 @@ class WSpecSetConverter extends BidirectionalConverter<Set<Spec>, Set<WSpecDTO>>
 
 }
 
-class ProductTepe2ProductSetConverter extends BidirectionalConverter<Set<ProductDTO>, Set<ProductType>> {
+class ProductType2ProductSetConverter extends BidirectionalConverter<Set<ProductDTO>, Set<ProductType>> {
 
   @Override
   public Set<ProductType> convertTo(Set<ProductDTO> source, Type<Set<ProductType>> type) {
@@ -156,9 +156,9 @@ class ProductTepe2ProductSetConverter extends BidirectionalConverter<Set<Product
   @Override
   public Set<ProductDTO> convertFrom(Set<ProductType> source, Type<Set<ProductDTO>> type) {
     Set<ProductDTO> result = new HashSet<>();
-    source.forEach(i -> {
-      i.getProducts().forEach(e -> result.add(ProductMapper.INSTANCE.map(e)));
-    });
+    source.stream()
+            .filter(it -> it.getDeleted() == 0)
+            .forEach(i -> i.getProducts().forEach(e -> result.add(ProductMapper.INSTANCE.map(e))));
 
     return result;
   }

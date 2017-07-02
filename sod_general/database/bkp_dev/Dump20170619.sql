@@ -1182,7 +1182,7 @@ CREATE TABLE `DistanceInfo` (
 LOCK TABLES `DistanceInfo` WRITE;
 /*!40000 ALTER TABLE `DistanceInfo`
   DISABLE KEYS */;
-INSERT INTO `DistanceInfo` VALUES (1, 3, 0, 1, 1), (2, 6, 0, 1, 1), (3, 12, 10, 1, 1), (4, 24, 20, 1, 1);
+INSERT INTO `DistanceInfo` VALUES (1, 3, 0, 1, 1), (2, 6, 0, 1, 1), (3, 12, 0, 1, 1), (4, 24, 0, 1, 1);
 /*!40000 ALTER TABLE `DistanceInfo`
   ENABLE KEYS */;
 UNLOCK TABLES;
@@ -1404,7 +1404,7 @@ LOCK TABLES `Menu` WRITE;
 /*!40000 ALTER TABLE `Menu`
   DISABLE KEYS */;
 INSERT INTO `Menu`
-VALUES (1, 'client.all', 'Clientes', 2, 1), (2, 'routes.all', 'Rutas', 2, 2), (3, 'tasks.taskMenu', 'Tareas', 1, 5),
+VALUES (1, 'client.all', 'Clientes', 2, 1), (2, 'routes.all', 'Rutas', 0, 2), (3, 'tasks.taskMenu', 'Tareas', 1, 5),
   (4, 'specs.specMenu', 'Specs', 1, 6), (5, 'employees.employeeMenu', 'Empleados', 1, 4),
   (6, 'assets.assetMenu', 'Activos', 0, 3), (7, 'supplies.supplyMenu', 'Consumibles', 1, 7),
   (8, 'services.serviceMenu', 'Servicios', 1, 8), (9, 'orders.orderMenu', 'Orders', 1, 9),
@@ -1823,8 +1823,8 @@ VALUES (1, 1, 'Sabanas', 2.7, 0, 0), (2, 1, 'Toalla Chica', 0.9, 0, 0), (3, 1, '
   (4, 1, 'Toalla Mediana', 1.08, 0, 0), (5, 4, 'Kilogramo', 13.6, 0, 0), (6, 4, '1-5 Kg', 68, 0, 0),
   (7, 4, '5.1-10 Kg', 130, 0, 0), (8, 6, 'Por Lavadora', 50, 0, 0), (9, 6, 'Cobija', 65, 0, 0),
   (10, 6, 'Edredon', 65, 0, 0), (11, 7, 'Pantalon', 45, 0, 0), (12, 7, 'Traje', 88, 0, 0),
-  (13, 4, 'Kilogramo Mayoreo', 13, 0, 0), (14, 4, '10.1-15 Kg', 196.5, 0, 1), (15, 4, '15.1-20 Kg', 271.5, 0, 1),
-  (16, 1, '20.1-25', 346.5, 0, 1), (17, 4, 'Prenda', 7, 0, 0), (18, 6, 'Colcha', 55, 0, 0), (19, 1, 'Trapo', 0.9, 0, 0),
+  (13, 4, 'Kilogramo Mayoreo', 13, 0, 0),
+  (17, 4, 'Prenda', 7, 0, 0), (18, 6, 'Colcha', 55, 0, 0), (19, 1, 'Trapo', 0.9, 0, 0),
   (20, 1, 'Funda', 0.9, 0, 0), (21, 1, 'Bata Banio', 2.88, 0, 0), (22, 1, 'Cobertor', 9.54, 0, 0),
   (23, 1, 'Bandas', 0.9, 0, 0), (24, 1, 'Tapete', 2.7, 0, 0), (25, 1, 'Cubre Colchon', 2.7, 0, 0),
   (26, 1, 'Uniformes', 2.88, 0, 0), (27, 1, 'Capas', 0.9, 0, 0), (28, 1, 'Careta', 1.08, 0, 0),
