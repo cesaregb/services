@@ -158,7 +158,10 @@ class ProductType2ProductSetConverter extends BidirectionalConverter<Set<Product
     Set<ProductDTO> result = new HashSet<>();
     source.stream()
             .filter(it -> it.getDeleted() == 0)
-            .forEach(i -> i.getProducts().forEach(e -> result.add(ProductMapper.INSTANCE.map(e))));
+            .forEach(i -> i.getProducts()
+                    .stream()
+                    .filter(pd -> pd.getDeleted() == 0)
+                    .forEach(e -> result.add(ProductMapper.INSTANCE.map(e))));
 
     return result;
   }
