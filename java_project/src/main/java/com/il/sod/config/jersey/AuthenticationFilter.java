@@ -68,13 +68,11 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     // get and log the allowed ips.
     List<String> ips = Constants.envConfig.getStringList("security.ips");
-//		LOGGER.info("***** AuthenticationFilter\n ips with access: ");
-//		ips.forEach(LOGGER::info);
     LOGGER.info("Request IP Address:" + servletRequest.getRemoteAddr());
 
     String requestedURLMethod = requestContext.getUriInfo().getPath();
     String requesterIp = servletRequest.getRemoteAddr();
-    LOGGER.info("[Request Info] http method: " + reqMethod + " \trequested Method: " + requestedURLMethod + "\tJava Method:" + method.getName());
+    LOGGER.info("[Request Info] http method: {} \trequested Method: {}\tJava Method: {}", reqMethod, requestedURLMethod, method.getName());
 
     // the request is comming from a known ip.
     if (ips.contains(requesterIp)) {
@@ -121,10 +119,10 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     }
 
     // already authenticated
-    System.out.println("********* " + requestedURLMethod + " **** " + requestedURLMethod.toLowerCase().equals("swagger.json"));
+    LOGGER.info("********* {} **** {}", requestedURLMethod, requestedURLMethod.equalsIgnoreCase("swagger.json"));
     if (method.isAnnotationPresent(PermitAll.class)
-            || requestedURLMethod.toLowerCase().equals("swagger.json")
-            || reqMethod.toUpperCase().equals("OPTIONS")) {
+            || requestedURLMethod.equalsIgnoreCase("swagger.json")
+            || reqMethod.equalsIgnoreCase("OPTIONS")) {
       LOGGER.debug("Authentication not needed!");
       return;
     }
