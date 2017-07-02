@@ -18,7 +18,7 @@ public class ServiceTypeDTO {
   private List<ServiceTypeTaskDTO> serviceTypeTasks;
   private int idServiceCategory;
   private String serviceTypeCategoryName;
-  private Set<Integer> productTypes;
+  private Set<ProductTypeDTO> productTypes;
   private boolean calculator;
 
   @Override

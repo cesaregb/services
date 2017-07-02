@@ -21,8 +21,8 @@ public enum ProductMapper {
     converterFactory.registerConverter("serviceTypeSet2IntConverter", new ServiceTypeSet2IntConverter());
 
     BaseMapper.MAPPER_FACTORY.classMap(ProductDTO.class, Product.class)
-            .fieldBToA("idProductType", "productType.idProductType")
-            .fieldBToA("typeName", "productType.name")
+            .fieldBToA("productType.idProductType", "idProductType")
+            .fieldBToA("productType.name", "typeName")
             .byDefault()
             .register();
 
