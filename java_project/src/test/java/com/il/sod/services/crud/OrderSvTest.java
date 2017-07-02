@@ -3,6 +3,7 @@ package com.il.sod.services.crud;
 import com.il.sod.config.SpringTestConfiguration;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.dto.db.OrderDTO;
+import com.il.sod.rest.dto.serve.WServiceCategoryDTO;
 import com.il.sod.rest.dto.specifics.OrderTasksInfoDTO;
 import com.il.sod.services.cruds.OrdersSv;
 import org.hamcrest.Matchers;
@@ -10,6 +11,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -38,6 +41,12 @@ public class OrderSvTest extends SpringTestConfiguration {
     dto.getServices().forEach(s -> {
       LOGGER.info(s.getServiceDescription());
     });
+  }
+
+  @Test
+  public void testGetPreorderService() throws SODAPIException {
+    List<WServiceCategoryDTO> list =  ordersSv.getOrderTypes();
+    list.forEach(t-> LOGGER.info(t.toString()));
   }
 
 

@@ -20,13 +20,9 @@ public class ServiceType implements IEntity<Integer> {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int idServiceType;
-
   private String description;
-
   private String name;
-
   private double price;
-
   private Integer time;
 
 

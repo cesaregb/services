@@ -5,16 +5,20 @@ import com.il.sod.rest.dto.db.*;
 import com.il.sod.services.cruds.ServicesSv;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Created by cesaregb on 1/19/17.
  */
 @SuppressWarnings("Duplicates")
 public class ServicesSvTest extends SpringTestConfiguration {
+  private final static Logger LOGGER = getLogger(ServicesSvTest.class);
 
   @Autowired
   ServicesSv servicesSv;
@@ -83,6 +87,12 @@ public class ServicesSvTest extends SpringTestConfiguration {
     servicesSv.addServiceTypeTask(8, list);
     dto = servicesSv.getServiceTypeList(8).get(0);
     Assert.assertTrue(dto.getServiceTypeTasks().size() == 1);
+  }
+
+  @Test
+  public void testGetServiceTypeById() throws Exception{
+    ServiceTypeDTO st = servicesSv.getServiceType(1);
+    LOGGER.info(st.toString());
   }
 
 }

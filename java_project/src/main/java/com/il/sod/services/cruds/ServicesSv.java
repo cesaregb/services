@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Set;
@@ -66,22 +65,21 @@ public class ServicesSv extends EntityServicesBase {
     return true;
   }
 
-  public List<ServiceTypeDTO> getServiceTypeList(@QueryParam("idServiceType") int idServiceType) throws SODAPIException {
-    List<ServiceType> entityList = null;
+  public List<ServiceTypeDTO> getServiceTypeList(int idServiceType) throws SODAPIException {
+    List<ServiceType> entityList;
     if (idServiceType > 0) {
       entityList = serviceTypeRepository.findById(idServiceType);
     } else {
       entityList = this.getEntityList(serviceTypeRepository);
     }
-    List<ServiceTypeDTO> list = entityList.stream().map((i) -> {
+    return entityList.stream().map((ServiceType i) -> {
       ServiceTypeDTO dto = ServiceMapper.INSTANCE.map(i);
       return dto;
     }).collect(Collectors.toList());
-    return list;
   }
 
-  public ServiceTypeDTO getServiceType(int id) throws SODAPIException {
-    ServiceType st = serviceTypeRepository.findOne(id);
+  public ServiceTypeDTO getServiceType(int idServiceType) throws SODAPIException {
+    ServiceType st = serviceTypeRepository.findOne(idServiceType);
     return ServiceMapper.INSTANCE.map(st);
   }
 
