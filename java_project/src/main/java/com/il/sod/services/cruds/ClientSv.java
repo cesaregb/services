@@ -27,8 +27,14 @@ import java.util.stream.Collectors;
 @Service
 public class ClientSv extends EntityServicesBase {
   private static final String PHONE_TXT = "phone";
+  private static final String NAME_TXT = "name";
+  private static final String LAST_NAME_TXT = "lastName";
 
-  private final static Logger LOGGER = LoggerFactory.getLogger(ClientSv.class);
+  private final static Logger LOGGER;
+
+  static {
+    LOGGER = LoggerFactory.getLogger(ClientSv.class);
+  }
 
   @Autowired
   protected ClientRepository clientRepository;
@@ -112,7 +118,6 @@ public class ClientSv extends EntityServicesBase {
       throw new SODAPIException(Response.Status.NOT_FOUND, "Client not found");
     }
     this.softDeleteEntity(clientRepository, entity.getIdClient());
-
     return true;
   }
 
@@ -123,60 +128,88 @@ public class ClientSv extends EntityServicesBase {
     }
     Client entity = clients.get(0);
     this.softDeleteEntity(clientRepository, entity.getIdClient());
-
     return true;
   }
 
-  public ClientDTO getClient(String clientId) throws SODAPIException {
+  public ClientDTO getClient(String clientId) {
     return ClientMapper.INSTANCE.map(this.getEntity(clientRepository, Integer.valueOf(clientId)));
   }
 
-  public List<ClientDTO> getClientsByFilter(MultivaluedMap<String, String> queryParams,
-                                            String idAddress,
-                                            String phone,
-                                            String token) throws SODAPIException {
+  public List<ClientDTO> getClientsByFilter(MultivaluedMap<String, String> queryParams, String idAddress, String phone, String token) throws SODAPIException{
+    logParams(queryParams);
+    List<Client> resultList;
 
+    if (StringUtils.isNotEmpty(phone)) {
+      resultList = clientDAO.findByPhone(phone);
+
+    } else if (StringUtils.isNotEmpty(idAddress)) {
+      resultList = clientDAO.findByAddress(Integer.valueOf(idAddress));
+
+    } else if (StringUtils.isNotEmpty(token)) {
+      resultList = clientDAO.findByToken(token);
+
+    } else if (queryParams.get(NAME_TXT) != null) {
+      resultList = getClientsByClientName(queryParams);
+
+    } else if (!queryParams.isEmpty()) {
+      resultList = getClientsByQueryParamsGral(queryParams);
+
+    } else {
+      resultList = this.getEntityList(clientRepository);
+    }
+
+    assert resultList != null;
+    return resultList.stream()
+            .map(ClientMapper.INSTANCE::map)
+            .filter(DeletablePredicate.isActive())
+            .collect(Collectors.toList());
+  }
+
+  private List<Client> getClientsByQueryParamsGral(MultivaluedMap<String, String> queryParams) {
+    List<Client> resultList = new ArrayList<>();
+    List<ClientSpecification> filterList = new ArrayList<>();
+    for (String theKey : queryParams.keySet()) {
+      if (PHONE_TXT.equalsIgnoreCase(theKey)) {
+        LOGGER.debug("Skiping phone in filter");
+      } else {
+        ClientSpecification spec = new ClientSpecification(new SearchCriteria(theKey, ":", queryParams.getFirst(theKey)));
+        filterList.add(spec);
+        SpecificationsBuilder<Client, ClientSpecification> builder = new SpecificationsBuilder<>(filterList);
+        resultList = clientRepository.findAll(builder.build());
+      }
+    }
+    return resultList;
+  }
+
+  private void logParams(MultivaluedMap<String, String> queryParams) {
     // logging
     Iterator<String> it;
     if (!queryParams.isEmpty()) {
       it = queryParams.keySet().iterator();
       while (it.hasNext()) {
         String theKey = it.next();
-        LOGGER.info(theKey + " : " + queryParams.getFirst(theKey));
+        LOGGER.info("{} : {} ", theKey, queryParams.getFirst(theKey));
       }
     }
+  }
 
+  private List<Client> getClientsByClientName(MultivaluedMap<String, String> queryParams) throws SODAPIException {
     List<Client> entities;
-    if (StringUtils.isNotEmpty(phone)) {
-      entities = clientDAO.findByPhone(phone);
-
-    } else if (StringUtils.isNotEmpty(idAddress)) {
-      entities = clientDAO.findByAddress(Integer.valueOf(idAddress));
-
-    } else if (StringUtils.isNotEmpty(token)) {
-      entities = clientDAO.findByToken(token);
-
-    } else if (!queryParams.isEmpty()) {
-      List<ClientSpecification> filterList = new ArrayList<>();
-      it = queryParams.keySet().iterator();
-      while (it.hasNext()) {
-        String theKey = it.next();
-        if (!theKey.toLowerCase().equals(PHONE_TXT)) {
-          ClientSpecification spec = new ClientSpecification(new SearchCriteria(theKey, ":", queryParams.getFirst(theKey)));
-          filterList.add(spec);
-        }
-      }
-      SpecificationsBuilder<Client, ClientSpecification> builder = new SpecificationsBuilder<>(filterList);
-      entities = clientRepository.findAll(builder.build());
-    } else {
-      entities = this.getEntityList(clientRepository);
+    final String nameText = queryParams.getFirst(NAME_TXT).trim();
+    if (StringUtils.isEmpty(nameText)){
+      throw new SODAPIException(Response.Status.BAD_REQUEST, "Query param name can not be empty");
     }
-
-    List<ClientDTO> result = entities.stream().map(ClientMapper.INSTANCE::map)
-            .filter(DeletablePredicate.isActive())
-            .collect(Collectors.toList());
-
-    return result;
+    String[] nameParts = nameText.split("\\s+");
+    List<ClientSpecification> filterList = new ArrayList<>();
+    if (nameParts.length == 1) {
+      filterList.add( new ClientSpecification(new SearchCriteria(NAME_TXT, ":", nameText)));
+    } else {
+      filterList.add( new ClientSpecification(new SearchCriteria(NAME_TXT, ":", nameParts[0])));
+      filterList.add( new ClientSpecification(new SearchCriteria(LAST_NAME_TXT, ":", nameParts[1])));
+    }
+    SpecificationsBuilder<Client, ClientSpecification> builder = new SpecificationsBuilder<>(filterList);
+    entities = clientRepository.findAll(builder.build());
+    return entities;
   }
 
   private void assignDependencyToChilds(Client entity) {

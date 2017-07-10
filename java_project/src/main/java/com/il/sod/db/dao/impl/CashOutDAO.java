@@ -48,19 +48,20 @@ public class CashOutDAO {
     double discount = 0d;
 
     for (Order o : orders) {
-      subtotal += o.getTotal();
+      subtotal += o.getSubtotal();
       pending += (o.isPaymentStatus()) ? 0 : o.getTotal();
       discount += o.getDiscount();
     }
 
     CashOut cashOut = new CashOut();
-    cashOut.setUser(1); //TODO fixme
     cashOut.setSubtotal(subtotal);
     cashOut.setPending(pending);
     cashOut.setDiscount(discount);
     cashOut.setTotal(subtotal - discount);
     return cashOut;
   }
+
+
 
   public List<CashOut> getCashOutByDate(Timestamp date) {
     return cashOutRepository.findAllByCreateDate(date);

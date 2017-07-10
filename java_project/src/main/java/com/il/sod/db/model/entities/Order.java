@@ -351,4 +351,9 @@ public class Order extends SoftDeleteEntity implements IEntity<Integer> {
   public void setIdCashOut(int idCashOut) {
     this.idCashOut = idCashOut;
   }
+
+  @Transient
+  public Double getSubtotal(){
+    return this.getTotalServices() + this.getPickUpPrice() + this.getDeliverPrice();
+  }
 }

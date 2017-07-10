@@ -10,17 +10,21 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import java.util.List;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * Created by cesaregb on 1/19/17.
  */
 public class ClientSvTest extends SpringTestConfiguration {
-
+  private final static Logger LOGGER = getLogger(ClientSvTest.class);
+  
   @Autowired
   ClientSv clientSv;
 
@@ -74,11 +78,26 @@ public class ClientSvTest extends SpringTestConfiguration {
     map.add("email", "test@domain.com");
     List<ClientDTO> l = clientSv.getClientsByFilter(map, null, null, null);
     Assert.assertTrue("No Clients found", l.size() > 0);
-    System.out.println("*****************");
-    l.forEach(c -> System.out.println(c.toString()));
-    System.out.println("*****************");
     deleteClient();
 
+  }
+
+  @Test
+  public void findClientByName() throws Exception {
+    MultivaluedMap<String, String> map = new MultivaluedHashMap<>();
+    map.add("name", "fernando");
+    List<ClientDTO> list = clientSv.getClientsByFilter(map, null, null, null);
+    Assert.assertTrue("No Clients found", list.size() > 0);
+    LOGGER.info("Size: {}", list.size());
+  }
+
+  @Test
+  public void findClientByPhone() throws Exception {
+    MultivaluedMap<String, String> map = new MultivaluedHashMap<>();
+    map.add("phone", "1111222333");
+    List<ClientDTO> list = clientSv.getClientsByFilter(map, null, "1111222333", null);
+    Assert.assertTrue("No Clients found", list.size() > 0);
+    LOGGER.info("Size: {}", list.size());
   }
 
   @Test
@@ -91,13 +110,6 @@ public class ClientSvTest extends SpringTestConfiguration {
     ClientDTO c2 = clientSv.getClient(String.valueOf(c.getIdClient()));
     Assert.assertTrue("client is not updated", c.equals(c2));
     deleteClient();
-  }
-
-
-  @Test
-  public void addAddress() throws Exception {
-    List<Client> c = clientRepository.findAll();
-
   }
 
 }

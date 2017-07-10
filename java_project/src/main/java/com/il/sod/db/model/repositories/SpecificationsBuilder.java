@@ -13,8 +13,20 @@ public class SpecificationsBuilder<E, T extends Specification<E>> {
     this.specs = specs;
   }
 
+  public Specification<E> buildOr() {
+    if (specs.isEmpty()) {
+      return null;
+    }
+
+    Specification<E> result = specs.get(0);
+    for (int i = 1; i < specs.size(); i++) {
+      result = Specifications.where(result).or(specs.get(i));
+    }
+    return result;
+  }
+
   public Specification<E> build() {
-    if (specs.size() == 0) {
+    if (specs.isEmpty()) {
       return null;
     }
 
@@ -24,4 +36,6 @@ public class SpecificationsBuilder<E, T extends Specification<E>> {
     }
     return result;
   }
+
+
 }
