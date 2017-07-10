@@ -14,8 +14,6 @@ public class OrderDTO extends DeletableDTO {
   private Integer idAddressPickup;
   private Date pickUpDate;
   private Date deliverDate;
-  private Double totalServices;
-  private Double total;
   private Integer status;
   private ClientDTO client;
   private Integer idOrderType;
@@ -32,11 +30,18 @@ public class OrderDTO extends DeletableDTO {
   private String orderTypeName;
   private Double completed;
 
-  private Double pickUpPrice;
-  private Double deliverPrice;
-  private Double discount;
   private Boolean paymentStatus;
   private Set<OrderPriceAdjustmentDTO> orderPriceAdjustments;
   private Integer idCashOut;
+
+  private Double totalServices;
+  private Double total;
+  private Double pickUpPrice;
+  private Double deliverPrice;
+  private Double discount;
+
+  public Double getSubtotal(){
+    return this.totalServices + this.pickUpPrice + this.deliverPrice;
+  }
 
 }

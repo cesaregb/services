@@ -46,7 +46,7 @@ public class CashOutSv extends EntityServicesBase {
     return CashOutMapper.INSTANCE.map(co);
   }
 
-  public List<Order> filterOrders(List<Order> lOrder) {
+  List<Order> filterOrders(List<Order> lOrder) {
     return lOrder.stream()
             .filter(Order::isPaymentStatus)
             .collect(Collectors.toList());
