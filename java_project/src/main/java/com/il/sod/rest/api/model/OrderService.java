@@ -50,21 +50,16 @@ public class OrderService extends AbstractServiceMutations {
     if (forCashOut != null && forCashOut) {
       return ConvertUtils.castEntityAsResponse(ordersSv.getOrderNotCashedOut(), Response.Status.OK);
     }
-
     if (status != null) {
       return ConvertUtils.castEntityAsResponse(ordersSv.getOrdersByStatus(status), Response.Status.OK);
     }
-
     if (idClient != null && idClient > 0) {
       return ConvertUtils.castEntityAsResponse(ordersSv.getOrdersByClient(idClient), Response.Status.OK);
     }
-
     if (pending != null && pending) {
       return ConvertUtils.castEntityAsResponse(ordersSv.getPendingOrders(), Response.Status.OK);
     }
-
     return ConvertUtils.castEntityAsResponse(ordersSv.getOrderList());
-
   }
 
   @GET

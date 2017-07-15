@@ -40,6 +40,8 @@ public class ProductService extends AbstractServiceMutations {
   @Autowired
   ProductDAO productDAO;
 
+
+
   @POST
   @ApiOperation(value = "Create Product", response = ProductDTO.class)
   public Response saveProduct(ProductDTO dto) throws SODAPIException {
@@ -52,7 +54,8 @@ public class ProductService extends AbstractServiceMutations {
   @PUT
   @ApiOperation(value = "Update Product", response = ProductDTO.class)
   public Response updateProduct(ProductDTO dto) throws SODAPIException {
-    Product entity = ProductMapper.INSTANCE.map(dto);
+    Product entity = productRepository.findOne(dto.getIdProduct());
+    entity = ProductMapper.INSTANCE.map(dto, entity);
     this.updateEntity(productRepository, entity);
     dto = ProductMapper.INSTANCE.map(entity);
     return ConvertUtils.castEntityAsResponse(dto, Response.Status.OK);

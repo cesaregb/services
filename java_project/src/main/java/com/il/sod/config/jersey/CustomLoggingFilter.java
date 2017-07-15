@@ -1,67 +1,81 @@
 package com.il.sod.config.jersey;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.message.internal.ReaderWriter;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import javax.ws.rs.container.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.MultivaluedMap;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.annotation.Annotation;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class CustomLoggingFilter implements ContainerRequestFilter, ContainerResponseFilter {
-  final static Logger LOGGER = LoggerFactory.getLogger(CustomLoggingFilter.class);
-
   @Context
   private ResourceInfo resourceInfo;
-
-  private static final Logger log = LoggerFactory.getLogger(CustomLoggingFilter.class);
-
+  private final static Logger log = getLogger(CustomLoggingFilter.class);
   private long startTime = 0;
 
   @Override
   public void filter(ContainerRequestContext requestContext) throws IOException {
     startTime = System.currentTimeMillis();
-    log.debug("Entering in Resource : /{} ", requestContext.getUriInfo().getPath());
-    log.debug("Method Name : {} ", resourceInfo.getResourceMethod().getName());
-    log.debug("Class : {} ", resourceInfo.getResourceClass().getCanonicalName());
-    logQueryParameters(requestContext);
-    logMethodAnnotations();
-    logRequestHeader(requestContext);
-
-    //log entity stream...
-    String entity = readEntityStream(requestContext);
-    if (entity != null && entity.trim().length() > 0) {
-      log.debug("Entity Stream : {}", entity);
+    String queryParams = logParameters(requestContext.getUriInfo().getQueryParameters());
+    queryParams = (StringUtils.isEmpty(queryParams)) ? "NA" : queryParams;
+    log.info("Method: '{}' API Endpoint: '{}' QParams: '{}' ",
+            requestContext.getMethod(),
+            requestContext.getUriInfo().getPath(),
+            queryParams);
+    log.info("Class : {} ", resourceInfo.getResourceClass().getCanonicalName());
+    final String body = getEntityBody(requestContext);
+    if (StringUtils.isNoneEmpty(body)) {
+      log.info("Entity: {} ", body);
     }
   }
 
-  private void logQueryParameters(ContainerRequestContext requestContext) {
-    for (String name : requestContext.getUriInfo().getPathParameters().keySet()) {
-      List<String> obj = requestContext.getUriInfo().getPathParameters().get(name);
-      String value = null;
-      if (null != obj && obj.size() > 0) {
-        value = (String) obj.get(0);
+  private String getEntityBody(ContainerRequestContext requestContext) {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    InputStream in = requestContext.getEntityStream();
+    final StringBuilder stringBuilder = new StringBuilder();
+    try {
+      ReaderWriter.writeTo(in, out);
+      byte[] requestEntity = out.toByteArray();
+      if (requestEntity.length > 0) {
+        stringBuilder.append(new String(requestEntity)).append("\t");
       }
-      log.debug("Query Parameter Name: {}, Value :{}", name, value);
+      requestContext.setEntityStream(new ByteArrayInputStream(requestEntity));
+    } catch (IOException ignored) {
     }
+    return stringBuilder.toString();
   }
 
-  private void logMethodAnnotations() {
-    Annotation[] annotations = resourceInfo.getResourceMethod().getDeclaredAnnotations();
-    if (annotations != null && annotations.length > 0) {
-      log.debug("----Start Annotations of resource ----");
-      for (Annotation annotation : annotations) {
-        log.debug(annotation.toString());
-      }
-      log.debug("----End Annotations of resource----");
+  private String logParameters(MultivaluedMap<String, String> lParams) {
+    String json = null;
+    try {
+      json = new ObjectMapper().writeValueAsString(lParams);
+    } catch (JsonProcessingException ignore) {
     }
+    return json;
+  }
+
+  private void logCookie(ContainerRequestContext requestContext){
+    Map<String, Cookie> cookies = requestContext.getCookies();
+    log.debug("Cookies List");
+    for (Map.Entry<String, Cookie> entry : cookies.entrySet()) {
+      String key = entry.getKey();
+      Cookie value = entry.getValue();
+      log.debug("{} = {} ", key, value.toString());
+    }
+    log.debug("End cookies");
   }
 
   private void logRequestHeader(ContainerRequestContext requestContext) {
@@ -70,30 +84,11 @@ public class CustomLoggingFilter implements ContainerRequestFilter, ContainerRes
     log.debug("Method Type : {}", requestContext.getMethod());
     iterator = requestContext.getHeaders().keySet().iterator();
     while (iterator.hasNext()) {
-      String headerName = (String) iterator.next();
+      String headerName = iterator.next();
       String headerValue = requestContext.getHeaderString(headerName);
       log.debug("Header Name: {}, Header Value :{} ", headerName, headerValue);
     }
     log.debug("----End Header Section of request ----");
-  }
-
-  private String readEntityStream(ContainerRequestContext requestContext) {
-    ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-    final InputStream inputStream = requestContext.getEntityStream();
-    final StringBuilder builder = new StringBuilder();
-    try {
-      ReaderWriter.writeTo(inputStream, outStream);
-      byte[] requestEntity = outStream.toByteArray();
-      if (requestEntity.length == 0) {
-        builder.append("");
-      } else {
-        builder.append(new String(requestEntity));
-      }
-      requestContext.setEntityStream(new ByteArrayInputStream(requestEntity));
-    } catch (IOException ex) {
-      log.debug("----Exception occurred while reading entity stream :{}", ex.getMessage());
-    }
-    return builder.toString();
   }
 
   @Override
@@ -105,8 +100,8 @@ public class CustomLoggingFilter implements ContainerRequestFilter, ContainerRes
 //		}
 //		long startTime = Long.parseLong(stTime);
     long executionTime = System.currentTimeMillis() - startTime;
+    log.debug("Response entity: {}", responseContext.getEntity());
     log.debug("Total request execution time : {} milliseconds", executionTime);
-    //clear the context on exit
     MDC.clear();
   }
 }
