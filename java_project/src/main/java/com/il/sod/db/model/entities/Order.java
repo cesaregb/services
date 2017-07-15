@@ -155,7 +155,7 @@ public class Order extends SoftDeleteEntity implements IEntity<Integer> {
     return this.orderTasks.stream()
             .filter(o -> o.getTask().getId() == 1)
             .findFirst()
-            .orElseThrow(() -> new SODAPIException(Response.Status.INTERNAL_SERVER_ERROR, "Service task not found!"));
+            .orElseThrow(() -> new SODAPIException(Response.Status.INTERNAL_SERVER_ERROR, "Task for services not found on Order [%s]", this.idOrder));
   }
 
   public void setOrderTasks(Set<OrderTask> orderTasks) {

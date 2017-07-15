@@ -1,6 +1,7 @@
 package com.il.sod.services.crud;
 
 import com.il.sod.config.SpringTestConfiguration;
+import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.dto.db.*;
 import com.il.sod.services.cruds.ServicesSv;
 import org.junit.Assert;
@@ -93,6 +94,13 @@ public class ServicesSvTest extends SpringTestConfiguration {
   public void testGetServiceTypeById() throws Exception{
     ServiceTypeDTO st = servicesSv.getServiceType(1);
     LOGGER.info(st.toString());
+  }
+
+  @Test
+  public void testUpdateServiceType() throws SODAPIException {
+    ServiceTypeDTO serviceType = servicesSv.getServiceType(4);
+    serviceType.setIdServiceCategory(2);
+    servicesSv.updateServiceType(serviceType);
   }
 
 }

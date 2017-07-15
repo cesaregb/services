@@ -39,11 +39,11 @@ public enum ServiceMapper {
     BaseMapper.MAPPER_FACTORY.classMap(ServiceTypeDTO.class, ServiceType.class)
             .exclude("services")
             .fieldBToA("idServiceType", "idServiceType")
-            .fieldMap("specs", "specs").converter("specSetConverter").bToA().mapNulls(true).mapNullsInReverse(true).add()
+            .fieldMap("specs", "specs").bToA().converter("specSetConverter").mapNulls(true).mapNullsInReverse(true).add()
             .fieldMap("serviceTypeTasks", "serviceTypeTasks").bToA().converter("serviceTypeTaskSetConverter").mapNulls(true).mapNullsInReverse(true).add()
             .fieldMap("productTypes", "productTypes").bToA().converter("productTypeSetConverter").mapNulls(false).mapNullsInReverse(false).add()
-            .field("serviceTypeCategoryName", "serviceCategory.name").mapNulls(false)
-            .field("idServiceCategory", "serviceCategory.idServiceCategory").mapNulls(false)
+            .fieldBToA("serviceCategory.name", "serviceTypeCategoryName").mapNulls(false)
+            .fieldBToA("serviceCategory.idServiceCategory", "idServiceCategory").mapNulls(false)
             .byDefault()
             .register();
 
