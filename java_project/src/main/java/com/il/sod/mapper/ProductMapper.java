@@ -45,6 +45,11 @@ public enum ProductMapper {
     return this.mapperFacade.map(dto, Product.class);
   }
 
+  public Product map(ProductDTO dto, Product entity) {
+    this.mapperFacade.map(dto, entity);
+    return entity;
+  }
+
   public ProductDTO map(Product dto) {
     return this.mapperFacade.map(dto, ProductDTO.class);
   }

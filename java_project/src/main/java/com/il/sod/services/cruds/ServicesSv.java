@@ -4,13 +4,10 @@ import com.il.sod.db.model.entities.*;
 import com.il.sod.db.model.repositories.*;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.ServiceMapper;
-import com.il.sod.rest.api.model.ServiceTypeService;
 import com.il.sod.rest.dto.db.ProductTypeDTO;
 import com.il.sod.rest.dto.db.ServiceTypeDTO;
 import com.il.sod.rest.dto.db.ServiceTypeTaskDTO;
 import com.il.sod.rest.dto.db.SpecDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +22,6 @@ import java.util.stream.Collectors;
 @SuppressWarnings("Duplicates")
 @Service
 public class ServicesSv extends EntityServicesBase {
-  final static Logger LOGGER = LoggerFactory.getLogger(ServiceTypeService.class);
 
   @Autowired
   ServiceTypeRepository serviceTypeRepository;
@@ -42,6 +38,9 @@ public class ServicesSv extends EntityServicesBase {
   @Autowired
   TaskRepository taskRepository;
 
+  @Autowired
+  ServiceCategoryRepository serviceCategoryRepository;
+
   public ServiceTypeDTO saveServiceType(ServiceTypeDTO dto) throws SODAPIException {
     ServiceType entity = ServiceMapper.INSTANCE.map(dto);
     this.saveEntity(serviceTypeRepository, entity);
@@ -49,12 +48,12 @@ public class ServicesSv extends EntityServicesBase {
   }
 
   public ServiceTypeDTO updateServiceType(ServiceTypeDTO dto) throws SODAPIException {
-
     ServiceType entity = serviceTypeRepository.findOne(dto.getIdServiceType());
     if (entity == null) {
       throw new SODAPIException(Response.Status.BAD_REQUEST, "Service Type not found not found [%s]", dto.getIdServiceType());
     }
     entity = ServiceMapper.INSTANCE.map(dto, entity);
+    entity.setServiceCategory(serviceCategoryRepository.findOne(dto.getIdServiceCategory()));
     this.updateEntity(serviceTypeRepository, entity);
     return converter.map(entity, ServiceTypeDTO.class);
   }
@@ -72,10 +71,7 @@ public class ServicesSv extends EntityServicesBase {
     } else {
       entityList = this.getEntityList(serviceTypeRepository);
     }
-    return entityList.stream().map((ServiceType i) -> {
-      ServiceTypeDTO dto = ServiceMapper.INSTANCE.map(i);
-      return dto;
-    }).collect(Collectors.toList());
+    return entityList.stream().map(ServiceMapper.INSTANCE::map).collect(Collectors.toList());
   }
 
   public ServiceTypeDTO getServiceType(int idServiceType) throws SODAPIException {
@@ -136,13 +132,7 @@ public class ServicesSv extends EntityServicesBase {
 
   public ServiceTypeDTO addServiceTypeTask(int idServiceType, List<ServiceTypeTaskDTO> listDto) throws SODAPIException {
     serviceTypeTaskRepository.removeByServiceType(idServiceType);
-    List<ServiceTypeTask> toRemove = serviceTypeTaskRepository.findByServiceType(idServiceType);
-    System.out.format("toRemove.size(): [%s] %n", toRemove.size());
-
     ServiceType serviceType = getServiceTypeEntity(idServiceType);
-
-    System.out.format("serviceType.getServiceTypeTasks().size(): [%s] %n", serviceType.getServiceTypeTasks().size());
-
     for (ServiceTypeTaskDTO serviceTypeTaskDTO : listDto) {
       if (serviceTypeTaskDTO.getTask() == null || serviceTypeTaskDTO.getTask().getIdTask() < 1) {
         throw new SODAPIException(Response.Status.BAD_REQUEST, "one or more Tasks are not valid ");
@@ -154,7 +144,6 @@ public class ServicesSv extends EntityServicesBase {
       ServiceTypeTask serviceTypeTask = ServiceMapper.INSTANCE.map(serviceTypeTaskDTO);
       serviceTypeTask.setServiceType(serviceType);
       serviceTypeTask.setTask(task);
-
       serviceType.addServiceTypeTask(serviceTypeTask);
     }
     serviceType = serviceTypeRepository.save(serviceType);

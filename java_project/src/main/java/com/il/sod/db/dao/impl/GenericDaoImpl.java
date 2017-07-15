@@ -4,6 +4,8 @@ import com.il.sod.db.dao.IDAO;
 import com.il.sod.db.model.entities.SoftDeleteEntity;
 import com.il.sod.db.model.repositories.DeletableRepository;
 import com.il.sod.exception.SODAPIException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,10 +19,11 @@ import java.util.List;
 @Scope("prototype")
 public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID> {
 
+  private final static Logger LOGGER = LoggerFactory.getLogger(GenericDaoImpl.class);
+
   protected JpaRepository<T, ID> repository;
 
-  public GenericDaoImpl() {
-  }
+  public GenericDaoImpl() {}
 
   public GenericDaoImpl(JpaRepository<T, ID> repository) {
     this.repository = repository;
@@ -87,6 +90,7 @@ public class GenericDaoImpl<T, ID extends Serializable> implements IDAO<T, ID> {
   @Transactional(rollbackFor = SODAPIException.class)
   public T update(T entity) {
     repository.save(entity);
+    LOGGER.info("ladjkadjlajdklajdlajd");
     return entity;
   }
 

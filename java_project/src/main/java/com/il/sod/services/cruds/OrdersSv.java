@@ -186,9 +186,12 @@ public class OrdersSv extends EntityServicesBase {
   }
 
   public List<OrderDTO> getOrdersByClient(int idClient) throws SODAPIException {
-    Client client = this.getEntity(clientRepository, idClient);
-    List<Order> entityList = orderRepository.findByClient(client);
-    return entityList.stream().map(OrderMapper.INSTANCE::map).collect(Collectors.toList());
+    List<Order> entityList = orderRepository.findByClient(this.getEntity(clientRepository, idClient));
+    return entityList.stream().map(o -> {
+      OrderDTO odto = OrderMapper.INSTANCE.map(o);
+      odto.setOrderTypeName(o.getOrderType().getName());
+      return odto;
+    }).collect(Collectors.toList());
   }
 
   public List<OrderDTO> getOrderNotCashedOut() throws SODAPIException {

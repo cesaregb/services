@@ -90,13 +90,11 @@ public abstract class EntityServicesBase {
   protected <T> T updateEntity(JpaRepository<T, Integer> repository, T entity) {
     try {
       ABS_LOGGER.info("Update {}", ConvertUtils.castEntityAsString(entity));
-    } catch (SODAPIException e) {
-    }
+    } catch (SODAPIException ignore) { }
 
     IDAO<T, Integer> gDao = (IDAO<T, Integer>) this.genericDaoImpl;
     gDao.setRepository(repository);
-    entity = gDao.update(entity);
-    return entity;
+    return gDao.update(entity);
   }
 
 
