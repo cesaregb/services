@@ -11,6 +11,7 @@ import com.il.sod.mapper.OrderMapper;
 import com.il.sod.mapper.ServiceMapper;
 import com.il.sod.rest.dto.db.OrderDTO;
 import com.il.sod.rest.dto.db.OrderTaskDTO;
+import com.il.sod.rest.dto.db.ServiceDTO;
 import com.il.sod.rest.dto.db.ServiceTaskDTO;
 import com.il.sod.rest.dto.parse.UIOrderDTO;
 import com.il.sod.rest.dto.parse.UIProductDTO;
@@ -77,6 +78,9 @@ public class OrdersSv extends EntityServicesBase {
   @Autowired
   SpecificObjectsConverterService specificObjectsConverterService;
 
+  @Autowired
+  ServiceRepository serviceRepository;
+
   public OrderDTO updateOrder(OrderDTO dto) throws SODAPIException {
     Order entity = orderRepository.findOne(dto.getIdOrder());
     entity = OrderMapper.INSTANCE.map(dto, entity);
@@ -105,12 +109,17 @@ public class OrdersSv extends EntityServicesBase {
             .collect(Collectors.toList());
   }
 
-  public OrderDTO getOrderById(String orderId) throws SODAPIException {
-    return OrderMapper.INSTANCE.map(this.getEntity(orderRepository, Integer.valueOf(orderId)));
+  public OrderDTO getOrderById(String orderId){
+    OrderDTO order = OrderMapper.INSTANCE.map(this.getEntity(orderRepository, Integer.valueOf(orderId)));
+    Set<ServiceDTO> services = serviceRepository.findByOrder(order.getIdOrder()).stream()
+            .map(ServiceMapper.INSTANCE::map)
+            .collect(Collectors.toSet());
+    order.setServices(services);
+    return order;
   }
 
-  public OrderTasksInfoDTO getOrderTaskInfo(int orderId) throws SODAPIException {
-    Order order = this.getEntity(orderRepository, orderId);
+  public OrderTasksInfoDTO getOrderTaskInfo(int orderId) {
+    Order order = orderRepository.findOne(orderId);
     OrderTasksInfoDTO result = new OrderTasksInfoDTO();
     result.setIdOrder(orderId);
     result.setIdClient(order.getClient().getId());
@@ -209,12 +218,10 @@ public class OrdersSv extends EntityServicesBase {
 
   public OrderDTO createOrder(UIOrderDTO orderInputDto) throws SODAPIException {
     OrderDTO result;
-
     Client client = clientRepository.findAllIncludeOrders(orderInputDto.getIdClient());
     if (client == null) {
       throw new SODAPIException(Response.Status.NOT_FOUND, "Client not found {%d}", orderInputDto.getIdClient());
     }
-
     if (orderInputDto.getTransport() == null || orderInputDto.getTransport().isEmpty() || orderInputDto.getTransport().size() < 2) {
       int errorSize = (orderInputDto.getTransport() != null) ? orderInputDto.getTransport().size() : 0;
       throw new SODAPIException(Response.Status.BAD_REQUEST, "Error [transport] object is not complete %s", errorSize);
