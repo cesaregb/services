@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.il.sod.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,16 +24,14 @@ public class JacksonObjectMapperProvider implements ContextResolver<ObjectMapper
     MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 //		MAPPER.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 //		MAPPER.setDateFormat(new SimpleDateFormat("yyyy-MM-dd:"));
-    MAPPER.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX"));
+    MAPPER.setDateFormat(new SimpleDateFormat(Constants.DATE_FORMAT_JSON));
   }
 
   public JacksonObjectMapperProvider() {
-    LOGGER.info("Instantiate JacksonObjectMapperProvider");
   }
 
   @Override
   public ObjectMapper getContext(Class<?> type) {
-    LOGGER.info("JacksonObjectMapperProvider.getContext() called with type: " + type);
     return MAPPER;
   }
 }

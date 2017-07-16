@@ -4,7 +4,7 @@ import com.il.sod.rest.util.PropertyHandler;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class TestUtils {
+public class UtilsTest {
 
   @Test
   public void testProperties() {

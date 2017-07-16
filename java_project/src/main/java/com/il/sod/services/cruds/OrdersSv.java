@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -121,6 +122,7 @@ public class OrdersSv extends EntityServicesBase {
   public OrderTasksInfoDTO getOrderTaskInfo(int orderId) {
     Order order = orderRepository.findOne(orderId);
     OrderTasksInfoDTO result = new OrderTasksInfoDTO();
+    result.setPaymentStatus(order.isPaymentStatus());
     result.setIdOrder(orderId);
     result.setIdClient(order.getClient().getId());
     result.setClientName(order.getClient().getFullName());
@@ -195,10 +197,22 @@ public class OrdersSv extends EntityServicesBase {
   }
 
   public List<OrderDTO> getOrderNotCashedOut() throws SODAPIException {
-    return cashOutSv.filterOrders(ordersDAO.findOrderNotCashedOut())
+    return cashOutSv.filterOrdersByPaymentStatus(ordersDAO.findOrderNotCashedOut())
             .stream()
             .filter(Order::isPaymentStatus)
             .map(orderConverterService::convert)
+            .collect(Collectors.toList());
+  }
+
+  public List<OrderDTO> getOrderByDate(Date date) {
+    return ordersDAO.getOrderByDate(date).stream()
+            .map(orderConverterService::convertLite)
+            .collect(Collectors.toList());
+  }
+
+  public List<OrderDTO> getOrderBetweenDates(Date initDate, Date endDate) {
+    return ordersDAO.getOrderBetweenDates(initDate, endDate).stream()
+            .map(orderConverterService::convertLite)
             .collect(Collectors.toList());
   }
 

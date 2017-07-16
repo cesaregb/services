@@ -7,8 +7,6 @@ import com.il.sod.services.cruds.CashOutSv;
 import com.il.sod.services.utils.ConvertUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +14,8 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 
 @Component
 @RolesAllowed("ADMIN")
@@ -24,8 +23,6 @@ import java.sql.Timestamp;
 @Api(value = "cash-outs", tags = {"cash-outs"})
 @Path("/cash-outs")
 public class CashOutService extends AbstractServiceMutations {
-
-  private final static Logger LOGGER = LoggerFactory.getLogger(CashOutService.class);
 
   @Autowired
   CashOutSv cashOutSv;
@@ -38,8 +35,19 @@ public class CashOutService extends AbstractServiceMutations {
 
   @GET
   @ApiOperation(value = "Get Cash Outs", response = CashOutDTO.class, responseContainer = "List")
-  public Response getCashOutBy(@QueryParam("date") Timestamp date) throws SODAPIException {
-    return ConvertUtils.castEntityAsResponse(cashOutSv.getCashOutByDate(date),
+  public Response getCashOutBy(@QueryParam("initDate") String initDateS,
+                               @QueryParam("endDate") String endDateS) throws SODAPIException {
+    List<CashOutDTO> result;
+    Date initDate = ConvertUtils.parseDate(initDateS);
+    Date endDate = ConvertUtils.parseDate(endDateS);
+    if (initDate != null && endDate != null) {
+      result = cashOutSv.getCashOutBetweenDates(initDate, endDate);
+    } else if (initDate != null) {
+      result = cashOutSv.getCashOutByDate(initDate);
+    } else {
+      result = cashOutSv.getCashOuts();
+    }
+    return ConvertUtils.castEntityAsResponse(result,
             Response.Status.OK);
   }
 

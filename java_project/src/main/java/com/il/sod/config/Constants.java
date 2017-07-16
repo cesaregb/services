@@ -8,6 +8,8 @@ public class Constants {
   private Constants() {
   }
 
+  public static final String DATE_FORMAT_JSON = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+
   // Auth profiles.
   public static final String BASIC_AUTH = "BASIC_AUTH";
 

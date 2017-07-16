@@ -1,17 +1,22 @@
 package com.il.sod.services.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.il.sod.config.Constants;
 import com.il.sod.config.jersey.JacksonObjectMapperProvider;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.mapper.BaseMapper;
 import com.il.sod.rest.dto.GeneralResponseMessage;
 import com.il.sod.rest.util.RestUtil;
 import ma.glasnost.orika.MapperFacade;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public abstract class ConvertUtils {
 
@@ -82,6 +87,19 @@ public abstract class ConvertUtils {
       return result;
     } catch (Exception e) {
       throw new SODAPIException(Status.UNAUTHORIZED, "No valid authentication", e);
+    }
+  }
+
+  public static Date parseDate(String str) throws SODAPIException {
+    if (StringUtils.isNoneEmpty(str)){
+      SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT_JSON);
+      try {
+        return sdf.parse(str);
+      } catch (ParseException e) {
+        throw new SODAPIException(Status.BAD_REQUEST, "Error parsing dates: [%s]", str);
+      }
+    }else {
+      return null;
     }
   }
 
