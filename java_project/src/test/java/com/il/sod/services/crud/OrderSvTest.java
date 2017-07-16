@@ -1,5 +1,6 @@
 package com.il.sod.services.crud;
 
+import com.il.sod.TestUtils;
 import com.il.sod.config.SpringTestConfiguration;
 import com.il.sod.exception.SODAPIException;
 import com.il.sod.rest.dto.db.OrderDTO;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -49,5 +51,18 @@ public class OrderSvTest extends SpringTestConfiguration {
     list.forEach(t-> LOGGER.info(t.toString()));
   }
 
+  @Test
+  public void testGetOrdersByDate() {
+    LocalDate date = LocalDate.now();
+    List<OrderDTO> list = ordersSv.getOrderByDate(TestUtils.toTimestamp(date));
+    LOGGER.info("Orders: {}", list.size());
+  }
 
+  @Test
+  public void testGetOrdersBetweenDates() {
+    LocalDate dateA = LocalDate.now().minusDays(100);
+    LocalDate dateB = LocalDate.now();
+    List<OrderDTO> list = ordersSv.getOrderBetweenDates(TestUtils.toTimestamp(dateA), TestUtils.toTimestamp(dateB));
+    LOGGER.info("Orders: {}", list.size());
+  }
 }

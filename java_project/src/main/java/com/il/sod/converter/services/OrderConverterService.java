@@ -47,6 +47,15 @@ public class OrderConverterService {
     return result;
   }
 
+  public OrderDTO convertLite(Order entity) {
+    OrderDTO result = OrderMapper.INSTANCE.map(entity);
+    // add flattering...
+    result.setClientName(result.getClient().getName() + " " + result.getClient().getLastName());
+    result.setOrderTypeName(entity.getOrderType().getName());
+    result.setCompleted(ordersDAO.getCompletedPercent(entity));
+    return result;
+  }
+
   public UIOrderDTO convert2UI(Order entity) {
     if (entity != null) {
       UIOrderDTO result = new UIOrderDTO();

@@ -16,6 +16,8 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Date;
+import java.util.List;
 
 @Component
 @RolesAllowed("ADMIN")
@@ -46,20 +48,27 @@ public class OrderService extends AbstractServiceMutations {
   public Response getOrderList(@QueryParam("forCashOut") Boolean forCashOut,
                                @QueryParam("status") Integer status,
                                @QueryParam("idClient") Integer idClient,
-                               @QueryParam("pending") Boolean pending) throws SODAPIException {
+                               @QueryParam("pending") Boolean pending,
+                               @QueryParam("initDate") String initDateS, @QueryParam("endDate") String endDateS) throws SODAPIException {
+    List<OrderDTO> result;
+    Date initDate = ConvertUtils.parseDate(initDateS);
+    Date endDate = ConvertUtils.parseDate(endDateS);
     if (forCashOut != null && forCashOut) {
-      return ConvertUtils.castEntityAsResponse(ordersSv.getOrderNotCashedOut(), Response.Status.OK);
+      result = ordersSv.getOrderNotCashedOut();
+    } else if (status != null) {
+      result = ordersSv.getOrdersByStatus(status);
+    } else if (idClient != null && idClient > 0) {
+      result = ordersSv.getOrdersByClient(idClient);
+    } else if (pending != null && pending) {
+      result = ordersSv.getPendingOrders();
+    } else if (initDate != null && endDate != null) {
+      result = ordersSv.getOrderBetweenDates(initDate, endDate);
+    } else if (initDate != null) {
+      result = ordersSv.getOrderByDate(initDate);
+    } else {
+      result = ordersSv.getOrderList();
     }
-    if (status != null) {
-      return ConvertUtils.castEntityAsResponse(ordersSv.getOrdersByStatus(status), Response.Status.OK);
-    }
-    if (idClient != null && idClient > 0) {
-      return ConvertUtils.castEntityAsResponse(ordersSv.getOrdersByClient(idClient), Response.Status.OK);
-    }
-    if (pending != null && pending) {
-      return ConvertUtils.castEntityAsResponse(ordersSv.getPendingOrders(), Response.Status.OK);
-    }
-    return ConvertUtils.castEntityAsResponse(ordersSv.getOrderList());
+    return ConvertUtils.castEntityAsResponse(result, Response.Status.OK);
   }
 
   @GET
@@ -74,7 +83,7 @@ public class OrderService extends AbstractServiceMutations {
   @ApiOperation(value = "Get Client Orders list", response = OrderDTO.class, responseContainer = "List")
   @Deprecated
   public Response getOrdersByClient(@PathParam("idClient") int idClient) throws SODAPIException {
-    return getOrderList(null, null, idClient, null);
+    return getOrderList(null, null, idClient, null, null, null);
   }
 
   @GET

@@ -1,5 +1,6 @@
 package com.il.sod.model.entities;
 
+import com.il.sod.TestUtils;
 import com.il.sod.config.SpringTestConfiguration;
 import com.il.sod.db.dao.impl.CashOutDAO;
 import com.il.sod.db.dao.impl.OrdersDAO;
@@ -11,10 +12,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -45,15 +43,17 @@ public class CashOutTest extends SpringTestConfiguration {
   @Test
   public void testGetCashOutByDate() {
     LocalDate date = LocalDate.now();
-    System.out.println(toTimestamp(date));
-    List<CashOut> list = cashOutDAO.getCashOutByDate(toTimestamp(date));
+    System.out.println(TestUtils.toTimestamp(date));
+    List<CashOut> list = cashOutDAO.getCashOutByDate(TestUtils.toTimestamp(date));
     LOGGER.info("Today's cashouts: {}", list.size());
   }
 
-  private static Timestamp toTimestamp(LocalDate localDate) {
-    Date date = Date.from(localDate.atStartOfDay()
-            .atZone(ZoneId.systemDefault()).toInstant());
-    return new Timestamp(date.getTime());
+  @Test
+  public void testGetCashOutBetweenDates() {
+    LocalDate dateA = LocalDate.now().minusDays(100);
+    LocalDate dateB = LocalDate.now();
+    List<CashOut> list = cashOutDAO.getCashOutBetweenDates(TestUtils.toTimestamp(dateA), TestUtils.toTimestamp(dateB));
+    LOGGER.info("Today's cashouts: {}", list.size());
   }
 
 }

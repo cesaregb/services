@@ -7,7 +7,6 @@ import com.il.sod.config.jersey.CustomLoggingFilter;
 import com.il.sod.config.jersey.JacksonObjectMapperProvider;
 import com.il.sod.rest.util.PropertyHandler;
 import io.swagger.jaxrs.config.BeanConfig;
-import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,6 @@ public class ApplicationConfig extends ResourceConfig {
   public static final String PARAM_PORT = "rest.api.port"; // 8080
 
   public ApplicationConfig() {
-    register(LoggingFilter.class);
     register(CORSResponseFilter.class);
     register(AuthenticationFilter.class);
     register(CustomLoggingFilter.class);

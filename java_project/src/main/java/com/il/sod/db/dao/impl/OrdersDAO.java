@@ -6,6 +6,7 @@ import io.jsonwebtoken.lang.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -51,9 +52,16 @@ public class OrdersDAO {
     return orderRepository.findByIdCashOut(idCashOut);
   }
 
-
   public List<Order> findOrderNotCashedOut() {
     return orderRepository.findByIdCashOut(0);
+  }
+
+  public List<Order> getOrderByDate(Date date) {
+    return orderRepository.findAllByCreateDate(date);
+  }
+
+  public List<Order> getOrderBetweenDates(Date initDate, Date endDate) {
+    return orderRepository.findAllBetweenDates(initDate, endDate);
   }
 
 }

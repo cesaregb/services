@@ -9,6 +9,7 @@ import java.util.Set;
 public class OrderTasksInfoDTO {
   private int idOrder;
   private int idClient;
+  private Boolean paymentStatus;
   private String clientName;
   private String orderTypeName;
   private double completed;
